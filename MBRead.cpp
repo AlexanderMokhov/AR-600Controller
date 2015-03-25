@@ -97,27 +97,32 @@ short MBRead::MOTOR_CPOS_get(short NOMB)
     return (short) ((RXBUFF[NOMB*16+3] << 8) + (RXBUFF[NOMB*16+2]));
 }
 
+//получить KP
 short MBRead::MOTOR_STIFF_get(short NOMB)
 {
 	return (RXBUFF[NOMB*16+9] << 8) + RXBUFF[NOMB*16+8];
 }
 
+//получить KI
 short MBRead::MOTOR_DAMP_get(short NOMB)
 {
 	short MOTOR_DUMP = (RXBUFF[NOMB*16+11] << 8) + RXBUFF[NOMB*16+10];
 	return MOTOR_DUMP;
 }
 
+//получить статус мотора
 short MBRead::MOTOR_STAT_get(short NOMB)
 {
 	return (RXBUFF[NOMB*16+2] <<8 ) + RXBUFF[NOMB*16+1];
 }
 
+//получить минимальную позицию мотора
 short MBRead::MOTOR_POS_MIN_get(short NOMB)
 {
 	return (RXBUFF[NOMB*16+13] << 8) + RXBUFF[NOMB*16+12];
 }
 
+//получить максимальную позицию мотора
 short MBRead::MOTOR_POS_MAX_get(short NOMB)
 {
 	return (RXBUFF[NOMB*16+15] << 8) + RXBUFF[NOMB*16+14];
@@ -135,6 +140,7 @@ float MBRead::MOTOR_I_get(short NOMB)
     return float((RXBUFF[NOMB*2+12+1409] << 8) + RXBUFF[NOMB*2+12+1408]);
 }
 
+//получение данных о напряжении источников питания
 float MBRead::GetU61()
 {
     return (float)((RXBUFF[0 * 2 + 1409] << 8) + RXBUFF[0 * 2 + 1408])/1000;
@@ -176,6 +182,7 @@ float MBRead::GetU48()
     return (float)((RXBUFF[5 * 2 + 1409] << 8) + RXBUFF[1 * 2 + 1408])/100;
 }
 
+//получение данных о токах источников питания
 float MBRead::GetI61()
 {
     return (float)((RXBUFF[0 * 2 + 12 + 1409] << 8) + RXBUFF[0 * 2 + 12 + 1408])/1000;
