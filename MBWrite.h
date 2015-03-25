@@ -59,5 +59,9 @@ public:
 
 	void MUTE_ON(void);
 	void MUTE_OFF(void);
+
+    // add number of channel in sender buffer
+    void AddressUpdate(short number, short buffAddr);
+
 };
 

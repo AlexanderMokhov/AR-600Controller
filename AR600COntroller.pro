@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     AR600Controller.cpp \
     qcustomplot.cpp \
     dataplot.cpp \
-    ChannelListitem.cpp
+    ChannelListitem.cpp \
+    DriverCommand.cpp \
+    CommandController.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -29,7 +31,9 @@ HEADERS  += \
     AR600Controller.h \
     qcustomplot.h \
     dataplot.h \
-    ChannelListitem.h
+    ChannelListitem.h \
+    DriverCommand.h \
+    CommandController.h
 
 FORMS    += \
     AR600Controller.ui

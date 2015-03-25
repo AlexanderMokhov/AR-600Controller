@@ -198,6 +198,19 @@ void AR600Controller::On6V2Slot(bool value)
 void AR600Controller::UdpSend()
 {
     SetConfigData();
+    mSendBuffer.AddressUpdate(1,1);
+    mSendBuffer.AddressUpdate(2,2);
+
+    mSendBuffer.MOTOR_STIFF_set(1,100);
+    mSendBuffer.MOTOR_POS_MIN_set(1,-500);
+    mSendBuffer.MOTOR_POS_MAX_set(1,500);
+
+    mSendBuffer.MOTOR_STIFF_set(2,100);
+    mSendBuffer.MOTOR_POS_MIN_set(2,-700);
+    mSendBuffer.MOTOR_POS_MAX_set(2,700);
+
+
+
     qDebug() << "Send" << mSendBuffer.GetBuffer();
 
     mUdpSocketSender->writeDatagram(mSendBuffer.GetBuffer(), mSendBuffer.GetSize()* sizeof(char), QHostAddress(QString::fromStdString(mHost)), mPort);
@@ -237,7 +250,7 @@ void AR600Controller::ProcessTheDatagram(QByteArray &datagramm)
     mResiverBuffer.init(datagramm.data());
     UpdatePowerLabel();
 
-    for (unsigned int i = 0; i <49; i++)
+    for (unsigned int i = 1; i < 3; i++)
     {
         qDebug()     << "Pos [" << i << "]: "<< mResiverBuffer.MOTOR_CPOS_get(i) <<  " "
                      << mResiverBuffer.MOTOR_POS_MIN_get(i) <<  " "

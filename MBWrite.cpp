@@ -129,7 +129,12 @@ void MBWrite::MUTE_ON(void)
 //выключить беззвучный режим
 void MBWrite::MUTE_OFF(void)
 {
-	WRBUFF[1409] &= (255-128);
+    WRBUFF[1409] &= (255-128);
+}
+
+void MBWrite::AddressUpdate(short number, short buffAddr)
+{
+    WRBUFF[number * 16] = buffAddr;
 }
 
 #pragma endregion Power
