@@ -46,8 +46,8 @@ public:
 	short MOTOR_IMOT_get(short NOMB);
 	short MOTOR_UBATT_get(short NOMB);
     short MOTOR_CPOS_get(short NOMB);//получить текущую позицию мотора
-	short MOTOR_STIFF_get(short NOMB);
-	short MOTOR_DAMP_get(short NOMB);//
+	short MOTOR_STIFF_get(short NOMB);//получить KP
+	short MOTOR_DAMP_get(short NOMB);//получить KI
 	short MOTOR_STAT_get(short NOMB);//получить статус мотора
 	short MOTOR_POS_MIN_get(short NOMB);//получить минимальную позицию мотора
 	short MOTOR_POS_MAX_get(short NOMB);//получить максималную позицию мотора
