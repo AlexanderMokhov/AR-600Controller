@@ -31,14 +31,14 @@ public:
 
 	void MOTOR_ANGLE_set(short NOMB, short value);
 	void MOTOR_ILIM_set(short NOMB, short value);
-	void MOTOR_STIFF_set(short NOMB, short value);
-	void MOTOR_DAMP_set(short NOMB, short value);
+	void MOTOR_STIFF_set(short NOMB, short value);//установить KP
+	void MOTOR_DAMP_set(short NOMB, short value);//установить KI
 	void MOTOR_POS_MIN_set(short NOMB, short value);
 	void MOTOR_POS_MAX_set(short NOMB, short value);
 	void MOTOR_CENTER(short NOMB, unsigned char RXBUFF[]);
 	void MOTOR_STOP(short NOMB);
 	void MOTOR_TRACE(short NOMB);
-	void MOTOR_RELAX(short NOMB);
+	void MOTOR_RELAX(short NOMB);//убрать фиксацию мотора
 	void MOTOR_STOP_BR(short NOMB);
 	void MOTOR_SET_REVERS(short NOMB);
 	void MOTOR_CLR_REVERS(short NOMB);
@@ -61,6 +61,7 @@ public:
 	void MUTE_OFF(void);
 
     // add number of channel in sender buffer
+    //добавить номер канала в отправляемый буфер
     void AddressUpdate(short number, short buffAddr);
 
 };
