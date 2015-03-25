@@ -5,7 +5,7 @@
 class DriverCommand
 {
 private:
-    unsigned int mChanelNamber;
+    unsigned int mChanelNomber;
 
     /*
      время
