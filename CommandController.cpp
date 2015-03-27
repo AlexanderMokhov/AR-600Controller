@@ -27,7 +27,7 @@ CommandController::Update(uint mTime, MBWrite &buffer)
 CommandController::LoadFromFile(QString fileName)
 {
     QFile mFile(fileName);
-    if(mFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    if(mFile.open(QIODevice::ReadOnly | QIODevice.Text))
     {
         while(!mFile.atEnd())
         {
@@ -36,14 +36,14 @@ CommandController::LoadFromFile(QString fileName)
             //делим строку на слова, разделенные пробелом
             QStringList lst = str.split(' ');
             //отладочная информация
-            //QDebug() << lst.at(0) << lst.at(1) << lst.at(2);
+            QDebug() << lst.at(0) << lst.at(1) << lst.at(2);
 
 
         }
     }
     else
     {
-        //QDebug() << "don't open file";
+        QDebug() << "don't open file";
         //очищаем список команд
         mCommandsList.clear();
     }
