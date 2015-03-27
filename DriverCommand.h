@@ -6,6 +6,9 @@ class DriverCommand
 {
 private:
     unsigned int mChanelNomber;
+    unsigned int mTime;
+    int mPosition;
+    int mPID;
 
     /*
      время
@@ -14,6 +17,7 @@ private:
     */
 public:
     DriverCommand();
+    DriverCommand(int ChanelNomber, int Time, int Position)
     ~DriverCommand();
 };
 
