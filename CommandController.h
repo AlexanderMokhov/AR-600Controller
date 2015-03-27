@@ -6,6 +6,8 @@
 #include "QList"
 #include "DriverCommand.h"
 #include "MBWrite.h"
+#include "QStringList"
+#include "QDebug"
 
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
