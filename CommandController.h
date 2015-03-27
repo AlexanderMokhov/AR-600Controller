@@ -18,6 +18,7 @@ public:
        CommandController();
     ~CommandController();
        Update(uint mTime, MBWrite &buffer);
+       LoadFromFile(QString fileName);
 
 //       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер
 //       загрузка списка команд из файла, если файл не праильного формата, сообщать об этом, список команд обнулять
