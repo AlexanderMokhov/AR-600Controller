@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <AR600ControllerConf list="true">
   <DriverSettings list="true">
-  1234567
     <Driver>
 	  <Number>1</Number>
 	  <NumberBuffer>1</NumberBuffer>
