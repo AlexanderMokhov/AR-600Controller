@@ -10,7 +10,7 @@ CommandController::~CommandController()
 
 }
 
-CommandController::Update(uint mTime, MBWrite &buffer)
+CommandController::Update(unsigned int mTime, MBWrite &buffer)
 {
     if(mCommandsList.at(Id).mTime==mTime)//совпало время
     {
@@ -24,28 +24,79 @@ CommandController::Update(uint mTime, MBWrite &buffer)
     }
 }
 
-CommandController::LoadFromFile(QString fileName)
+bool CommandController::LoadFromFile(std::string fileName)
 {
-    QFile mFile(fileName);
-    if(mFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    std::ifstream file(fileName.c_str());
+
+    if(file.is_open())
     {
-        while(!mFile.atEnd())
+        //очищаем список команд
+        mCommandsList.clear();
+        std::string str;
+
+        while(std::getline(file, str))
         {
-            //читаем строку
-            QString str = mFile.readLine();
-            //делим строку на слова, разделенные пробелом
-            QStringList lst = str.split(' ');
-            //отладочная информация
-            //QDebug() << lst.at(0) << lst.at(1) << lst.at(2);
+            int i=0;
+            while(str[i]==' ')
+                i++;
+            std::string temp;
+            while(str[i]!=' ')
+            {
+                temp+=str.at(i);
+                i++;
+            }
+            //Получаем номер привода
+            unsigned int Number = atoi(temp.c_str());
+            temp.clear();
 
+            while(str[i]==' ')
+                i++;
+            while(str[i]!='.')
+            {
+                temp+=str.at(i);
+                i++;
+            }
+            i++;
+            while(str[i]!=' ')
+            {
+                temp+=str.at(i);
+                i++;
+            }
+            //Получаем время исполнения
+            unsigned int Time = atoi(temp.c_str());
+            temp.clear();
 
+            while(str[i]==' ')
+                i++;
+            while(str[i]!='.')
+            {
+                temp+=str.at(i);
+                i++;
+            }
+            i++;
+            while(str[i]!=' ' && i<str.length())
+            {
+                temp+=str.at(i);
+                i++;
+            }
+            //Получаем позицию привода
+            int Position = atoi(temp.c_str());
+            temp.clear();
+
+            //Переводим позицию в градусы*100
+            Position=(180.0/M_PI*Position)*100;
+
+            //Заносим полученые параметры в контейнер
+            mCommandsList.push_back(DriverCommand(Number,Time,Position));
         }
+        file.close();
+        return true;
     }
     else
     {
-        //QDebug() << "don't open file";
-        //очищаем список команд
-        mCommandsList.clear();
+        file.close();
+        return false;
     }
+
 }
 

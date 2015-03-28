@@ -17,7 +17,12 @@ DriverSettingsItem::~DriverSettingsItem()
     mDUMP = 0;
 }
 
-DriverSettingsItem::DriverSettingsItem(unsigned int Number, unsigned int NumberBuffer, string Name, int MinPos, int MaxPos, bool Reverce, unsigned int STIFF, unsigned int DUMP)
+DriverSettingsItem::DriverSettingsItem(unsigned int Number,
+                                       unsigned int NumberBuffer,
+                                       string Name, int MinPos,
+                                       int MaxPos, bool Reverce,
+                                       unsigned int STIFF,
+                                       unsigned int DUMP)
 {
     mNumber=Number;
     mNumberBuffer=NumberBuffer;

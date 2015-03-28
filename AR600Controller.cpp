@@ -1,5 +1,6 @@
 #include "AR600Controller.h"
 #include "ui_AR600Controller.h"
+#include "CommandController.h"
 #include "dataplot.h"
 #include <QMessageBox>
 #include "string.h"
@@ -59,6 +60,9 @@ AR600Controller::AR600Controller(QWidget *parent) :
         ui->portLineEdit->setText(QString::number(AR600ContollerConf::Instance()->getPort()));
         qDebug() << "Настройки успешно прочитаны";
     }
+
+    CommandController *mc = new CommandController();
+    mc->LoadFromFile("1.txt");
 }
 
 AR600Controller::~AR600Controller()
