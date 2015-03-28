@@ -1,12 +1,15 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+//#include <iostream>
 #include <QWidget>
 #include <QUdpSocket>
 #include <QTimer>
 #include "MBWrite.h"
 #include "MBRead.h"
 #include "dataplot.h"
+#include "TinyXML/tinyxml.h"
+#include "ar600contollerconf.h"
 
 namespace Ui {
 	class Widget;
@@ -34,7 +37,6 @@ private:
 	unsigned int mPort;
     //DataPlot mPlot;
     int RangeSize;
-
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();

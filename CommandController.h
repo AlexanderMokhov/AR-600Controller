@@ -9,6 +9,7 @@
 #include "QStringList"
 #include "QDebug"
 
+
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
 class CommandController

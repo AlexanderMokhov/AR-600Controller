@@ -23,7 +23,13 @@ SOURCES += main.cpp\
     dataplot.cpp \
     ChannelListitem.cpp \
     DriverCommand.cpp \
-    CommandController.cpp
+    CommandController.cpp \
+    ar600contollerconf.cpp \
+    TinyXML/tinystr.cpp \
+    TinyXML/tinyxml.cpp \
+    TinyXML/tinyxmlerror.cpp \
+    TinyXML/tinyxmlparser.cpp \
+    driversettingsitem.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -33,7 +39,11 @@ HEADERS  += \
     dataplot.h \
     ChannelListitem.h \
     DriverCommand.h \
-    CommandController.h
+    CommandController.h \
+    ar600contollerconf.h \
+    TinyXML/tinystr.h \
+    TinyXML/tinyxml.h \
+    driversettingsitem.h
 
 FORMS    += \
     AR600Controller.ui

@@ -1,7 +1,8 @@
 #include "AR600Controller.h"
 #include "ui_AR600Controller.h"
 #include "dataplot.h"
-#include<QMessageBox>
+#include <QMessageBox>
+#include "string.h"
 
 
 AR600Controller::AR600Controller(QWidget *parent) :
@@ -18,7 +19,7 @@ AR600Controller::AR600Controller(QWidget *parent) :
     mTimer = new QTimer(this);
     connect(mTimer, SIGNAL(timeout()), SLOT(UdpSend()));
 
-   //mTimer2 = new QTimer(this);
+    //mTimer2 = new QTimer(this);
     // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
     //connect(mTimer2, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
     //mTimer2->start(100); // Interval 0 means to refresh as fast as possible
@@ -47,12 +48,17 @@ AR600Controller::AR600Controller(QWidget *parent) :
     ui->Plot->xAxis->setTickStep(2);//шаг между рисками (мс)
     ui->Plot->axisRect()->setupFullAxesBox();
 
-
-    // make left and bottom axes transfer their ranges to right and top axes:
-    //connect(ui->Plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot->xAxis2, SLOT(setRange(QCPRange)));
-    //connect(ui->Plot->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot->yAxis2, SLOT(setRange(QCPRange)));
-
     //конец работы с графиками
+
+    //загрузка файла настроек
+    AR600ContollerConf::Instance()->initialize();
+    bool isOk = AR600ContollerConf::Instance()->openFile("config.xml");
+    if(isOk)
+    {
+        ui->hostLineEdit->setText(QString::fromStdString(AR600ContollerConf::Instance()->getHost()));
+        ui->portLineEdit->setText(QString::number(AR600ContollerConf::Instance()->getPort()));
+        qDebug() << "Настройки успешно прочитаны";
+    }
 }
 
 AR600Controller::~AR600Controller()
