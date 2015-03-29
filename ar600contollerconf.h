@@ -28,8 +28,10 @@ public:
     static void shutdown();
 
     bool openFile(std::string FileName);//открыть файл настроек
+    bool saveFile(std::string FileName);//сохранить файл настроек
 
     int getPort();//получить порт
     std::string getHost();//получить адрес
+
 };
 #endif // AR600CONTOLLERCONF_H

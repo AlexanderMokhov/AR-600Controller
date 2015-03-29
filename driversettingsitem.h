@@ -29,6 +29,14 @@ public:
                        bool Reverce,
                        unsigned int STIFF,
                        unsigned int DUMP);
+    unsigned int getNumber();
+    unsigned int getNumberBuffer();
+    std::string getName();
+    int getMinPos();
+    int getMaxPos();
+    bool getReverce();
+    unsigned int getStiff();
+    unsigned int getDump();
 
 };
 

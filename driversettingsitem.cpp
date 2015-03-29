@@ -34,3 +34,43 @@ DriverSettingsItem::DriverSettingsItem(unsigned int Number,
     mDUMP = DUMP;
 }
 
+unsigned int DriverSettingsItem::getNumber()
+{
+    return mNumber;
+}
+
+unsigned int DriverSettingsItem::getNumberBuffer()
+{
+    return mNumberBuffer;
+}
+
+string DriverSettingsItem::getName()
+{
+    return mName;
+}
+
+int DriverSettingsItem::getMinPos()
+{
+    return mMinPos;
+}
+
+int DriverSettingsItem::getMaxPos()
+{
+    return mMaxPos;
+}
+
+bool DriverSettingsItem::getReverce()
+{
+    return mReverce;
+}
+
+unsigned int DriverSettingsItem::getStiff()
+{
+    return mSTIFF;
+}
+
+unsigned int DriverSettingsItem::getDump()
+{
+    return mDUMP;
+}
+

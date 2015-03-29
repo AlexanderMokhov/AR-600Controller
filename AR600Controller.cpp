@@ -61,6 +61,7 @@ AR600Controller::AR600Controller(QWidget *parent) :
         qDebug() << "Настройки успешно прочитаны";
     }
 
+    isOk=AR600ContollerConf::Instance()->saveFile("mynewconfig.xml");
     CommandController *mc = new CommandController();
     mc->LoadFromFile("1.txt");
 }
