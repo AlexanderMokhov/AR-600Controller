@@ -11,13 +11,13 @@ public:
     unsigned int    mNumber;
     std::string     mChannelDesc;
     std::string     mStatus; // TODO: rewrite to enum
-    unsigned int    mPos;
-    unsigned int    mMinPos;
-    unsigned int    mMaxPos;
+    int    mPos;
+    int    mMinPos;
+    int    mMaxPos;
     bool            mReverce;
-    unsigned int    mKP;
-    unsigned int    mKI;
-    unsigned int    mKD;
+    int    mKP;
+    int    mKI;
+    int    mKD;
     ChannelListItem();
     ~ChannelListItem();
 };
