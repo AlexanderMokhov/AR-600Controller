@@ -49,13 +49,11 @@ bool AR600ControllerConf::openFile(string FileName)
         // читаем двигатели
         xml_Driver = xml_DriverSettings->FirstChildElement("Driver");
         // очищаем контейнер
-        m_DriverSettingsVector.clear();
-        int index=0;
+        m_DriverSettingsMap.clear();
+
         // перебор всех двигателей
         while(xml_Driver != NULL)
         {
-            index++;
-
             //читаем атрибуты
             unsigned int Number = atoi(xml_Driver->FirstChildElement("Number")->GetText());
             unsigned int NumberBuffer = atoi(xml_Driver->FirstChildElement("NumberBuffer")->GetText());
@@ -66,19 +64,13 @@ bool AR600ControllerConf::openFile(string FileName)
             unsigned int STIFF = atoi(xml_Driver->FirstChildElement("Stiff")->GetText());
             unsigned int DUMP = atoi(xml_Driver->FirstChildElement("Dump")->GetText());
 
+            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,STIFF,DUMP);
             //загоняем в контейнер
-            m_DriverSettingsVector.push_back(DriverSettingsItem(
-                                                 Number,
-                                                 NumberBuffer,
-                                                 Name,
-                                                 MinPos,
-                                                 MaxPos,
-                                                 Reverce,
-                                                 STIFF,
-                                                 DUMP));
+            m_DriverSettingsMap.insert(pair<unsigned int,DriverSettingsItem>(Number,item));
 
             xml_Driver = xml_Driver->NextSiblingElement("Driver");
         }
+
         //читаем настройки подключения
         TiXmlElement *xml_ConnectSettings = 0;
         xml_ConnectSettings = xml_root->FirstChildElement("ConnectSettings");
@@ -98,46 +90,43 @@ bool AR600ControllerConf::saveFile(string FileName)
     TiXmlElement * xml_DriverSettings = new TiXmlElement("DriverSettings");
     xml_root->LinkEndChild(xml_DriverSettings);
 
-    int CountDrivers = m_DriverSettingsVector.size();
-    int i=0;
-
     TiXmlText * WriteValue;
     char * buffer;
     buffer=(char*)malloc(15*sizeof(char));
-
+    map<unsigned int,DriverSettingsItem>::iterator it;
     //заполняем массив двигателей из контейнера
-    while(i!=CountDrivers)
+    for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)
     {
         TiXmlElement * xml_Driver = new TiXmlElement("Driver");
         xml_DriverSettings->LinkEndChild(xml_Driver);
 
         TiXmlElement* Number = new TiXmlElement("Number");
-        WriteValue = new TiXmlText(itoa(m_DriverSettingsVector[i].getNumber(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getNumber(),buffer,10));
         Number->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Number);
 
         TiXmlElement* NumberBuffer = new TiXmlElement("NumberBuffer");
-        WriteValue = new TiXmlText(itoa(m_DriverSettingsVector[i].getNumberBuffer(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getNumberBuffer(),buffer,10));
         NumberBuffer->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(NumberBuffer);
 
         TiXmlElement* Name = new TiXmlElement("Name");
-        WriteValue = new TiXmlText(m_DriverSettingsVector[i].getName().c_str());
+        WriteValue = new TiXmlText((*it).second.getName().c_str());
         Name->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Name);
 
         TiXmlElement* MinPos = new TiXmlElement("MinPos");
-        WriteValue = new TiXmlText(itoa(m_DriverSettingsVector[i].getMinPos(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getMinPos(),buffer,10));
         MinPos->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(MinPos);
 
         TiXmlElement* MaxPos = new TiXmlElement("MaxPos");
-        WriteValue = new TiXmlText(itoa(m_DriverSettingsVector[i].getMaxPos(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getMaxPos(),buffer,10));
         MaxPos->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(MaxPos);
 
         TiXmlElement* Reverce = new TiXmlElement("Reverce");
-        if(m_DriverSettingsVector[i].getReverce()!=0)
+        if((*it).second.getReverce()!=0)
             WriteValue = new TiXmlText("true");
         else
             WriteValue = new TiXmlText("false");
@@ -145,16 +134,14 @@ bool AR600ControllerConf::saveFile(string FileName)
         xml_Driver->LinkEndChild(Reverce);
 
         TiXmlElement* Stiff = new TiXmlElement("Stiff");
-        WriteValue = new TiXmlText(itoa(m_DriverSettingsVector[i].getStiff(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getStiff(),buffer,10));
         Stiff->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Stiff);
 
         TiXmlElement* Dump = new TiXmlElement("Dump");
-        WriteValue = new TiXmlText(itoa(m_DriverSettingsVector[i].getDump(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getDump(),buffer,10));
         Dump->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Dump);
-
-        i++;
     }
 
     //записываем настройки подключения
@@ -189,6 +176,16 @@ string AR600ControllerConf::getHost()
 
 bool AR600ControllerConf::Update(MBWrite &buffer)
 {
-
+    map<unsigned int,DriverSettingsItem>::iterator it;
+    for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)
+    {
+        buffer.AddressUpdate((*it).first,(*it).second.getNumberBuffer());
+        buffer.MOTOR_POS_MIN_set((*it).first,(*it).second.getMinPos());
+        buffer.MOTOR_POS_MAX_set((*it).first,(*it).second.getMaxPos());
+        buffer.MOTOR_STIFF_set((*it).first,(*it).second.getStiff());
+        buffer.MOTOR_DAMP_set((*it).first,(*it).second.getDump());
+        if((*it).second.getReverce())
+            buffer.MOTOR_SET_REVERS((*it).first);
+    }
 }
 

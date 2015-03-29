@@ -2,10 +2,11 @@
 #define AR600CONTROLLERCONF_H
 
 #include<iostream>
-#include <vector>
+#include <map>
 #include "TinyXML/tinyxml.h"
 #include "DriverSettingsItem.h"
 #include "MBWrite.h"
+#include "stdlib.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ private:
 
     TiXmlDocument * XMLfileSetting = NULL;
 
-    std::vector<DriverSettingsItem> m_DriverSettingsVector;
+    std::map<unsigned int,DriverSettingsItem> m_DriverSettingsMap;
     int m_Port;//порт назначения
     std::string m_Host;//адрес назначения
 

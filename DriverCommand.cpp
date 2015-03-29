@@ -17,7 +17,7 @@ DriverCommand::~DriverCommand()
 
 }
 
-unsigned int DriverCommand::getNomber()
+unsigned int DriverCommand::getNumber()
 {
     return mNumber;
 }

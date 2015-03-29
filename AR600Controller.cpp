@@ -59,6 +59,8 @@ AR600Controller::AR600Controller(QWidget *parent) :
     {
         ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
         ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
+        //загоняем в отправляемый массив
+        AR600ControllerConf::Instance()->Update(mSendBuffer);
         qDebug() << "Настройки успешно прочитаны";
     }
 
@@ -373,6 +375,8 @@ void AR600Controller::on_pButtonOpenXML_clicked()
         {
             ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
             ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
+            //загоняем в отправляемый массив
+            AR600ControllerConf::Instance()->Update(mSendBuffer);
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
         }
