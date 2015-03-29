@@ -21,7 +21,6 @@ SOURCES += main.cpp\
     AR600Controller.cpp \
     qcustomplot.cpp \
     dataplot.cpp \
-    ChannelListitem.cpp \
     DriverCommand.cpp \
     CommandController.cpp \
     TinyXML/tinystr.cpp \
@@ -29,6 +28,7 @@ SOURCES += main.cpp\
     TinyXML/tinyxmlerror.cpp \
     TinyXML/tinyxmlparser.cpp \
     AR600ControllerConf.cpp \
+    ChannelListItem.cpp \
     DriverSettingsItem.cpp
 
 HEADERS  += \
@@ -37,12 +37,12 @@ HEADERS  += \
     AR600Controller.h \
     qcustomplot.h \
     dataplot.h \
-    ChannelListitem.h \
     DriverCommand.h \
     CommandController.h \
     TinyXML/tinystr.h \
     TinyXML/tinyxml.h \
     AR600ControllerConf.h \
+    ChannelListItem.h \
     DriverSettingsItem.h
 
 FORMS    += \

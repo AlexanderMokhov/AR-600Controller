@@ -1,4 +1,4 @@
-#include "ChannelListitem.h"
+#include "ChannelListItem.h"
 
 ChannelListItem::ChannelListItem()
 {
