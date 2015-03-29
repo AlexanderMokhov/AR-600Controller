@@ -11,6 +11,7 @@
 #include "TinyXML/tinyxml.h"
 #include "AR600ControllerConf.h"
 #include "CommandController.h"
+#include "ChannelTableModel.h"
 
 namespace Ui {
 	class Widget;
@@ -44,6 +45,8 @@ private:
     void UpdatePowerLabel();
     void realtimeData();
     void SetConfigData();
+
+    ChannelTableModel *m_CLModel;
 
 private slots:
     void ProcessPendingDatagrams();

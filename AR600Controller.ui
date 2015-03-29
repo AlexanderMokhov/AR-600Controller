@@ -87,25 +87,6 @@
    </item>
    <item row="0" column="5" rowspan="5">
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="2" column="0">
-      <widget class="QTableWidget" name="dataTable">
-       <column>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>3</string>
-        </property>
-       </column>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QCustomPlot" name="Plot" native="true">
        <property name="sizePolicy">
@@ -164,6 +145,9 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="2" column="0">
+      <widget class="QTableView" name="ChannelTableView"/>
      </item>
     </layout>
    </item>

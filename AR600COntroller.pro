@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     TinyXML/tinyxmlparser.cpp \
     AR600ControllerConf.cpp \
     ChannelListItem.cpp \
-    DriverSettingsItem.cpp
+    DriverSettingsItem.cpp \
+    ChannelTableModel.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -43,7 +44,8 @@ HEADERS  += \
     TinyXML/tinyxml.h \
     AR600ControllerConf.h \
     ChannelListItem.h \
-    DriverSettingsItem.h
+    DriverSettingsItem.h \
+    ChannelTableModel.h
 
 FORMS    += \
     AR600Controller.ui

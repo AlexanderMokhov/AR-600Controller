@@ -6,6 +6,8 @@
 class ChannelListItem
 {
 private:
+
+public:
     unsigned int    mNumber;
     std::string     mChannelDesc;
     std::string     mStatus; // TODO: rewrite to enum
@@ -16,9 +18,6 @@ private:
     unsigned int    mKP;
     unsigned int    mKI;
     unsigned int    mKD;
-
-
-public:
     ChannelListItem();
     ~ChannelListItem();
 };

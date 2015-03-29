@@ -7,6 +7,7 @@
 #include <qfiledialog.h>
 
 
+
 AR600Controller::AR600Controller(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::Widget)
@@ -70,6 +71,10 @@ AR600Controller::AR600Controller(QWidget *parent) :
     CommandController *mc = new CommandController();
 
     mc->LoadFromFile("1.txt");
+
+    m_CLModel= new ChannelTableModel();
+    ui->ChannelTableView->setModel(m_CLModel);
+
 }
 
 AR600Controller::~AR600Controller()
@@ -237,23 +242,7 @@ void AR600Controller::UdpSend()
 
 void AR600Controller::AddRow()
 {
-    int countRows= ui->dataTable->rowCount();
-    ui->dataTable->insertRow(countRows);
-    QTableWidgetItem *item;
-        // Записываем в 1-ю ячейку
-        item = new  QTableWidgetItem();
-        item->setText(QString("Мотор"));
-        ui->dataTable->setItem(countRows, 0, item);
-        // Записываем вo 2-ю ячейку
-        item = new QTableWidgetItem(QString::number(0));
-        item->setTextAlignment(Qt::AlignCenter);
-        ui->dataTable->setItem(countRows, 1, item);
-        // Записываем вo 3-ю ячейку
-        item = new QTableWidgetItem(QString::number(15));
-        item->setTextAlignment(Qt::AlignCenter);
-        ui->dataTable->setItem(countRows, 2, item);
-        // Выделяем добавленную
-        ui->dataTable->setCurrentCell(countRows, 0);
+    ;
 }
 
 void AR600Controller::SetLenght(double lenght)
