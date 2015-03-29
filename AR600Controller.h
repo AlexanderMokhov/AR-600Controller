@@ -10,6 +10,7 @@
 #include "dataplot.h"
 #include "TinyXML/tinyxml.h"
 #include "AR600ControllerConf.h"
+#include "CommandController.h"
 
 namespace Ui {
 	class Widget;
@@ -24,19 +25,20 @@ public:
     ~AR600Controller();
 	
 private:
-	Ui::Widget *ui;
-    QUdpSocket* mUdpSocketResiver;
-    QUdpSocket* mUdpSocketSender;
-    QTimer*     mTimer;
-    QTimer*     mTimer2;
+    Ui::Widget*         ui;
+    QUdpSocket*         mUdpSocketResiver;
+    QUdpSocket*         mUdpSocketSender;
+    QTimer*             mTimer;
+    QTimer*             mTimer2;
 
-    MBWrite     mSendBuffer;
-    MBRead      mResiverBuffer;
+    MBWrite             mSendBuffer;
+    MBRead              mResiverBuffer;
 
-	std::string mHost;
-	unsigned int mPort;
+    std::string         mHost;
+    unsigned int        mPort;
     //DataPlot mPlot;
-    int RangeSize;
+    int                 RangeSize;
+    CommandController*  m_CommandController;
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();
@@ -46,13 +48,11 @@ private:
 private slots:
     void ProcessPendingDatagrams();
     void StartSending();
-    /*void SendMessage();*/
-
-
 
     void on_pButtonSaveXML_clicked();
-
     void on_pButtonOpenXML_clicked();
+    void on_pButtonCFOpen_clicked();
+    /*void SendMessage();*/
 
 public slots:
     void On48Slot(bool value);

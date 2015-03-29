@@ -187,3 +187,8 @@ string AR600ControllerConf::getHost()
     return m_Host;
 }
 
+bool AR600ControllerConf::Update(MBWrite &buffer)
+{
+
+}
+

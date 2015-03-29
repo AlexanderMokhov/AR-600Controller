@@ -1,4 +1,4 @@
-#include "driversettingsitem.h"
+#include "DriverSettingsItem.h"
 
 DriverSettingsItem::DriverSettingsItem()
 {

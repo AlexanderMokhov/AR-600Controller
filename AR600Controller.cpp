@@ -376,7 +376,33 @@ void AR600Controller::on_pButtonOpenXML_clicked()
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
         }
+        else
+        {
+            qDebug() << "Файл настроек не был загружен из " << fileName << endl;
+            qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
+        }
 
 
     }
+}
+
+void AR600Controller::on_pButtonCFOpen_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(0,"Open Commands List Dialog","","*.txt");
+    if (!fileName.isEmpty())
+    {
+        m_CommandController=new CommandController();
+        bool isOk = m_CommandController->LoadFromFile(fileName.toStdString());
+        if(isOk)
+        {
+            qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
+            qDebug() << "Команды успешно прочитаны" <<endl;
+        }
+        else
+        {
+            qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
+            qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
+        }
+    }
+
 }

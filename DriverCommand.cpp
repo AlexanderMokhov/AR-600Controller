@@ -5,9 +5,9 @@ DriverCommand::DriverCommand()
 
 }
 
-DriverCommand::DriverCommand(unsigned int ChanelNomber, unsigned int Time, int Position)
+DriverCommand::DriverCommand(unsigned int Number, unsigned int Time, int Position)
 {
-    mChanelNomber=ChanelNomber;
+    mNumber=Number;
     mTime=Time;
     mPosition=Position;
 }
@@ -15,5 +15,20 @@ DriverCommand::DriverCommand(unsigned int ChanelNomber, unsigned int Time, int P
 DriverCommand::~DriverCommand()
 {
 
+}
+
+unsigned int DriverCommand::getNomber()
+{
+    return mNumber;
+}
+
+unsigned int DriverCommand::getTime()
+{
+    return mTime;
+}
+
+int DriverCommand::getPosition()
+{
+    return mPosition;
 }
 

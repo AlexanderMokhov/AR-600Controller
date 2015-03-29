@@ -12,13 +12,13 @@ CommandController::~CommandController()
 
 CommandController::Update(unsigned int mTime, MBWrite &buffer)
 {
-    if(mCommandsList.at(Id).mTime==mTime)//совпало время
+    if(mCommandsList.at(Id).getTime()==mTime)//совпало время
     {
         //читаем все команды с таким временем
-        while(mCommandsList.at(Id).mTime==mTime)
+        while(mCommandsList.at(Id).getTime()==mTime)
         {
             //записываем значение в мотор и проверяем следующую команду
-            buffer.MOTOR_ANGLE_set(mCommandsList.at(Id).mChanelNomber,mCommandsList.at(Id).mPosition);
+            buffer.MOTOR_ANGLE_set(mCommandsList.at(Id).getNumber(),mCommandsList.at(Id).getPosition());
             Id++;
         }
     }

@@ -28,8 +28,8 @@ SOURCES += main.cpp\
     TinyXML/tinyxml.cpp \
     TinyXML/tinyxmlerror.cpp \
     TinyXML/tinyxmlparser.cpp \
-    driversettingsitem.cpp \
-    AR600ControllerConf.cpp
+    AR600ControllerConf.cpp \
+    DriverSettingsItem.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -42,8 +42,8 @@ HEADERS  += \
     CommandController.h \
     TinyXML/tinystr.h \
     TinyXML/tinyxml.h \
-    driversettingsitem.h \
-    AR600ControllerConf.h
+    AR600ControllerConf.h \
+    DriverSettingsItem.h
 
 FORMS    += \
     AR600Controller.ui

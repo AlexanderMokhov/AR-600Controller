@@ -4,7 +4,8 @@
 #include<iostream>
 #include <vector>
 #include "TinyXML/tinyxml.h"
-#include "driversettingsitem.h"
+#include "DriverSettingsItem.h"
+#include "MBWrite.h"
 
 using namespace std;
 
@@ -32,6 +33,8 @@ public:
 
     int getPort();//получить порт
     std::string getHost();//получить адрес
+
+    bool Update(MBWrite &buffer);
 
 };
 #endif // AR600CONTROLLERCONF_H
