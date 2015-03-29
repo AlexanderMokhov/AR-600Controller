@@ -24,12 +24,12 @@ SOURCES += main.cpp\
     ChannelListitem.cpp \
     DriverCommand.cpp \
     CommandController.cpp \
-    ar600contollerconf.cpp \
     TinyXML/tinystr.cpp \
     TinyXML/tinyxml.cpp \
     TinyXML/tinyxmlerror.cpp \
     TinyXML/tinyxmlparser.cpp \
-    driversettingsitem.cpp
+    driversettingsitem.cpp \
+    AR600ControllerConf.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -40,10 +40,10 @@ HEADERS  += \
     ChannelListitem.h \
     DriverCommand.h \
     CommandController.h \
-    ar600contollerconf.h \
     TinyXML/tinystr.h \
     TinyXML/tinyxml.h \
-    driversettingsitem.h
+    driversettingsitem.h \
+    AR600ControllerConf.h
 
 FORMS    += \
     AR600Controller.ui

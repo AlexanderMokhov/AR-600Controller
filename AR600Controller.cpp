@@ -4,6 +4,7 @@
 #include "dataplot.h"
 #include <QMessageBox>
 #include "string.h"
+#include <qfiledialog.h>
 
 
 AR600Controller::AR600Controller(QWidget *parent) :
@@ -52,17 +53,20 @@ AR600Controller::AR600Controller(QWidget *parent) :
     //конец работы с графиками
 
     //загрузка файла настроек
-    AR600ContollerConf::Instance()->initialize();
-    bool isOk = AR600ContollerConf::Instance()->openFile("config.xml");
+    AR600ControllerConf::Instance()->initialize();
+    bool isOk = AR600ControllerConf::Instance()->openFile("config.xml");
     if(isOk)
     {
-        ui->hostLineEdit->setText(QString::fromStdString(AR600ContollerConf::Instance()->getHost()));
-        ui->portLineEdit->setText(QString::number(AR600ContollerConf::Instance()->getPort()));
+        ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
+        ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
         qDebug() << "Настройки успешно прочитаны";
     }
 
-    isOk=AR600ContollerConf::Instance()->saveFile("mynewconfig.xml");
+    isOk=AR600ControllerConf::Instance()->saveFile("mynewconfig.xml");
+
+    //загружаем список команд из файла
     CommandController *mc = new CommandController();
+
     mc->LoadFromFile("1.txt");
 }
 
@@ -347,3 +351,32 @@ void AR600Controller::SetConfigData()
 
 //TODO задать номер привода задать читать значения
 //сенсоры
+
+void AR600Controller::on_pButtonSaveXML_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
+    if (!fileName.isEmpty())
+    {
+        AR600ControllerConf::Instance()->saveFile(fileName.toStdString());
+        qDebug() << "Файл настроек успешно сохранен в " << fileName << endl;
+    }
+}
+
+void AR600Controller::on_pButtonOpenXML_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
+    if (!fileName.isEmpty())
+    {
+        bool isOk = AR600ControllerConf::Instance()->openFile(fileName.toStdString());
+
+        if(isOk)
+        {
+            ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
+            ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
+            qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
+            qDebug() << "Настройки успешно прочитаны" <<endl;
+        }
+
+
+    }
+}

@@ -9,7 +9,7 @@
 #include "MBRead.h"
 #include "dataplot.h"
 #include "TinyXML/tinyxml.h"
-#include "ar600contollerconf.h"
+#include "AR600ControllerConf.h"
 
 namespace Ui {
 	class Widget;
@@ -49,6 +49,10 @@ private slots:
     /*void SendMessage();*/
 
 
+
+    void on_pButtonSaveXML_clicked();
+
+    void on_pButtonOpenXML_clicked();
 
 public slots:
     void On48Slot(bool value);

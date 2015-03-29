@@ -1,5 +1,5 @@
-#ifndef AR600CONTOLLERCONF_H
-#define AR600CONTOLLERCONF_H
+#ifndef AR600CONTROLLERCONF_H
+#define AR600CONTROLLERCONF_H
 
 #include<iostream>
 #include <vector>
@@ -8,13 +8,13 @@
 
 using namespace std;
 
-class AR600ContollerConf
+class AR600ControllerConf
 {
 private:
-    static AR600ContollerConf* m_Instance;
-    AR600ContollerConf();
-    AR600ContollerConf(AR600ContollerConf const&);
-    ~AR600ContollerConf();
+    static AR600ControllerConf* m_Instance;
+    AR600ControllerConf();
+    AR600ControllerConf(AR600ControllerConf const&);
+    ~AR600ControllerConf();
 
     TiXmlDocument * XMLfileSetting = NULL;
 
@@ -23,7 +23,7 @@ private:
     std::string m_Host;//адрес назначения
 
 public:
-    static AR600ContollerConf* Instance();
+    static AR600ControllerConf* Instance();
     static void initialize();
     static void shutdown();
 
@@ -34,4 +34,4 @@ public:
     std::string getHost();//получить адрес
 
 };
-#endif // AR600CONTOLLERCONF_H
+#endif // AR600CONTROLLERCONF_H

@@ -1,34 +1,34 @@
-#include "ar600contollerconf.h"
+#include "AR600ControllerConf.h"
 
-AR600ContollerConf * AR600ContollerConf::m_Instance = 0;
-AR600ContollerConf::AR600ContollerConf()
+AR600ControllerConf * AR600ControllerConf::m_Instance = 0;
+AR600ControllerConf::AR600ControllerConf()
 {
 
 }
 
-AR600ContollerConf::~AR600ContollerConf()
+AR600ControllerConf::~AR600ControllerConf()
 {
 
 }
 
-void AR600ContollerConf::initialize()
+void AR600ControllerConf::initialize()
 {
     delete m_Instance;
-    m_Instance = new AR600ContollerConf;
+    m_Instance = new AR600ControllerConf;
 }
 
-AR600ContollerConf* AR600ContollerConf::Instance()
+AR600ControllerConf* AR600ControllerConf::Instance()
 {
     return m_Instance;
 }
 
-void AR600ContollerConf::shutdown()
+void AR600ControllerConf::shutdown()
 {
     delete m_Instance;
     m_Instance = 0;
 }
 
-bool AR600ContollerConf::openFile(string FileName)
+bool AR600ControllerConf::openFile(string FileName)
 {
     XMLfileSetting = new TiXmlDocument(FileName.c_str());
 
@@ -88,7 +88,7 @@ bool AR600ContollerConf::openFile(string FileName)
     }
 }
 
-bool AR600ContollerConf::saveFile(string FileName)
+bool AR600ControllerConf::saveFile(string FileName)
 {
     TiXmlDocument XMLFile;
     TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","yes");
@@ -177,12 +177,12 @@ bool AR600ContollerConf::saveFile(string FileName)
 
 }
 
-int AR600ContollerConf::getPort()
+int AR600ControllerConf::getPort()
 {
     return m_Port;
 }
 
-string AR600ContollerConf::getHost()
+string AR600ControllerConf::getHost()
 {
     return m_Host;
 }
