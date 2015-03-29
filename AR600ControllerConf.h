@@ -18,7 +18,7 @@ private:
     AR600ControllerConf(AR600ControllerConf const&);
     ~AR600ControllerConf();
 
-    TiXmlDocument * XMLfileSetting = NULL;
+    TiXmlDocument * XMLfileSetting;
 
     std::map<unsigned int,DriverSettingsItem> m_DriverSettingsMap;
     int m_Port;//порт назначения

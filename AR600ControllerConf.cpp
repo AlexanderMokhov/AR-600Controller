@@ -1,7 +1,9 @@
 #include "AR600ControllerConf.h"
 
 AR600ControllerConf * AR600ControllerConf::m_Instance = 0;
-AR600ControllerConf::AR600ControllerConf()
+
+AR600ControllerConf::AR600ControllerConf():
+	XMLfileSetting(NULL)
 {
 
 }
@@ -174,6 +176,7 @@ string AR600ControllerConf::getHost()
     return m_Host;
 }
 
+// что ты тут хотел возвращать?
 bool AR600ControllerConf::Update(MBWrite &buffer)
 {
     map<unsigned int,DriverSettingsItem>::iterator it;
@@ -187,5 +190,6 @@ bool AR600ControllerConf::Update(MBWrite &buffer)
         if((*it).second.getReverce())
             buffer.MOTOR_SET_REVERS((*it).first);
     }
+	return true;
 }
 

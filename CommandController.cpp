@@ -10,7 +10,7 @@ CommandController::~CommandController()
 
 }
 
-CommandController::Update(unsigned int mTime, MBWrite &buffer)
+void CommandController::Update(unsigned int mTime, MBWrite &buffer)
 {
     if(mCommandsList.at(Id).getTime()==mTime)//совпало время
     {
@@ -36,7 +36,7 @@ bool CommandController::LoadFromFile(std::string fileName)
 
         while(std::getline(file, str))
         {
-            int i=0;
+            unsigned int i=0;
             while(str[i]==' ')
                 i++;
             std::string temp;

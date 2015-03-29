@@ -1,6 +1,8 @@
 #ifndef COMMANDCONTROLLER_H
 #define COMMANDCONTROLLER_H
 
+#define _USE_MATH_DEFINES
+
 #include "DriverCommand.h"
 #include "MBWrite.h"
 #include <iostream>
@@ -11,6 +13,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <cmath>
+
+
+
 
 
 // управление конмандами,
@@ -23,7 +29,7 @@ private:
 public:
        CommandController();
     ~CommandController();
-       Update(unsigned int mTime, MBWrite &buffer);
+       void Update(unsigned int mTime, MBWrite &buffer);
        bool LoadFromFile(std::string fileName);
 
 
