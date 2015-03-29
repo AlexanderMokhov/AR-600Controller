@@ -19,6 +19,8 @@ public:
     unsigned int getNumber();
     unsigned int getTime();
     int getPosition();
+
+
 };
 
 #endif // DRIVERCOMMAND_H
