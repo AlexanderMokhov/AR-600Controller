@@ -15,7 +15,7 @@
 #include "CommandController.h"
 #include <QMessageBox>
 #include <qfiledialog.h>
-#include "logcontroller.h"
+#include "LogController.h"
 
 namespace Ui {
 	class Widget;
@@ -73,6 +73,8 @@ private slots:
     void on_LogWrite();
 
     void on_ButtonStopLog_clicked();
+
+    void on_ButtonSaveLog_clicked();
 
 public slots:
     void On48Slot(bool value);

@@ -38,7 +38,7 @@ void DriverControllerWidget::UpdateData()
     ui->spinMinPos->setValue(PosMin);
     short PosMax = mReadBuffer->MOTOR_POS_MAX_get(CurrentNumber);
     ui->spinMaxPos->setValue(PosMax);
-    char status = mReadBuffer->MOTOR_STAT_get(CurrentNumber);
+    short status = mReadBuffer->MOTOR_STAT_get(CurrentNumber);
 
     int BRK=0,DT=0,RELAX=0,TRACE=0;
 

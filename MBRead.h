@@ -3,29 +3,6 @@ class MBRead
 {
 private:
     char RXBUFF [1472];
-
-    short SENSOR_YAW;
-    short SENSOR_PITCH;
-    short SENSOR_ROLL;
-    short SENSOR_UCH0;
-    short SENSOR_UCH1;
-    short SENSOR_UCH2;
-    short SENSOR_UCH3;
-    short SENSOR_TX;
-    short SENSOR_TY;
-    short SENSOR_FZ;
-
-    short MOTOR_IMOT;
-    short MOTOR_UBATT;
-    short MOTOR_CPOS;
-    short MOTOR_STIFF;
-    short MOTOR_DAMP;
-    char MOTOR_STAT;
-    short MOTOR_POS_MIN;
-    short MOTOR_POS_MAX;
-    short MOTOR_U;
-    short MOTOR_I;
-
 public:
     MBRead(void);
     ~MBRead(void);
@@ -48,7 +25,7 @@ public:
     short MOTOR_CPOS_get(short NOMB);//получить текущую позицию мотора
 	short MOTOR_STIFF_get(short NOMB);//получить KP
 	short MOTOR_DAMP_get(short NOMB);//получить KI
-    char MOTOR_STAT_get(short NOMB);//получить статус мотора
+    short MOTOR_STAT_get(short NOMB);//получить статус мотора
 	short MOTOR_POS_MIN_get(short NOMB);//получить минимальную позицию мотора
 	short MOTOR_POS_MAX_get(short NOMB);//получить максималную позицию мотора
     float MOTOR_U_get(short NOMB);//получить напряжение мотора

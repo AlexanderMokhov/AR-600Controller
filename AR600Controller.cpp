@@ -82,6 +82,12 @@ AR600Controller::AR600Controller(QWidget *parent) :
     //m_CLModel->insertRows(3,5);
     //m_CLModel->removeRows(7,10);
     connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnEnterTable(QModelIndex)));
+
+    short num=-1456;
+    mSendBuffer->MOTOR_ANGLE_set(1,num);
+    BufferController::Instance()->initBuffers();
+    short num2=mReceiveBuffer->MOTOR_CPOS_get(1);
+    int i=0;
 }
 
 AR600Controller::~AR600Controller()
@@ -262,6 +268,7 @@ void AR600Controller::OnEnterTable(QModelIndex index)
     int row = m_SelectionModel->currentIndex().row();
     m_DriverControllerWidget->setCurrentRow(row);
     m_CLModel->data(m_CLModel->index(row,0),Qt::EditRole);
+    m_DriverControllerWidget->UpdateData();
 
     QString value = QString::number(row);
     ui->label_8->setText(value);
@@ -431,7 +438,8 @@ void AR600Controller::on_LogWrite()
 {
     mLogController->AddRawData(CurrentTime);
     CurrentTime+=ui->spinBoxLog->value();
-    if(CurrentTime>100000)
+    ui->labelLogCTime->setText(QString::number(CurrentTime));
+    if(CurrentTime> ui->spinLogEndTime->value())
     {
         mLogTimer->stop();
     }
@@ -441,4 +449,9 @@ void AR600Controller::on_LogWrite()
 void AR600Controller::on_ButtonStopLog_clicked()
 {
     mLogTimer->stop();
+}
+
+void AR600Controller::on_ButtonSaveLog_clicked()
+{
+    mLogController->SaveData("123.txt");
 }

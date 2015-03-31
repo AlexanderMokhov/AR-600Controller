@@ -1,15 +1,14 @@
 ﻿#pragma once
 class MBWrite
 {
-
 private:
-    char WRBUFF[1472];
+    char WRBUFF [1472];
 public:
 	MBWrite(void);
 	~MBWrite(void);
 
-    static void init(unsigned char BUFF_other[]);
-    static void init(void);
+    void init(unsigned char BUFF_other[]);
+    void init(void);
     void DebugPrint();
     const char *GetBuffer();
     unsigned int GetSize()
