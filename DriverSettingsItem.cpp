@@ -7,31 +7,32 @@ DriverSettingsItem::DriverSettingsItem()
 
 DriverSettingsItem::~DriverSettingsItem()
 {
-    mNumber=0;
-    mNumberBuffer=0;
-    mName = "";
-    mMinPos = 0;
-    mMaxPos = 0;
-    mReverce = false;
-    mSTIFF = 0;
-    mDUMP = 0;
+    mNumber =       0;
+    mNumberBuffer = 0;
+    mName =         "";
+    mMinPos =       0;
+    mMaxPos =       0;
+    mReverce =      false;
+    mStiff =        0;//KP
+    mDump =         0;//KI
+    mTorque =       0;//KD
+    mIlim =         0;
 }
 
-DriverSettingsItem::DriverSettingsItem(unsigned int Number,
-                                       unsigned int NumberBuffer,
-                                       string Name, int MinPos,
-                                       int MaxPos, bool Reverce,
-                                       unsigned int STIFF,
-                                       unsigned int DUMP)
+DriverSettingsItem::DriverSettingsItem(unsigned int Number,unsigned int NumberBuffer,string Name,
+                                       int MinPos,int MaxPos, bool Reverce,
+                                       int Stiff,int Dump,int Torque,int Ilim)
 {
-    mNumber=Number;
-    mNumberBuffer=NumberBuffer;
+    mNumber = Number;
+    mNumberBuffer = NumberBuffer;
     mName = Name;
     mMinPos = MinPos;
     mMaxPos = MaxPos;
     mReverce = Reverce;
-    mSTIFF = STIFF;
-    mDUMP = DUMP;
+    mStiff = Stiff;
+    mDump = Dump;
+    mTorque = Torque;
+    mIlim = Ilim;
 }
 
 unsigned int DriverSettingsItem::getNumber()
@@ -64,13 +65,26 @@ bool DriverSettingsItem::getReverce()
     return mReverce;
 }
 
-unsigned int DriverSettingsItem::getStiff()
+//получить KP
+int DriverSettingsItem::getStiff()
 {
-    return mSTIFF;
+    return mStiff;
 }
 
-unsigned int DriverSettingsItem::getDump()
+//получить KI
+int DriverSettingsItem::getDump()
 {
-    return mDUMP;
+    return mDump;
+}
+
+//получить KD
+int DriverSettingsItem::getTorque()
+{
+    return mTorque;
+}
+
+int DriverSettingsItem::getIlim()
+{
+    return mIlim;
 }
 

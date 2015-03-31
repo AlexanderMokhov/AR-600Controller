@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     AR600ControllerConf.cpp \
     ChannelListItem.cpp \
     DriverSettingsItem.cpp \
-    ChannelTableModel.cpp
+    ChannelTableModel.cpp \
+    DriverControllerWidget.cpp \
+    bufferController.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -45,7 +47,10 @@ HEADERS  += \
     AR600ControllerConf.h \
     ChannelListItem.h \
     DriverSettingsItem.h \
-    ChannelTableModel.h
+    ChannelTableModel.h \
+    DriverControllerWidget.h \
+    BufferController.h
 
 FORMS    += \
-    AR600Controller.ui
+    AR600Controller.ui \
+    DriverControllerWidget.ui

@@ -1,12 +1,5 @@
 #include "AR600Controller.h"
 #include "ui_AR600Controller.h"
-#include "CommandController.h"
-#include "dataplot.h"
-#include <QMessageBox>
-#include "string.h"
-#include <qfiledialog.h>
-
-
 
 AR600Controller::AR600Controller(QWidget *parent) :
 	QWidget(parent),
@@ -22,13 +15,17 @@ AR600Controller::AR600Controller(QWidget *parent) :
     mTimer = new QTimer(this);
     connect(mTimer, SIGNAL(timeout()), SLOT(UdpSend()));
 
-    //mTimer2 = new QTimer(this);
-    // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
-    //connect(mTimer2, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
-    //mTimer2->start(100); // Interval 0 means to refresh as fast as possible
+    AR600ControllerConf::Instance()->initialize();
+    BufferController::Instance()->initialize();
 
-    mSendBuffer.init();
+    mSendBuffer = BufferController::Instance()->getWriteBuffer();
+    mReceiveBuffer = BufferController::Instance()->getReadBuffer();
 
+    m_DriverControllerWidget = new DriverControllerWidget();
+    ui->DriverControolerLayout->addWidget(m_DriverControllerWidget);
+    //графики
+
+{
     //mPlot= new DataPlot();
     //mPlot.setPlotWidget(ui->Plot);
     //mPlot.draw();
@@ -54,14 +51,17 @@ AR600Controller::AR600Controller(QWidget *parent) :
     //конец работы с графиками
 
     //загрузка файла настроек
-    AR600ControllerConf::Instance()->initialize();
+}
+
     bool isOk = AR600ControllerConf::Instance()->openFile("config.xml");
     if(isOk)
     {
         ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
         ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
         //загоняем в отправляемый массив
+
         AR600ControllerConf::Instance()->Update(mSendBuffer);
+        BufferController::Instance()->initBuffers();
         qDebug() << "Настройки успешно прочитаны";
     }
 
@@ -74,7 +74,14 @@ AR600Controller::AR600Controller(QWidget *parent) :
 
     m_CLModel= new ChannelTableModel();
     ui->ChannelTableView->setModel(m_CLModel);
+    m_DriverControllerWidget->setModel(m_CLModel);
+    m_SelectionModel = ui->ChannelTableView->selectionModel();
+    ShowConfigData();
 
+    //m_CLModel->setData(m_CLModel->index(0,1),QObject::tr("ggg"));
+    //m_CLModel->insertRows(3,5);
+    //m_CLModel->removeRows(7,10);
+    connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnEnterTable(QModelIndex)));
 }
 
 AR600Controller::~AR600Controller()
@@ -86,7 +93,7 @@ AR600Controller::~AR600Controller()
 
 void AR600Controller::Connect()
 {
-    mSendBuffer.init();
+    mSendBuffer->init();
 	mHost = ui->hostLineEdit->text().toStdString();
 	mPort = ui->portLineEdit->text().toInt();
 
@@ -116,7 +123,7 @@ void AR600Controller::Connect()
 void AR600Controller::Disconnect()
 {
     mTimer->stop();
-    mSendBuffer.init();
+    mSendBuffer->init();
 
     mUdpSocketSender->disconnect();
     mUdpSocketSender->waitForDisconnected();
@@ -161,11 +168,11 @@ void AR600Controller::On48Slot(bool value)
 {
     if(value)
     {
-        mSendBuffer.ON48();
+        mSendBuffer->ON48();
     }
     else
     {
-        mSendBuffer.OFF48();
+        mSendBuffer->OFF48();
     }
 }
 
@@ -173,11 +180,11 @@ void AR600Controller::On8V1Slot(bool value)
 {
     if(value)
     {
-        mSendBuffer.ON81();
+        mSendBuffer->ON81();
     }
     else
     {
-        mSendBuffer.OFF81();
+        mSendBuffer->OFF81();
     }
 }
 
@@ -185,11 +192,11 @@ void AR600Controller::On8V2Slot(bool value)
 {
     if(value)
     {
-        mSendBuffer.ON82();
+        mSendBuffer->ON82();
     }
     else
     {
-        mSendBuffer.OFF82();
+        mSendBuffer->OFF82();
     }
 }
 
@@ -197,11 +204,11 @@ void AR600Controller::On6V1Slot(bool value)
 {
     if(value)
     {
-        mSendBuffer.ON61();
+        mSendBuffer->ON61();
     }
     else
     {
-        mSendBuffer.OFF61();
+        mSendBuffer->OFF61();
     }
 }
 
@@ -209,33 +216,33 @@ void AR600Controller::On6V2Slot(bool value)
 {
     if(value)
     {
-        mSendBuffer.ON62();
+        mSendBuffer->ON62();
     }
     else
     {
-        mSendBuffer.OFF62();
+        mSendBuffer->OFF62();
     }
 }
 
 void AR600Controller::UdpSend()
 {
     SetConfigData();
-    mSendBuffer.AddressUpdate(1,1);
-    mSendBuffer.AddressUpdate(2,2);
+    //mSendBuffer->AddressUpdate(1,1);
+    //mSendBuffer.AddressUpdate(2,2);
 
-    mSendBuffer.MOTOR_STIFF_set(1,100);
-    mSendBuffer.MOTOR_POS_MIN_set(1,-500);
-    mSendBuffer.MOTOR_POS_MAX_set(1,500);
+    //mSendBuffer.MOTOR_STIFF_set(1,100);
+    //mSendBuffer.MOTOR_POS_MIN_set(1,-500);
+    //mSendBuffer.MOTOR_POS_MAX_set(1,500);
 
-    mSendBuffer.MOTOR_STIFF_set(2,100);
-    mSendBuffer.MOTOR_POS_MIN_set(2,-700);
-    mSendBuffer.MOTOR_POS_MAX_set(2,700);
+    //mSendBuffer.MOTOR_STIFF_set(2,100);
+   // mSendBuffer.MOTOR_POS_MIN_set(2,-700);
+    //mSendBuffer.MOTOR_POS_MAX_set(2,700);
 
 
 
-    qDebug() << "Send" << mSendBuffer.GetBuffer();
+    qDebug() << "Send" << mSendBuffer->GetBuffer();
 
-    mUdpSocketSender->writeDatagram(mSendBuffer.GetBuffer(), mSendBuffer.GetSize()* sizeof(char), QHostAddress(QString::fromStdString(mHost)), mPort);
+    mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), QHostAddress(QString::fromStdString(mHost)), mPort);
     mUdpSocketSender->waitForBytesWritten();
 
 }
@@ -250,76 +257,62 @@ void AR600Controller::SetLenght(double lenght)
     this->RangeSize = (int)lenght;
 }
 
+void AR600Controller::OnEnterTable(QModelIndex index)
+{
+    int row = m_SelectionModel->currentIndex().row();
+    m_DriverControllerWidget->setCurrentRow(row);
+    m_CLModel->data(m_CLModel->index(row,0),Qt::EditRole);
+
+    QString value = QString::number(row);
+    ui->label_8->setText(value);
+}
+
 
 void AR600Controller::ProcessTheDatagram(QByteArray &datagramm)
 {
-    mResiverBuffer.init(datagramm.data());
+    mReceiveBuffer->init(datagramm.data());
     UpdatePowerLabel();
 
     for (unsigned int i = 1; i < 3; i++)
     {
-        qDebug()     << "Pos [" << i << "]: "<< mResiverBuffer.MOTOR_CPOS_get(i) <<  " "
-                     << mResiverBuffer.MOTOR_POS_MIN_get(i) <<  " "
-                     << mResiverBuffer.MOTOR_POS_MAX_get(i) << " "
-                     << mResiverBuffer.MOTOR_U_get(i) << " "
-                     << mResiverBuffer.MOTOR_I_get(i)<< " "
-                     << mResiverBuffer.MOTOR_STAT_get(i);
+        qDebug()     << "Pos [" << i << "]: "<< mReceiveBuffer->MOTOR_CPOS_get(i) <<  " "
+                     << mReceiveBuffer->MOTOR_POS_MIN_get(i) <<  " "
+                     << mReceiveBuffer->MOTOR_POS_MAX_get(i) << " "
+                     << mReceiveBuffer->MOTOR_U_get(i) << " "
+                     << mReceiveBuffer->MOTOR_I_get(i)<< " "
+                     << mReceiveBuffer->MOTOR_STAT_get(i);
 
     }
-    /*
-    qDebug()     << "Pos [19]: "<< mResiverBuffer.MOTOR_CPOS_get(25) <<  " "
-                 << mResiverBuffer.MOTOR_POS_MIN_get(25) <<  " "
-                 << mResiverBuffer.MOTOR_POS_MAX_get(25) << " "
-                 << mResiverBuffer.MOTOR_U_get(25) << " "
-                 << mResiverBuffer.MOTOR_I_get(25)<< " "
-                 << mResiverBuffer.MOTOR_STAT_get(25);
-
-
-    qDebug()     << "Pos [20]: "<< mResiverBuffer.MOTOR_CPOS_get(27) <<  " "
-                 << mResiverBuffer.MOTOR_POS_MIN_get(27) <<  " "
-                 << mResiverBuffer.MOTOR_POS_MAX_get(27) << " "
-                 << mResiverBuffer.MOTOR_U_get(27) << " "
-                 << mResiverBuffer.MOTOR_I_get(27)<< " "
-                 << mResiverBuffer.MOTOR_STAT_get(27);
-
-    qDebug()     << "Pos [35]: "<< mResiverBuffer.MOTOR_CPOS_get(36) <<  " "
-                 << mResiverBuffer.MOTOR_POS_MIN_get(36) <<  " "
-                 << mResiverBuffer.MOTOR_POS_MAX_get(36) << " "
-                 << mResiverBuffer.MOTOR_U_get(36) << " "
-                 << mResiverBuffer.MOTOR_I_get(36)<< " "
-                 << mResiverBuffer.MOTOR_STAT_get(36);
-
-*/
 
 }
 
 void AR600Controller::UpdatePowerLabel()
 {
-    ui->label_48V->setText(QString::number(mResiverBuffer.GetU48()));
-    ui->label_48A->setText(QString::number(mResiverBuffer.GetI48()));
+    ui->label_48V->setText(QString::number(mReceiveBuffer->GetU48()));
+    ui->label_48A->setText(QString::number(mReceiveBuffer->GetI48()));
 
-    ui->label_81V->setText(QString::number(mResiverBuffer.GetU81()));
-    ui->label_81A->setText(QString::number(mResiverBuffer.GetI81()));
+    ui->label_81V->setText(QString::number(mReceiveBuffer->GetU81()));
+    ui->label_81A->setText(QString::number(mReceiveBuffer->GetI81()));
 
-    ui->label_82V->setText(QString::number(mResiverBuffer.GetU82()));
-    ui->label_82A->setText(QString::number(mResiverBuffer.GetI82()));
+    ui->label_82V->setText(QString::number(mReceiveBuffer->GetU82()));
+    ui->label_82A->setText(QString::number(mReceiveBuffer->GetI82()));
 
-    ui->label_61V->setText(QString::number(mResiverBuffer.GetU61()));
-    ui->label_61A->setText(QString::number(mResiverBuffer.GetI61()));
+    ui->label_61V->setText(QString::number(mReceiveBuffer->GetU61()));
+    ui->label_61A->setText(QString::number(mReceiveBuffer->GetI61()));
 
-    ui->label_62V->setText(QString::number(mResiverBuffer.GetU62()));
-    ui->label_62A->setText(QString::number(mResiverBuffer.GetI62()));
+    ui->label_62V->setText(QString::number(mReceiveBuffer->GetU62()));
+    ui->label_62A->setText(QString::number(mReceiveBuffer->GetI62()));
 
 }
 
 void AR600Controller::realtimeData()
 {
     double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
-    ui->Plot->graph(0)->addData(key, mResiverBuffer.GetU48());
-    ui->Plot->graph(1)->addData(key, mResiverBuffer.GetU81());
-    ui->Plot->graph(2)->addData(key, mResiverBuffer.GetU82());
-    ui->Plot->graph(3)->addData(key, mResiverBuffer.GetU61());
-    ui->Plot->graph(4)->addData(key, mResiverBuffer.GetU62());
+    ui->Plot->graph(0)->addData(key, mReceiveBuffer->GetU48());
+    ui->Plot->graph(1)->addData(key, mReceiveBuffer->GetU81());
+    ui->Plot->graph(2)->addData(key, mReceiveBuffer->GetU82());
+    ui->Plot->graph(3)->addData(key, mReceiveBuffer->GetU61());
+    ui->Plot->graph(4)->addData(key, mReceiveBuffer->GetU62());
 
 
     // Удаление данных линии, что за пределами видимого диапазона:
@@ -338,6 +331,30 @@ void AR600Controller::realtimeData()
 void AR600Controller::SetConfigData()
 {
 
+}
+
+void AR600Controller::ShowConfigData()
+{
+    std::map<unsigned int,DriverSettingsItem> *mMap = AR600ControllerConf::Instance()->getConfMap();
+    m_CLModel->removeRows(0,m_CLModel->rowCount());
+
+    std::map<unsigned int,DriverSettingsItem>::iterator it;
+
+    for(it = mMap->begin();it!=mMap->end();++it)
+    {
+        QString Number = QString::number((*it).first);
+        QString NumberBuffer = QString::number((*it).second.getNumberBuffer());
+        QString Name = QString::fromStdString((*it).second.getName());
+        QString Status = "0";
+        QString MinPos = QString::number((*it).second.getMinPos());
+        QString MaxPos = QString::number((*it).second.getMaxPos());
+        QString Reverce = QString::number((*it).second.getReverce());
+        QString KP = QString::number((*it).second.getStiff());
+        QString KI = QString::number((*it).second.getDump());
+        QString KD = QString::number((*it).second.getTorque());
+        QString Ilim = QString::number((*it).second.getIlim());
+        m_CLModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,Reverce,KP,KI,KD,Ilim);
+    }
 }
 
 //TODO задать номер привода задать читать значения

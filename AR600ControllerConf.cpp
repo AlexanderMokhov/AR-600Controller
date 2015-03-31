@@ -63,10 +63,12 @@ bool AR600ControllerConf::openFile(string FileName)
             int MinPos = atoi(xml_Driver->FirstChildElement("MinPos")->GetText());
             int MaxPos = atoi(xml_Driver->FirstChildElement("MaxPos")->GetText());
             bool Reverce = strcmp("false",xml_Driver->FirstChildElement("Reverce")->GetText());
-            unsigned int STIFF = atoi(xml_Driver->FirstChildElement("Stiff")->GetText());
-            unsigned int DUMP = atoi(xml_Driver->FirstChildElement("Dump")->GetText());
+            int Stiff = atoi(xml_Driver->FirstChildElement("Stiff")->GetText());
+            int Dump = atoi(xml_Driver->FirstChildElement("Dump")->GetText());
+            int Torque = atoi(xml_Driver->FirstChildElement("Torque")->GetText());
+            int Ilim = atoi(xml_Driver->FirstChildElement("Ilim")->GetText());
 
-            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,STIFF,DUMP);
+            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Ilim);
             //загоняем в контейнер
             m_DriverSettingsMap.insert(pair<unsigned int,DriverSettingsItem>(Number,item));
 
@@ -144,6 +146,16 @@ bool AR600ControllerConf::saveFile(string FileName)
         WriteValue = new TiXmlText(itoa((*it).second.getDump(),buffer,10));
         Dump->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Dump);
+
+        TiXmlElement* Torque = new TiXmlElement("Torque");
+        WriteValue = new TiXmlText(itoa((*it).second.getTorque(),buffer,10));
+        Torque->LinkEndChild(WriteValue);
+        xml_Driver->LinkEndChild(Torque);
+
+        TiXmlElement* Ilim = new TiXmlElement("Ilim");
+        WriteValue = new TiXmlText(itoa((*it).second.getIlim(),buffer,10));
+        Ilim->LinkEndChild(WriteValue);
+        xml_Driver->LinkEndChild(Ilim);
     }
 
     //записываем настройки подключения
@@ -177,19 +189,26 @@ string AR600ControllerConf::getHost()
 }
 
 // что ты тут хотел возвращать?
-bool AR600ControllerConf::Update(MBWrite &buffer)
+bool AR600ControllerConf::Update(MBWrite *buffer)
 {
     map<unsigned int,DriverSettingsItem>::iterator it;
     for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)
     {
-        buffer.AddressUpdate((*it).first,(*it).second.getNumberBuffer());
-        buffer.MOTOR_POS_MIN_set((*it).first,(*it).second.getMinPos());
-        buffer.MOTOR_POS_MAX_set((*it).first,(*it).second.getMaxPos());
-        buffer.MOTOR_STIFF_set((*it).first,(*it).second.getStiff());
-        buffer.MOTOR_DAMP_set((*it).first,(*it).second.getDump());
+        buffer->AddressUpdate((*it).first,(*it).second.getNumberBuffer());
+        buffer->MOTOR_POS_MIN_set((*it).first,(*it).second.getMinPos());
+        buffer->MOTOR_POS_MAX_set((*it).first,(*it).second.getMaxPos());
+        buffer->MOTOR_STIFF_set((*it).first,(*it).second.getStiff());
+        buffer->MOTOR_DAMP_set((*it).first,(*it).second.getDump());
         if((*it).second.getReverce())
-            buffer.MOTOR_SET_REVERS((*it).first);
+            buffer->MOTOR_SET_REVERS((*it).first);
+        buffer->MOTOR_ILIM_set((*it).first,(*it).second.getIlim());
     }
-	return true;
+    return true;
 }
+
+map<unsigned int,DriverSettingsItem> *AR600ControllerConf::getConfMap()
+{
+    return &m_DriverSettingsMap;
+}
+
 

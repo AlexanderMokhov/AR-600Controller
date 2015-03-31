@@ -7,9 +7,6 @@
 #include <QStringList>
 #include "ChannelListItem.h"
 
-const int COLS = 3;
-const int ROWS = 2;
-
 class ChannelTableModel : public QAbstractTableModel
 {
 
@@ -31,6 +28,16 @@ public:
     // метод для отображения заголовков столбцов
     QVariant headerData(int section,Qt::Orientation orientation, int role=Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &index) const; // возвращает установленные флаги
+
+    // метод вставляет пустые строки перед текущей позицией
+    bool insertRows( int position, int rows,const QModelIndex & index = QModelIndex());
+    bool removeRows( int position, int rows,const QModelIndex & index = QModelIndex());
+
+    void insertRow( const QString & Number,const QString & ChannelDesc, const QString & Status,
+                    const QString & Pos, const QString & MinPos, const QString & MaxPos,
+                    const QString & Reverce,const QString & KP,const QString & KI,const QString & KD,
+                    const QString & Ilim);
+
 signals:
     void editCompleted(const QString &);
 public slots:

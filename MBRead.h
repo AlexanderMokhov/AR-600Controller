@@ -30,7 +30,7 @@ public:
     MBRead(void);
     ~MBRead(void);
 
-    void init(char BUFF_other[]);
+    void init(const char BUFF_other[]);
 
 	short SENSOR_YAW_get(short NOMB);//получить данные с сенсора рысканья
 	short SENSOR_PITCH_get(short NOMB);

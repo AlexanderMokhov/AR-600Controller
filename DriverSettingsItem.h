@@ -12,11 +12,13 @@ private:
 
     std::string     mName;
 
-    int    mMinPos;
-    int    mMaxPos;
+    int             mMinPos;
+    int             mMaxPos;
     bool            mReverce;
-    unsigned int    mSTIFF;
-    unsigned int    mDUMP;
+    int             mStiff;
+    int             mDump;
+    int             mTorque;
+    int             mIlim;
 
 public:
     DriverSettingsItem();
@@ -27,16 +29,20 @@ public:
                        int MinPos,
                        int MaxPos,
                        bool Reverce,
-                       unsigned int STIFF,
-                       unsigned int DUMP);
+                       int Stiff,
+                       int Dump,
+                       int Torque,
+                       int Ilim);
     unsigned int getNumber();
     unsigned int getNumberBuffer();
     std::string getName();
     int getMinPos();
     int getMaxPos();
     bool getReverce();
-    unsigned int getStiff();
-    unsigned int getDump();
+    int getStiff();//получить KP
+    int getDump();//получить KI
+    int getTorque();//получить KD
+    int getIlim();
 
 };
 

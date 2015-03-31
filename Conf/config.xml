@@ -10,6 +10,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-35</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>2</Number>
@@ -20,6 +22,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>527</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>3</Number>
@@ -30,6 +34,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-7804</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>4</Number>
@@ -40,6 +46,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>4851</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>5</Number>
@@ -50,6 +58,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>193</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>6</Number>
@@ -60,6 +70,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>8208</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>7</Number>
@@ -70,6 +82,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>6503</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>8</Number>
@@ -80,6 +94,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-694</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>9</Number>
@@ -90,6 +106,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-4965</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>10</Number>
@@ -100,6 +118,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-4429</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>11</Number>
@@ -110,6 +130,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>4218</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>12</Number>
@@ -120,36 +142,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
-	</Driver>
-	<Driver>
-	  <Number>14</Number>
-	  <NumberBuffer>14</NumberBuffer>
-	  <Name>Gyroscope</Name>
-	  <MinPos>-500</MinPos>
-	  <MaxPos>500</MaxPos>
-	  <Reverce>false</Reverce>
-	  <Stiff>200</Stiff>
-	  <Dump>1</Dump>
-	</Driver>
-	<Driver>
-	  <Number>15</Number>
-	  <NumberBuffer>15</NumberBuffer>
-	  <Name>Foot sensor (L)</Name>
-	  <MinPos>900</MinPos>
-	  <MaxPos>3000</MaxPos>
-	  <Reverce>false</Reverce>
-	  <Stiff>1000</Stiff>
-	  <Dump>6000</Dump>
-	</Driver>
-	<Driver>
-	  <Number>16</Number>
-	  <NumberBuffer>16</NumberBuffer>
-	  <Name>Foot sensor (R)</Name>
-	  <MinPos>-1400</MinPos>
-	  <MaxPos>1400</MaxPos>
-	  <Reverce>false</Reverce>
-	  <Stiff>900</Stiff>
-	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>7664</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>19</Number>
@@ -160,6 +154,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-10441</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>20</Number>
@@ -170,6 +166,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>11443</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>35</Number>
@@ -180,6 +178,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-11759</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>36</Number>
@@ -190,6 +190,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-12199</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>43</Number>
@@ -200,6 +202,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>1000</Stiff>
 	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>487</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>44</Number>
@@ -210,6 +214,8 @@
 	  <Reverce>true</Reverce>
 	  <Stiff>400</Stiff>
 	  <Dump>1</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>10731</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>45</Number>
@@ -220,6 +226,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>400</Stiff>
 	  <Dump>1</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>2988</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>46</Number>
@@ -230,6 +238,8 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>500</Stiff>
 	  <Dump>1</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>8437</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>49</Number>
@@ -240,8 +250,48 @@
 	  <Reverce>false</Reverce>
 	  <Stiff>500</Stiff>
 	  <Dump>1</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-15864</Ilim>
 	</Driver>
   </DriverSettings>
+  <SensorSettings>
+	<Sensor>
+	  <Number>14</Number>
+	  <NumberBuffer>14</NumberBuffer>
+	  <Name>Gyroscope</Name>
+	  <MinPos>-500</MinPos>
+	  <MaxPos>500</MaxPos>
+	  <Reverce>false</Reverce>
+	  <Stiff>200</Stiff>
+	  <Dump>1</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>1</Ilim>
+	</Sensor>
+	<Sensor>
+	  <Number>15</Number>
+	  <NumberBuffer>15</NumberBuffer>
+	  <Name>Foot sensor (L)</Name>
+	  <MinPos>900</MinPos>
+	  <MaxPos>3000</MaxPos>
+	  <Reverce>false</Reverce>
+	  <Stiff>1000</Stiff>
+	  <Dump>6000</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-8542</Ilim>
+	</Sensor>
+	<Sensor>
+	  <Number>16</Number>
+	  <NumberBuffer>16</NumberBuffer>
+	  <Name>Foot sensor (R)</Name>
+	  <MinPos>-1400</MinPos>
+	  <MaxPos>1400</MaxPos>
+	  <Reverce>false</Reverce>
+	  <Stiff>900</Stiff>
+	  <Dump>2</Dump>
+	  <Torque>1</Torque>
+	  <Ilim>-993</Ilim>
+	</Sensor>
+  </SensorSettings>
   <ConnectSettings>
 	<Host>192.169.1.10</Host>
     <Port>10001</Port>

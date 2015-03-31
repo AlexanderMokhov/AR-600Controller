@@ -2,16 +2,19 @@
 #define WIDGET_H
 
 //#include <iostream>
+#include "string.h"
 #include <QWidget>
 #include <QUdpSocket>
 #include <QTimer>
-#include "MBWrite.h"
-#include "MBRead.h"
 #include "dataplot.h"
 #include "TinyXML/tinyxml.h"
 #include "AR600ControllerConf.h"
-#include "CommandController.h"
 #include "ChannelTableModel.h"
+#include "DriverControllerWidget.h"
+#include "BufferController.h"
+#include "CommandController.h"
+#include <QMessageBox>
+#include <qfiledialog.h>
 
 namespace Ui {
 	class Widget;
@@ -32,21 +35,25 @@ private:
     QTimer*             mTimer;
     QTimer*             mTimer2;
 
-    MBWrite             mSendBuffer;
-    MBRead              mResiverBuffer;
+    MBWrite             *mSendBuffer;
+    MBRead              *mReceiveBuffer;
 
     std::string         mHost;
     unsigned int        mPort;
     //DataPlot mPlot;
     int                 RangeSize;
     CommandController*  m_CommandController;
+    DriverControllerWidget * m_DriverControllerWidget;
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();
     void realtimeData();
     void SetConfigData();
+    void ShowConfigData();
 
     ChannelTableModel *m_CLModel;
+    QItemSelectionModel *m_SelectionModel;
+
 
 private slots:
     void ProcessPendingDatagrams();
@@ -69,6 +76,7 @@ public slots:
     void UdpSend();
     void AddRow();
     void SetLenght(double lenght);
+    void OnEnterTable(QModelIndex index);
 
 };
 

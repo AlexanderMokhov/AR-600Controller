@@ -3,16 +3,17 @@
 ChannelTableModel::ChannelTableModel(QObject *parent) : QAbstractTableModel(parent)
 {
     //тут записываем названия столбцов
-    header_data << QString::fromUtf8("Номер")
+    header_data << QString::fromUtf8("№")
                 << QString::fromUtf8("Название")
                 << QString::fromUtf8("Статус")
                 << QString::fromUtf8("Позиция")
                 << QString::fromUtf8("Мин. Поз")
                 << QString::fromUtf8("Макс. Поз")
                 << QString::fromUtf8("Реверс")
-                << QString::fromUtf8("KP")
-                << QString::fromUtf8("KI")
-                << QString::fromUtf8("KD");
+                << QString::fromUtf8("KI (DUMP)")
+                << QString::fromUtf8("KP (STIFF)")
+                << QString::fromUtf8("KD (TORQUE)")
+                << QString::fromUtf8("Ilim");
 
     //заполняем пустыми ячейками
         for(int i = 0; i < 20; i++){
@@ -33,7 +34,7 @@ int ChannelTableModel::rowCount(const QModelIndex &parent) const
 
 int ChannelTableModel::columnCount(const QModelIndex &parent) const
 {
-    return 10; // 10 столбцов
+    return 11; // 10 столбцов
 }
 
 QVariant ChannelTableModel::data(const QModelIndex &index, int role) const
@@ -66,6 +67,8 @@ QVariant ChannelTableModel::data(const QModelIndex &index, int role) const
             return QString::number(m_List.at(index.row())->mKI);
         if (index.column() == 9 )
             return QString::number(m_List.at(index.row())->mKD);
+        if (index.column() == 10 )
+            return QString::number(m_List.at(index.row())->mIlim);
     }
     return QVariant();
 }
@@ -105,6 +108,9 @@ bool ChannelTableModel::setData(const QModelIndex &index, const QVariant &value,
         if(index.column()==9){
             m_List.at(index.row())->mKD = value.toString().toInt();
         }
+        if(index.column()==10){
+            m_List.at(index.row())->mIlim = value.toString().toInt();
+        }
         return true;
     }
     return false;
@@ -130,5 +136,60 @@ Qt::ItemFlags ChannelTableModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::ItemIsEnabled;
     return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
+bool ChannelTableModel::insertRows(int position, int rows, const QModelIndex &index)
+{
+    Q_UNUSED( index );
+
+    beginInsertRows( QModelIndex(), position, position + rows - 1 );
+
+    for (int row = 0; row < rows; ++row )
+    {
+        ChannelListItem* it = new ChannelListItem;
+        m_List.insert(position,it);
+    }
+
+    endInsertRows();
+
+    return true;
+}
+
+bool ChannelTableModel::removeRows(int position, int rows, const QModelIndex &index)
+{
+    Q_UNUSED( index );
+
+    beginRemoveRows( QModelIndex(), position, position + rows - 1 );
+
+    for( int row = 0; row < rows; ++row )
+    {
+        m_List.removeAt(position);
+    }
+
+    endRemoveRows();
+
+    return true;
+
+}
+
+void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelDesc,
+                                  const QString &Status, const QString &Pos,
+                                  const QString &MinPos, const QString &MaxPos,
+                                  const QString &Reverce, const QString &KP,
+                                  const QString &KI, const QString &KD,const QString &Ilim)
+{
+    insertRows( m_List.size(), 1 );
+
+    setData( index( m_List.size()-1, 0 ), Number );
+    setData( index( m_List.size()-1, 1 ), ChannelDesc );
+    setData( index( m_List.size()-1, 2 ), Status );
+    setData( index( m_List.size()-1, 3 ), Pos );
+    setData( index( m_List.size()-1, 4 ), MinPos );
+    setData( index( m_List.size()-1, 5 ), MaxPos );
+    setData( index( m_List.size()-1, 6 ), Reverce );
+    setData( index( m_List.size()-1, 7 ), KP );
+    setData( index( m_List.size()-1, 8 ), KI );
+    setData( index( m_List.size()-1, 9 ), KD );
+    setData( index( m_List.size()-1, 10 ), Ilim );
 }
 

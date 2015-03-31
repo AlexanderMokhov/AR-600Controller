@@ -1,12 +1,13 @@
 #ifndef AR600CONTROLLERCONF_H
 #define AR600CONTROLLERCONF_H
 
-#include<iostream>
+#include <iostream>
 #include <map>
 #include "TinyXML/tinyxml.h"
 #include "DriverSettingsItem.h"
 #include "MBWrite.h"
 #include "stdlib.h"
+#include "ChannelTableModel.h"
 
 using namespace std;
 
@@ -35,7 +36,8 @@ public:
     int getPort();//получить порт
     std::string getHost();//получить адрес
 
-    bool Update(MBWrite &buffer);
+    bool Update(MBWrite *buffer);
+    std::map<unsigned int,DriverSettingsItem> *getConfMap();
 
 };
 #endif // AR600CONTROLLERCONF_H

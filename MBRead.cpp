@@ -11,7 +11,7 @@ MBRead::~MBRead(void)
 }
 
 //инициализируем (читаем)
-void MBRead::init(char BUFF_other[])
+void MBRead::init(const char BUFF_other[])
 {
     for(int i=0;i<1472;i++)
 	{
@@ -113,7 +113,7 @@ short MBRead::MOTOR_DAMP_get(short NOMB)
 //получить статус мотора
 short MBRead::MOTOR_STAT_get(short NOMB)
 {
-	return (RXBUFF[NOMB*16+2] <<8 ) + RXBUFF[NOMB*16+1];
+    return (RXBUFF[NOMB*16+2] << 8) + RXBUFF[NOMB*16+1];
 }
 
 //получить минимальную позицию мотора

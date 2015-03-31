@@ -8,10 +8,8 @@ public:
 	MBWrite(void);
 	~MBWrite(void);
 
-
-
-	void init(unsigned char BUFF_other[]);
-	void init(void);
+    static void init(unsigned char BUFF_other[]);
+    static void init(void);
     void DebugPrint();
     const char *GetBuffer();
     unsigned int GetSize()
