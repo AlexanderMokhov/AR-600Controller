@@ -93,7 +93,7 @@ AR600Controller::~AR600Controller()
 
 void AR600Controller::Connect()
 {
-    mSendBuffer->init();
+    //mSendBuffer->init();
 	mHost = ui->hostLineEdit->text().toStdString();
 	mPort = ui->portLineEdit->text().toInt();
 
@@ -283,7 +283,8 @@ void AR600Controller::ProcessTheDatagram(QByteArray &datagramm)
                      << mReceiveBuffer->MOTOR_STAT_get(i);
 
     }
-
+    //AR600ControllerConf::Instance()->UpdateIlim(mSendBuffer,mReceiveBuffer);
+    m_DriverControllerWidget->UpdateData();
 }
 
 void AR600Controller::UpdatePowerLabel()
@@ -415,4 +416,29 @@ void AR600Controller::on_pButtonCFOpen_clicked()
         }
     }
 
+}
+
+void AR600Controller::on_ButtonStartLog_clicked()
+{
+    mLogTimer = new QTimer(this);
+    connect(mLogTimer, SIGNAL(timeout()), SLOT(on_LogWrite()));
+    mLogController=new LogController();
+    CurrentTime=0;
+    mLogTimer->start(ui->spinBoxLog->value());
+}
+
+void AR600Controller::on_LogWrite()
+{
+    mLogController->AddRawData(CurrentTime);
+    CurrentTime+=ui->spinBoxLog->value();
+    if(CurrentTime>100000)
+    {
+        mLogTimer->stop();
+    }
+
+}
+
+void AR600Controller::on_ButtonStopLog_clicked()
+{
+    mLogTimer->stop();
 }

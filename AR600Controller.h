@@ -15,6 +15,7 @@
 #include "CommandController.h"
 #include <QMessageBox>
 #include <qfiledialog.h>
+#include "logcontroller.h"
 
 namespace Ui {
 	class Widget;
@@ -34,6 +35,7 @@ private:
     QUdpSocket*         mUdpSocketSender;
     QTimer*             mTimer;
     QTimer*             mTimer2;
+    QTimer*             mLogTimer;
 
     MBWrite             *mSendBuffer;
     MBRead              *mReceiveBuffer;
@@ -53,6 +55,8 @@ private:
 
     ChannelTableModel *m_CLModel;
     QItemSelectionModel *m_SelectionModel;
+    LogController *mLogController;
+    uint CurrentTime;
 
 
 private slots:
@@ -63,6 +67,12 @@ private slots:
     void on_pButtonOpenXML_clicked();
     void on_pButtonCFOpen_clicked();
     /*void SendMessage();*/
+
+    void on_ButtonStartLog_clicked();
+
+    void on_LogWrite();
+
+    void on_ButtonStopLog_clicked();
 
 public slots:
     void On48Slot(bool value);

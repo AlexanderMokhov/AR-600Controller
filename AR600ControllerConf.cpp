@@ -211,4 +211,21 @@ map<unsigned int,DriverSettingsItem> *AR600ControllerConf::getConfMap()
     return &m_DriverSettingsMap;
 }
 
+bool AR600ControllerConf::UpdateIlim(MBWrite *bufferWrite, MBRead *bufferRead)
+{
+    map<unsigned int,DriverSettingsItem>::iterator it;
+    for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)
+    {
+        bufferWrite->AddressUpdate((*it).first,(*it).second.getNumberBuffer());
+        bufferWrite->MOTOR_POS_MIN_set((*it).first,(*it).second.getMinPos());
+        bufferWrite->MOTOR_POS_MAX_set((*it).first,(*it).second.getMaxPos());
+        bufferWrite->MOTOR_STIFF_set((*it).first,(*it).second.getStiff());
+        bufferWrite->MOTOR_DAMP_set((*it).first,(*it).second.getDump());
+        if((*it).second.getReverce())
+            bufferWrite->MOTOR_SET_REVERS((*it).first);
+        bufferWrite->MOTOR_ILIM_set((*it).first,bufferRead->MOTOR_CPOS_get((*it).first));
+    }
+    return true;
+}
+
 

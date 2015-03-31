@@ -6,6 +6,7 @@
 #include "TinyXML/tinyxml.h"
 #include "DriverSettingsItem.h"
 #include "MBWrite.h"
+#include "MBRead.h"
 #include "stdlib.h"
 #include "ChannelTableModel.h"
 
@@ -38,6 +39,7 @@ public:
 
     bool Update(MBWrite *buffer);
     std::map<unsigned int,DriverSettingsItem> *getConfMap();
+    bool UpdateIlim(MBWrite *bufferWrite,MBRead *bufferRead);
 
 };
 #endif // AR600CONTROLLERCONF_H

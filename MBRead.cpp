@@ -111,9 +111,9 @@ short MBRead::MOTOR_DAMP_get(short NOMB)
 }
 
 //получить статус мотора
-short MBRead::MOTOR_STAT_get(short NOMB)
+char MBRead::MOTOR_STAT_get(short NOMB)
 {
-    return (RXBUFF[NOMB*16+2] << 8) + RXBUFF[NOMB*16+1];
+    return RXBUFF[NOMB*16+1];
 }
 
 //получить минимальную позицию мотора

@@ -20,7 +20,7 @@ private:
     short MOTOR_CPOS;
     short MOTOR_STIFF;
     short MOTOR_DAMP;
-    short MOTOR_STAT;
+    char MOTOR_STAT;
     short MOTOR_POS_MIN;
     short MOTOR_POS_MAX;
     short MOTOR_U;
@@ -48,7 +48,7 @@ public:
     short MOTOR_CPOS_get(short NOMB);//получить текущую позицию мотора
 	short MOTOR_STIFF_get(short NOMB);//получить KP
 	short MOTOR_DAMP_get(short NOMB);//получить KI
-	short MOTOR_STAT_get(short NOMB);//получить статус мотора
+    char MOTOR_STAT_get(short NOMB);//получить статус мотора
 	short MOTOR_POS_MIN_get(short NOMB);//получить минимальную позицию мотора
 	short MOTOR_POS_MAX_get(short NOMB);//получить максималную позицию мотора
     float MOTOR_U_get(short NOMB);//получить напряжение мотора

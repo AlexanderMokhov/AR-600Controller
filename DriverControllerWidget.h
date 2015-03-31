@@ -20,6 +20,20 @@ public:
     void setNumber(int Number);
     void setCurrentRow(int Row);
     void setModel(ChannelTableModel *model);
+    void UpdateData();
+
+private slots:
+    void on_ButtonSTOP_clicked();
+
+    void on_ButtonBRAKE_clicked();
+
+    void on_ButtonRELAX_clicked();
+
+    void on_ButtonTRACE_clicked();
+
+    void on_spinPosition_valueChanged(int arg1);
+
+    void on_ButtonPosSet_clicked();
 
 private:
     Ui::DriverControllerWidget *ui;
