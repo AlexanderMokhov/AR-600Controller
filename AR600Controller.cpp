@@ -82,12 +82,6 @@ AR600Controller::AR600Controller(QWidget *parent) :
     //m_CLModel->insertRows(3,5);
     //m_CLModel->removeRows(7,10);
     connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnEnterTable(QModelIndex)));
-
-    short num=-1456;
-    mSendBuffer->MOTOR_ANGLE_set(1,num);
-    BufferController::Instance()->initBuffers();
-    short num2=mReceiveBuffer->MOTOR_CPOS_get(1);
-    int i=0;
 }
 
 AR600Controller::~AR600Controller()
@@ -280,7 +274,7 @@ void AR600Controller::ProcessTheDatagram(QByteArray &datagramm)
     mReceiveBuffer->init(datagramm.data());
     UpdatePowerLabel();
 
-    for (unsigned int i = 1; i < 3; i++)
+    for (unsigned int i = 1; i < 40; i++)
     {
         qDebug()     << "Pos [" << i << "]: "<< mReceiveBuffer->MOTOR_CPOS_get(i) <<  " "
                      << mReceiveBuffer->MOTOR_POS_MIN_get(i) <<  " "
@@ -354,14 +348,23 @@ void AR600Controller::ShowConfigData()
         QString NumberBuffer = QString::number((*it).second.getNumberBuffer());
         QString Name = QString::fromStdString((*it).second.getName());
         QString Status = "0";
+        bool Reverce = (*it).second.getReverce();
+        QString sReverce = QString::number(Reverce);
         QString MinPos = QString::number((*it).second.getMinPos());
         QString MaxPos = QString::number((*it).second.getMaxPos());
-        QString Reverce = QString::number((*it).second.getReverce());
+
+        if (Reverce)
+        {
+            MinPos = QString::number(-1*(*it).second.getMinPos());
+            MaxPos = QString::number(-1*(*it).second.getMaxPos());
+        }
+
+
         QString KP = QString::number((*it).second.getStiff());
         QString KI = QString::number((*it).second.getDump());
         QString KD = QString::number((*it).second.getTorque());
         QString Ilim = QString::number((*it).second.getIlim());
-        m_CLModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,Reverce,KP,KI,KD,Ilim);
+        m_CLModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,sReverce,KP,KI,KD,Ilim);
     }
 }
 

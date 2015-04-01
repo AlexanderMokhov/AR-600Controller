@@ -8,7 +8,8 @@ LogController::LogController()
     for(it = ConfMap->begin();it!=ConfMap->end();++it)
     {
         int Number = (*it).first;
-        m_DriversMap.insert(pair<int, int>(Number,mReadBuffer->MOTOR_CPOS_get((Number))));
+        int NumbBuffer = (*it).second.getNumberBuffer();
+        m_DriversMap.insert(pair<int, int>(Number,mReadBuffer->MOTOR_CPOS_get((NumbBuffer))));
     }
 }
 

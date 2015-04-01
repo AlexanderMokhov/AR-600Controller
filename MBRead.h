@@ -20,7 +20,7 @@ public:
 	short SENSOR_TY_get(short NOMB);
 	short SENSOR_FZ_get(short NOMB);
 
-	short MOTOR_IMOT_get(short NOMB);
+    float MOTOR_IMOT_get(short NOMB);
 	short MOTOR_UBATT_get(short NOMB);
     short MOTOR_CPOS_get(short NOMB);//получить текущую позицию мотора
 	short MOTOR_STIFF_get(short NOMB);//получить KP

@@ -59,7 +59,7 @@ public:
 
     // add number of channel in sender buffer
     //добавить номер канала в отправляемый буфер
-    void AddressUpdate(short number, short buffAddr);
+    void AddressUpdate(short NOMB, short NumberMotor);
 
 };
 

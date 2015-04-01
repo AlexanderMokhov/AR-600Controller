@@ -174,7 +174,7 @@
 	  <NumberBuffer>36</NumberBuffer>
 	  <Name>Hand Y (L)</Name>
 	  <MinPos>-500</MinPos>
-	  <MaxPos>900</MaxPos>
+	  <MaxPos>9000</MaxPos>
 	  <Reverce>false</Reverce>
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>

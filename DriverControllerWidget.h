@@ -41,6 +41,8 @@ private:
     MBRead *mReadBuffer;
     MBWrite *mWriteBuffer;
     int CurrentNumber;
+    int CurrentNOMB;
+    bool Reverce;
 
 };
 

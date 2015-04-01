@@ -132,9 +132,9 @@ void MBWrite::MUTE_OFF(void)
     WRBUFF[1409] &= (255-128);
 }
 
-void MBWrite::AddressUpdate(short number, short buffAddr)
+void MBWrite::AddressUpdate(short NOMB, short NumberMotor)
 {
-    WRBUFF[number * 16] = buffAddr;
+    WRBUFF[NOMB * 16] = NumberMotor;
 }
 
 #pragma endregion Power

@@ -194,14 +194,30 @@ bool AR600ControllerConf::Update(MBWrite *buffer)
     map<unsigned int,DriverSettingsItem>::iterator it;
     for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)
     {
-        buffer->AddressUpdate((*it).first,(*it).second.getNumberBuffer());
-        buffer->MOTOR_POS_MIN_set((*it).first,(*it).second.getMinPos());
-        buffer->MOTOR_POS_MAX_set((*it).first,(*it).second.getMaxPos());
-        buffer->MOTOR_STIFF_set((*it).first,(*it).second.getStiff());
-        buffer->MOTOR_DAMP_set((*it).first,(*it).second.getDump());
+        int NumbBuffer = (*it).second.getNumberBuffer();
+        buffer->AddressUpdate(NumbBuffer,(*it).first);
+        int PosMin = (*it).second.getMinPos();
+        int PosMax = (*it).second.getMaxPos();
+
+        buffer->MOTOR_STOP_BR(NumbBuffer);
+
+        buffer->MOTOR_STIFF_set(NumbBuffer,(*it).second.getStiff());
+        buffer->MOTOR_DAMP_set(NumbBuffer,(*it).second.getDump());
+        buffer->MOTOR_ILIM_set(NumbBuffer,(*it).second.getIlim());
+
         if((*it).second.getReverce())
-            buffer->MOTOR_SET_REVERS((*it).first);
-        buffer->MOTOR_ILIM_set((*it).first,(*it).second.getIlim());
+        {
+            buffer->MOTOR_POS_MIN_set(NumbBuffer,-PosMin);
+            buffer->MOTOR_POS_MAX_set(NumbBuffer,-PosMax);
+        }
+        else
+        {
+            buffer->MOTOR_POS_MIN_set(NumbBuffer,PosMin);
+            buffer->MOTOR_POS_MAX_set(NumbBuffer,PosMax);
+        }
+        buffer->MOTOR_STOP_BR(NumbBuffer);
+        //buffer->MOTOR_SET_REVERS(NumbBuffer);
+
     }
     return true;
 }

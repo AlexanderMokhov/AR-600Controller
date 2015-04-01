@@ -82,13 +82,13 @@ short MBRead::SENSOR_FZ_get(short NOMB)
 //получить напряжение питания мотора
 short MBRead::MOTOR_UBATT_get(short NOMB)
 {
-    return (RXBUFF[NOMB*16+7] << 8) + (unsigned char)RXBUFF[NOMB*16+6];
+    return (RXBUFF[NOMB*16+5] << 8) + (unsigned char)RXBUFF[NOMB*16+4];
 }
 
 //получить ток, потребляемый мотором
-short MBRead::MOTOR_IMOT_get(short NOMB)
+float MBRead::MOTOR_IMOT_get(short NOMB)
 {
-    return (RXBUFF[NOMB*16+5] << 8) + (unsigned char)RXBUFF[NOMB*16+4];
+    return float((RXBUFF[NOMB*16+7] << 8) + (unsigned char)RXBUFF[NOMB*16+6]);
 }
 
 //получить текщую позицию мотора
@@ -96,7 +96,8 @@ short MBRead::MOTOR_CPOS_get(short NOMB)
 {
     //short one = (short)RXBUFF[NOMB*16+3] << 8;
     //short two = one + (unsigned char)RXBUFF[NOMB*16+2];
-    return ((short)RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2];
+
+    return ((unsigned char)RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2];
 }
 
 //получить KP
