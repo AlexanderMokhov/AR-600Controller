@@ -72,8 +72,16 @@ bool LogController::SaveData(string fileName)
             //записываем номера приводов
             for(it = data.DriversData.begin();it!=data.DriversData.end();++it)
             {
+                std::string ff;
+                ff = itoa((*it).second,buffer,10);
+                int size = ff.size();
+                if(size<6)
+                    for(int i=0;i<6-size;i++)
+                    {
+                        ff.insert(0,"0");
+                    }
                 file << "\t";
-                file << itoa((*it).second,buffer,10);
+                file << ff.c_str();
             }
 
             file << "\n";
