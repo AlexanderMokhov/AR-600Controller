@@ -3,23 +3,24 @@
 ChannelTableModel::ChannelTableModel(QObject *parent) : QAbstractTableModel(parent)
 {
     //тут записываем названия столбцов
-    header_data << QString::fromUtf8("№")
-                << QString::fromUtf8("Название")
-                << QString::fromUtf8("Статус")
-                << QString::fromUtf8("Позиция")
-                << QString::fromUtf8("Мин. Поз")
-                << QString::fromUtf8("Макс. Поз")
-                << QString::fromUtf8("Реверс")
-                << QString::fromUtf8("KI (DUMP)")
-                << QString::fromUtf8("KP (STIFF)")
-                << QString::fromUtf8("KD (TORQUE)")
-                << QString::fromUtf8("Ilim");
+    header_data << QString::fromUtf8(" № ")
+                << QString::fromUtf8(" Описание ")
+                << QString::fromUtf8(" Статус ")
+                << QString::fromUtf8(" Позиция ")
+                << QString::fromUtf8(" МинПоз ")
+                << QString::fromUtf8(" МаксПоз ")
+                << QString::fromUtf8(" Реверс ")
+                << QString::fromUtf8(" KI ")
+                << QString::fromUtf8(" KP ")
+                << QString::fromUtf8(" KD ")
+                << QString::fromUtf8(" КалибПол ");
 
-    //заполняем пустыми ячейками
+    //заполняем пустыми ячейками/*
         for(int i = 0; i < 20; i++){
             ChannelListItem* it = new ChannelListItem;
             m_List.append(it);
         }
+
 }
 
 ChannelTableModel::~ChannelTableModel()
@@ -187,8 +188,8 @@ void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelD
     setData( index( m_List.size()-1, 4 ), MinPos );
     setData( index( m_List.size()-1, 5 ), MaxPos );
     setData( index( m_List.size()-1, 6 ), Reverce );
-    setData( index( m_List.size()-1, 7 ), KP );
-    setData( index( m_List.size()-1, 8 ), KI );
+    setData( index( m_List.size()-1, 7 ), KI );
+    setData( index( m_List.size()-1, 8 ), KP );
     setData( index( m_List.size()-1, 9 ), KD );
     setData( index( m_List.size()-1, 10 ), Ilim );
 }

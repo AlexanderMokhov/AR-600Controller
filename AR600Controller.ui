@@ -14,7 +14,7 @@
    <string>Widget</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0" colspan="4">
+   <item row="0" column="0" colspan="5">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -72,7 +72,20 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="6" rowspan="2" colspan="2">
+   <item row="0" column="5">
+    <spacer name="horizontalSpacer_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>138</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="6" rowspan="3">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
       <widget class="QCustomPlot" name="Plot" native="true">
@@ -258,7 +271,7 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="1" colspan="3">
+   <item row="1" column="1" colspan="2">
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="1">
       <widget class="QSpinBox" name="spinBoxLog">
@@ -345,7 +358,7 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="4" colspan="2">
+   <item row="1" column="3" colspan="3">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -365,7 +378,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="7">
+   <item row="3" column="0" colspan="6">
     <widget class="QTableView" name="ChannelTableView">
      <property name="minimumSize">
       <size>
@@ -373,9 +386,121 @@
        <height>0</height>
       </size>
      </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Highlight">
+         <brush brushstyle="SolidPattern">
+          <color alpha="100">
+           <red>30</red>
+           <green>144</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="HighlightedText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Link">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Highlight">
+         <brush brushstyle="SolidPattern">
+          <color alpha="100">
+           <red>30</red>
+           <green>144</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="HighlightedText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Link">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="Highlight">
+         <brush brushstyle="SolidPattern">
+          <color alpha="100">
+           <red>30</red>
+           <green>144</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="HighlightedText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Link">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">selection-color: black; selection-background-color: rgba(30, 144, 255, 100);</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustIgnored</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>false</bool>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>70</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
-   <item row="3" column="7">
+   <item row="3" column="6">
     <layout class="QHBoxLayout" name="DriverControolerLayout">
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
@@ -416,7 +541,7 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="2" colspan="6">
+   <item row="4" column="2" colspan="5">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -454,7 +579,7 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="3" colspan="5">
+   <item row="5" column="3" colspan="4">
     <spacer name="horizontalSpacer_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -467,7 +592,7 @@
      </property>
     </spacer>
    </item>
-   <item row="6" column="0" colspan="3">
+   <item row="6" column="0" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="label_7">
@@ -499,7 +624,7 @@
      </item>
     </layout>
    </item>
-   <item row="6" column="3" colspan="5">
+   <item row="6" column="4" colspan="3">
     <spacer name="horizontalSpacer_4">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -513,23 +638,14 @@
     </spacer>
    </item>
   </layout>
+  <zorder>ChannelTableView</zorder>
   <zorder>label_8</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
   <zorder></zorder>
-  <zorder>Plot</zorder>
   <zorder>horizontalSpacer</zorder>
   <zorder>horizontalSpacer_2</zorder>
   <zorder>horizontalSpacer_3</zorder>
   <zorder>horizontalSpacer_4</zorder>
-  <zorder>label_10</zorder>
-  <zorder>spinLogEndTime</zorder>
+  <zorder>horizontalSpacer_5</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

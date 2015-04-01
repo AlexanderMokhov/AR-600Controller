@@ -82,6 +82,11 @@ AR600Controller::AR600Controller(QWidget *parent) :
     //m_CLModel->insertRows(3,5);
     //m_CLModel->removeRows(7,10);
     connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnEnterTable(QModelIndex)));
+    //ui->ChannelTableView->resizeColumnsToContents();
+    ui->ChannelTableView->verticalHeader()->hide();
+    ui->ChannelTableView->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    ui->ChannelTableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    //ui->ChannelTableView->setContentsMargins(5,5,5,5);
 }
 
 AR600Controller::~AR600Controller()
