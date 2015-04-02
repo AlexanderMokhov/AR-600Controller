@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>188</width>
-    <height>448</height>
+    <height>519</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -110,7 +110,7 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
+   <item>
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
@@ -138,7 +138,7 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
       <widget class="QPushButton" name="ButtonSTOP">
@@ -170,7 +170,7 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
+   <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <layout class="QGridLayout" name="gridLayout">
@@ -224,7 +224,7 @@
        <property name="checked">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -256,6 +256,24 @@
          </item>
         </layout>
        </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QSlider" name="SliderPosition">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxTrace">
+       <property name="text">
+        <string>TRACE</string>
+       </property>
       </widget>
      </item>
     </layout>

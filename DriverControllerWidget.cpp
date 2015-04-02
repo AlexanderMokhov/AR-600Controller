@@ -8,6 +8,8 @@ DriverControllerWidget::DriverControllerWidget(QWidget *parent) :
     ui->setupUi(this);
     mReadBuffer = BufferController::Instance()->getReadBuffer();
     mWriteBuffer = BufferController::Instance()->getWriteBuffer();
+    Calibration = false;
+    TRACE = false;
 }
 
 DriverControllerWidget::~DriverControllerWidget()
@@ -37,11 +39,19 @@ void DriverControllerWidget::UpdateData()
     ui->spinNumber->setValue(CurrentNumber);
     if(Reverce)
     {
-        ui->spinPosition->setValue(-1*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+        if(Calibration)
+        {
+            ui->spinPosition->setValue(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+        }
+        else
+        {
+           ui->spinPosition->setValue(-1*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+        }
+
         short PosMin = mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB);
-        ui->spinMinPos->setValue(-1*PosMin);
+        ui->spinMinPos->setValue(PosMin);
         short PosMax = mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB);
-        ui->spinMaxPos->setValue(-1*PosMax);
+        ui->spinMaxPos->setValue(PosMax);
     }
     else
     {
@@ -119,37 +129,74 @@ void DriverControllerWidget::on_ButtonTRACE_clicked()
 
 void DriverControllerWidget::on_spinPosition_valueChanged(int arg1)
 {
-    mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,(short)arg1);
+    ;
 }
 
 void DriverControllerWidget::on_ButtonPosSet_clicked()
 {
-    mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,(short)ui->spinPosSet->value());
+    if(Reverce)
+    {
+        mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,-1*(short)ui->spinPosSet->value());
+    }
+    else
+    {
+        mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,(short)ui->spinPosSet->value());
+    }
+
 }
 
 void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
 {
-    if(!ui->groupBoxCalibration->isChecked())
+    if(!checked)
     {
         //выходим из режима калибровки
         //ui->groupBoxCalibration->setChecked(false);
         mWriteBuffer->MOTOR_ILIM_set(CurrentNOMB,AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).getIlim());
         mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB, mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+        Calibration=false;
     }
     else
     {
         //входим в режим калибровки
         //ui->groupBoxCalibration->setChecked(true);
         mWriteBuffer->MOTOR_ILIM_set(CurrentNOMB,0);
+        Calibration=true;
     }
 }
 
 void DriverControllerWidget::on_ButtonSaveZero_clicked()
 {
-    AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).setIlim(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    if(Reverce)
+    {
+       AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).setIlim(-1*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    }
+    else
+    {
+        AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).setIlim(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    }
+
     AR600ControllerConf::Instance()->saveFile("config.xml");
     //qDebug() << "Настройки успешно сохранены";
     mWriteBuffer->MOTOR_ILIM_set(CurrentNOMB,AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).getIlim());
     mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB, mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
     ui->groupBoxCalibration->setChecked(false);
+    Calibration=false;
+}
+
+void DriverControllerWidget::on_SliderPosition_sliderMoved(int position)
+{
+    if(TRACE)
+    {
+        mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,position);
+
+    }
+}
+
+void DriverControllerWidget::on_checkBoxTrace_clicked(bool checked)
+{
+    TRACE=checked;
+    ui->SliderPosition->setMinimum(mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB));
+    ui->SliderPosition->setMaximum(mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB));
+    mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB, mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    mWriteBuffer->MOTOR_TRACE(CurrentNOMB);
 }

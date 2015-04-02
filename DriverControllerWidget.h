@@ -39,6 +39,10 @@ private slots:
 
     void on_ButtonSaveZero_clicked();
 
+    void on_SliderPosition_sliderMoved(int position);
+
+    void on_checkBoxTrace_clicked(bool checked);
+
 private:
     Ui::DriverControllerWidget *ui;
     ChannelTableModel * mModel;
@@ -47,6 +51,8 @@ private:
     int CurrentNumber;
     int CurrentNOMB;
     bool Reverce;
+    bool Calibration;
+    bool TRACE;
 
 };
 
