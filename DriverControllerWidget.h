@@ -43,6 +43,8 @@ private slots:
 
     void on_checkBoxTrace_clicked(bool checked);
 
+    void SliderInit();
+
 private:
     Ui::DriverControllerWidget *ui;
     ChannelTableModel * mModel;
@@ -53,6 +55,7 @@ private:
     bool Reverce;
     bool Calibration;
     bool TRACE;
+    int ReverceCoeff;
 
 };
 
