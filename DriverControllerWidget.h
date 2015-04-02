@@ -35,6 +35,10 @@ private slots:
 
     void on_ButtonPosSet_clicked();
 
+    void on_groupBoxCalibration_clicked(bool checked);
+
+    void on_ButtonSaveZero_clicked();
+
 private:
     Ui::DriverControllerWidget *ui;
     ChannelTableModel * mModel;

@@ -43,6 +43,7 @@ public:
     int getDump();//получить KI
     int getTorque();//получить KD
     int getIlim();
+    void setIlim(int calibrationPos);
 
 };
 

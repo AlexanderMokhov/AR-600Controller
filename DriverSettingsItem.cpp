@@ -88,3 +88,8 @@ int DriverSettingsItem::getIlim()
     return mIlim;
 }
 
+void DriverSettingsItem::setIlim(int calibrationPos)
+{
+    mIlim=calibrationPos;
+}
+

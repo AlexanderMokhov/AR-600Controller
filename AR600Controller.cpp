@@ -86,6 +86,7 @@ AR600Controller::AR600Controller(QWidget *parent) :
     ui->ChannelTableView->verticalHeader()->hide();
     ui->ChannelTableView->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
     ui->ChannelTableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    ui->ChannelTableView->selectRow(0);
     //ui->ChannelTableView->setContentsMargins(5,5,5,5);
 }
 

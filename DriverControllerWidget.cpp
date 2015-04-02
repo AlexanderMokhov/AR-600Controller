@@ -126,3 +126,30 @@ void DriverControllerWidget::on_ButtonPosSet_clicked()
 {
     mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,(short)ui->spinPosSet->value());
 }
+
+void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
+{
+    if(!ui->groupBoxCalibration->isChecked())
+    {
+        //выходим из режима калибровки
+        //ui->groupBoxCalibration->setChecked(false);
+        mWriteBuffer->MOTOR_ILIM_set(CurrentNOMB,AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).getIlim());
+        mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB, mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    }
+    else
+    {
+        //входим в режим калибровки
+        //ui->groupBoxCalibration->setChecked(true);
+        mWriteBuffer->MOTOR_ILIM_set(CurrentNOMB,0);
+    }
+}
+
+void DriverControllerWidget::on_ButtonSaveZero_clicked()
+{
+    AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).setIlim(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    AR600ControllerConf::Instance()->saveFile("config.xml");
+    //qDebug() << "Настройки успешно сохранены";
+    mWriteBuffer->MOTOR_ILIM_set(CurrentNOMB,AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).getIlim());
+    mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB, mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    ui->groupBoxCalibration->setChecked(false);
+}
