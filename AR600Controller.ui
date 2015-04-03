@@ -618,7 +618,7 @@
       <string notr="true">selection-color: black; selection-background-color: rgba(30, 144, 255, 100);</string>
      </property>
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
      </property>
      <property name="alternatingRowColors">
       <bool>false</bool>
