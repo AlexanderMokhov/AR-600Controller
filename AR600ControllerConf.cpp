@@ -244,6 +244,8 @@ bool AR600ControllerConf::UpdateIlim(MBWrite *bufferWrite, MBRead *bufferRead)
     //    bufferRead->MOTOR_ILIM_set((*it).first,bufferRead->MOTOR_CPOS_get((*it).first));
     //}
     //return true;
+
+    return true;
 }
 
 
