@@ -31,8 +31,6 @@ private slots:
 
     void on_ButtonTRACE_clicked();
 
-    void on_spinPosition_valueChanged(int arg1);
-
     void on_ButtonPosSet_clicked();
 
     void on_groupBoxCalibration_clicked(bool checked);
