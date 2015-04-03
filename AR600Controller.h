@@ -86,7 +86,6 @@ public slots:
 	void Connect();
 	void Disconnect();
     void UdpSend();
-    void AddRow();
     void SetLenght(double lenght);
     void OnEnterTable(QModelIndex index);
 

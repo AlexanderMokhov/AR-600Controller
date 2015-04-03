@@ -57,4 +57,3 @@ FORMS    += \
     AR600Controller.ui \
     DriverControllerWidget.ui
 
-LIBS    += -lws2_32
