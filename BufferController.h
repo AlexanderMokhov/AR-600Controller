@@ -5,6 +5,8 @@
 #include "MBRead.h"
 #include <iostream>
 #include "stdlib.h"
+#include "windows.h"
+#include "winsock2.h"
 
 using namespace std;
 class BufferController
