@@ -39,7 +39,7 @@ public:
 
     bool Update(MBWrite *buffer);
     std::map<unsigned int,DriverSettingsItem> *getConfMap();
-    //bool UpdateIlim(MBWrite *bufferWrite,MBRead *bufferRead);
+    bool UpdateIlim(MBWrite *bufferWrite,MBRead *bufferRead);
 
 };
 #endif // AR600CONTROLLERCONF_H

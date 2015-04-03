@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QUdpSocket>
 #include <QTimer>
+#include <QItemSelectionModel>
 #include "dataplot.h"
 #include "TinyXML/tinyxml.h"
 #include "AR600ControllerConf.h"
@@ -16,6 +17,7 @@
 #include <QMessageBox>
 #include <qfiledialog.h>
 #include "LogController.h"
+
 
 namespace Ui {
 	class Widget;
