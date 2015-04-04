@@ -137,6 +137,11 @@ void MBWrite::AddressUpdate(short NOMB, short NumberMotor)
     WRBUFF[NOMB * 16] = NumberMotor;
 }
 
+std::map<int, bool> &MBWrite::GetReverceMap()
+{
+    return mReverceMap;
+}
+
 #pragma endregion Power
 
 //установка значений сенсоров
@@ -203,7 +208,11 @@ void MBWrite::SENSOR_Z_OFFSET(short NOMB, unsigned char RXBUFF[])
 //повернуть мотор на угол
 void MBWrite::MOTOR_ANGLE_set(short NOMB, short value)
 {
-	WRBUFF[NOMB * 16 + 3] = (value>>8);
+    if(mReverceMap.at(NOMB))
+    {
+        value = -1*value;
+    }
+    WRBUFF[NOMB * 16 + 3] = (value>>8);
     WRBUFF[NOMB * 16 + 2] = value;
 }
 
@@ -227,14 +236,30 @@ void MBWrite::MOTOR_DAMP_set(short NOMB, short value)
 
 void MBWrite::MOTOR_POS_MIN_set(short NOMB, short value)
 {
-	WRBUFF[NOMB * 16 + 13] = (value>>8);
-    WRBUFF[NOMB * 16 + 12] = value;
+    if(mReverceMap.at(NOMB))
+    {
+        WRBUFF[NOMB * 16 + 15] = (-1*value>>8);
+        WRBUFF[NOMB * 16 + 14] = -1*value;
+    }
+    else
+    {
+        WRBUFF[NOMB * 16 + 13] = (value>>8);
+        WRBUFF[NOMB * 16 + 12] = value;
+    }
 }
 
 void MBWrite::MOTOR_POS_MAX_set(short NOMB, short value)
 {
-	WRBUFF[NOMB * 16 + 15] = (value>>8);
-    WRBUFF[NOMB * 16 + 14] = value;
+    if(mReverceMap.at(NOMB))
+    {
+        WRBUFF[NOMB * 16 + 13] = (-1*value>>8);
+        WRBUFF[NOMB * 16 + 12] = -1*value;
+    }
+    else
+    {
+        WRBUFF[NOMB * 16 + 15] = (value>>8);
+        WRBUFF[NOMB * 16 + 14] = value;
+    }
 }
 
 //установить мотор в центральное положение

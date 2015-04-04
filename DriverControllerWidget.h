@@ -43,6 +43,14 @@ private slots:
 
     void SliderInit();
 
+    void on_ButtonStiffWrite_clicked();
+
+    void on_ButtonStiffSave_clicked();
+
+    void on_ButtonDumpSave_clicked();
+
+    void on_ButtonDumpWrite_clicked();
+
 private:
     Ui::DriverControllerWidget *ui;
     ChannelTableModel * mModel;
@@ -54,6 +62,8 @@ private:
     bool Calibration;
     bool TRACE;
     int ReverceCoeff;
+signals:
+    void PropertyChanged(int Number);
 
 };
 

@@ -44,6 +44,8 @@ public:
     int getTorque();//получить KD
     int getIlim();
     void setIlim(int calibrationPos);
+    void SetStiff(int oStiff);
+    void SetDump(int oDump);
 
 };
 

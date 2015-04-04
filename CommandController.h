@@ -26,6 +26,7 @@ class CommandController
 private:
     std::vector<DriverCommand> mCommandsList;//список команд
     unsigned int Id;
+    int TimeRecord;
 public:
        CommandController();
     ~CommandController();

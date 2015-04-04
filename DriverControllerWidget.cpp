@@ -55,9 +55,9 @@ void DriverControllerWidget::UpdateData()
     if(Reverce)
     {
         if(Calibration)
-            ui->spinPosition->setValue(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+            ui->spinPosition->setValue(-1*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
         else
-            ui->spinPosition->setValue(ReverceCoeff*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+            ui->spinPosition->setValue(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
     }
     else
     {
@@ -67,7 +67,7 @@ void DriverControllerWidget::UpdateData()
     //если слайдер не управляет обновляем и на нем
     if(!TRACE)
     {
-        ui->SliderPosition->setValue(ReverceCoeff*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+        ui->SliderPosition->setValue(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
     }
 
     //обновляем информацию о токе и напряжении на моторах
@@ -128,7 +128,7 @@ void DriverControllerWidget::on_ButtonTRACE_clicked()
 
 void DriverControllerWidget::on_ButtonPosSet_clicked()
 {
-    mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,ReverceCoeff*(short)ui->spinPosSet->value());
+    mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,(short)ui->spinPosSet->value());
 }
 
 //происходит при входе и выходе в режим калибрации
@@ -167,7 +167,7 @@ void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
 void DriverControllerWidget::on_ButtonSaveZero_clicked()
 {
     //записываем в файл настроек новые калибровочные коэффициенты
-    AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).setIlim(-1*ReverceCoeff*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+    AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).setIlim(-1*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
     AR600ControllerConf::Instance()->saveFile("config.xml");
 
     //записываем в мотор калибровочные коэффициенты
@@ -185,7 +185,7 @@ void DriverControllerWidget::on_SliderPosition_sliderMoved(int position)
 {
     if(TRACE)
     {
-        mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,ReverceCoeff*position);
+        mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB,position);
     }
 }
 
@@ -215,20 +215,35 @@ void DriverControllerWidget::on_checkBoxTrace_clicked(bool checked)
 //инициализация слайдера и мин макс
 void DriverControllerWidget::SliderInit()
 {
-    if(Reverce)
-    {
-        ui->SliderPosition->setMinimum(ReverceCoeff*mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB));
-        ui->SliderPosition->setMaximum(ReverceCoeff*mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB));
-        ui->spinMinPos->setValue(ReverceCoeff*mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB));
-        ui->spinMaxPos->setValue(ReverceCoeff*mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB));
-    }
-    else
-    {
-        ui->SliderPosition->setMinimum(mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB));
-        ui->SliderPosition->setMaximum(mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB));
-        ui->spinMinPos->setValue(ReverceCoeff*mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB));
-        ui->spinMaxPos->setValue(ReverceCoeff*mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB));
-    }
-    ui->SliderPosition->setValue(ReverceCoeff*mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+
+    ui->SliderPosition->setMinimum(mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB));
+    ui->SliderPosition->setMaximum(mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB));
+    ui->spinMinPos->setValue(mReadBuffer->MOTOR_POS_MIN_get(CurrentNOMB));
+    ui->spinMaxPos->setValue(mReadBuffer->MOTOR_POS_MAX_get(CurrentNOMB));
+    ui->spinDump->setValue(mReadBuffer->MOTOR_DAMP_get(CurrentNOMB));
+    ui->spinStiff->setValue(mReadBuffer->MOTOR_STIFF_get(CurrentNOMB));
+
+    ui->SliderPosition->setValue(mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
     mWriteBuffer->MOTOR_ANGLE_set(CurrentNOMB, mReadBuffer->MOTOR_CPOS_get(CurrentNOMB));
+}
+
+void DriverControllerWidget::on_ButtonStiffWrite_clicked()
+{
+    mWriteBuffer->MOTOR_STIFF_set(CurrentNOMB,ui->spinStiff->value());
+}
+
+void DriverControllerWidget::on_ButtonStiffSave_clicked()
+{
+    AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
+}
+
+void DriverControllerWidget::on_ButtonDumpSave_clicked()
+{
+    AR600ControllerConf::Instance()->getConfMap()->at(CurrentNumber).SetDump(ui->spinDump->value());
+}
+
+
+void DriverControllerWidget::on_ButtonDumpWrite_clicked()
+{
+    mWriteBuffer->MOTOR_DAMP_set(CurrentNOMB,ui->spinDump->value());
 }

@@ -1,8 +1,13 @@
 ﻿#pragma once
+#include <iostream>
+#include <map>
+#include <stdlib.h>
+
 class MBWrite
 {
 private:
     char WRBUFF [1472];
+    std::map<int,bool> mReverceMap;
 public:
 	MBWrite(void);
 	~MBWrite(void);
@@ -60,6 +65,8 @@ public:
     // add number of channel in sender buffer
     //добавить номер канала в отправляемый буфер
     void AddressUpdate(short NOMB, short NumberMotor);
+
+    std::map<int, bool> &GetReverceMap();
 
 };
 

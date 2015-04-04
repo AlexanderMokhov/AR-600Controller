@@ -93,3 +93,13 @@ void DriverSettingsItem::setIlim(int calibrationPos)
     mIlim=calibrationPos;
 }
 
+void DriverSettingsItem::SetStiff(int oStiff)
+{
+    mStiff=oStiff;
+}
+
+void DriverSettingsItem::SetDump(int oDump)
+{
+    mDump=oDump;
+}
+

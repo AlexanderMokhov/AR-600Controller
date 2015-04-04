@@ -44,5 +44,6 @@ void BufferController::initBuffers()
 {
     //mWriteBuffer.init();
     mReadBuffer.init(mWriteBuffer.GetBuffer());
+    mReadBuffer.SetReverceMap(mWriteBuffer.GetReverceMap());
 }
 

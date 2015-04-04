@@ -205,22 +205,12 @@ bool AR600ControllerConf::Update(MBWrite *buffer)
         buffer->MOTOR_DAMP_set(NumbBuffer,(*it).second.getDump());
         buffer->MOTOR_ILIM_set(NumbBuffer,(*it).second.getIlim());
 
+        buffer->GetReverceMap().insert(std::pair<int,bool>(NumbBuffer,(*it).second.getReverce()));
 
-        if((*it).second.getReverce())
-        {
-            buffer->MOTOR_POS_MIN_set(NumbBuffer,-PosMax);
-            buffer->MOTOR_POS_MAX_set(NumbBuffer,-PosMin);
+        buffer->MOTOR_POS_MIN_set(NumbBuffer,PosMin);
+        buffer->MOTOR_POS_MAX_set(NumbBuffer,PosMax);
 
-        }
-        else
-        {
-            buffer->MOTOR_POS_MIN_set(NumbBuffer,PosMin);
-            buffer->MOTOR_POS_MAX_set(NumbBuffer,PosMax);
-            buffer->MOTOR_ILIM_set(NumbBuffer,(*it).second.getIlim());
-        }
         buffer->MOTOR_STOP(NumbBuffer);
-        //buffer->MOTOR_SET_REVERS(NumbBuffer);
-
     }
     return true;
 }

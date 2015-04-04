@@ -1,8 +1,13 @@
 ﻿#pragma once
+#include <iostream>
+#include <map>
+#include <stdlib.h>
+
 class MBRead
 {
 private:
     char RXBUFF [1472];
+    std::map<int,bool> mReverceMap;
 public:
     MBRead(void);
     ~MBRead(void);
@@ -44,6 +49,9 @@ public:
     float GetI82();
     float GetI48();
     float GetI12();
+
+    std::map<int, bool> &GetReverceMap();
+    void SetReverceMap(std::map<int, bool> ReverceMap);
 
 
 };

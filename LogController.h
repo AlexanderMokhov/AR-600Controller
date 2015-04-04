@@ -17,17 +17,19 @@
 
 using namespace std;
 
+struct LogData
+{
+    int Time;
+    std::map<int,int> DriversData;
+};
+
 class LogController
 {
 public:
     LogController();
     ~LogController();
 
-    struct LogData
-    {
-        int Time;
-        std::map<int,int> DriversData;
-    };
+
 
     MBRead *mReadBuffer;
     std::map<int,int> m_DriversMap;

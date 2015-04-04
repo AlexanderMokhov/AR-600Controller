@@ -96,8 +96,10 @@ short MBRead::MOTOR_CPOS_get(short NOMB)
 {
     //short one = (short)RXBUFF[NOMB*16+3] << 8;
     //short two = one + (unsigned char)RXBUFF[NOMB*16+2];
-
-    return ((unsigned char)RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2];
+    if(mReverceMap.at(NOMB))
+        return -1*(((unsigned char)RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2]);
+    else
+        return ((unsigned char)RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2];
 }
 
 //получить KP
@@ -122,13 +124,19 @@ short MBRead::MOTOR_STAT_get(short NOMB)
 //получить минимальную позицию мотора
 short MBRead::MOTOR_POS_MIN_get(short NOMB)
 {
-    return (RXBUFF[NOMB*16+13] << 8) + (unsigned char)RXBUFF[NOMB*16+12];
+    if(mReverceMap.at(NOMB))
+        return -1*((RXBUFF[NOMB*16+15] << 8) + (unsigned char)RXBUFF[NOMB*16+14]);
+    else
+        return (RXBUFF[NOMB*16+13] << 8) + (unsigned char)RXBUFF[NOMB*16+12];
 }
 
 //получить максимальную позицию мотора
 short MBRead::MOTOR_POS_MAX_get(short NOMB)
 {
-    return (RXBUFF[NOMB*16+15] << 8) + (unsigned char)RXBUFF[NOMB*16+14];
+    if(mReverceMap.at(NOMB))
+        return -1*((RXBUFF[NOMB*16+13] << 8) + (unsigned char)RXBUFF[NOMB*16+12]);
+    else
+        return (RXBUFF[NOMB*16+15] << 8) + (unsigned char)RXBUFF[NOMB*16+14];
 }
 
 //получить напряжение мотора
@@ -214,6 +222,16 @@ float MBRead::GetI48()
 float MBRead::GetI12()
 {
     return (float)((RXBUFF[4 * 2 + 12 + 1409] << 8) + (unsigned char)RXBUFF[4 * 2 + 12 + 1408])/1000;
+}
+
+std::map<int, bool> &MBRead::GetReverceMap()
+{
+    return mReverceMap;
+}
+
+void MBRead::SetReverceMap(std::map<int, bool> ReverceMap)
+{
+    mReverceMap=ReverceMap;
 }
 
 

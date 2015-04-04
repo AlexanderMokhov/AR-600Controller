@@ -203,6 +203,7 @@ void AR600Controller::UdpSend()
 
     mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), QHostAddress(QString::fromStdString(mHost)), mPort);
     mUdpSocketSender->waitForBytesWritten();
+    //if включен контроллер команд то апдейт
 
 }
 
@@ -273,7 +274,7 @@ void AR600Controller::realtimeData()
 
 void AR600Controller::ShowConfigData()
 {
-    std::map<unsigned int,DriverSettingsItem> *mMap = AR600ControllerConf::Instance()->getConfMap();
+    std::map<unsigned int,DriverSettingsItem> * mMap = AR600ControllerConf::Instance()->getConfMap();
     m_CLModel->removeRows(0,m_CLModel->rowCount());
 
     std::map<unsigned int,DriverSettingsItem>::iterator it;
