@@ -31,9 +31,10 @@ SOURCES += main.cpp\
     ChannelListItem.cpp \
     DriverSettingsItem.cpp \
     ChannelTableModel.cpp \
-    DriverControllerWidget.cpp \
-    bufferController.cpp \
-    LogController.cpp
+    Widgets/DriverControllerWidget.cpp \
+    BufferController.cpp \
+    LogController.cpp \
+    Widgets/CommandControllerWidget.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -49,11 +50,12 @@ HEADERS  += \
     ChannelListItem.h \
     DriverSettingsItem.h \
     ChannelTableModel.h \
-    DriverControllerWidget.h \
+    Widgets/DriverControllerWidget.h \
     BufferController.h \
-    LogController.h
+    LogController.h \
+    Widgets/CommandControllerWidget.h
 
 FORMS    += \
     AR600Controller.ui \
-    DriverControllerWidget.ui
-
+    Widgets/DriverControllerWidget.ui \
+    Widgets/CommandControllerWidget.ui

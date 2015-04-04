@@ -11,7 +11,8 @@
 #include "TinyXML/tinyxml.h"
 #include "AR600ControllerConf.h"
 #include "ChannelTableModel.h"
-#include "DriverControllerWidget.h"
+#include "Widgets/DriverControllerWidget.h"
+#include "Widgets/CommandControllerWidget.h"
 #include "BufferController.h"
 #include "CommandController.h"
 #include <QMessageBox>
@@ -46,8 +47,9 @@ private:
     unsigned int        mPort;
     //DataPlot mPlot;
     int                 RangeSize;
-    CommandController*  m_CommandController;
-    DriverControllerWidget * m_DriverControllerWidget;
+    CommandController*  mCommandController;
+    DriverControllerWidget * mDriverControllerWidget;
+    CommandControllerWidget * mCommandControllerWidget;
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();

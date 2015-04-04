@@ -14,18 +14,18 @@ private:
     ~BufferController();
     BufferController(BufferController const&);
 
-    static BufferController* m_Instance;
+    static BufferController* mInstance;
 
     MBRead mReadBuffer;
     MBWrite mWriteBuffer;
 public:
     static BufferController* Instance();
-    static void initialize();
-    static void shutdown();
+    static void Initialize();
+    static void Shutdown();
 
-    MBRead *getReadBuffer();
-    MBWrite *getWriteBuffer();
-    void initBuffers();
+    MBRead *GetReadBuffer();
+    MBWrite *GetWriteBuffer();
+    void InitBuffers();
 
 
 };

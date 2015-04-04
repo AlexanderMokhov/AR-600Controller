@@ -15,31 +15,38 @@ using namespace std;
 class AR600ControllerConf
 {
 private:
-    static AR600ControllerConf* m_Instance;
+    static AR600ControllerConf* mInstance;
     AR600ControllerConf();
     AR600ControllerConf(AR600ControllerConf const&);
     ~AR600ControllerConf();
 
-    TiXmlDocument * XMLfileSetting;
+    TiXmlDocument * mXMLfileSetting;
 
-    std::map<unsigned int,DriverSettingsItem> m_DriverSettingsMap;
-    int m_Port;//порт назначения
-    std::string m_Host;//адрес назначения
+    std::map<unsigned int,DriverSettingsItem> mDriverSettingsMap;
+    int mPort;//порт назначения
+    std::string mHost;//адрес назначения
+
+    int mDefaultStiff;
+    int mDefaultDump;
+    int mDefaultTorque;
 
 public:
     static AR600ControllerConf* Instance();
-    static void initialize();
-    static void shutdown();
+    static void Initialize();
+    static void Shutdown();
 
-    bool openFile(std::string FileName);//открыть файл настроек
-    bool saveFile(std::string FileName);//сохранить файл настроек
+    bool OpenFile(std::string FileName);//открыть файл настроек
+    bool SaveFile(std::string FileName);//сохранить файл настроек
 
     int getPort();//получить порт
     std::string getHost();//получить адрес
 
     bool Update(MBWrite *buffer);
-    std::map<unsigned int,DriverSettingsItem> *getConfMap();
+    std::map<unsigned int,DriverSettingsItem> *GetConfigMap();
     bool UpdateIlim(MBWrite *bufferWrite,MBRead *bufferRead);
 
+    int GetDefaultStiff();
+    int GetDefaultDump();
+    int GetDefaultTorque();
 };
 #endif // AR600CONTROLLERCONF_H

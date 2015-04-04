@@ -6,14 +6,14 @@
 class MBWrite
 {
 private:
-    char WRBUFF [1472];
+    char mWRBuffer [1472];
     std::map<int,bool> mReverceMap;
 public:
 	MBWrite(void);
 	~MBWrite(void);
 
-    void init(unsigned char BUFF_other[]);
-    void init(void);
+    void Init(unsigned char BUFF_other[]);
+    void Init(void);
     void DebugPrint();
     const char *GetBuffer();
     unsigned int GetSize()
@@ -22,24 +22,24 @@ public:
     }
 
 	//датчик усилия
-	void SENSOR_UCH0_set(short NOMB, short value);
-	void SENSOR_UCH1_set(short NOMB, short value);
-	void SENSOR_UCH2_set(short NOMB, short value);
-	void SENSOR_UCH3_set(short NOMB, short value);
+    void Set_SENSOR_UCH0(short NOMB, short value);
+    void Set_SENSOR_UCH1(short NOMB, short value);
+    void Set_SENSOR_UCH2(short NOMB, short value);
+    void Set_SENSOR_UCH3(short NOMB, short value);
 
-	void SENSOR_OFFSET(short NOMB, unsigned char RXBUFF[]);
-	void SENSOR_XY_OFFSET(short NOMB, unsigned char RXBUFF[]);
-	void SENSOR_Z_OFFSET(short NOMB, unsigned char RXBUFF[]);
+    void SENSOR_OFFSET(short NOMB, unsigned char RXBuffer[]);
+    void SENSOR_XY_OFFSET(short NOMB, unsigned char RXBuffer[]);
+    void SENSOR_Z_OFFSET(short NOMB, unsigned char RXBuffer[]);
 
-	void MOTOR_ANGLE_set(short NOMB, short value);
-	void MOTOR_ILIM_set(short NOMB, short value);
-	void MOTOR_STIFF_set(short NOMB, short value);//установить KP
-	void MOTOR_DAMP_set(short NOMB, short value);//установить KI
-	void MOTOR_POS_MIN_set(short NOMB, short value);
-	void MOTOR_POS_MAX_set(short NOMB, short value);
-	void MOTOR_CENTER(short NOMB, unsigned char RXBUFF[]);
-	void MOTOR_STOP(short NOMB);
-	void MOTOR_TRACE(short NOMB);
+    void Set_MOTOR_ANGLE(short NOMB, short value);
+    void Set_MOTOR_ILIM(short NOMB, short value);
+    void Set_MOTOR_STIFF(short NOMB, short value);//установить KP
+    void Set_MOTOR_DAMP(short NOMB, short value);//установить KI
+    void Set_MOTOR_MIN_POS(short NOMB, short value);
+    void Set_MOTOR_MAX_POS(short NOMB, short value);
+    void MOTOR_CENTER(short NOMB, unsigned char RXBuffer[]);//без фиксации - динамическое торможение
+    void MOTOR_STOP(short NOMB);//режим фиксации
+    void MOTOR_TRACE(short NOMB);//режим следование за положением
 	void MOTOR_RELAX(short NOMB);//убрать фиксацию мотора
 	void MOTOR_STOP_BR(short NOMB);
 	void MOTOR_SET_REVERS(short NOMB);

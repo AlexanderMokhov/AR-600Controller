@@ -32,14 +32,15 @@ public:
 
 
     MBRead *mReadBuffer;
-    std::map<int,int> m_DriversMap;
-    std::vector<LogData> LogVector;
+    std::map<int,int> mDriversMap;
+    std::vector<LogData> mLogVector;
+    std::map<unsigned int,DriverSettingsItem> * mConfigMap;
 
     void AddRawData(int time);
     bool SaveData(std::string fileName);
     void ClearLog();
 
-    std::map<unsigned int,DriverSettingsItem> * ConfMap;
+
 
 };
 

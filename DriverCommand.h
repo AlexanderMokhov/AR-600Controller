@@ -14,28 +14,36 @@
 
 using namespace std;
 
+struct PID
+{
+    int Stiff;
+    int Dump;
+    int Torque;
+};
+
 class DriverCommand
 {
 private:
-    //unsigned int mNumber; //номер канала
+    int mTime; //Время исполнения
+    int mNumber; //номер канала
 
-    //int mPosition; //Позиция мотора
-    //int mPID; //ПИД кооэффициенты регулятора
-
+    int mPosition; //Позиция мотора
+    PID mPID; //ПИД кооэффициенты регулятора
 
 public:
-    std::map<int,int> mDriversMap;
-    int mTime; //Время исполнения
 
     DriverCommand();
     ~DriverCommand();
 
-    unsigned int getNumber();
-    unsigned int getTime();
-    int getPosition();
-    void Clear();
-    std::map<int, int> &GetDriverMap();
+    int GetNumber();
     int GetTime();
+    int GetPosition();
+    PID GetPID();
+
+    void SetTime(int Time);
+    void SetPosition(int Position);
+    void SetNumber(int Number);
+    void SetPID(PID oPID);
 
 
 };

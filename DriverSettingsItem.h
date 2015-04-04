@@ -9,9 +9,7 @@ class DriverSettingsItem
 private:
     unsigned int    mNumber;
     unsigned int    mNumberBuffer;
-
     std::string     mName;
-
     int             mMinPos;
     int             mMaxPos;
     bool            mReverce;
@@ -33,17 +31,17 @@ public:
                        int Dump,
                        int Torque,
                        int Ilim);
-    unsigned int getNumber();
-    unsigned int getNumberBuffer();
-    std::string getName();
-    int getMinPos();
-    int getMaxPos();
-    bool getReverce();
-    int getStiff();//получить KP
-    int getDump();//получить KI
-    int getTorque();//получить KD
-    int getIlim();
-    void setIlim(int calibrationPos);
+    unsigned int GetNumber();
+    unsigned int GetNumberBuffer();
+    std::string GetName();
+    int GetMinPos();
+    int GetMaxPos();
+    bool GetReverce();
+    int GetStiff();//получить KP
+    int GetDump();//получить KI
+    int GetTorque();//получить KD
+    int GetIlim();
+    void SetIlim(int calibrationPos);
     void SetStiff(int oStiff);
     void SetDump(int oDump);
 
