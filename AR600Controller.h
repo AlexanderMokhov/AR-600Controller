@@ -47,7 +47,6 @@ private:
     unsigned int        mPort;
     //DataPlot mPlot;
     int                 RangeSize;
-    CommandController*  mCommandController;
     DriverControllerWidget * mDriverControllerWidget;
     CommandControllerWidget * mCommandControllerWidget;
 
@@ -61,6 +60,7 @@ private:
     QItemSelectionModel *m_SelectionModel;
     LogController *mLogController;
     uint CurrentTime;
+    long CurrentTimeForCommands;
 
 
 private slots:
@@ -69,7 +69,6 @@ private slots:
 
     void on_pButtonSaveXML_clicked();
     void on_pButtonOpenXML_clicked();
-    void on_pButtonCFOpen_clicked();
     /*void SendMessage();*/
 
     void on_ButtonStartLog_clicked();
@@ -92,6 +91,7 @@ public slots:
     void UdpSend();
     void SetLenght(double lenght);
     void OnEnterTable(QModelIndex index);
+    void OnStartPlayForward();
 
 };
 

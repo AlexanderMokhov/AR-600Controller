@@ -16,6 +16,8 @@
 #include <cmath>
 #include "BufferController.h"
 #include "AR600ControllerConf.h"
+#include <QStateMachine>
+#include <QState>
 
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
@@ -29,18 +31,23 @@ private:
     static CommandController* mInstance;
 
     std::vector<DriverCommand> mCommandsList;//список команд
-    unsigned int Id;
+    int mCommandId;
     int mTimeRecord;
     int mCountRows;
+    bool IsPlayForwardState;
 
 public:
     static CommandController* Instance();
     static void Initialize();
     static void Shutdown();
-    void Update(unsigned int mTime);
+    void Update(long mTime);
     bool LoadFromFile(std::string fileName);
     int GetCountRows();
     int GetTimeRecord();
+    void InitStateMachine();
+    bool GetPlayForwardState();
+    void SetPlayForwardState(bool State);
+    void SetCommandId(int cId);
 
 
 //       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер

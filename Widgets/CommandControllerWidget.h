@@ -25,9 +25,13 @@ private slots:
 
     void on_ButtonPlayPause_clicked();
 
+    void on_ButtonStop_clicked();
+
 private:
     Ui::CommandControllerWidget *ui;
     QString Defaulttext;
+signals:
+    void StartPlayForward();
 };
 
 #endif // COMMANDCONTROLLERWIDGET_H

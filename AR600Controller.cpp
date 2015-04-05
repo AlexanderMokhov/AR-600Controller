@@ -30,6 +30,7 @@ AR600Controller::AR600Controller(QWidget *parent) :
     ui->DriverControlLayout->addWidget(mDriverControllerWidget);
     mCommandControllerWidget = new CommandControllerWidget();
     ui->CommandControlLayout->addWidget(mCommandControllerWidget);
+    connect(mCommandControllerWidget,SIGNAL(StartPlayForward()),this,SLOT(OnStartPlayForward()));
 
     //графики
 
@@ -208,6 +209,19 @@ void AR600Controller::UdpSend()
     mUdpSocketSender->waitForBytesWritten();
     //if включен контроллер команд то апдейт
 
+    if(CommandController::Instance()->GetPlayForwardState())
+    {
+        CommandController::Instance()->Update(CurrentTimeForCommands);
+        CurrentTimeForCommands+=(mTimer->interval()*1e3);
+
+        //если время закончилось - останавливаем, переводим индекс команды на начало списка
+        if(CommandController::Instance()->GetTimeRecord()<=CurrentTimeForCommands)
+        {
+            CommandController::Instance()->SetPlayForwardState(false);
+            CommandController::Instance()->SetCommandId(0);
+        }
+    }
+
 }
 
 void AR600Controller::SetLenght(double lenght)
@@ -224,6 +238,11 @@ void AR600Controller::OnEnterTable(QModelIndex index)
     mDriverControllerWidget->UpdateData();
 
     QString value = QString::number(row);
+}
+
+void AR600Controller::OnStartPlayForward()
+{
+    CurrentTimeForCommands = 0;
 }
 
 //обработка принятого пакета от робота
@@ -341,12 +360,6 @@ void AR600Controller::on_pButtonOpenXML_clicked()
 
 
     }
-}
-
-void AR600Controller::on_pButtonCFOpen_clicked()
-{
-    return;
-
 }
 
 void AR600Controller::on_ButtonStartLog_clicked()

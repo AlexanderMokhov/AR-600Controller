@@ -208,6 +208,8 @@ void MBWrite::SENSOR_Z_OFFSET(short NOMB, unsigned char RXBuffer[])
 //повернуть мотор на угол
 void MBWrite::Set_MOTOR_ANGLE(short NOMB, short value)
 {
+    if(value < mMinPos) value = mMinPos;
+    if(value > mMaxPos) value = mMaxPos;
     if(mReverceMap.at(NOMB))
     {
         value = -1*value;
@@ -236,6 +238,7 @@ void MBWrite::Set_MOTOR_DAMP(short NOMB, short value)
 
 void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
 {
+    mMinPos = value;
     if(mReverceMap.at(NOMB))
     {
         mWRBuffer[NOMB * 16 + 15] = (-1*value>>8);
@@ -243,6 +246,7 @@ void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
     }
     else
     {
+
         mWRBuffer[NOMB * 16 + 13] = (value>>8);
         mWRBuffer[NOMB * 16 + 12] = value;
     }
@@ -250,6 +254,7 @@ void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
 
 void MBWrite::Set_MOTOR_MAX_POS(short NOMB, short value)
 {
+    mMaxPos = value;
     if(mReverceMap.at(NOMB))
     {
         mWRBuffer[NOMB * 16 + 13] = (-1*value>>8);

@@ -5,7 +5,8 @@ CommandController * CommandController::mInstance = 0;
 
 CommandController::CommandController()
 {
-
+    mCommandId=0;
+    IsPlayForwardState=false;
 }
 
 CommandController::~CommandController()
@@ -22,6 +23,7 @@ void CommandController::Initialize()
 {
     delete mInstance;
     mInstance = new CommandController;
+
 }
 
 void CommandController::Shutdown()
@@ -30,17 +32,18 @@ void CommandController::Shutdown()
     mInstance = 0;
 }
 
-void CommandController::Update(unsigned int mTime)
+//на вход поступает время в микросекундах (10e-6 c)
+void CommandController::Update(long mTime)
 {
-    if(mCommandsList.at(Id).GetTime()==mTime)//совпало время
+    while(mCommandsList.at(mCommandId).GetTime() <= mTime)
     {
-        //читаем все команды с таким временем
-        while(mCommandsList.at(Id).GetTime()==mTime)
-        {
-            //записываем значение в мотор и проверяем следующую команду
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mCommandsList.at(Id).GetNumber(),mCommandsList.at(Id).GetPosition());
-            Id++;
-        }
+        //записываем значение в мотор и проверяем следующую команду
+        int Number = mCommandsList.at(mCommandId).GetNumber();
+        int NumberBuffer = AR600ControllerConf::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
+        int Position = mCommandsList.at(mCommandId).GetPosition();
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
+        mCommandId++;
+        qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
     }
 }
 
@@ -182,6 +185,7 @@ bool CommandController::LoadFromFile(std::string fileName)
             currentTime=Time;
         }
         mTimeRecord = currentTime;//в микросекундах
+        mCommandId=0;
         qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
         qDebug() << "Время записи " << QString::number((double)mTimeRecord/1e6) << " секунд" << endl;
 
@@ -204,5 +208,20 @@ int CommandController::GetCountRows()
 int CommandController::GetTimeRecord()
 {
     return mTimeRecord;
+}
+
+bool CommandController::GetPlayForwardState()
+{
+    return IsPlayForwardState;
+}
+
+void CommandController::SetPlayForwardState(bool State)
+{
+    IsPlayForwardState = State;
+}
+
+void CommandController::SetCommandId(int cId)
+{
+    mCommandId=cId;
 }
 

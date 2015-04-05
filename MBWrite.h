@@ -8,6 +8,8 @@ class MBWrite
 private:
     char mWRBuffer [1472];
     std::map<int,bool> mReverceMap;
+    short mMinPos;
+    short mMaxPos;
 public:
 	MBWrite(void);
 	~MBWrite(void);

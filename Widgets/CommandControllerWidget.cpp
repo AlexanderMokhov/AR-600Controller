@@ -7,8 +7,12 @@ CommandControllerWidget::CommandControllerWidget(QWidget *parent) :
     ui(new Ui::CommandControllerWidget)
 {
     ui->setupUi(this);
-    Defaulttext = "Нажмите кнопку \"Загрузить\"";
+    Defaulttext = "Нажмите кнопку \"Загрузить Файл\"";
     ui->MessageTextBox->setText(Defaulttext);
+
+    ui->ButtonPlayPause->setEnabled(false);
+    ui->ButtonReverce->setEnabled(false);
+    ui->ButtonStop->setEnabled(false);
 }
 
 CommandControllerWidget::~CommandControllerWidget()
@@ -32,6 +36,10 @@ void CommandControllerWidget::on_ButtonLoadFile_clicked()
             ui->MessageTextBox->clear();
             ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
+
+            ui->ButtonPlayPause->setEnabled(true);
+            ui->ButtonReverce->setEnabled(true);
+            ui->ButtonStop->setEnabled(true);
         }
         else
         {
@@ -43,5 +51,22 @@ void CommandControllerWidget::on_ButtonLoadFile_clicked()
 
 void CommandControllerWidget::on_ButtonPlayPause_clicked()
 {
+    if(CommandController::Instance()->GetPlayForwardState())
+    {
+        CommandController::Instance()->SetPlayForwardState(false);
+        ui->ButtonLoadFile->setEnabled(true);
+    }
+    else
+    {
+        CommandController::Instance()->SetPlayForwardState(true);
+        emit StartPlayForward();
+        ui->ButtonLoadFile->setEnabled(false);
+    }
+}
 
+void CommandControllerWidget::on_ButtonStop_clicked()
+{
+    CommandController::Instance()->SetPlayForwardState(false);
+    CommandController::Instance()->SetCommandId(0);
+    ui->ButtonLoadFile->setEnabled(true);
 }
