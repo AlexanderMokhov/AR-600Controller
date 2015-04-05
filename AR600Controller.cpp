@@ -66,8 +66,11 @@ AR600Controller::AR600Controller(QWidget *parent) :
     bool isOk = AR600ControllerConf::Instance()->OpenFile("config.xml");
     if(isOk)
     {
-        ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
-        ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
+        mPort=AR600ControllerConf::Instance()->GetPort();
+        mHost=AR600ControllerConf::Instance()->GetHost();
+        mSendDelay=AR600ControllerConf::Instance()->GetSendDelay();
+        ui->hostLineEdit->setText(QString::fromStdString(mHost));
+        ui->portLineEdit->setText(QString::number(mPort));
         //загоняем в отправляемый массив
 
         AR600ControllerConf::Instance()->Update(mSendBuffer);
@@ -111,7 +114,7 @@ void AR600Controller::Connect()
         qDebug() << "Disconnected";
     }
     //отправляем каждые 100 мс
-    mTimer->start(100);
+    mTimer->start(mSendDelay);
 }
 
 void AR600Controller::Disconnect()
@@ -212,7 +215,7 @@ void AR600Controller::UdpSend()
     if(CommandController::Instance()->GetPlayForwardState())
     {
         CommandController::Instance()->Update(CurrentTimeForCommands);
-        CurrentTimeForCommands+=(mTimer->interval()*1e3);
+        CurrentTimeForCommands+=(mSendDelay*1e3);
 
         //если время закончилось - останавливаем, переводим индекс команды на начало списка
         if(CommandController::Instance()->GetTimeRecord()<=CurrentTimeForCommands)
@@ -220,6 +223,10 @@ void AR600Controller::UdpSend()
             CommandController::Instance()->SetPlayForwardState(false);
             CommandController::Instance()->SetCommandId(0);
         }
+    }
+    if(CommandController::Instance()->GetGoToPosState())
+    {
+        CommandController::Instance()->GoNextPos();
     }
 
 }
@@ -345,8 +352,8 @@ void AR600Controller::on_pButtonOpenXML_clicked()
 
         if(isOk)
         {
-            ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
-            ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
+            ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->GetHost()));
+            ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->GetPort()));
             //загоняем в отправляемый массив
             AR600ControllerConf::Instance()->Update(mSendBuffer);
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
@@ -390,5 +397,5 @@ void AR600Controller::on_ButtonStopLog_clicked()
 
 void AR600Controller::on_ButtonSaveLog_clicked()
 {
-    mLogController->SaveData("123.txt");
+    mLogController->SaveData(QString("DriverLog_" + QDateTime::currentDateTime().toString("dd_MM_yyyy_HH_mm_ss")+"_.txt").toStdString());
 }

@@ -124,7 +124,7 @@ bool CommandController::LoadFromFile(std::string fileName)
             temp.clear();
 
             //Переводим позицию в градусы*100
-            Position=(180.0/M_PI*Position)*100;
+            Position=(180.0/M_PI)*Position*100;
 
             //проверяем есть ли коэффициэнты PID
             while(std::isspace(str[i],loc))
@@ -217,11 +217,91 @@ bool CommandController::GetPlayForwardState()
 
 void CommandController::SetPlayForwardState(bool State)
 {
+    if(State)
+    {
+        mConfigMap=AR600ControllerConf::Instance()->GetConfigMap();
+        map<unsigned int,DriverSettingsItem>::iterator it;
+        for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
+        {
+            int NumbBuffer = (*it).second.GetNumberBuffer();
+            int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer,MotorAngle);
+            BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
+        }
+    }
+    else
+    {
+        mConfigMap=AR600ControllerConf::Instance()->GetConfigMap();
+        map<unsigned int,DriverSettingsItem>::iterator it;
+        for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
+        {
+            int NumbBuffer = (*it).second.GetNumberBuffer();
+            BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP(NumbBuffer);
+        }
+    }
     IsPlayForwardState = State;
+
+
 }
 
 void CommandController::SetCommandId(int cId)
 {
     mCommandId=cId;
+}
+
+void CommandController::SetTimeToGo(int TimeToGo)
+{
+    mTimeToGo = TimeToGo;
+}
+
+void CommandController::SetDestPos(int DestPos)
+{
+    mDestPos = DestPos;
+}
+
+void CommandController::SetStartPos(int StartPos)
+{
+    mStartPos = StartPos;
+}
+
+int CommandController::GetCurrentPos()
+{
+    return mCurrentPos;
+}
+
+bool CommandController::GetGoToPosState()
+{
+    return IsGoToPosState;
+}
+
+void CommandController::SetGoToPosState(bool State)
+{
+    IsGoToPosState = State;
+}
+
+void CommandController::GoNextPos()
+{
+    BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,mCurrentPos);
+    mCurrentPos+=mStepPos;
+    if(mDestPos<0 && mCurrentPos <=mDestPos || mDestPos >0 && mCurrentPos >= mDestPos)
+    {
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,mDestPos);
+        BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP(mDriverNumberBuffer);
+        IsGoToPosState = false;
+    }
+    qDebug() << "Отправленно положение " << QString::number(mCurrentPos) << endl;
+}
+
+void CommandController::CalcGoToPos()
+{
+    int SendDelay = AR600ControllerConf::Instance()->GetSendDelay();
+    int diffPos = mDestPos-mStartPos;//разница в градус*100
+    mStepPos = diffPos/(mTimeToGo/SendDelay);//шаг в градус*100
+    mCurrentPos = mStartPos;
+}
+
+void CommandController::SetDriverNumberBuffer(int Number)
+{
+    mDriverNumberBuffer = Number;
 }
 

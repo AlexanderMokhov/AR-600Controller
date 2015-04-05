@@ -30,11 +30,24 @@ private:
 
     static CommandController* mInstance;
 
+    //для выполнения команд из файла
     std::vector<DriverCommand> mCommandsList;//список команд
     int mCommandId;
     int mTimeRecord;
     int mCountRows;
-    bool IsPlayForwardState;
+    bool IsPlayForwardState;//состояние выполнения команд из файла
+
+    //для выполнения перехода в заданную позицию
+    int mTimeToGo;
+    int mDestPos;
+    int mStartPos;
+    int mCurrentPos;
+    int mCurrentTime;
+    int mStepPos;
+    int mDriverNumberBuffer;
+    bool IsGoToPosState;//состояние выполнения перехода в позицию за время
+
+    std::map<unsigned int,DriverSettingsItem> * mConfigMap;
 
 public:
     static CommandController* Instance();
@@ -48,6 +61,18 @@ public:
     bool GetPlayForwardState();
     void SetPlayForwardState(bool State);
     void SetCommandId(int cId);
+
+    void SetTimeToGo(int TimeToGo);
+    void SetDestPos(int DestPos);
+    void SetStartPos(int StartPos);
+    int GetCurrentPos();
+
+    bool GetGoToPosState();
+    void SetGoToPosState(bool State);
+
+    void GoNextPos();
+    void CalcGoToPos();
+    void SetDriverNumberBuffer(int Number);
 
 
 //       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер

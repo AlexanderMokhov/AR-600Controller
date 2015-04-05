@@ -80,6 +80,7 @@ bool AR600ControllerConf::OpenFile(string FileName)
         xml_ConnectSettings = xml_root->FirstChildElement("ConnectSettings");
         mHost = std::string(xml_ConnectSettings->FirstChildElement("Host")->GetText());
         mPort = atoi(xml_ConnectSettings->FirstChildElement("Port")->GetText());
+        mSendDelay = atoi(xml_ConnectSettings->FirstChildElement("SendDelay")->GetText());
 
         //читаем настройки контроллера команд
         TiXmlElement *xml_CommandControllerSettings = 0;
@@ -179,6 +180,11 @@ bool AR600ControllerConf::SaveFile(string FileName)
     WriteValue=new TiXmlText(itoa(mPort,buffer,10));
     xml_Port->LinkEndChild(WriteValue);
 
+    TiXmlElement * xml_SendDelay = new TiXmlElement("SendDelay");
+    xml_ConnectSettings->LinkEndChild(xml_SendDelay);
+    WriteValue=new TiXmlText(itoa(mSendDelay,buffer,10));
+    xml_SendDelay->LinkEndChild(WriteValue);
+
     //записываем настройки контроллера команд
     TiXmlElement * xml_CommandControllerSettings = new TiXmlElement("CommandControllerSettings");
     xml_root->LinkEndChild(xml_CommandControllerSettings);
@@ -204,14 +210,19 @@ bool AR600ControllerConf::SaveFile(string FileName)
 
 }
 
-int AR600ControllerConf::getPort()
+int AR600ControllerConf::GetPort()
 {
     return mPort;
 }
 
-string AR600ControllerConf::getHost()
+string AR600ControllerConf::GetHost()
 {
     return mHost;
+}
+
+int AR600ControllerConf::GetSendDelay()
+{
+    return mSendDelay;
 }
 
 // что ты тут хотел возвращать?

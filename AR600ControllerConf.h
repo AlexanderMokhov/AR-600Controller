@@ -25,6 +25,7 @@ private:
     std::map<unsigned int,DriverSettingsItem> mDriverSettingsMap;
     int mPort;//порт назначения
     std::string mHost;//адрес назначения
+    int mSendDelay;
 
     int mDefaultStiff;
     int mDefaultDump;
@@ -38,8 +39,9 @@ public:
     bool OpenFile(std::string FileName);//открыть файл настроек
     bool SaveFile(std::string FileName);//сохранить файл настроек
 
-    int getPort();//получить порт
-    std::string getHost();//получить адрес
+    int GetPort();//получить порт
+    std::string GetHost();//получить адрес
+    int GetSendDelay();//получить интервал отправки
 
     bool Update(MBWrite *buffer);
     std::map<unsigned int,DriverSettingsItem> *GetConfigMap();

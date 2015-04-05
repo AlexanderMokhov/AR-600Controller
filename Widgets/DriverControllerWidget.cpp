@@ -126,10 +126,6 @@ void DriverControllerWidget::on_ButtonTRACE_clicked()
     ui->groupBoxCalibration->setEnabled(false);
 }
 
-void DriverControllerWidget::on_ButtonPosSet_clicked()
-{
-    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB,(short)ui->spinPosSet->value());
-}
 
 //происходит при входе и выходе в режим калибрации
 void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
@@ -222,6 +218,8 @@ void DriverControllerWidget::SliderInit()
     ui->spinMaxPos->setValue(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
     ui->spinDump->setValue(mReadBuffer->Get_MOTOR_DAMP(CurrentNOMB));
     ui->spinStiff->setValue(mReadBuffer->Get_MOTOR_STIFF(CurrentNOMB));
+    ui->spinPosToGo->setMinimum(mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB));
+    ui->spinPosToGo->setMaximum(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
 
     ui->SliderPosition->setValue(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
     mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
@@ -246,4 +244,22 @@ void DriverControllerWidget::on_ButtonDumpSave_clicked()
 void DriverControllerWidget::on_ButtonDumpWrite_clicked()
 {
     mWriteBuffer->Set_MOTOR_DAMP(CurrentNOMB,ui->spinDump->value());
+}
+
+void DriverControllerWidget::on_ButtonGoToPos_clicked()
+{
+    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    mWriteBuffer->MOTOR_TRACE(CurrentNOMB);
+    CommandController::Instance()->SetDestPos(ui->spinPosToGo->value());
+    CommandController::Instance()->SetStartPos(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    CommandController::Instance()->SetTimeToGo(ui->spinTimeToGo->value());
+    CommandController::Instance()->SetDriverNumberBuffer(CurrentNOMB);
+    CommandController::Instance()->CalcGoToPos();
+    CommandController::Instance()->SetGoToPosState(true);
+}
+
+void DriverControllerWidget::on_ButtonStopGoToPos_clicked()
+{
+    mWriteBuffer->MOTOR_STOP(CurrentNOMB);
+    CommandController::Instance()->SetGoToPosState(false);
 }

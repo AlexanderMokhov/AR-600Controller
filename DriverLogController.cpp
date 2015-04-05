@@ -1,15 +1,15 @@
-#include "LogController.h"
+#include "DriverLogController.h"
 
 LogController::LogController()
 {
     mReadBuffer = BufferController::Instance()->GetReadBuffer();
-    mConfigMap=AR600ControllerConf::Instance()->GetConfigMap();
+    mConfigMap = AR600ControllerConf::Instance()->GetConfigMap();
     map<unsigned int,DriverSettingsItem>::iterator it;
     for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
     {
         int Number = (*it).first;
         int NumbBuffer = (*it).second.GetNumberBuffer();
-        mDriversMap.insert(pair<int, int>(Number,mReadBuffer->Get_MOTOR_CPOS((NumbBuffer))));
+        mDriversMap.insert(pair<int, int>(Number,mReadBuffer->Get_MOTOR_CPOS(NumbBuffer)));
     }
 }
 
@@ -23,7 +23,8 @@ void LogController::AddRawData(int time)
     map<int,int>::iterator it;
     for(it = mDriversMap.begin();it!=mDriversMap.end();++it)
     {
-        (*it).second=mReadBuffer->Get_MOTOR_CPOS((*it).first);
+        int NumberBuffer = AR600ControllerConf::Instance()->GetConfigMap()->at((*it).first).GetNumberBuffer();
+        (*it).second=mReadBuffer->Get_MOTOR_CPOS(NumberBuffer);
     }
 
     //создаем элемент вектора с данными моторов
@@ -58,6 +59,7 @@ bool LogController::SaveData(string fileName)
         for(it = mDriversMap.begin();it!=mDriversMap.end();++it)
         {
             file << "\t";
+
             file << itoa((*it).first,buffer,10);
         }
 
@@ -68,21 +70,17 @@ bool LogController::SaveData(string fileName)
         for(itv=mLogVector.begin();itv!=mLogVector.end();++itv)
         {
             LogData data = (*itv);
-            file << "\t" << itoa(data.Time*1000,buffer,10);
+            double Time=data.Time/1000.0;
+            std::sprintf(buffer,"%f",Time);
+            file << "\t" << buffer;
 
-            //записываем номера приводов
+            //записываем позиции приводов
             for(it = data.DriversData.begin();it!=data.DriversData.end();++it)
             {
-                std::string ff;
-                ff = itoa((*it).second,buffer,10);
-                int size = ff.size();
-                if(size<6)
-                    for(int i=0;i<6-size;i++)
-                    {
-                        ff.insert(0,"0");
-                    }
-                file << "\t";
-                file << ff.c_str();
+                double Pos = (*it).second;
+                Pos = (M_PI*Pos)/(180*100);
+                std::sprintf(buffer,"%f",Pos);
+                file << "\t" << buffer;
             }
 
             file << "\n";

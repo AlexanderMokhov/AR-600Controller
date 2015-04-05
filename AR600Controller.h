@@ -17,7 +17,7 @@
 #include "CommandController.h"
 #include <QMessageBox>
 #include <qfiledialog.h>
-#include "LogController.h"
+#include "DriverLogController.h"
 
 
 namespace Ui {
@@ -45,6 +45,7 @@ private:
 
     std::string         mHost;
     unsigned int        mPort;
+    int                 mSendDelay;
     //DataPlot mPlot;
     int                 RangeSize;
     DriverControllerWidget * mDriverControllerWidget;

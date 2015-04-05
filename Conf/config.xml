@@ -295,6 +295,7 @@
   <ConnectSettings>
 	<Host>192.169.1.10</Host>
     <Port>10001</Port>
+	<SendDelay>100</SendDelay>
   </ConnectSettings>
   <CommandControllerSettings>
     <DefaultStiff>300</DefaultStiff>
