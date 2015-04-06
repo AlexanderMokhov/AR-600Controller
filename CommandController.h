@@ -73,6 +73,7 @@ public:
     void GoNextPos();
     void CalcGoToPos();
     void SetDriverNumberBuffer(int Number);
+    void NextCommand();
 
 
 //       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер

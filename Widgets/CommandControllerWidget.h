@@ -27,6 +27,8 @@ private slots:
 
     void on_ButtonStop_clicked();
 
+    void on_ButtonNext_clicked();
+
 private:
     Ui::CommandControllerWidget *ui;
     QString Defaulttext;

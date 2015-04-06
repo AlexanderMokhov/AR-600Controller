@@ -224,14 +224,14 @@ float MBRead::GetI12()
     return (float)((mRXBuffer[4 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[4 * 2 + 12 + 1408])/1000;
 }
 
-std::map<int, bool> &MBRead::GetReverceMap()
+std::map<int, bool> *MBRead::GetReverceMap()
 {
-    return mReverceMap;
+    return &mReverceMap;
 }
 
-void MBRead::SetReverceMap(std::map<int, bool> ReverceMap)
+void MBRead::SetReverceMap(std::map<int, bool> *ReverceMap)
 {
-    mReverceMap=ReverceMap;
+    mReverceMap=*ReverceMap;
 }
 
 

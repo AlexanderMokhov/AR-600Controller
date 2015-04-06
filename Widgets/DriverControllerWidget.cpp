@@ -218,8 +218,10 @@ void DriverControllerWidget::SliderInit()
     ui->spinMaxPos->setValue(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
     ui->spinDump->setValue(mReadBuffer->Get_MOTOR_DAMP(CurrentNOMB));
     ui->spinStiff->setValue(mReadBuffer->Get_MOTOR_STIFF(CurrentNOMB));
-    ui->spinPosToGo->setMinimum(mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB));
-    ui->spinPosToGo->setMaximum(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
+    //ui->spinPosToGo->setMinimum(mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB));
+    //ui->spinPosToGo->setMaximum(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
+    ui->spinPosToGo->setMinimum(-100000);
+    ui->spinPosToGo->setMaximum(100000);
 
     ui->SliderPosition->setValue(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
     mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));

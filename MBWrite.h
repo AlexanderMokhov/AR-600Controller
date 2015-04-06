@@ -68,7 +68,7 @@ public:
     //добавить номер канала в отправляемый буфер
     void AddressUpdate(short NOMB, short NumberMotor);
 
-    std::map<int, bool> &GetReverceMap();
+    std::map<int, bool> *GetReverceMap();
 
 };
 

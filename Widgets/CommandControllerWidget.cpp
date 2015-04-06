@@ -11,7 +11,7 @@ CommandControllerWidget::CommandControllerWidget(QWidget *parent) :
     ui->MessageTextBox->setText(Defaulttext);
 
     ui->ButtonPlayPause->setEnabled(false);
-    ui->ButtonReverce->setEnabled(false);
+    ui->ButtonNext->setEnabled(false);
     ui->ButtonStop->setEnabled(false);
 }
 
@@ -38,7 +38,7 @@ void CommandControllerWidget::on_ButtonLoadFile_clicked()
             ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
 
             ui->ButtonPlayPause->setEnabled(true);
-            ui->ButtonReverce->setEnabled(true);
+            ui->ButtonNext->setEnabled(true);
             ui->ButtonStop->setEnabled(true);
         }
         else
@@ -69,4 +69,9 @@ void CommandControllerWidget::on_ButtonStop_clicked()
     CommandController::Instance()->SetPlayForwardState(false);
     CommandController::Instance()->SetCommandId(0);
     ui->ButtonLoadFile->setEnabled(true);
+}
+
+void CommandControllerWidget::on_ButtonNext_clicked()
+{
+    CommandController::Instance()->NextCommand();
 }

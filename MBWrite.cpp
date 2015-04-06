@@ -137,9 +137,9 @@ void MBWrite::AddressUpdate(short NOMB, short NumberMotor)
     mWRBuffer[NOMB * 16] = NumberMotor;
 }
 
-std::map<int, bool> &MBWrite::GetReverceMap()
+std::map<int, bool> *MBWrite::GetReverceMap()
 {
-    return mReverceMap;
+    return &mReverceMap;
 }
 
 #pragma endregion Power
@@ -208,8 +208,14 @@ void MBWrite::SENSOR_Z_OFFSET(short NOMB, unsigned char RXBuffer[])
 //повернуть мотор на угол
 void MBWrite::Set_MOTOR_ANGLE(short NOMB, short value)
 {
-    if(value < mMinPos) value = mMinPos;
-    if(value > mMaxPos) value = mMaxPos;
+    if(value < mMinPos)
+    {
+        value = mMinPos;
+    }
+    if(value > mMaxPos)
+    {
+        value = mMaxPos;
+    }
     if(mReverceMap.at(NOMB))
     {
         value = -1*value;
@@ -238,15 +244,16 @@ void MBWrite::Set_MOTOR_DAMP(short NOMB, short value)
 
 void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
 {
-    mMinPos = value;
+
     if(mReverceMap.at(NOMB))
     {
+        mMaxPos = -1*value;
         mWRBuffer[NOMB * 16 + 15] = (-1*value>>8);
         mWRBuffer[NOMB * 16 + 14] = -1*value;
     }
     else
     {
-
+        mMinPos = value;
         mWRBuffer[NOMB * 16 + 13] = (value>>8);
         mWRBuffer[NOMB * 16 + 12] = value;
     }
@@ -254,14 +261,16 @@ void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
 
 void MBWrite::Set_MOTOR_MAX_POS(short NOMB, short value)
 {
-    mMaxPos = value;
+
     if(mReverceMap.at(NOMB))
     {
+        mMinPos = -1*value;
         mWRBuffer[NOMB * 16 + 13] = (-1*value>>8);
         mWRBuffer[NOMB * 16 + 12] = -1*value;
     }
     else
     {
+        mMaxPos = value;
         mWRBuffer[NOMB * 16 + 15] = (value>>8);
         mWRBuffer[NOMB * 16 + 14] = value;
     }

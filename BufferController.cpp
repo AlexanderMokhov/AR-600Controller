@@ -42,12 +42,10 @@ MBWrite *BufferController::GetWriteBuffer()
 
 void BufferController::InitBuffers()
 {
-<<<<<<< HEAD
-    mReadBuffer.init(mWriteBuffer.GetBuffer());
-=======
+
     //mWriteBuffer.init();
     mReadBuffer.Init(mWriteBuffer.GetBuffer());
->>>>>>> origin/master
+
     mReadBuffer.SetReverceMap(mWriteBuffer.GetReverceMap());
 }
 

@@ -283,7 +283,7 @@ void CommandController::GoNextPos()
 {
     BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,mCurrentPos);
     mCurrentPos+=mStepPos;
-    if(mDestPos<0 && mCurrentPos <=mDestPos || mDestPos >0 && mCurrentPos >= mDestPos)
+    if(mDestPos<=0 && mCurrentPos <=mDestPos || mDestPos >0 && mCurrentPos >= mDestPos)
     {
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,mDestPos);
         BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP(mDriverNumberBuffer);
@@ -303,5 +303,25 @@ void CommandController::CalcGoToPos()
 void CommandController::SetDriverNumberBuffer(int Number)
 {
     mDriverNumberBuffer = Number;
+}
+
+void CommandController::NextCommand()
+{
+    mConfigMap=AR600ControllerConf::Instance()->GetConfigMap();
+    map<unsigned int,DriverSettingsItem>::iterator it;
+    for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
+    {
+        int NumbBuffer = (*it).second.GetNumberBuffer();
+        int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer,MotorAngle);
+        BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
+    }
+
+    int Number = mCommandsList.at(mCommandId).GetNumber();
+    int NumberBuffer = AR600ControllerConf::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
+    int Position = mCommandsList.at(mCommandId).GetPosition();
+    BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
+    mCommandId++;
+    qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
 }
 

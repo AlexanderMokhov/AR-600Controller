@@ -50,8 +50,8 @@ public:
     float GetI48();
     float GetI12();
 
-    std::map<int, bool> &GetReverceMap();
-    void SetReverceMap(std::map<int, bool> ReverceMap);
+    std::map<int, bool> *GetReverceMap();
+    void SetReverceMap(std::map<int, bool> *ReverceMap);
 
 
 };
