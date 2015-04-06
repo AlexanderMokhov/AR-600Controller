@@ -15,8 +15,8 @@ public:
     explicit ChannelTableModel(QObject *parent = 0);
     ~ChannelTableModel();
 
-    QList<ChannelListItem*> m_List; // список, в котором хранятся все данные
-    QStringList header_data; // список заголовков столбцов
+    QList<ChannelListItem*> mDataList; // список, в котором хранятся все данные
+    QStringList mHeaderData; // список заголовков столбцов
 
     int rowCount(const QModelIndex &parent=QModelIndex()) const; //метод возвращает количество строк
     int columnCount(const QModelIndex &parent) const; //метод возвращает количество столбцов

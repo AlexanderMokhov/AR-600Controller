@@ -14,24 +14,65 @@
 #include <string.h>
 #include <math.h>
 #include <cmath>
-
-
-
-
+#include "BufferController.h"
+#include "AR600ControllerConf.h"
+#include <QStateMachine>
+#include <QState>
 
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
 class CommandController
 {
 private:
-    std::vector<DriverCommand> mCommandsList;//список команд
-    unsigned int Id;
-    int TimeRecord;
-public:
-       CommandController();
+    CommandController();
     ~CommandController();
-       void Update(unsigned int mTime, MBWrite &buffer);
-       bool LoadFromFile(std::string fileName);
+    CommandController(CommandController const&);
+
+    static CommandController* mInstance;
+
+    //для выполнения команд из файла
+    std::vector<DriverCommand> mCommandsList;//список команд
+    int mCommandId;
+    int mTimeRecord;
+    int mCountRows;
+    bool IsPlayForwardState;//состояние выполнения команд из файла
+
+    //для выполнения перехода в заданную позицию
+    int mTimeToGo;
+    int mDestPos;
+    int mStartPos;
+    int mCurrentPos;
+    int mCurrentTime;
+    int mStepPos;
+    int mDriverNumberBuffer;
+    bool IsGoToPosState;//состояние выполнения перехода в позицию за время
+
+    std::map<unsigned int,DriverSettingsItem> * mConfigMap;
+
+public:
+    static CommandController* Instance();
+    static void Initialize();
+    static void Shutdown();
+    void Update(long mTime);
+    bool LoadFromFile(std::string fileName);
+    int GetCountRows();
+    int GetTimeRecord();
+    void InitStateMachine();
+    bool GetPlayForwardState();
+    void SetPlayForwardState(bool State);
+    void SetCommandId(int cId);
+
+    void SetTimeToGo(int TimeToGo);
+    void SetDestPos(int DestPos);
+    void SetStartPos(int StartPos);
+    int GetCurrentPos();
+
+    bool GetGoToPosState();
+    void SetGoToPosState(bool State);
+
+    void GoNextPos();
+    void CalcGoToPos();
+    void SetDriverNumberBuffer(int Number);
 
 
 //       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер

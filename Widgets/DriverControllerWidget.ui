@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>188</width>
-    <height>576</height>
+    <width>270</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
@@ -111,32 +111,64 @@
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_4">
-     <item row="1" column="0">
-      <widget class="QPushButton" name="ButtonPosSet">
-       <property name="text">
-        <string>Перейти</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Перейти в:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="spinPosSet">
-       <property name="minimum">
-        <number>-100000</number>
-       </property>
-       <property name="maximum">
-        <number>100000</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Перейти</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Time (ms)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Pos (deg*100)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QSpinBox" name="spinTimeToGo">
+          <property name="maximum">
+           <number>10000</number>
+          </property>
+          <property name="value">
+           <number>1500</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spinPosToGo"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="ButtonGoToPos">
+          <property name="text">
+           <string>Go</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="ButtonStopGoToPos">
+          <property name="text">
+           <string>Stop</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -232,15 +264,15 @@
          <rect>
           <x>20</x>
           <y>20</y>
-          <width>111</width>
-          <height>61</height>
+          <width>121</width>
+          <height>44</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <widget class="QLabel" name="label_10">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Сохранить текущее значение как ноль&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Сохранить как ноль&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="scaledContents">
             <bool>false</bool>

@@ -3,7 +3,7 @@
 ChannelTableModel::ChannelTableModel(QObject *parent) : QAbstractTableModel(parent)
 {
     //тут записываем названия столбцов
-    header_data << QString::fromUtf8(" № ")
+    mHeaderData << QString::fromUtf8(" № ")
                 << QString::fromUtf8(" Описание ")
                 << QString::fromUtf8(" Статус ")
                 << QString::fromUtf8(" Позиция ")
@@ -18,7 +18,7 @@ ChannelTableModel::ChannelTableModel(QObject *parent) : QAbstractTableModel(pare
     //заполняем пустыми ячейками/*
         for(int i = 0; i < 20; i++){
             ChannelListItem* it = new ChannelListItem;
-            m_List.append(it);
+            mDataList.append(it);
         }
 
 }
@@ -30,7 +30,7 @@ ChannelTableModel::~ChannelTableModel()
 
 int ChannelTableModel::rowCount(const QModelIndex &parent) const
 {
-    return m_List.size(); // размер списка - это количество строк
+    return mDataList.size(); // размер списка - это количество строк
 }
 
 int ChannelTableModel::columnCount(const QModelIndex &parent) const
@@ -43,33 +43,33 @@ QVariant ChannelTableModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() >= m_List.size())
+    if (index.row() >= mDataList.size())
         return QVariant();
 
     // для каждого столбца возвращаем нужные данные
     if (role == Qt::DisplayRole || role == Qt::EditRole){
         if (index.column() == 0 )
-            return QString::number(m_List.at(index.row())->mNumber);
+            return QString::number(mDataList.at(index.row())->mNumber);
         if (index.column() == 1 )
-            return QString::fromStdString(m_List.at(index.row())->mChannelDesc);
+            return QString::fromStdString(mDataList.at(index.row())->mChannelDesc);
         if (index.column() == 2 )
-            return QString::fromStdString(m_List.at(index.row())->mStatus);
+            return QString::fromStdString(mDataList.at(index.row())->mStatus);
         if (index.column() == 3 )
-            return QString::number(m_List.at(index.row())->mPos);
+            return QString::number(mDataList.at(index.row())->mPos);
         if (index.column() == 4 )
-            return QString::number(m_List.at(index.row())->mMinPos);
+            return QString::number(mDataList.at(index.row())->mMinPos);
         if (index.column() == 5 )
-            return QString::number(m_List.at(index.row())->mMaxPos);
+            return QString::number(mDataList.at(index.row())->mMaxPos);
         if (index.column() == 6 )
-            return QString::number(m_List.at(index.row())->mReverce);
+            return QString::number(mDataList.at(index.row())->mReverce);
         if (index.column() == 7 )
-            return QString::number(m_List.at(index.row())->mKP);
+            return QString::number(mDataList.at(index.row())->mKP);
         if (index.column() == 8 )
-            return QString::number(m_List.at(index.row())->mKI);
+            return QString::number(mDataList.at(index.row())->mKI);
         if (index.column() == 9 )
-            return QString::number(m_List.at(index.row())->mKD);
+            return QString::number(mDataList.at(index.row())->mKD);
         if (index.column() == 10 )
-            return QString::number(m_List.at(index.row())->mIlim);
+            return QString::number(mDataList.at(index.row())->mIlim);
     }
     return QVariant();
 }
@@ -80,37 +80,37 @@ bool ChannelTableModel::setData(const QModelIndex &index, const QVariant &value,
     {
         // записываем данные из каждого столбца
         if(index.column()==0){
-            m_List.at(index.row())->mNumber = value.toString().toInt();
+            mDataList.at(index.row())->mNumber = value.toString().toInt();
         }
         if(index.column()==1){
-            m_List.at(index.row())->mChannelDesc = value.toString().toStdString();
+            mDataList.at(index.row())->mChannelDesc = value.toString().toStdString();
         }
         if(index.column()==2){
-            m_List.at(index.row())->mStatus = value.toString().toStdString();
+            mDataList.at(index.row())->mStatus = value.toString().toStdString();
         }
         if(index.column()==3){
-            m_List.at(index.row())->mPos = value.toString().toInt();
+            mDataList.at(index.row())->mPos = value.toString().toInt();
         }
         if(index.column()==4){
-            m_List.at(index.row())->mMinPos = value.toString().toInt();
+            mDataList.at(index.row())->mMinPos = value.toString().toInt();
         }
         if(index.column()==5){
-            m_List.at(index.row())->mMaxPos = value.toString().toInt();
+            mDataList.at(index.row())->mMaxPos = value.toString().toInt();
         }
         if(index.column()==6){
-            m_List.at(index.row())->mReverce = value.toString().toInt();
+            mDataList.at(index.row())->mReverce = value.toString().toInt();
         }
         if(index.column()==7){
-            m_List.at(index.row())->mKP = value.toString().toInt();
+            mDataList.at(index.row())->mKP = value.toString().toInt();
         }
         if(index.column()==8){
-            m_List.at(index.row())->mKI = value.toString().toInt();
+            mDataList.at(index.row())->mKI = value.toString().toInt();
         }
         if(index.column()==9){
-            m_List.at(index.row())->mKD = value.toString().toInt();
+            mDataList.at(index.row())->mKD = value.toString().toInt();
         }
         if(index.column()==10){
-            m_List.at(index.row())->mIlim = value.toString().toInt();
+            mDataList.at(index.row())->mIlim = value.toString().toInt();
         }
         return true;
     }
@@ -123,7 +123,7 @@ QVariant ChannelTableModel::headerData(int section, Qt::Orientation orientation,
         return QVariant();
     if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
     {
-        return header_data.at(section); // заголовки столбцов
+        return mHeaderData.at(section); // заголовки столбцов
     }
     else
     {
@@ -148,7 +148,7 @@ bool ChannelTableModel::insertRows(int position, int rows, const QModelIndex &in
     for (int row = 0; row < rows; ++row )
     {
         ChannelListItem* it = new ChannelListItem;
-        m_List.insert(position,it);
+        mDataList.insert(position,it);
     }
 
     endInsertRows();
@@ -164,7 +164,7 @@ bool ChannelTableModel::removeRows(int position, int rows, const QModelIndex &in
 
     for( int row = 0; row < rows; ++row )
     {
-        m_List.removeAt(position);
+        mDataList.removeAt(position);
     }
 
     endRemoveRows();
@@ -179,18 +179,18 @@ void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelD
                                   const QString &Reverce, const QString &KP,
                                   const QString &KI, const QString &KD,const QString &Ilim)
 {
-    insertRows( m_List.size(), 1 );
+    insertRows( mDataList.size(), 1 );
 
-    setData( index( m_List.size()-1, 0 ), Number );
-    setData( index( m_List.size()-1, 1 ), ChannelDesc );
-    setData( index( m_List.size()-1, 2 ), Status );
-    setData( index( m_List.size()-1, 3 ), Pos );
-    setData( index( m_List.size()-1, 4 ), MinPos );
-    setData( index( m_List.size()-1, 5 ), MaxPos );
-    setData( index( m_List.size()-1, 6 ), Reverce );
-    setData( index( m_List.size()-1, 7 ), KI );
-    setData( index( m_List.size()-1, 8 ), KP );
-    setData( index( m_List.size()-1, 9 ), KD );
-    setData( index( m_List.size()-1, 10 ), Ilim );
+    setData( index( mDataList.size()-1, 0 ), Number );
+    setData( index( mDataList.size()-1, 1 ), ChannelDesc );
+    setData( index( mDataList.size()-1, 2 ), Status );
+    setData( index( mDataList.size()-1, 3 ), Pos );
+    setData( index( mDataList.size()-1, 4 ), MinPos );
+    setData( index( mDataList.size()-1, 5 ), MaxPos );
+    setData( index( mDataList.size()-1, 6 ), Reverce );
+    setData( index( mDataList.size()-1, 7 ), KI );
+    setData( index( mDataList.size()-1, 8 ), KP );
+    setData( index( mDataList.size()-1, 9 ), KD );
+    setData( index( mDataList.size()-1, 10 ), Ilim );
 }
 

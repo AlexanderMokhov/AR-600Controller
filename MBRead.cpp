@@ -11,11 +11,11 @@ MBRead::~MBRead(void)
 }
 
 //инициализируем (читаем)
-void MBRead::init(const char BUFF_other[])
+void MBRead::Init(const char BUFF_other[])
 {
     for(int i=0;i<1472;i++)
 	{
-		RXBUFF[i]=BUFF_other[i];
+		mRXBuffer[i]=BUFF_other[i];
 	}
 }
 
@@ -23,55 +23,55 @@ void MBRead::init(const char BUFF_other[])
 #pragma region Sensor
 
 //получить данные с сенсора рысканья
-short MBRead::SENSOR_YAW_get(short NOMB)
+short MBRead::Get_SENSOR_YAW(short NOMB)
 {
-    return (RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2];
+    return (mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
 }
 
-short MBRead::SENSOR_PITCH_get(short NOMB)
+short MBRead::Get_SENSOR_PITCH(short NOMB)
 {
-    return (RXBUFF[NOMB*16+5] << 8) + (unsigned char)RXBUFF[NOMB*16+4];
+    return (mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
 }
 
 //получить данные с сенсора вращения/крена
-short MBRead::SENSOR_ROLL_get(short NOMB)
+short MBRead::Get_SENSOR_ROLL(short NOMB)
 {
-    return (RXBUFF[NOMB*16+7] << 8) + (unsigned char)RXBUFF[NOMB*16+6];
+    return (mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
 }
 
-short MBRead::SENSOR_UCH0_get(short NOMB)
+short MBRead::Get_SENSOR_UCH0(short NOMB)
 {
-    return (RXBUFF[NOMB*16+9] << 8) + (unsigned char)RXBUFF[NOMB*16+8];
+    return (mRXBuffer[NOMB*16+9] << 8) + (unsigned char)mRXBuffer[NOMB*16+8];
 }
 
-short MBRead::SENSOR_UCH1_get(short NOMB)
+short MBRead::Get_SENSOR_UCH1(short NOMB)
 {
-    return (RXBUFF[NOMB*16+11] << 8) + (unsigned char)RXBUFF[NOMB*16+10];
+    return (mRXBuffer[NOMB*16+11] << 8) + (unsigned char)mRXBuffer[NOMB*16+10];
 }
 
-short MBRead::SENSOR_UCH2_get(short NOMB)
+short MBRead::Get_SENSOR_UCH2(short NOMB)
 {
-    return (RXBUFF[NOMB*16+13] << 8) + (unsigned char)RXBUFF[NOMB*16+12];
+    return (mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12];
 }
 
-short MBRead::SENSOR_UCH3_get(short NOMB)
+short MBRead::Get_SENSOR_UCH3(short NOMB)
 {
-    return (RXBUFF[NOMB*16+15] << 8) + (unsigned char)RXBUFF[NOMB*16+14];
+    return (mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14];
 }
 
-short MBRead::SENSOR_TX_get(short NOMB)
+short MBRead::Get_SENSOR_TX(short NOMB)
 {
-    return (RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2];
+    return (mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
 }
 
-short MBRead::SENSOR_TY_get(short NOMB)
+short MBRead::Get_SENSOR_TY(short NOMB)
 {
-    return (RXBUFF[NOMB*16+5] << 8) + (unsigned char)RXBUFF[NOMB*16+4];
+    return (mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
 }
 
-short MBRead::SENSOR_FZ_get(short NOMB)
+short MBRead::Get_SENSOR_FZ(short NOMB)
 {
-    return (RXBUFF[NOMB*16+7] << 8) + (unsigned char)RXBUFF[NOMB*16+6];
+    return (mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
 }
 
 #pragma endregion Sensor
@@ -80,81 +80,81 @@ short MBRead::SENSOR_FZ_get(short NOMB)
 #pragma region Motor
 
 //получить напряжение питания мотора
-short MBRead::MOTOR_UBATT_get(short NOMB)
+short MBRead::Get_MOTOR_UBATT(short NOMB)
 {
-    return (RXBUFF[NOMB*16+5] << 8) + (unsigned char)RXBUFF[NOMB*16+4];
+    return (mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
 }
 
 //получить ток, потребляемый мотором
-float MBRead::MOTOR_IMOT_get(short NOMB)
+float MBRead::Get_MOTOR_IMOT(short NOMB)
 {
-    return float((RXBUFF[NOMB*16+7] << 8) + (unsigned char)RXBUFF[NOMB*16+6]);
+    return float((mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6]);
 }
 
 //получить текщую позицию мотора
-short MBRead::MOTOR_CPOS_get(short NOMB)
+short MBRead::Get_MOTOR_CPOS(short NOMB)
 {
     //short one = (short)RXBUFF[NOMB*16+3] << 8;
     //short two = one + (unsigned char)RXBUFF[NOMB*16+2];
     if(mReverceMap.at(NOMB))
-        return -1*(((unsigned char)RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2]);
+        return -1*(((unsigned char)mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2]);
     else
-        return ((unsigned char)RXBUFF[NOMB*16+3] << 8) + (unsigned char)RXBUFF[NOMB*16+2];
+        return ((unsigned char)mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
 }
 
 //получить KP
-short MBRead::MOTOR_STIFF_get(short NOMB)
+short MBRead::Get_MOTOR_STIFF(short NOMB)
 {
-    return (RXBUFF[NOMB*16+9] << 8) + (unsigned char)RXBUFF[NOMB*16+8];
+    return (mRXBuffer[NOMB*16+9] << 8) + (unsigned char)mRXBuffer[NOMB*16+8];
 }
 
 //получить KI
-short MBRead::MOTOR_DAMP_get(short NOMB)
+short MBRead::Get_MOTOR_DAMP(short NOMB)
 {
-    short MOTOR_DUMP = (RXBUFF[NOMB*16+11] << 8) + (unsigned char)RXBUFF[NOMB*16+10];
+    short MOTOR_DUMP = (mRXBuffer[NOMB*16+11] << 8) + (unsigned char)mRXBuffer[NOMB*16+10];
 	return MOTOR_DUMP;
 }
 
 //получить статус мотора
-short MBRead::MOTOR_STAT_get(short NOMB)
+short MBRead::Get_MOTOR_STAT(short NOMB)
 {
-    return (unsigned char)RXBUFF[NOMB*16+1];
+    return (unsigned char)mRXBuffer[NOMB*16+1];
 }
 
 //получить минимальную позицию мотора
-short MBRead::MOTOR_POS_MIN_get(short NOMB)
+short MBRead::Get_MOTOR_MIN_POS(short NOMB)
 {
     if(mReverceMap.at(NOMB))
-        return -1*((RXBUFF[NOMB*16+15] << 8) + (unsigned char)RXBUFF[NOMB*16+14]);
+        return -1*((mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14]);
     else
-        return (RXBUFF[NOMB*16+13] << 8) + (unsigned char)RXBUFF[NOMB*16+12];
+        return (mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12];
 }
 
 //получить максимальную позицию мотора
-short MBRead::MOTOR_POS_MAX_get(short NOMB)
+short MBRead::Get_MOTOR_MAX_POS(short NOMB)
 {
     if(mReverceMap.at(NOMB))
-        return -1*((RXBUFF[NOMB*16+13] << 8) + (unsigned char)RXBUFF[NOMB*16+12]);
+        return -1*((mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12]);
     else
-        return (RXBUFF[NOMB*16+15] << 8) + (unsigned char)RXBUFF[NOMB*16+14];
+        return (mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14];
 }
 
 //получить напряжение мотора
-float MBRead::MOTOR_U_get(short NOMB)
+float MBRead::Get_MOTOR_U(short NOMB)
 {
-    return (float)((RXBUFF[NOMB*2+1409] << 8) + (unsigned char)RXBUFF[NOMB*2+1408]);
+    return (float)((mRXBuffer[NOMB*2+1409] << 8) + (unsigned char)mRXBuffer[NOMB*2+1408]);
 }
 
 //получить ток мотора
-float MBRead::MOTOR_I_get(short NOMB)
+float MBRead::Get_MOTOR_I(short NOMB)
 {
-    return float((RXBUFF[NOMB*2+12+1409] << 8) + (unsigned char)RXBUFF[NOMB*2+12+1408]);
+    return float((mRXBuffer[NOMB*2+12+1409] << 8) + (unsigned char)mRXBuffer[NOMB*2+12+1408]);
 }
 
 //получение данных о напряжении источников питания
 float MBRead::GetU61()
 {
-    return (float)((RXBUFF[0 * 2 + 1409] << 8) + (unsigned char)RXBUFF[0 * 2 + 1408])/1000;
+    return (float)((mRXBuffer[0 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[0 * 2 + 1408])/1000;
 
     //Public ReadOnly Property U(NOMB As Int16) As Int16
     //       Get
@@ -170,58 +170,58 @@ float MBRead::GetU61()
 
 float MBRead::GetU62()
 {
-    return (float)((RXBUFF[1 * 2 + 1409] << 8) + (unsigned char)RXBUFF[1 * 2 + 1408])/1000;
+    return (float)((mRXBuffer[1 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/1000;
 }
 
 float MBRead::GetU81()
 {
-    return (float)((RXBUFF[2 * 2 + 1409] << 8) + (unsigned char)RXBUFF[2 * 2 + 1408])/1000;
+    return (float)((mRXBuffer[2 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[2 * 2 + 1408])/1000;
 }
 
 float MBRead::GetU82()
 {
-    return (float)((RXBUFF[3 * 2 + 1409] << 8) + (unsigned char)RXBUFF[3 * 2 + 1408])/1000;
+    return (float)((mRXBuffer[3 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[3 * 2 + 1408])/1000;
 }
 
 float MBRead::GetU12()
 {
-    return (float)((RXBUFF[4 * 2 + 1409] << 8) + (unsigned char)RXBUFF[1 * 2 + 1408])/1000;
+    return (float)((mRXBuffer[4 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/1000;
 }
 
 float MBRead::GetU48()
 {
-    return (float)((RXBUFF[5 * 2 + 1409] << 8) + (unsigned char)RXBUFF[1 * 2 + 1408])/100;
+    return (float)((mRXBuffer[5 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/100;
 }
 
 //получение данных о токах источников питания
 float MBRead::GetI61()
 {
-    return (float)((RXBUFF[0 * 2 + 12 + 1409] << 8) + (unsigned char)RXBUFF[0 * 2 + 12 + 1408])/1000;
+    return (float)((mRXBuffer[0 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[0 * 2 + 12 + 1408])/1000;
 }
 
 float MBRead::GetI62()
 {
-    return (float)((RXBUFF[1 * 2 + 12 + 1409] << 8) + (unsigned char)RXBUFF[1 * 2 + 12 + 1408])/1000;
+    return (float)((mRXBuffer[1 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 12 + 1408])/1000;
 }
 
 float MBRead::GetI81()
 {
-    return (float)((RXBUFF[2 * 2 + 12 + 1409] << 8) + (unsigned char)RXBUFF[2 * 2 + 12 + 1408])/1000;
+    return (float)((mRXBuffer[2 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[2 * 2 + 12 + 1408])/1000;
 }
 
 float MBRead::GetI82()
 {
-    return (float)((RXBUFF[3 * 2 + 12 + 1409] << 8) + (unsigned char)RXBUFF[3 * 2 + 12 + 1408])/1000;
+    return (float)((mRXBuffer[3 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[3 * 2 + 12 + 1408])/1000;
 }
 
 float MBRead::GetI48()
 {
-    return (float)((RXBUFF[5 * 2 + 12 + 1409] << 8) + (unsigned char)RXBUFF[5 * 2 + 12 + 1408])/100;
+    return (float)((mRXBuffer[5 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[5 * 2 + 12 + 1408])/100;
 }
 
 float MBRead::GetI12()
 {
-    return (float)((RXBUFF[4 * 2 + 12 + 1409] << 8) + (unsigned char)RXBUFF[4 * 2 + 12 + 1408])/1000;
+    return (float)((mRXBuffer[4 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[4 * 2 + 12 + 1408])/1000;
 }
 
 std::map<int, bool> &MBRead::GetReverceMap()

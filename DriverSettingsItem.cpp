@@ -35,60 +35,60 @@ DriverSettingsItem::DriverSettingsItem(unsigned int Number,unsigned int NumberBu
     mIlim = Ilim;
 }
 
-unsigned int DriverSettingsItem::getNumber()
+unsigned int DriverSettingsItem::GetNumber()
 {
     return mNumber;
 }
 
-unsigned int DriverSettingsItem::getNumberBuffer()
+unsigned int DriverSettingsItem::GetNumberBuffer()
 {
     return mNumberBuffer;
 }
 
-string DriverSettingsItem::getName()
+string DriverSettingsItem::GetName()
 {
     return mName;
 }
 
-int DriverSettingsItem::getMinPos()
+int DriverSettingsItem::GetMinPos()
 {
     return mMinPos;
 }
 
-int DriverSettingsItem::getMaxPos()
+int DriverSettingsItem::GetMaxPos()
 {
     return mMaxPos;
 }
 
-bool DriverSettingsItem::getReverce()
+bool DriverSettingsItem::GetReverce()
 {
     return mReverce;
 }
 
 //получить KP
-int DriverSettingsItem::getStiff()
+int DriverSettingsItem::GetStiff()
 {
     return mStiff;
 }
 
 //получить KI
-int DriverSettingsItem::getDump()
+int DriverSettingsItem::GetDump()
 {
     return mDump;
 }
 
 //получить KD
-int DriverSettingsItem::getTorque()
+int DriverSettingsItem::GetTorque()
 {
     return mTorque;
 }
 
-int DriverSettingsItem::getIlim()
+int DriverSettingsItem::GetIlim()
 {
     return mIlim;
 }
 
-void DriverSettingsItem::setIlim(int calibrationPos)
+void DriverSettingsItem::SetIlim(int calibrationPos)
 {
     mIlim=calibrationPos;
 }

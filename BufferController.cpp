@@ -1,6 +1,6 @@
 #include "BufferController.h"
 
-BufferController * BufferController::m_Instance = 0;
+BufferController * BufferController::mInstance = 0;
 
 BufferController::BufferController()
 {
@@ -15,34 +15,39 @@ BufferController::~BufferController()
 
 BufferController *BufferController::Instance()
 {
-    return m_Instance;
+    return mInstance;
 }
 
-void BufferController::initialize()
+void BufferController::Initialize()
 {
-    delete m_Instance;
-    m_Instance = new BufferController;
+    delete mInstance;
+    mInstance = new BufferController;
 }
 
-void BufferController::shutdown()
+void BufferController::Shutdown()
 {
-    delete m_Instance;
-    m_Instance = 0;
+    delete mInstance;
+    mInstance = 0;
 }
 
-MBRead *BufferController::getReadBuffer()
+MBRead *BufferController::GetReadBuffer()
 {
     return &mReadBuffer;
 }
 
-MBWrite *BufferController::getWriteBuffer()
+MBWrite *BufferController::GetWriteBuffer()
 {
     return &mWriteBuffer;
 }
 
-void BufferController::initBuffers()
+void BufferController::InitBuffers()
 {
+<<<<<<< HEAD
     mReadBuffer.init(mWriteBuffer.GetBuffer());
+=======
+    //mWriteBuffer.init();
+    mReadBuffer.Init(mWriteBuffer.GetBuffer());
+>>>>>>> origin/master
     mReadBuffer.SetReverceMap(mWriteBuffer.GetReverceMap());
 }
 

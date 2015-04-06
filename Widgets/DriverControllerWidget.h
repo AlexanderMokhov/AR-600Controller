@@ -5,6 +5,7 @@
 #include "AR600ControllerConf.h"
 #include "BufferController.h"
 #include "ChannelTableModel.h"
+#include "CommandController.h"
 
 namespace Ui {
 class DriverControllerWidget;
@@ -31,8 +32,6 @@ private slots:
 
     void on_ButtonTRACE_clicked();
 
-    void on_ButtonPosSet_clicked();
-
     void on_groupBoxCalibration_clicked(bool checked);
 
     void on_ButtonSaveZero_clicked();
@@ -50,6 +49,10 @@ private slots:
     void on_ButtonDumpSave_clicked();
 
     void on_ButtonDumpWrite_clicked();
+
+    void on_ButtonGoToPos_clicked();
+
+    void on_ButtonStopGoToPos_clicked();
 
 private:
     Ui::DriverControllerWidget *ui;

@@ -11,12 +11,13 @@
 #include "TinyXML/tinyxml.h"
 #include "AR600ControllerConf.h"
 #include "ChannelTableModel.h"
-#include "DriverControllerWidget.h"
+#include "Widgets/DriverControllerWidget.h"
+#include "Widgets/CommandControllerWidget.h"
 #include "BufferController.h"
 #include "CommandController.h"
 #include <QMessageBox>
 #include <qfiledialog.h>
-#include "LogController.h"
+#include "DriverLogController.h"
 
 
 namespace Ui {
@@ -44,10 +45,11 @@ private:
 
     std::string         mHost;
     unsigned int        mPort;
+    int                 mSendDelay;
     //DataPlot mPlot;
     int                 RangeSize;
-    CommandController*  m_CommandController;
-    DriverControllerWidget * m_DriverControllerWidget;
+    DriverControllerWidget * mDriverControllerWidget;
+    CommandControllerWidget * mCommandControllerWidget;
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();
@@ -59,6 +61,7 @@ private:
     QItemSelectionModel *m_SelectionModel;
     LogController *mLogController;
     uint CurrentTime;
+    long CurrentTimeForCommands;
 
 
 private slots:
@@ -67,7 +70,6 @@ private slots:
 
     void on_pButtonSaveXML_clicked();
     void on_pButtonOpenXML_clicked();
-    void on_pButtonCFOpen_clicked();
     /*void SendMessage();*/
 
     void on_ButtonStartLog_clicked();
@@ -90,6 +92,7 @@ public slots:
     void UdpSend();
     void SetLenght(double lenght);
     void OnEnterTable(QModelIndex index);
+    void OnStartPlayForward();
 
 };
 

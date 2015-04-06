@@ -2,10 +2,6 @@
 
 DriverCommand::DriverCommand()
 {
-    //mNumber=Number;
-    //mTime=Time;
-    //mPosition=Position;
-    mDriversMap.clear();
 
 }
 
@@ -14,28 +10,44 @@ DriverCommand::~DriverCommand()
 
 }
 
-unsigned int DriverCommand::getNumber()
+int DriverCommand::GetNumber()
 {
-    //return mNumber;
+    return mNumber;
 }
 
-unsigned int DriverCommand::getTime()
+PID DriverCommand::GetPID()
+{
+    return mPID;
+}
+
+void DriverCommand::SetTime(int Time)
+{
+    mTime = Time;
+}
+
+void DriverCommand::SetPosition(int Position)
+{
+    mPosition = Position;
+}
+
+void DriverCommand::SetNumber(int Number)
+{
+    mNumber = Number;
+}
+
+void DriverCommand::SetPID(PID oPID)
+{
+    mPID = oPID;
+}
+
+
+int DriverCommand::GetTime()
 {
     return mTime;
 }
 
-int DriverCommand::getPosition()
+int DriverCommand::GetPosition()
 {
-    //return mPosition;
-}
-
-void DriverCommand::Clear()
-{
-    mDriversMap.clear();
-}
-
-std::map<int, int> &DriverCommand::GetDriverMap()
-{
-    return mDriversMap;
+    return mPosition;
 }
 

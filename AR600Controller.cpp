@@ -17,14 +17,20 @@ AR600Controller::AR600Controller(QWidget *parent) :
     mTimer = new QTimer(this);
     connect(mTimer, SIGNAL(timeout()), SLOT(UdpSend()));
 
-    AR600ControllerConf::Instance()->initialize();
-    BufferController::Instance()->initialize();
+    //инициализация контроллеров
+    AR600ControllerConf::Instance()->Initialize();
+    BufferController::Instance()->Initialize();
+    CommandController::Instance()->Initialize();
+    //коне инициализации контроллеров
 
-    mSendBuffer = BufferController::Instance()->getWriteBuffer();
-    mReceiveBuffer = BufferController::Instance()->getReadBuffer();
+    mSendBuffer = BufferController::Instance()->GetWriteBuffer();
+    mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
 
-    m_DriverControllerWidget = new DriverControllerWidget();
-    ui->DriverControlLayout->addWidget(m_DriverControllerWidget);
+    mDriverControllerWidget = new DriverControllerWidget();
+    ui->DriverControlLayout->addWidget(mDriverControllerWidget);
+    mCommandControllerWidget = new CommandControllerWidget();
+    ui->CommandControlLayout->addWidget(mCommandControllerWidget);
+    connect(mCommandControllerWidget,SIGNAL(StartPlayForward()),this,SLOT(OnStartPlayForward()));
 
     //графики
 
@@ -57,25 +63,26 @@ AR600Controller::AR600Controller(QWidget *parent) :
 }
 
     //чтение настроек их XML файла
-    bool isOk = AR600ControllerConf::Instance()->openFile("config.xml");
+    bool isOk = AR600ControllerConf::Instance()->OpenFile("config.xml");
     if(isOk)
     {
-        ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
-        ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
+        mPort=AR600ControllerConf::Instance()->GetPort();
+        mHost=AR600ControllerConf::Instance()->GetHost();
+        mSendDelay=AR600ControllerConf::Instance()->GetSendDelay();
+        ui->hostLineEdit->setText(QString::fromStdString(mHost));
+        ui->portLineEdit->setText(QString::number(mPort));
         //загоняем в отправляемый массив
 
         AR600ControllerConf::Instance()->Update(mSendBuffer);
-        BufferController::Instance()->initBuffers();
+        BufferController::Instance()->InitBuffers();
         qDebug() << "Настройки успешно прочитаны";
     }
 
-    //загружаем список команд из файла
-    CommandController *mc = new CommandController();
 
     //заполнение таблицы приводов
     m_CLModel= new ChannelTableModel();
     ui->ChannelTableView->setModel(m_CLModel);
-    m_DriverControllerWidget->setModel(m_CLModel);
+    mDriverControllerWidget->setModel(m_CLModel);
     m_SelectionModel = ui->ChannelTableView->selectionModel();
     ShowConfigData();
 }
@@ -107,7 +114,7 @@ void AR600Controller::Connect()
         qDebug() << "Disconnected";
     }
     //отправляем каждые 100 мс
-    mTimer->start(100);
+    mTimer->start(mSendDelay);
 }
 
 void AR600Controller::Disconnect()
@@ -205,6 +212,23 @@ void AR600Controller::UdpSend()
     mUdpSocketSender->waitForBytesWritten();
     //if включен контроллер команд то апдейт
 
+    if(CommandController::Instance()->GetPlayForwardState())
+    {
+        CommandController::Instance()->Update(CurrentTimeForCommands);
+        CurrentTimeForCommands+=(mSendDelay*1e3);
+
+        //если время закончилось - останавливаем, переводим индекс команды на начало списка
+        if(CommandController::Instance()->GetTimeRecord()<=CurrentTimeForCommands)
+        {
+            CommandController::Instance()->SetPlayForwardState(false);
+            CommandController::Instance()->SetCommandId(0);
+        }
+    }
+    if(CommandController::Instance()->GetGoToPosState())
+    {
+        CommandController::Instance()->GoNextPos();
+    }
+
 }
 
 void AR600Controller::SetLenght(double lenght)
@@ -216,20 +240,24 @@ void AR600Controller::SetLenght(double lenght)
 void AR600Controller::OnEnterTable(QModelIndex index)
 {
     int row = m_SelectionModel->currentIndex().row();
-    m_DriverControllerWidget->setCurrentRow(row);
+    mDriverControllerWidget->setCurrentRow(row);
     m_CLModel->data(m_CLModel->index(row,0),Qt::EditRole);
-    m_DriverControllerWidget->UpdateData();
+    mDriverControllerWidget->UpdateData();
 
     QString value = QString::number(row);
-    ui->label_8->setText(value);
+}
+
+void AR600Controller::OnStartPlayForward()
+{
+    CurrentTimeForCommands = 0;
 }
 
 //обработка принятого пакета от робота
 void AR600Controller::ProcessTheDatagram(QByteArray &datagramm)
 {
-    mReceiveBuffer->init(datagramm.data());
+    mReceiveBuffer->Init(datagramm.data());
     UpdatePowerLabel();
-    m_DriverControllerWidget->UpdateData();
+    mDriverControllerWidget->UpdateData();
 }
 
 //обновление значений напряжений и токов
@@ -274,7 +302,7 @@ void AR600Controller::realtimeData()
 
 void AR600Controller::ShowConfigData()
 {
-    std::map<unsigned int,DriverSettingsItem> * mMap = AR600ControllerConf::Instance()->getConfMap();
+    std::map<unsigned int,DriverSettingsItem> * mMap = AR600ControllerConf::Instance()->GetConfigMap();
     m_CLModel->removeRows(0,m_CLModel->rowCount());
 
     std::map<unsigned int,DriverSettingsItem>::iterator it;
@@ -282,24 +310,24 @@ void AR600Controller::ShowConfigData()
     for(it = mMap->begin();it!=mMap->end();++it)
     {
         QString Number = QString::number((*it).first);
-        QString NumberBuffer = QString::number((*it).second.getNumberBuffer());
-        QString Name = QString::fromStdString((*it).second.getName());
+        QString NumberBuffer = QString::number((*it).second.GetNumberBuffer());
+        QString Name = QString::fromStdString((*it).second.GetName());
         QString Status = "0";
-        bool Reverce = (*it).second.getReverce();
+        bool Reverce = (*it).second.GetReverce();
         QString sReverce = QString::number(Reverce);
-        QString MinPos = QString::number((*it).second.getMinPos());
-        QString MaxPos = QString::number((*it).second.getMaxPos());
-        QString KP = QString::number((*it).second.getStiff());
-        QString KI = QString::number((*it).second.getDump());
-        QString KD = QString::number((*it).second.getTorque());
-        QString Ilim = QString::number((*it).second.getIlim());
+        QString MinPos = QString::number((*it).second.GetMinPos());
+        QString MaxPos = QString::number((*it).second.GetMaxPos());
+        QString KP = QString::number((*it).second.GetStiff());
+        QString KI = QString::number((*it).second.GetDump());
+        QString KD = QString::number((*it).second.GetTorque());
+        QString Ilim = QString::number((*it).second.GetIlim());
         m_CLModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,sReverce,KP,KI,KD,Ilim);
     }
     ui->ChannelTableView->verticalHeader()->hide();
     ui->ChannelTableView->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
     ui->ChannelTableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
     ui->ChannelTableView->selectRow(0);
-    m_DriverControllerWidget->setCurrentRow(0);
+    mDriverControllerWidget->setCurrentRow(0);
 }
 
 //TODO задать номер привода задать читать значения
@@ -310,7 +338,7 @@ void AR600Controller::on_pButtonSaveXML_clicked()
     QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        AR600ControllerConf::Instance()->saveFile(fileName.toStdString());
+        AR600ControllerConf::Instance()->SaveFile(fileName.toStdString());
         qDebug() << "Файл настроек успешно сохранен в " << fileName << endl;
     }
 }
@@ -320,12 +348,12 @@ void AR600Controller::on_pButtonOpenXML_clicked()
     QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        bool isOk = AR600ControllerConf::Instance()->openFile(fileName.toStdString());
+        bool isOk = AR600ControllerConf::Instance()->OpenFile(fileName.toStdString());
 
         if(isOk)
         {
-            ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->getHost()));
-            ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->getPort()));
+            ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->GetHost()));
+            ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->GetPort()));
             //загоняем в отправляемый массив
             AR600ControllerConf::Instance()->Update(mSendBuffer);
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
@@ -339,27 +367,6 @@ void AR600Controller::on_pButtonOpenXML_clicked()
 
 
     }
-}
-
-void AR600Controller::on_pButtonCFOpen_clicked()
-{
-    QString fileName = QFileDialog::getOpenFileName(0,"Open Commands List Dialog","","*.txt");
-    if (!fileName.isEmpty())
-    {
-        m_CommandController=new CommandController();
-        bool isOk = m_CommandController->LoadFromFile(fileName.toStdString());
-        if(isOk)
-        {
-            qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
-            qDebug() << "Команды успешно прочитаны" <<endl;
-        }
-        else
-        {
-            qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
-            qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
-        }
-    }
-
 }
 
 void AR600Controller::on_ButtonStartLog_clicked()
@@ -390,5 +397,5 @@ void AR600Controller::on_ButtonStopLog_clicked()
 
 void AR600Controller::on_ButtonSaveLog_clicked()
 {
-    mLogController->SaveData("123.txt");
+    mLogController->SaveData(QString("DriverLog_" + QDateTime::currentDateTime().toString("dd_MM_yyyy_HH_mm_ss")+"_.txt").toStdString());
 }
