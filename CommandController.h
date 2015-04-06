@@ -15,7 +15,7 @@
 #include <math.h>
 #include <cmath>
 #include "BufferController.h"
-#include "AR600ControllerConf.h"
+#include "ConfigController.h"
 #include <QStateMachine>
 #include <QState>
 
@@ -41,9 +41,9 @@ private:
     int mTimeToGo;
     int mDestPos;
     int mStartPos;
-    int mCurrentPos;
+    double mCurrentPos;
     int mCurrentTime;
-    int mStepPos;
+    double mStepPos;
     int mDriverNumberBuffer;
     bool IsGoToPosState;//состояние выполнения перехода в позицию за время
 

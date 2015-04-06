@@ -1,6 +1,7 @@
 ﻿#include "MBWrite.h"
 
 #include <stdio.h>
+#include <QDebug>
 
 
 MBWrite::MBWrite(void)
@@ -142,6 +143,16 @@ std::map<int, bool> *MBWrite::GetReverceMap()
     return &mReverceMap;
 }
 
+std::map<int, int> *MBWrite::GetMinPosMap()
+{
+    return &mMinPosMap;
+}
+
+std::map<int, int> *MBWrite::GetMaxPosMap()
+{
+    return &mMaxPosMap;
+}
+
 #pragma endregion Power
 
 //установка значений сенсоров
@@ -208,13 +219,19 @@ void MBWrite::SENSOR_Z_OFFSET(short NOMB, unsigned char RXBuffer[])
 //повернуть мотор на угол
 void MBWrite::Set_MOTOR_ANGLE(short NOMB, short value)
 {
+    mMinPos=mMinPosMap.at(NOMB);
+    mMaxPos=mMaxPosMap.at(NOMB);
     if(value < mMinPos)
     {
+        qDebug() << "!!!Значение" << QString::number(value) << "ниже минимума" << QString::number(mMinPos) << endl;
         value = mMinPos;
+
     }
-    if(value > mMaxPos)
+    else if(value > mMaxPos)
     {
+        qDebug() << "!!!Значение" << QString::number(value) << "выше максимума" << QString::number(mMaxPos) << endl;
         value = mMaxPos;
+
     }
     if(mReverceMap.at(NOMB))
     {
@@ -244,16 +261,14 @@ void MBWrite::Set_MOTOR_DAMP(short NOMB, short value)
 
 void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
 {
-
+    mMinPosMap.at(NOMB) = value;//запоминаем отображаемое значение
     if(mReverceMap.at(NOMB))
     {
-        mMaxPos = -1*value;
         mWRBuffer[NOMB * 16 + 15] = (-1*value>>8);
         mWRBuffer[NOMB * 16 + 14] = -1*value;
     }
     else
     {
-        mMinPos = value;
         mWRBuffer[NOMB * 16 + 13] = (value>>8);
         mWRBuffer[NOMB * 16 + 12] = value;
     }
@@ -261,16 +276,14 @@ void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
 
 void MBWrite::Set_MOTOR_MAX_POS(short NOMB, short value)
 {
-
+    mMaxPosMap.at(NOMB) = value;//запоминаем отображаемое значение
     if(mReverceMap.at(NOMB))
     {
-        mMinPos = -1*value;
         mWRBuffer[NOMB * 16 + 13] = (-1*value>>8);
         mWRBuffer[NOMB * 16 + 12] = -1*value;
     }
     else
     {
-        mMaxPos = value;
         mWRBuffer[NOMB * 16 + 15] = (value>>8);
         mWRBuffer[NOMB * 16 + 14] = value;
     }

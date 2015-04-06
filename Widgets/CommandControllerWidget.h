@@ -2,7 +2,7 @@
 #define COMMANDCONTROLLERWIDGET_H
 
 #include <QWidget>
-#include "AR600ControllerConf.h"
+#include "ConfigController.h"
 #include "BufferController.h"
 #include "ChannelTableModel.h"
 #include <QFileDialog>

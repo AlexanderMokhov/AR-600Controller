@@ -234,6 +234,16 @@ void MBRead::SetReverceMap(std::map<int, bool> *ReverceMap)
     mReverceMap=*ReverceMap;
 }
 
+void MBRead::SetMinPosMap(std::map<int, int> *MinPosMap)
+{
+    mMinPosMap=*MinPosMap;
+}
+
+void MBRead::SetMaxPosMap(std::map<int, int> *MaxPosMap)
+{
+    mMaxPosMap=*MaxPosMap;
+}
+
 
 
 

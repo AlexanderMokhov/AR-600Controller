@@ -2,7 +2,7 @@
 #define DATAPLOT_H
 
 #include <QObject>
-#include "qcustomplot.h"
+#include "QCustomPlot/QCustomPlot.h"
 class DataPlot : public QObject
 {
     Q_OBJECT

@@ -1,4 +1,4 @@
-#include "dataplot.h"
+#include "DataPlot.h"
 
 
 DataPlot::DataPlot(QObject *parent) : QObject(parent)

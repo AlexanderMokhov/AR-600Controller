@@ -1,5 +1,5 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef AR600CONTROLLER_H
+#define AR600CONTROLLER_H
 
 //#include <iostream>
 #include "string.h"
@@ -7,9 +7,9 @@
 #include <QUdpSocket>
 #include <QTimer>
 #include <QItemSelectionModel>
-#include "dataplot.h"
+#include "DataPlot.h"
 #include "TinyXML/tinyxml.h"
-#include "AR600ControllerConf.h"
+#include "ConfigController.h"
 #include "ChannelTableModel.h"
 #include "Widgets/DriverControllerWidget.h"
 #include "Widgets/CommandControllerWidget.h"
@@ -46,7 +46,7 @@ private:
     std::string         mHost;
     unsigned int        mPort;
     int                 mSendDelay;
-    //DataPlot mPlot;
+
     int                 RangeSize;
     DriverControllerWidget * mDriverControllerWidget;
     CommandControllerWidget * mCommandControllerWidget;
@@ -96,4 +96,4 @@ public slots:
 
 };
 
-#endif // WIDGET_H
+#endif // AR600CONTROLLER_H

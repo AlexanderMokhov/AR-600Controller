@@ -3,7 +3,7 @@
 LogController::LogController()
 {
     mReadBuffer = BufferController::Instance()->GetReadBuffer();
-    mConfigMap = AR600ControllerConf::Instance()->GetConfigMap();
+    mConfigMap = ConfigController::Instance()->GetConfigMap();
     map<unsigned int,DriverSettingsItem>::iterator it;
     for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
     {
@@ -23,7 +23,7 @@ void LogController::AddRawData(int time)
     map<int,int>::iterator it;
     for(it = mDriversMap.begin();it!=mDriversMap.end();++it)
     {
-        int NumberBuffer = AR600ControllerConf::Instance()->GetConfigMap()->at((*it).first).GetNumberBuffer();
+        int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at((*it).first).GetNumberBuffer();
         (*it).second=mReadBuffer->Get_MOTOR_CPOS(NumberBuffer);
     }
 

@@ -27,8 +27,8 @@ void DriverControllerWidget::setCurrentRow(int Row)
 {
     //Считываем номер мотра, адрес буфера, реверс
     CurrentNumber = mModel->data(mModel->index(Row,0),Qt::EditRole).toInt();
-    CurrentNOMB = AR600ControllerConf::Instance()->GetConfigMap()->at(CurrentNumber).GetNumberBuffer();
-    Reverce = AR600ControllerConf::Instance()->GetConfigMap()->at(CurrentNumber).GetReverce();
+    CurrentNOMB = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetNumberBuffer();
+    Reverce = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetReverce();
     if(Reverce)
         ReverceCoeff = -1;
     else
@@ -135,7 +135,7 @@ void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
         //выходим из режима калибровки
 
         //записываем в мотор калибровочные коэффициенты
-        mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,AR600ControllerConf::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim());
+        mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim());
         mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
         Calibration=false;
 
@@ -163,11 +163,11 @@ void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
 void DriverControllerWidget::on_ButtonSaveZero_clicked()
 {
     //записываем в файл настроек новые калибровочные коэффициенты
-    AR600ControllerConf::Instance()->GetConfigMap()->at(CurrentNumber).SetIlim(-1*mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
-    AR600ControllerConf::Instance()->SaveFile("config.xml");
+    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetIlim(-1*mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    ConfigController::Instance()->SaveFile("config.xml");
 
     //записываем в мотор калибровочные коэффициенты
-    mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,AR600ControllerConf::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim());
+    mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim());
     mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
 
     //разрешаем вход в режим управления слайдером
@@ -234,12 +234,12 @@ void DriverControllerWidget::on_ButtonStiffWrite_clicked()
 
 void DriverControllerWidget::on_ButtonStiffSave_clicked()
 {
-    AR600ControllerConf::Instance()->GetConfigMap()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
+    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
 }
 
 void DriverControllerWidget::on_ButtonDumpSave_clicked()
 {
-    AR600ControllerConf::Instance()->GetConfigMap()->at(CurrentNumber).SetDump(ui->spinDump->value());
+    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetDump(ui->spinDump->value());
 }
 
 

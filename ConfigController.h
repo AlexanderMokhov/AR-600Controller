@@ -1,5 +1,5 @@
-#ifndef AR600CONTROLLERCONF_H
-#define AR600CONTROLLERCONF_H
+#ifndef CONFIGCONTROLLER_H
+#define CONFIGCONTROLLER_H
 
 #include <iostream>
 #include <map>
@@ -12,13 +12,13 @@
 
 using namespace std;
 
-class AR600ControllerConf
+class ConfigController
 {
 private:
-    static AR600ControllerConf* mInstance;
-    AR600ControllerConf();
-    AR600ControllerConf(AR600ControllerConf const&);
-    ~AR600ControllerConf();
+    static ConfigController* mInstance;
+    ConfigController();
+    ConfigController(ConfigController const&);
+    ~ConfigController();
 
     TiXmlDocument * mXMLfileSetting;
 
@@ -32,7 +32,7 @@ private:
     int mDefaultTorque;
 
 public:
-    static AR600ControllerConf* Instance();
+    static ConfigController* Instance();
     static void Initialize();
     static void Shutdown();
 
@@ -51,4 +51,4 @@ public:
     int GetDefaultDump();
     int GetDefaultTorque();
 };
-#endif // AR600CONTROLLERCONF_H
+#endif // CONFIGCONTROLLER_H

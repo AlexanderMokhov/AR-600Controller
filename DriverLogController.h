@@ -1,7 +1,7 @@
-#ifndef LOGCONTROLLER_H
-#define LOGCONTROLLER_H
+#ifndef DRIVERLOGCONTROLLER_H
+#define DRIVERLOGCONTROLLER_H
 #include "BufferController.h"
-#include "AR600ControllerConf.h"
+#include "ConfigController.h"
 
 #include <iostream>
 #include <map>
@@ -45,4 +45,4 @@ public:
 
 };
 
-#endif // LOGCONTROLLER_H
+#endif // DRIVERLOGCONTROLLER_H

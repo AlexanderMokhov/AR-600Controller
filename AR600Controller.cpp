@@ -18,7 +18,7 @@ AR600Controller::AR600Controller(QWidget *parent) :
     connect(mTimer, SIGNAL(timeout()), SLOT(UdpSend()));
 
     //инициализация контроллеров
-    AR600ControllerConf::Instance()->Initialize();
+    ConfigController::Instance()->Initialize();
     BufferController::Instance()->Initialize();
     CommandController::Instance()->Initialize();
     //коне инициализации контроллеров
@@ -63,17 +63,17 @@ AR600Controller::AR600Controller(QWidget *parent) :
 }
 
     //чтение настроек их XML файла
-    bool isOk = AR600ControllerConf::Instance()->OpenFile("config.xml");
+    bool isOk = ConfigController::Instance()->OpenFile("config.xml");
     if(isOk)
     {
-        mPort=AR600ControllerConf::Instance()->GetPort();
-        mHost=AR600ControllerConf::Instance()->GetHost();
-        mSendDelay=AR600ControllerConf::Instance()->GetSendDelay();
+        mPort=ConfigController::Instance()->GetPort();
+        mHost=ConfigController::Instance()->GetHost();
+        mSendDelay=ConfigController::Instance()->GetSendDelay();
         ui->hostLineEdit->setText(QString::fromStdString(mHost));
         ui->portLineEdit->setText(QString::number(mPort));
         //загоняем в отправляемый массив
 
-        AR600ControllerConf::Instance()->Update(mSendBuffer);
+        ConfigController::Instance()->Update(mSendBuffer);
         BufferController::Instance()->InitBuffers();
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -119,6 +119,12 @@ void AR600Controller::Connect()
 
 void AR600Controller::Disconnect()
 {
+    //выключаем напряжения
+    mSendBuffer->OFF61();
+    mSendBuffer->OFF62();
+    mSendBuffer->OFF81();
+    mSendBuffer->OFF82();
+    mSendBuffer->OFF48();
     mTimer->stop();
 
     mUdpSocketSender->disconnect();
@@ -302,7 +308,7 @@ void AR600Controller::realtimeData()
 
 void AR600Controller::ShowConfigData()
 {
-    std::map<unsigned int,DriverSettingsItem> * mMap = AR600ControllerConf::Instance()->GetConfigMap();
+    std::map<unsigned int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
     m_CLModel->removeRows(0,m_CLModel->rowCount());
 
     std::map<unsigned int,DriverSettingsItem>::iterator it;
@@ -338,7 +344,7 @@ void AR600Controller::on_pButtonSaveXML_clicked()
     QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        AR600ControllerConf::Instance()->SaveFile(fileName.toStdString());
+        ConfigController::Instance()->SaveFile(fileName.toStdString());
         qDebug() << "Файл настроек успешно сохранен в " << fileName << endl;
     }
 }
@@ -348,14 +354,14 @@ void AR600Controller::on_pButtonOpenXML_clicked()
     QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        bool isOk = AR600ControllerConf::Instance()->OpenFile(fileName.toStdString());
+        bool isOk = ConfigController::Instance()->OpenFile(fileName.toStdString());
 
         if(isOk)
         {
-            ui->hostLineEdit->setText(QString::fromStdString(AR600ControllerConf::Instance()->GetHost()));
-            ui->portLineEdit->setText(QString::number(AR600ControllerConf::Instance()->GetPort()));
+            ui->hostLineEdit->setText(QString::fromStdString(ConfigController::Instance()->GetHost()));
+            ui->portLineEdit->setText(QString::number(ConfigController::Instance()->GetPort()));
             //загоняем в отправляемый массив
-            AR600ControllerConf::Instance()->Update(mSendBuffer);
+            ConfigController::Instance()->Update(mSendBuffer);
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
         }

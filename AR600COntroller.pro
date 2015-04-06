@@ -19,41 +19,41 @@ SOURCES += main.cpp\
     MBRead.cpp \
     MBWrite.cpp \
     AR600Controller.cpp \
-    qcustomplot.cpp \
-    dataplot.cpp \
     DriverCommand.cpp \
     CommandController.cpp \
     TinyXML/tinystr.cpp \
     TinyXML/tinyxml.cpp \
     TinyXML/tinyxmlerror.cpp \
     TinyXML/tinyxmlparser.cpp \
-    AR600ControllerConf.cpp \
     ChannelListItem.cpp \
     DriverSettingsItem.cpp \
     ChannelTableModel.cpp \
     Widgets/DriverControllerWidget.cpp \
     BufferController.cpp \
     Widgets/CommandControllerWidget.cpp \
-    DriverLogController.cpp
+    DriverLogController.cpp \
+    ConfigController.cpp \
+    DataPlot.cpp \
+    QCustomPlot/QCustomPlot.cpp
 
 HEADERS  += \
     MBRead.h \
     MBWrite.h \
     AR600Controller.h \
-    qcustomplot.h \
-    dataplot.h \
     DriverCommand.h \
     CommandController.h \
     TinyXML/tinystr.h \
     TinyXML/tinyxml.h \
-    AR600ControllerConf.h \
     ChannelListItem.h \
     DriverSettingsItem.h \
     ChannelTableModel.h \
     Widgets/DriverControllerWidget.h \
     BufferController.h \
     Widgets/CommandControllerWidget.h \
-    DriverLogController.h
+    DriverLogController.h \
+    ConfigController.h \
+    DataPlot.h \
+    QCustomPlot/QCustomPlot.h
 
 FORMS    += \
     AR600Controller.ui \

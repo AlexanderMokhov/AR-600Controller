@@ -8,6 +8,8 @@ class MBRead
 private:
     char mRXBuffer [1472];
     std::map<int,bool> mReverceMap;
+    std::map<int,int> mMaxPosMap;
+    std::map<int,int> mMinPosMap;
 public:
     MBRead(void);
     ~MBRead(void);
@@ -52,7 +54,7 @@ public:
 
     std::map<int, bool> *GetReverceMap();
     void SetReverceMap(std::map<int, bool> *ReverceMap);
-
-
+    void SetMinPosMap(std::map<int, int> *MinPosMap);
+    void SetMaxPosMap(std::map<int, int> *MaxPosMap);
 };
 

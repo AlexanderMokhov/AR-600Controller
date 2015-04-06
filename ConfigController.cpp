@@ -1,36 +1,36 @@
-#include "AR600ControllerConf.h"
+#include "ConfigController.h"
 
-AR600ControllerConf * AR600ControllerConf::mInstance = 0;
+ConfigController * ConfigController::mInstance = 0;
 
-AR600ControllerConf::AR600ControllerConf():
+ConfigController::ConfigController():
 	mXMLfileSetting(NULL)
 {
 
 }
 
-AR600ControllerConf::~AR600ControllerConf()
+ConfigController::~ConfigController()
 {
 
 }
 
-void AR600ControllerConf::Initialize()
+void ConfigController::Initialize()
 {
     delete mInstance;
-    mInstance = new AR600ControllerConf;
+    mInstance = new ConfigController;
 }
 
-AR600ControllerConf* AR600ControllerConf::Instance()
+ConfigController* ConfigController::Instance()
 {
     return mInstance;
 }
 
-void AR600ControllerConf::Shutdown()
+void ConfigController::Shutdown()
 {
     delete mInstance;
     mInstance = 0;
 }
 
-bool AR600ControllerConf::OpenFile(string FileName)
+bool ConfigController::OpenFile(string FileName)
 {
     mXMLfileSetting = new TiXmlDocument(FileName.c_str());
 
@@ -92,7 +92,7 @@ bool AR600ControllerConf::OpenFile(string FileName)
     }
 }
 
-bool AR600ControllerConf::SaveFile(string FileName)
+bool ConfigController::SaveFile(string FileName)
 {
     TiXmlDocument XMLFile;
     TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","yes");
@@ -210,23 +210,23 @@ bool AR600ControllerConf::SaveFile(string FileName)
 
 }
 
-int AR600ControllerConf::GetPort()
+int ConfigController::GetPort()
 {
     return mPort;
 }
 
-string AR600ControllerConf::GetHost()
+string ConfigController::GetHost()
 {
     return mHost;
 }
 
-int AR600ControllerConf::GetSendDelay()
+int ConfigController::GetSendDelay()
 {
     return mSendDelay;
 }
 
 // что ты тут хотел возвращать?
-bool AR600ControllerConf::Update(MBWrite *buffer)
+bool ConfigController::Update(MBWrite *buffer)
 {
     map<unsigned int,DriverSettingsItem>::iterator it;
     for(it = mDriverSettingsMap.begin();it!=mDriverSettingsMap.end();++it)
@@ -243,6 +243,8 @@ bool AR600ControllerConf::Update(MBWrite *buffer)
         buffer->Set_MOTOR_ILIM(NumbBuffer,(*it).second.GetIlim());
 
         buffer->GetReverceMap()->insert(std::pair<int,bool>(NumbBuffer,(*it).second.GetReverce()));
+        buffer->GetMinPosMap()->insert(std::pair<int,int>(NumbBuffer,(*it).second.GetMinPos()));
+        buffer->GetMaxPosMap()->insert(std::pair<int,int>(NumbBuffer,(*it).second.GetMaxPos()));
 
         buffer->Set_MOTOR_MIN_POS(NumbBuffer,PosMin);
         buffer->Set_MOTOR_MAX_POS(NumbBuffer,PosMax);
@@ -252,12 +254,12 @@ bool AR600ControllerConf::Update(MBWrite *buffer)
     return true;
 }
 
-map<unsigned int,DriverSettingsItem> *AR600ControllerConf::GetConfigMap()
+map<unsigned int,DriverSettingsItem> *ConfigController::GetConfigMap()
 {
     return &mDriverSettingsMap;
 }
 
-bool AR600ControllerConf::UpdateIlim(MBWrite *bufferWrite, MBRead *bufferRead)
+bool ConfigController::UpdateIlim(MBWrite *bufferWrite, MBRead *bufferRead)
 {
    // map<unsigned int,DriverSettingsItem>::iterator it;
    // for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)
@@ -274,17 +276,17 @@ bool AR600ControllerConf::UpdateIlim(MBWrite *bufferWrite, MBRead *bufferRead)
     return false;
 }
 
-int AR600ControllerConf::GetDefaultStiff()
+int ConfigController::GetDefaultStiff()
 {
     return mDefaultStiff;
 }
 
-int AR600ControllerConf::GetDefaultDump()
+int ConfigController::GetDefaultDump()
 {
     return mDefaultDump;
 }
 
-int AR600ControllerConf::GetDefaultTorque()
+int ConfigController::GetDefaultTorque()
 {
     return mDefaultTorque;
 }

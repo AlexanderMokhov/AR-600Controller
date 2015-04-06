@@ -8,6 +8,8 @@ class MBWrite
 private:
     char mWRBuffer [1472];
     std::map<int,bool> mReverceMap;
+    std::map<int,int> mMaxPosMap;
+    std::map<int,int> mMinPosMap;
     short mMinPos;
     short mMaxPos;
 public:
@@ -69,6 +71,8 @@ public:
     void AddressUpdate(short NOMB, short NumberMotor);
 
     std::map<int, bool> *GetReverceMap();
+    std::map<int, int> *GetMinPosMap();
+    std::map<int, int> *GetMaxPosMap();
 
 };
 
