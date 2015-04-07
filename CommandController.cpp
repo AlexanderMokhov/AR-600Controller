@@ -250,6 +250,7 @@ void CommandController::NextCommand()
     int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
     int Position = mCommandsList.at(mCommandId).GetPosition();
     BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
+    BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumberBuffer);
     mCommandId++;
     qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
 }
@@ -291,19 +292,27 @@ void CommandController::SetGoToPosState(bool State)
 
 void CommandController::GoNextPos()
 {
-    BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,(short)mCurrentPos);
-    mCurrentPos+=mStepPos;
     bool IsFirst = (mDestPos <= 0 && mCurrentPos <= mDestPos && mStepPos < 0);
-    bool IsSecond = (mDestPos <= 0 && mCurrentPos > mDestPos && mStepPos >= 0);
+    bool IsSecond = (mDestPos <= 0 && mCurrentPos >= mDestPos && mStepPos >= 0);
     bool IsThird = (mDestPos > 0 && mCurrentPos >= mDestPos && mStepPos >= 0);
-    bool IsFourth = (mDestPos > 0 && mCurrentPos < mDestPos && mStepPos < 0);
+    bool IsFourth = (mDestPos > 0 && mCurrentPos <= mDestPos && mStepPos < 0);
     if(IsFirst || IsSecond || IsThird || IsFourth)
     {
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,mDestPos);
         BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP(mDriverNumberBuffer);
         IsGoToPosState = false;
+        qDebug() << "Отправлено конечное положение " << QString::number(mDestPos) << endl;
+        return;
     }
-    qDebug() << "Отправленно положение " << QString::number(mCurrentPos) << endl;
+    else
+    {
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,(short)mCurrentPos);
+        qDebug() << "Отправлено положение " << QString::number(mCurrentPos) << endl;
+        mCurrentPos+=mStepPos;
+
+    }
+
+
 }
 
 void CommandController::CalcGoToPos()
