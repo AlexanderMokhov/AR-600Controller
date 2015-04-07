@@ -7,8 +7,6 @@ AR600Controller::AR600Controller(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-    connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnEnterTable(QModelIndex)));
-
     mUdpSocketResiver = new QUdpSocket(this);
     connect(mUdpSocketResiver, SIGNAL(readyRead()), this, SLOT(ProcessPendingDatagrams()));
 
@@ -26,18 +24,23 @@ AR600Controller::AR600Controller(QWidget *parent) :
     mSendBuffer = BufferController::Instance()->GetWriteBuffer();
     mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
 
+    //настраиваем виджеты
     mDriverControllerWidget = new DriverControllerWidget();
     ui->DriverControlLayout->addWidget(mDriverControllerWidget);
     mCommandControllerWidget = new CommandControllerWidget();
     ui->CommandControlLayout->addWidget(mCommandControllerWidget);
+    mChannelTableWidget = new ChannelTableWidget();
+    ui->ChannelTableLayout->addWidget(mChannelTableWidget);
+
+    mDriverControllerWidget->setModel(mChannelTableWidget->getModel());
+    connect(mChannelTableWidget,SIGNAL(RowChanged(int)),mDriverControllerWidget,SLOT(RowChanged(int)));
+    //конец настройки виджетов
+
     connect(mCommandControllerWidget,SIGNAL(StartPlayForward()),this,SLOT(OnStartPlayForward()));
 
     //графики
 
 {
-    //mPlot= new DataPlot();
-    //mPlot.setPlotWidget(ui->Plot);
-    //mPlot.draw();
     this->RangeSize=10;
     ui->Plot->addGraph();
     ui->Plot->graph(ui->Plot->graphCount()-1)->setPen(QPen(Qt::blue));
@@ -80,11 +83,7 @@ AR600Controller::AR600Controller(QWidget *parent) :
 
 
     //заполнение таблицы приводов
-    m_CLModel= new ChannelTableModel();
-    ui->ChannelTableView->setModel(m_CLModel);
-    mDriverControllerWidget->setModel(m_CLModel);
-    m_SelectionModel = ui->ChannelTableView->selectionModel();
-    ShowConfigData();
+    mChannelTableWidget->ShowConfigData();
 }
 
 AR600Controller::~AR600Controller()
@@ -242,17 +241,6 @@ void AR600Controller::SetLenght(double lenght)
     this->RangeSize = (int)lenght;
 }
 
-//происходит при выборе строки в талице моторов
-void AR600Controller::OnEnterTable(QModelIndex index)
-{
-    int row = m_SelectionModel->currentIndex().row();
-    mDriverControllerWidget->setCurrentRow(row);
-    m_CLModel->data(m_CLModel->index(row,0),Qt::EditRole);
-    mDriverControllerWidget->UpdateData();
-
-    QString value = QString::number(row);
-}
-
 void AR600Controller::OnStartPlayForward()
 {
     CurrentTimeForCommands = 0;
@@ -304,36 +292,6 @@ void AR600Controller::realtimeData()
 
     ui->Plot->xAxis->setRange(key+0.25, this->RangeSize, Qt::AlignRight);
     ui->Plot->replot();
-}
-
-void AR600Controller::ShowConfigData()
-{
-    std::map<unsigned int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
-    m_CLModel->removeRows(0,m_CLModel->rowCount());
-
-    std::map<unsigned int,DriverSettingsItem>::iterator it;
-
-    for(it = mMap->begin();it!=mMap->end();++it)
-    {
-        QString Number = QString::number((*it).first);
-        QString NumberBuffer = QString::number((*it).second.GetNumberBuffer());
-        QString Name = QString::fromStdString((*it).second.GetName());
-        QString Status = "0";
-        bool Reverce = (*it).second.GetReverce();
-        QString sReverce = QString::number(Reverce);
-        QString MinPos = QString::number((*it).second.GetMinPos());
-        QString MaxPos = QString::number((*it).second.GetMaxPos());
-        QString KP = QString::number((*it).second.GetStiff());
-        QString KI = QString::number((*it).second.GetDump());
-        QString KD = QString::number((*it).second.GetTorque());
-        QString Ilim = QString::number((*it).second.GetIlim());
-        m_CLModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,sReverce,KP,KI,KD,Ilim);
-    }
-    ui->ChannelTableView->verticalHeader()->hide();
-    ui->ChannelTableView->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
-    ui->ChannelTableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
-    ui->ChannelTableView->selectRow(0);
-    mDriverControllerWidget->setCurrentRow(0);
 }
 
 //TODO задать номер привода задать читать значения

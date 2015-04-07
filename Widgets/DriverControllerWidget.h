@@ -67,6 +67,8 @@ private:
     int ReverceCoeff;
 signals:
     void PropertyChanged(int Number);
+public slots:
+    void RowChanged(int cRow);
 
 };
 

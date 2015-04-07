@@ -265,3 +265,21 @@ void DriverControllerWidget::on_ButtonStopGoToPos_clicked()
     mWriteBuffer->MOTOR_STOP(CurrentNOMB);
     CommandController::Instance()->SetGoToPosState(false);
 }
+
+void DriverControllerWidget::RowChanged(int cRow)
+{
+    //Считываем номер мотра, адрес буфера, реверс
+    CurrentNumber = mModel->data(mModel->index(cRow,0),Qt::EditRole).toInt();
+    CurrentNOMB = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetNumberBuffer();
+    Reverce = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetReverce();
+    if(Reverce)
+        ReverceCoeff = -1;
+    else
+        ReverceCoeff = 1;
+    //инициализируем слайдер
+    SliderInit();
+    //отключаем режим калибрации и управление слайдером
+    TRACE = false;
+    Calibration=false;
+    UpdateData();
+}

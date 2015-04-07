@@ -13,6 +13,7 @@
 #include "ChannelTableModel.h"
 #include "Widgets/DriverControllerWidget.h"
 #include "Widgets/CommandControllerWidget.h"
+#include "Widgets/ChanneTableWidget.h"
 #include "BufferController.h"
 #include "CommandController.h"
 #include <QMessageBox>
@@ -50,12 +51,12 @@ private:
     int                 RangeSize;
     DriverControllerWidget * mDriverControllerWidget;
     CommandControllerWidget * mCommandControllerWidget;
+    ChannelTableWidget * mChannelTableWidget;
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();
     void realtimeData();
     void SetConfigData();
-    void ShowConfigData();
 
     ChannelTableModel *m_CLModel;
     QItemSelectionModel *m_SelectionModel;
@@ -91,7 +92,6 @@ public slots:
 	void Disconnect();
     void UdpSend();
     void SetLenght(double lenght);
-    void OnEnterTable(QModelIndex index);
     void OnStartPlayForward();
 
 };

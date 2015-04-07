@@ -13,9 +13,9 @@
   <property name="windowTitle">
    <string>AR-600E Controller</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_7" columnstretch="1,1,2,3,2">
-   <item row="0" column="0" colspan="4">
-    <layout class="QGridLayout" name="gridLayout_6" rowstretch="0,0,0,1">
+  <layout class="QGridLayout" name="gridLayout_7" rowstretch="0,10,0,0,0" columnstretch="0,0,10,0">
+   <item row="0" column="0" colspan="3">
+    <layout class="QGridLayout" name="gridLayout_6">
      <item row="0" column="0" colspan="3">
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -382,131 +382,34 @@
        </property>
       </spacer>
      </item>
-     <item row="3" column="0" colspan="4">
-      <widget class="QTableView" name="ChannelTableView">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
+    </layout>
+   </item>
+   <item row="0" column="3" rowspan="5">
+    <layout class="QGridLayout" name="gridLayout_5" rowstretch="2,8">
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="CommandControlLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
        </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Highlight">
-           <brush brushstyle="SolidPattern">
-            <color alpha="100">
-             <red>30</red>
-             <green>144</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="HighlightedText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Link">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Highlight">
-           <brush brushstyle="SolidPattern">
-            <color alpha="100">
-             <red>30</red>
-             <green>144</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="HighlightedText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Link">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Highlight">
-           <brush brushstyle="SolidPattern">
-            <color alpha="100">
-             <red>30</red>
-             <green>144</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="HighlightedText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Link">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <layout class="QHBoxLayout" name="DriverControlLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
        </property>
-       <property name="styleSheet">
-        <string notr="true">selection-color: black; selection-background-color: rgba(30, 144, 255, 100);</string>
-       </property>
-       <property name="sizeAdjustPolicy">
-        <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
-       </property>
-       <property name="alternatingRowColors">
-        <bool>false</bool>
-       </property>
-       <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectRows</enum>
-       </property>
-       <attribute name="horizontalHeaderCascadingSectionResizes">
-        <bool>false</bool>
-       </attribute>
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>70</number>
-       </attribute>
-       <attribute name="horizontalHeaderHighlightSections">
-        <bool>false</bool>
-       </attribute>
-      </widget>
+      </layout>
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="0" colspan="3">
+    <layout class="QVBoxLayout" name="ChannelTableLayout" stretch="">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+    </layout>
+   </item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="label_3">
@@ -540,7 +443,20 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="2" column="1" colspan="2">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>477</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="label_6">
@@ -565,20 +481,7 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="1" colspan="3">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>477</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="2" colspan="2">
+   <item row="3" column="2">
     <spacer name="horizontalSpacer_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -591,7 +494,7 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="0" colspan="4">
+   <item row="4" column="0" colspan="3">
     <spacer name="horizontalSpacer_4">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -604,29 +507,12 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="4" rowspan="4">
-    <layout class="QGridLayout" name="gridLayout_5" rowstretch="2,8">
-     <item row="0" column="0">
-      <layout class="QHBoxLayout" name="CommandControlLayout">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
-       </property>
-      </layout>
-     </item>
-     <item row="1" column="0">
-      <layout class="QHBoxLayout" name="DriverControlLayout">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetFixedSize</enum>
-       </property>
-      </layout>
-     </item>
-    </layout>
-   </item>
   </layout>
   <zorder></zorder>
   <zorder>horizontalSpacer_2</zorder>
   <zorder>horizontalSpacer_3</zorder>
   <zorder>horizontalSpacer_4</zorder>
+  <zorder>verticalLayoutWidget</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
