@@ -18,8 +18,6 @@ class DriverControllerWidget : public QWidget
 public:
     explicit DriverControllerWidget(QWidget *parent = 0);
     ~DriverControllerWidget();
-    void setNumber(int Number);
-    void setCurrentRow(int Row);
     void setModel(ChannelTableModel *model);
     void UpdateData();
 
@@ -59,6 +57,7 @@ private:
     ChannelTableModel * mModel;
     MBRead *mReadBuffer;
     MBWrite *mWriteBuffer;
+    int currentRow;
     int CurrentNumber;
     int CurrentNOMB;
     bool Reverce;

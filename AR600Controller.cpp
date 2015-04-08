@@ -252,6 +252,7 @@ void AR600Controller::ProcessTheDatagram(QByteArray &datagramm)
     mReceiveBuffer->Init(datagramm.data());
     UpdatePowerLabel();
     mDriverControllerWidget->UpdateData();
+    mChannelTableWidget->UpdatePos();
 }
 
 //обновление значений напряжений и токов

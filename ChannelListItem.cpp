@@ -4,13 +4,13 @@ ChannelListItem::ChannelListItem()
 {
     mNumber=0;
     mChannelDesc="Driver";
-    mStatus="Disabled"; // TODO: rewrite to enum
+    mStatus="STOP";
     mPos=0;
     mMinPos=-500;
     mMaxPos=500;
     mReverce=false;
-    mKI=2;
     mKP=900;
+    mKI=2;
     mKD=1;
     mIlim=1;
 }

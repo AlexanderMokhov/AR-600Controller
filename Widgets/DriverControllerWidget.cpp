@@ -17,16 +17,17 @@ DriverControllerWidget::~DriverControllerWidget()
     delete ui;
 }
 
-void DriverControllerWidget::setNumber(int Number)
+void DriverControllerWidget::setModel(ChannelTableModel *model)
 {
-    ui->spinNumber->setValue(Number);
+    mModel=model;
 }
 
-//Происходит при выборе строки в таблице
-void DriverControllerWidget::setCurrentRow(int Row)
+void DriverControllerWidget::RowChanged(int cRow)
 {
     //Считываем номер мотра, адрес буфера, реверс
-    CurrentNumber = mModel->data(mModel->index(Row,0),Qt::EditRole).toInt();
+    currentRow = cRow;
+    CurrentNumber = mModel->data(mModel->index(currentRow,0),Qt::EditRole).toInt();
+    ui->lineNumber->setText(QString::number(CurrentNumber));
     CurrentNOMB = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetNumberBuffer();
     Reverce = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetReverce();
     if(Reverce)
@@ -38,36 +39,27 @@ void DriverControllerWidget::setCurrentRow(int Row)
     //отключаем режим калибрации и управление слайдером
     TRACE = false;
     Calibration=false;
-}
-
-void DriverControllerWidget::setModel(ChannelTableModel *model)
-{
-    mModel=model;
+    UpdateData();
 }
 
 //вызывается при приходе новых значений
 void DriverControllerWidget::UpdateData()
 {
-    //показываем номер мотора
-    ui->spinNumber->setValue(CurrentNumber);
-
     //обновляем текущую позицию
-    if(Reverce)
+    int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
+    if(Reverce && Calibration)
     {
-        if(Calibration)
-            ui->spinPosition->setValue(-1*mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
-        else
-            ui->spinPosition->setValue(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+        ui->lineCurrentPos->setText(QString::number(-1*CurrentPos));
     }
     else
     {
-        ui->spinPosition->setValue(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+        ui->lineCurrentPos->setText(QString::number(CurrentPos));
     }
 
     //если слайдер не управляет обновляем и на нем
     if(!TRACE)
     {
-        ui->SliderPosition->setValue(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+        ui->SliderPosition->setValue(CurrentPos);
     }
 
     //обновляем информацию о токе и напряжении на моторах
@@ -85,15 +77,11 @@ void DriverControllerWidget::UpdateData()
         DT=1;
     if((unsigned char)(status & 2) == 2)
     {
-        RELAX=1;
-        BRK=0;
+        RELAX=1; BRK=0;
     }
     if((unsigned char)(status & 3) == 3)
     {
-        TRACE=1;
-        BRK=0;
-        DT=0;
-        RELAX=0;
+        TRACE=1; BRK=DT=RELAX=0;
     }
     if(BRK){statusString+="BRAKE";}
     if(DT){statusString+="-DT";}
@@ -163,12 +151,15 @@ void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
 void DriverControllerWidget::on_ButtonSaveZero_clicked()
 {
     //записываем в файл настроек новые калибровочные коэффициенты
-    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetIlim(-1*mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
+    int NewIlim=ReverceCoeff*CurrentPos;
+    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetIlim(NewIlim);
+    mModel->setData(mModel->index(currentRow,10),QString::number(NewIlim));
     ConfigController::Instance()->SaveFile("config.xml");
 
     //записываем в мотор калибровочные коэффициенты
-    mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim());
-    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,NewIlim);
+    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, CurrentPos);
 
     //разрешаем вход в режим управления слайдером
     ui->groupBoxCalibration->setChecked(false);
@@ -211,18 +202,24 @@ void DriverControllerWidget::on_checkBoxTrace_clicked(bool checked)
 //инициализация слайдера и мин макс
 void DriverControllerWidget::SliderInit()
 {
+    int MinPos = mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB);
+    int MaxPos = mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB);
+    int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
+    int CalibrateValue = mReadBuffer->Get_MOTOR_IMOT(CurrentNOMB);
 
-    ui->SliderPosition->setMinimum(mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB));
-    ui->SliderPosition->setMaximum(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
-    ui->spinMinPos->setValue(mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB));
-    ui->spinMaxPos->setValue(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
+    ui->SliderPosition->setMinimum(MinPos);
+    ui->SliderPosition->setMaximum(MaxPos);
+    ui->lineMinPos->setText(QString::number(MinPos));
+    ui->lineMaxPos->setText(QString::number(MaxPos));
+    ui->lineCalibrateValue->setText(QString::number(CalibrateValue));
+
     ui->spinDump->setValue(mReadBuffer->Get_MOTOR_DAMP(CurrentNOMB));
     ui->spinStiff->setValue(mReadBuffer->Get_MOTOR_STIFF(CurrentNOMB));
-    ui->spinPosToGo->setMinimum(mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB));
-    ui->spinPosToGo->setMaximum(mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB));
+    ui->spinPosToGo->setMinimum(MinPos);
+    ui->spinPosToGo->setMaximum(MaxPos);
 
-    ui->SliderPosition->setValue(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
-    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    ui->SliderPosition->setValue(CurrentPos);
+    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, CurrentPos);
 }
 
 void DriverControllerWidget::on_ButtonStiffWrite_clicked()
@@ -248,10 +245,13 @@ void DriverControllerWidget::on_ButtonDumpWrite_clicked()
 
 void DriverControllerWidget::on_ButtonGoToPos_clicked()
 {
-    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
+
+    mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, CurrentPos);
     mWriteBuffer->MOTOR_TRACE(CurrentNOMB);
+
     CommandController::Instance()->SetDestPos(ui->spinPosToGo->value());
-    CommandController::Instance()->SetStartPos(mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
+    CommandController::Instance()->SetStartPos(CurrentPos);
     CommandController::Instance()->SetTimeToGo(ui->spinTimeToGo->value());
     CommandController::Instance()->SetDriverNumberBuffer(CurrentNOMB);
     CommandController::Instance()->CalcGoToPos();
@@ -264,20 +264,3 @@ void DriverControllerWidget::on_ButtonStopGoToPos_clicked()
     CommandController::Instance()->SetGoToPosState(false);
 }
 
-void DriverControllerWidget::RowChanged(int cRow)
-{
-    //Считываем номер мотра, адрес буфера, реверс
-    CurrentNumber = mModel->data(mModel->index(cRow,0),Qt::EditRole).toInt();
-    CurrentNOMB = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetNumberBuffer();
-    Reverce = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetReverce();
-    if(Reverce)
-        ReverceCoeff = -1;
-    else
-        ReverceCoeff = 1;
-    //инициализируем слайдер
-    SliderInit();
-    //отключаем режим калибрации и управление слайдером
-    TRACE = false;
-    Calibration=false;
-    UpdateData();
-}

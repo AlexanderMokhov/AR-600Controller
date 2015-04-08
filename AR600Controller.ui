@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>724</width>
+    <width>741</width>
     <height>528</height>
    </rect>
   </property>
@@ -403,7 +403,7 @@
     </layout>
    </item>
    <item row="1" column="0" colspan="3">
-    <layout class="QVBoxLayout" name="ChannelTableLayout" stretch="">
+    <layout class="QVBoxLayout" name="ChannelTableLayout">
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
      </property>
@@ -512,7 +512,6 @@
   <zorder>horizontalSpacer_2</zorder>
   <zorder>horizontalSpacer_3</zorder>
   <zorder>horizontalSpacer_4</zorder>
-  <zorder>verticalLayoutWidget</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

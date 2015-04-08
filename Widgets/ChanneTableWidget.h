@@ -5,6 +5,7 @@
 #include "ConfigController.h"
 #include "ChannelTableModel.h"
 #include <QItemSelectionModel>
+#include "BufferController.h"
 
 namespace Ui {
 class ChannelTableWidget;
@@ -20,6 +21,7 @@ public:
 
     void ShowConfigData();
     ChannelTableModel *getModel();
+    void UpdatePos();
 private:
     Ui::ChannelTableWidget *ui;
     ChannelTableModel *mModel;

@@ -10,8 +10,8 @@ ChannelTableModel::ChannelTableModel(QObject *parent) : QAbstractTableModel(pare
                 << QString::fromUtf8(" МинПоз ")
                 << QString::fromUtf8(" МаксПоз ")
                 << QString::fromUtf8(" Реверс ")
-                << QString::fromUtf8(" KI ")
                 << QString::fromUtf8(" KP ")
+                << QString::fromUtf8(" KI ")
                 << QString::fromUtf8(" KD ")
                 << QString::fromUtf8(" КалибПол ");
 
@@ -112,7 +112,9 @@ bool ChannelTableModel::setData(const QModelIndex &index, const QVariant &value,
         if(index.column()==10){
             mDataList.at(index.row())->mIlim = value.toString().toInt();
         }
+        emit dataChanged(index, index);
         return true;
+
     }
     return false;
 }
@@ -188,8 +190,8 @@ void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelD
     setData( index( mDataList.size()-1, 4 ), MinPos );
     setData( index( mDataList.size()-1, 5 ), MaxPos );
     setData( index( mDataList.size()-1, 6 ), Reverce );
-    setData( index( mDataList.size()-1, 7 ), KI );
-    setData( index( mDataList.size()-1, 8 ), KP );
+    setData( index( mDataList.size()-1, 7 ), KP );
+    setData( index( mDataList.size()-1, 8 ), KI );
     setData( index( mDataList.size()-1, 9 ), KD );
     setData( index( mDataList.size()-1, 10 ), Ilim );
 }
