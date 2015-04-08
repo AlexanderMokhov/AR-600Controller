@@ -13,6 +13,7 @@ ChannelTableWidget::ChannelTableWidget(QWidget *parent) :
     ui->ChannelTableView->verticalHeader()->hide();
     ui->ChannelTableView->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
     ui->ChannelTableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    ui->ChannelTableView->resizeColumnsToContents();
 
     connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnRowChanged(QModelIndex)));
 }
