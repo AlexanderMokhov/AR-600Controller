@@ -70,6 +70,7 @@ bool CommandController::LoadFromFile(std::string fileName)
 
         while(std::getline(file, str))
         {
+
             std::locale loc;
             //читаем очередную строку из файла
 
@@ -174,7 +175,7 @@ bool CommandController::LoadFromFile(std::string fileName)
             }
 
             //заполняем команду
-            nextCommand.SetTime(Time);
+            nextCommand.SetTime((int)Time);
             nextCommand.SetNumber(Number);
             nextCommand.SetPosition((int)Position);
             nextCommand.SetPID(mPID);

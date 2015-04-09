@@ -44,8 +44,8 @@ void DataPlot::play()
     static double lastPointKey = 0;
     if (key-lastPointKey > 0.01) // at most add point every 10 ms
     {
-      double value0 = qSin(key); //qSin(key*1.6+qCos(key*1.7)*2)*10 + qSin(key*1.2+0.56)*20 + 26;
-      double value1 = qCos(key); //qSin(key*1.3+qCos(key*1.2)*1.2)*7 + qSin(key*0.9+0.26)*24 + 26;
+      double value0 = qSin(key);
+      double value1 = qCos(key);
       // добавить данные в линию:
       mPlot->graph(0)->addData(key, value0);
       mPlot->graph(1)->addData(key, value1);
