@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     DataPlot.cpp \
     ChannelTableController.cpp \
     Widgets/ChannelTableWidget.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    Widgets/DriverLogWidget.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -57,11 +58,17 @@ HEADERS  += \
     DataPlot.h \
     ChannelTableController.h \
     Widgets/ChanneTableWidget.h \
-    qcustomplot.h
+    qcustomplot.h \
+    Widgets/DriverLogWidget.h
 
 FORMS    += \
     AR600Controller.ui \
     Widgets/DriverControllerWidget.ui \
     Widgets/CommandControllerWidget.ui \
-    Widgets/ChannelTableWidget.ui
+    Widgets/ChannelTableWidget.ui \
+    Widgets/DriverLogWidget.ui
 
+win32 {
+    RC_FILE += resource.rc
+    OTHER_FILES += resource.rc
+}

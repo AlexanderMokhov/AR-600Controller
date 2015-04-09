@@ -14,6 +14,7 @@
 #include "Widgets/DriverControllerWidget.h"
 #include "Widgets/CommandControllerWidget.h"
 #include "Widgets/ChanneTableWidget.h"
+#include "Widgets/DriverLogWidget.h"
 #include "BufferController.h"
 #include "CommandController.h"
 #include <QMessageBox>
@@ -49,9 +50,11 @@ private:
     int                 mSendDelay;
 
     int                 RangeSize;
-    DriverControllerWidget * mDriverControllerWidget;
-    CommandControllerWidget * mCommandControllerWidget;
-    ChannelTableWidget * mChannelTableWidget;
+
+    DriverControllerWidget  *mDriverControllerWidget;
+    CommandControllerWidget *mCommandControllerWidget;
+    ChannelTableWidget      *mChannelTableWidget;
+    DriverLogWidget         *mDriverLogWidget;
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();
@@ -60,26 +63,16 @@ private:
 
     ChannelTableModel *m_CLModel;
     QItemSelectionModel *m_SelectionModel;
-    LogController *mLogController;
     uint CurrentTime;
     long CurrentTimeForCommands;
 
 
 private slots:
     void ProcessPendingDatagrams();
-    void StartSending();
 
     void on_pButtonSaveXML_clicked();
     void on_pButtonOpenXML_clicked();
     /*void SendMessage();*/
-
-    void on_ButtonStartLog_clicked();
-
-    void on_LogWrite();
-
-    void on_ButtonStopLog_clicked();
-
-    void on_ButtonSaveLog_clicked();
 
 public slots:
     void On48Slot(bool value);

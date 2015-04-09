@@ -13,10 +13,17 @@
   <property name="windowTitle">
    <string>AR-600E Controller</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_7" rowstretch="0,10,0,0,0" columnstretch="0,0,10,0">
-   <item row="0" column="0" colspan="3">
-    <layout class="QGridLayout" name="gridLayout_6">
-     <item row="0" column="0" colspan="3">
+  <layout class="QGridLayout" name="gridLayout_6" rowstretch="0,10,0" columnstretch="0,10,0">
+   <item row="0" column="0" colspan="2">
+    <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,0,0">
+     <item row="0" column="2" rowspan="2">
+      <layout class="QVBoxLayout" name="DriverLogWidgetLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+      </layout>
+     </item>
+     <item row="0" column="0" colspan="2">
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QLabel" name="label">
@@ -74,31 +81,11 @@
        </item>
       </layout>
      </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>128</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="0" rowspan="2">
+     <item row="1" column="0">
       <layout class="QGridLayout" name="gridLayout">
        <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
+        <enum>QLayout::SetMaximumSize</enum>
        </property>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_14">
-         <property name="text">
-          <string>V</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="2">
         <widget class="QLabel" name="label_15">
          <property name="text">
@@ -115,6 +102,48 @@
        </item>
        <item row="1" column="1">
         <widget class="QLabel" name="label_48V">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>V</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_61V">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLabel" name="label_61A">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QCheckBox" name="checkBox6V2">
+         <property name="text">
+          <string>6V (2)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_62V">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QLabel" name="label_62A">
          <property name="text">
           <string>0</string>
          </property>
@@ -176,139 +205,14 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QLabel" name="label_61V">
-         <property name="text">
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QLabel" name="label_61A">
-         <property name="text">
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QCheckBox" name="checkBox6V2">
-         <property name="text">
-          <string>6V (2)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="label_62V">
-         <property name="text">
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QLabel" name="label_62A">
-         <property name="text">
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item row="1" column="1">
-      <layout class="QGridLayout" name="gridLayout_4">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
-       </property>
-       <item row="0" column="1">
-        <widget class="QSpinBox" name="spinBoxLog">
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-         <property name="value">
-          <number>5</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Интервал (мс)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QSpinBox" name="spinLogEndTime">
-         <property name="maximum">
-          <number>40000</number>
-         </property>
-         <property name="value">
-          <number>15000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QToolButton" name="ButtonStartLog">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Start Log</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QToolButton" name="ButtonStopLog">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Stop Log</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QPushButton" name="ButtonSaveLog">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Save Log</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="labelLogCTime">
-         <property name="text">
-          <string>0</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Шаг (мс)</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="2" rowspan="2" colspan="2">
       <layout class="QGridLayout" name="gridLayout_3">
        <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
+        <enum>QLayout::SetMaximumSize</enum>
        </property>
-       <item row="0" column="0">
+       <item row="0" column="1">
         <widget class="QCustomPlot" name="Plot" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -324,7 +228,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="1" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QLabel" name="label_4">
@@ -369,22 +273,9 @@
        </item>
       </layout>
      </item>
-     <item row="2" column="1">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>18</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
     </layout>
    </item>
-   <item row="0" column="3" rowspan="5">
+   <item row="0" column="2" rowspan="3">
     <layout class="QGridLayout" name="gridLayout_5" rowstretch="2,8">
      <item row="0" column="0">
       <layout class="QHBoxLayout" name="CommandControlLayout">
@@ -402,7 +293,7 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0" colspan="3">
+   <item row="1" column="0" colspan="2">
     <layout class="QVBoxLayout" name="ChannelTableLayout">
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
@@ -410,53 +301,6 @@
     </layout>
    </item>
    <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Задержка:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="timeOutSpinBox">
-       <property name="decimals">
-        <number>6</number>
-       </property>
-       <property name="maximum">
-        <double>10.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.001000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.000100000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="toolButtonStartSending">
-       <property name="text">
-        <string>Start Sending</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="2" column="1" colspan="2">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>477</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="3" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="label_6">
@@ -481,7 +325,7 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="2">
+   <item row="2" column="1">
     <spacer name="horizontalSpacer_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -494,24 +338,10 @@
      </property>
     </spacer>
    </item>
-   <item row="4" column="0" colspan="3">
-    <spacer name="horizontalSpacer_4">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>386</width>
-       <height>22</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
   <zorder></zorder>
-  <zorder>horizontalSpacer_2</zorder>
   <zorder>horizontalSpacer_3</zorder>
-  <zorder>horizontalSpacer_4</zorder>
+  <zorder>verticalLayoutWidget</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -553,22 +383,6 @@
     <hint type="destinationlabel">
      <x>230</x>
      <y>33</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>toolButtonStartSending</sender>
-   <signal>clicked()</signal>
-   <receiver>Widget</receiver>
-   <slot>StartSending()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>75</x>
-     <y>215</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>249</x>
-     <y>123</y>
     </hint>
    </hints>
   </connection>

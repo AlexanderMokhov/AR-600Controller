@@ -24,11 +24,11 @@ struct LogData
     std::map<int,int> DriversData;
 };
 
-class LogController
+class DriverLogController
 {
 public:
-    LogController();
-    ~LogController();
+    DriverLogController();
+    ~DriverLogController();
 
 
 

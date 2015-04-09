@@ -31,6 +31,8 @@ AR600Controller::AR600Controller(QWidget *parent) :
     ui->CommandControlLayout->addWidget(mCommandControllerWidget);
     mChannelTableWidget = new ChannelTableWidget();
     ui->ChannelTableLayout->addWidget(mChannelTableWidget);
+    mDriverLogWidget = new DriverLogWidget();
+    ui->DriverLogWidgetLayout->addWidget(mDriverLogWidget);
 
     mDriverControllerWidget->setModel(mChannelTableWidget->getModel());
     connect(mChannelTableWidget,SIGNAL(RowChanged(int)),mDriverControllerWidget,SLOT(RowChanged(int)));
@@ -156,16 +158,6 @@ void AR600Controller::ProcessPendingDatagrams()
 
     realtimeData();
 }
-
-void AR600Controller::StartSending()
-{
-    UdpSend();
-}
-
-/*void AR600Controller::SendMessage()
-{
-    ;
-}*/
 
 //включение / отключение питания 48 В
 void AR600Controller::On48Slot(bool value)
@@ -332,35 +324,4 @@ void AR600Controller::on_pButtonOpenXML_clicked()
 
 
     }
-}
-
-void AR600Controller::on_ButtonStartLog_clicked()
-{
-    mLogTimer = new QTimer(this);
-    connect(mLogTimer, SIGNAL(timeout()), SLOT(on_LogWrite()));
-    mLogController=new LogController();
-    CurrentTime=0;
-    mLogTimer->start(ui->spinBoxLog->value());
-}
-
-void AR600Controller::on_LogWrite()
-{
-    mLogController->AddRawData(CurrentTime);
-    CurrentTime+=ui->spinBoxLog->value();
-    ui->labelLogCTime->setText(QString::number(CurrentTime));
-    if(CurrentTime> ui->spinLogEndTime->value())
-    {
-        mLogTimer->stop();
-    }
-
-}
-
-void AR600Controller::on_ButtonStopLog_clicked()
-{
-    mLogTimer->stop();
-}
-
-void AR600Controller::on_ButtonSaveLog_clicked()
-{
-    mLogController->SaveData(QString("DriverLog_" + QDateTime::currentDateTime().toString("dd_MM_yyyy_HH_mm_ss")+"_.txt").toStdString());
 }
