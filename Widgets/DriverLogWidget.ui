@@ -181,7 +181,7 @@
          <item>
           <widget class="QPushButton" name="ButtonStopRecord">
            <property name="text">
-            <string>Останока</string>
+            <string>Остановка</string>
            </property>
           </widget>
          </item>
