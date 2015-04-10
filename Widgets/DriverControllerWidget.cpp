@@ -205,8 +205,7 @@ void DriverControllerWidget::SliderInit()
     int MinPos = mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB);
     int MaxPos = mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB);
     int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
-    int CalibrateValue = mReadBuffer->Get_MOTOR_IMOT(CurrentNOMB);
-
+    int CalibrateValue = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim();
     ui->SliderPosition->setMinimum(MinPos);
     ui->SliderPosition->setMaximum(MaxPos);
     ui->lineMinPos->setText(QString::number(MinPos));

@@ -86,9 +86,9 @@ short MBRead::Get_MOTOR_UBATT(short NOMB)
 }
 
 //получить ток, потребляемый мотором
-float MBRead::Get_MOTOR_IMOT(short NOMB)
+short MBRead::Get_MOTOR_IMOT(short NOMB)
 {
-    return float((mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6]);
+    return (mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
 }
 
 //получить текщую позицию мотора
