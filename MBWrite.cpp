@@ -182,7 +182,7 @@ void MBWrite::Set_SENSOR_UCH3(short NOMB, short value)
     mWRBuffer[NOMB * 16 + 15] = value;
 }
 
-void MBWrite::SENSOR_OFFSET(short NOMB, unsigned char RXBuffer[])
+void MBWrite::SENSOR_OFFSET(short NOMB,const char RXBuffer[])
 {
     mWRBuffer[NOMB * 16 + 8] = RXBuffer[NOMB * 16 + 8];
     mWRBuffer[NOMB * 16 + 9] = RXBuffer[NOMB * 16 + 9];
@@ -197,7 +197,7 @@ void MBWrite::SENSOR_OFFSET(short NOMB, unsigned char RXBuffer[])
     mWRBuffer[NOMB * 16 + 15] = RXBuffer[NOMB * 16 + 15];
 }
 
-void MBWrite::SENSOR_XY_OFFSET(short NOMB, unsigned char RXBuffer[])
+void MBWrite::SENSOR_XY_OFFSET(short NOMB,const char RXBuffer[])
 {
     mWRBuffer[NOMB * 16 + 2] = RXBuffer[NOMB * 16 + 2];
     mWRBuffer[NOMB * 16 + 3] = RXBuffer[NOMB * 16 + 3];
@@ -206,7 +206,7 @@ void MBWrite::SENSOR_XY_OFFSET(short NOMB, unsigned char RXBuffer[])
     mWRBuffer[NOMB * 16 + 5] = RXBuffer[NOMB * 16 + 5];
 }
 
-void MBWrite::SENSOR_Z_OFFSET(short NOMB, unsigned char RXBuffer[])
+void MBWrite::SENSOR_Z_OFFSET(short NOMB,const char RXBuffer[])
 {
     mWRBuffer[NOMB * 16 + 6] = RXBuffer[NOMB * 16 + 6];
     mWRBuffer[NOMB * 16 + 7] = RXBuffer[NOMB * 16 + 7];

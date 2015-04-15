@@ -56,5 +56,6 @@ public:
     void SetReverceMap(std::map<int, bool> *ReverceMap);
     void SetMinPosMap(std::map<int, int> *MinPosMap);
     void SetMaxPosMap(std::map<int, int> *MaxPosMap);
+    const char *GetBuffer();
 };
 

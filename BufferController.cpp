@@ -47,5 +47,6 @@ void BufferController::InitBuffers()
     mReadBuffer.Init(mWriteBuffer.GetBuffer());
 
     mReadBuffer.SetReverceMap(mWriteBuffer.GetReverceMap());
+    mWriteBuffer.SENSOR_OFFSET(10,mReadBuffer.GetBuffer());
 }
 

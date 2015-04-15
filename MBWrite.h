@@ -31,9 +31,9 @@ public:
     void Set_SENSOR_UCH2(short NOMB, short value);
     void Set_SENSOR_UCH3(short NOMB, short value);
 
-    void SENSOR_OFFSET(short NOMB, unsigned char RXBuffer[]);
-    void SENSOR_XY_OFFSET(short NOMB, unsigned char RXBuffer[]);
-    void SENSOR_Z_OFFSET(short NOMB, unsigned char RXBuffer[]);
+    void SENSOR_OFFSET(short NOMB,const char RXBuffer[]);
+    void SENSOR_XY_OFFSET(short NOMB,const char RXBuffer[]);
+    void SENSOR_Z_OFFSET(short NOMB,const char RXBuffer[]);
 
     void Set_MOTOR_ANGLE(short NOMB, short value);
     void Set_MOTOR_ILIM(short NOMB, short value);

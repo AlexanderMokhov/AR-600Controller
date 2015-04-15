@@ -244,6 +244,11 @@ void MBRead::SetMaxPosMap(std::map<int, int> *MaxPosMap)
     mMaxPosMap=*MaxPosMap;
 }
 
+const char *MBRead::GetBuffer()
+{
+    return mRXBuffer;
+}
+
 
 
 
