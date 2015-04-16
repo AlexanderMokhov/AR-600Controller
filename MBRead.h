@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <stdlib.h>
+#include <QUdpSocket>
 
 class MBRead
 {
@@ -10,6 +11,9 @@ private:
     std::map<int,bool> mReverceMap;
     std::map<int,int> mMaxPosMap;
     std::map<int,int> mMinPosMap;
+
+    QUdpSocket  *mUdpSocketResiver;
+
 public:
     MBRead(void);
     ~MBRead(void);

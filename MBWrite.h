@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <stdlib.h>
+#include <QUdpSocket>
 
 class MBWrite
 {
@@ -12,6 +13,9 @@ private:
     std::map<int,int> mMinPosMap;
     short mMinPos;
     short mMaxPos;
+
+    QUdpSocket  *mUdpSocketSender;//сокет для отправки
+
 public:
 	MBWrite(void);
 	~MBWrite(void);
