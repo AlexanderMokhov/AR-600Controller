@@ -20,6 +20,7 @@
 #include <QMessageBox>
 #include <qfiledialog.h>
 #include "DriverLogController.h"
+#include "ThreadReceive.h"
 
 
 namespace Ui {
@@ -55,6 +56,8 @@ private:
     CommandControllerWidget *mCommandControllerWidget;
     ChannelTableWidget      *mChannelTableWidget;
     DriverLogWidget         *mDriverLogWidget;
+
+    ThreadReceive *mThreadRecieve;
 
     void ProcessTheDatagram(QByteArray& datagramm);
     void UpdatePowerLabel();

@@ -8,7 +8,7 @@ AR600Controller::AR600Controller(QWidget *parent) :
 	ui->setupUi(this);
 
     mUdpSocketResiver = new QUdpSocket(this);
-    connect(mUdpSocketResiver, SIGNAL(readyRead()), this, SLOT(ProcessPendingDatagrams()));
+    //connect(mUdpSocketResiver, SIGNAL(readyRead()), this, SLOT(ProcessPendingDatagrams()));
 
     mUdpSocketSender =  new QUdpSocket(this);
 
@@ -86,6 +86,11 @@ AR600Controller::AR600Controller(QWidget *parent) :
 
     //заполнение таблицы приводов
     mChannelTableWidget->ShowConfigData();
+
+    mThreadRecieve = new ThreadReceive();
+    connect(mThreadRecieve,SIGNAL(ReadyData()),this,SLOT(ProcessPendingDatagrams()));
+    mThreadRecieve->start();
+
 }
 
 AR600Controller::~AR600Controller()
@@ -99,10 +104,11 @@ void AR600Controller::Connect()
 	mHost = ui->hostLineEdit->text().toStdString();
     mPort = ui->portLineEdit->text().toInt();
 
-    if (!mUdpSocketResiver->bind(mPort,QUdpSocket::ShareAddress))
-    {
-        qDebug()<< "Not Bind!";
-    }
+//    if (!mUdpSocketResiver->bind(mPort,QUdpSocket::ShareAddress))
+//    {
+//        qDebug()<< "Not Bind!";
+//    }
+    mThreadRecieve->ConnectSocket();
 
     mUdpSocketSender->connectToHost(QString::fromStdString(mHost) , mPort);
     mUdpSocketSender->waitForConnected(1000);
@@ -131,7 +137,8 @@ void AR600Controller::Disconnect()
     mUdpSocketSender->disconnect();
     //mUdpSocketSender->waitForDisconnected();
 
-    mUdpSocketResiver->disconnect();
+    //mUdpSocketResiver->disconnect();
+    mThreadRecieve->DisconnectSocket();
 
     if (mUdpSocketSender->state()==QUdpSocket::ConnectedState)
 	        qDebug() << "Connected";
@@ -142,19 +149,19 @@ void AR600Controller::Disconnect()
 //прием пакета от робота
 void AR600Controller::ProcessPendingDatagrams()
 {
-   qDebug()<< "UDPRead";
-   while (mUdpSocketResiver->hasPendingDatagrams())
-   {
-       QByteArray datagram;
-       datagram.resize(mUdpSocketResiver->pendingDatagramSize());
-       QHostAddress sender;
-       quint16 senderPort;
+//   qDebug()<< "UDPRead";
+//   while (mUdpSocketResiver->hasPendingDatagrams())
+//   {
+//       QByteArray datagram;
+//       datagram.resize(mUdpSocketResiver->pendingDatagramSize());
+//       QHostAddress sender;
+//       quint16 senderPort;
 
-       mUdpSocketResiver->readDatagram(datagram.data(), datagram.size(),&sender, &senderPort);
+//       mUdpSocketResiver->readDatagram(datagram.data(), datagram.size(),&sender, &senderPort);
 
-       //Отправляем пакет на обработку
-       ProcessTheDatagram(datagram);
-    }
+//       //Отправляем пакет на обработку
+//       ProcessTheDatagram(datagram);
+//    }
 
     realtimeData();
 }

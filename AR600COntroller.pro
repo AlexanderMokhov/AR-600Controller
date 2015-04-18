@@ -38,7 +38,9 @@ SOURCES += main.cpp\
     Widgets/ChannelTableWidget.cpp \
     qcustomplot.cpp \
     Widgets/DriverLogWidget.cpp \
-    Widgets/PowerWidget.cpp
+    Widgets/PowerWidget.cpp \
+    ThreadReceive.cpp \
+    ThreadSend.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -61,7 +63,9 @@ HEADERS  += \
     Widgets/ChanneTableWidget.h \
     qcustomplot.h \
     Widgets/DriverLogWidget.h \
-    Widgets/PowerWidget.h
+    Widgets/PowerWidget.h \
+    ThreadReceive.h \
+    ThreadSend.h
 
 FORMS    += \
     AR600Controller.ui \
