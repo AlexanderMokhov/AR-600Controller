@@ -7,11 +7,13 @@ PowerWidget::PowerWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     mTimer = new QTimer(this);
+    mInterval = 500;
     mTimer->setInterval(mInterval);//интервал 2 секунды
     mCurrentTime = 0;
     isOn = true;
 
     connect(mTimer,SIGNAL(timeout()),this,SLOT(OnTimerTick()));
+    mReadBuffer = BufferController::Instance()->GetReadBuffer();
 }
 
 PowerWidget::~PowerWidget()
@@ -19,11 +21,30 @@ PowerWidget::~PowerWidget()
     delete ui;
 }
 
+void PowerWidget::UpdatePowerLabel()
+{
+    ui->line48_U->setText(QString::number(mReadBuffer->GetU48()));
+    ui->line48_I->setText(QString::number(mReadBuffer->GetI48()));
+
+    ui->line81_U->setText(QString::number(mReadBuffer->GetU81()));
+    ui->line81_I->setText(QString::number(mReadBuffer->GetI81()));
+
+    ui->line82_U->setText(QString::number(mReadBuffer->GetU82()));
+    ui->line82_I->setText(QString::number(mReadBuffer->GetI82()));
+
+    ui->line61_U->setText(QString::number(mReadBuffer->GetU61()));
+    ui->line61_I->setText(QString::number(mReadBuffer->GetI61()));
+
+    ui->line62_U->setText(QString::number(mReadBuffer->GetU62()));
+    ui->line62_I->setText(QString::number(mReadBuffer->GetI62()));
+
+}
+
 //включить все
 void PowerWidget::on_ButtonOnAll_clicked()
 {
     isOn = true;
-
+    ChechBoxSetEnable(false);
     if(!mTimer->isActive())
     {
         mTimer->start();
@@ -33,7 +54,7 @@ void PowerWidget::on_ButtonOnAll_clicked()
 void PowerWidget::on_ButtonOffAll_clicked()
 {
    isOn = false;
-
+   ChechBoxSetEnable(false);
    if(!mTimer->isActive())
    {
        mTimer->start();
@@ -48,70 +69,92 @@ void PowerWidget::OnTimerTick()
         switch (mCurrentTime)
         {
         case 0:
-            BufferController::Instance()->GetWriteBuffer()->ON48();break;
-        case 2000:
-            BufferController::Instance()->GetWriteBuffer()->ON82();break;
-        case 2*2000:
-            BufferController::Instance()->GetWriteBuffer()->ON81();break;
-        case 3*2000:
-            BufferController::Instance()->GetWriteBuffer()->ON62();break;
-        case 4*2000:
+        {
+            BufferController::Instance()->GetWriteBuffer()->ON48();
+            ui->checkBox48V->setChecked(true);
+        }
+            break;
+        case 500:
+        {
+            BufferController::Instance()->GetWriteBuffer()->ON82();
+            ui->checkBox8V2->setChecked(true);
+        }
+            break;
+        case 2*500:
+        {
+            BufferController::Instance()->GetWriteBuffer()->ON81();
+            ui->checkBox8V1->setChecked(true);
+        }
+            break;
+        case 3*500:
+        {
+            BufferController::Instance()->GetWriteBuffer()->ON62();
+            ui->checkBox6V2->setChecked(true);
+        }
+            break;
+        case 4*500:
         {
             BufferController::Instance()->GetWriteBuffer()->ON61();
+            ui->checkBox6V1->setChecked(true);
+            ChechBoxSetEnable(true);
             mTimer->stop();
+            return;
         }
             break;
         }
+
         mCurrentTime+=mInterval;
     }
     else
     {
+        //выключаем очередное напряжение
         switch (mCurrentTime)
         {
         case 0:
         {
             BufferController::Instance()->GetWriteBuffer()->OFF48();
+            ui->checkBox48V->setChecked(false);
+            ChechBoxSetEnable(true);
             mTimer->stop();
+            return;
         }
             break;
 
-        case 2000:
-            BufferController::Instance()->GetWriteBuffer()->OFF82();break;
-        case 2*2000:
-            BufferController::Instance()->GetWriteBuffer()->OFF81();break;
-        case 3*2000:
-            BufferController::Instance()->GetWriteBuffer()->OFF62();break;
-        case 4*2000:
-            BufferController::Instance()->GetWriteBuffer()->OFF61();break;
+        case 500:
+        {
+            BufferController::Instance()->GetWriteBuffer()->OFF82();
+            ui->checkBox8V2->setChecked(false);
+        }
+            break;
+        case 2*500:
+        {
+            BufferController::Instance()->GetWriteBuffer()->OFF81();
+            ui->checkBox8V1->setChecked(false);
+        }
+            break;
+        case 3*500:
+        {
+            BufferController::Instance()->GetWriteBuffer()->OFF62();
+            ui->checkBox6V2->setChecked(false);
+        }
+            break;
+        case 4*500:
+        {
+            BufferController::Instance()->GetWriteBuffer()->OFF61();
+            ui->checkBox6V1->setChecked(false);
+        }
+            break;
         }
         mCurrentTime-=mInterval;
     }
 
 }
 
-
-
-void PowerWidget::on_checkBox48V_clicked(bool checked)
+void PowerWidget::ChechBoxSetEnable(bool enable)
 {
-
-}
-
-void PowerWidget::on_checkBox8V1_clicked(bool checked)
-{
-
-}
-
-void PowerWidget::on_checkBox8V2_clicked(bool checked)
-{
-
-}
-
-void PowerWidget::on_checkBox6V1_clicked(bool checked)
-{
-
-}
-
-void PowerWidget::on_checkBox6V2_clicked(bool checked)
-{
-
+    ui->checkBox48V->setEnabled(enable);
+    ui->checkBox8V2->setEnabled(enable);
+    ui->checkBox8V1->setEnabled(enable);
+    ui->checkBox6V2->setEnabled(enable);
+    ui->checkBox6V1->setEnabled(enable);
 }

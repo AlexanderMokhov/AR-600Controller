@@ -18,7 +18,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
     MBRead.cpp \
     MBWrite.cpp \
-    AR600Controller.cpp \
     DriverCommand.cpp \
     CommandController.cpp \
     TinyXML/tinystr.cpp \
@@ -33,19 +32,17 @@ SOURCES += main.cpp\
     Widgets/CommandControllerWidget.cpp \
     DriverLogController.cpp \
     ConfigController.cpp \
-    DataPlot.cpp \
     ChannelTableController.cpp \
     Widgets/ChannelTableWidget.cpp \
-    qcustomplot.cpp \
     Widgets/DriverLogWidget.cpp \
     Widgets/PowerWidget.cpp \
     ThreadReceive.cpp \
-    ThreadSend.cpp
+    ThreadSend.cpp \
+    AR600MainWindow.cpp
 
 HEADERS  += \
     MBRead.h \
     MBWrite.h \
-    AR600Controller.h \
     DriverCommand.h \
     CommandController.h \
     TinyXML/tinystr.h \
@@ -58,22 +55,21 @@ HEADERS  += \
     Widgets/CommandControllerWidget.h \
     DriverLogController.h \
     ConfigController.h \
-    DataPlot.h \
     ChannelTableController.h \
     Widgets/ChanneTableWidget.h \
-    qcustomplot.h \
     Widgets/DriverLogWidget.h \
     Widgets/PowerWidget.h \
     ThreadReceive.h \
-    ThreadSend.h
+    ThreadSend.h \
+    AR600MainWindow.h
 
 FORMS    += \
-    AR600Controller.ui \
     Widgets/DriverControllerWidget.ui \
     Widgets/CommandControllerWidget.ui \
     Widgets/ChannelTableWidget.ui \
     Widgets/DriverLogWidget.ui \
-    Widgets/PowerWidget.ui
+    Widgets/PowerWidget.ui \
+    AR600MainWindow.ui
 
 win32 {
     RC_FILE += resource.rc

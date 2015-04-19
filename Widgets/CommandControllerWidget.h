@@ -32,8 +32,6 @@ private slots:
 private:
     Ui::CommandControllerWidget *ui;
     QString Defaulttext;
-signals:
-    void StartPlayForward();
 };
 
 #endif // COMMANDCONTROLLERWIDGET_H

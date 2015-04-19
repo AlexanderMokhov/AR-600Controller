@@ -46,6 +46,8 @@ private:
     double mStepPos;
     int mDriverNumberBuffer;
     bool IsGoToPosState;//состояние выполнения перехода в позицию за время
+    int mCurrentTimeForCommands;
+    int mSendDelay;
 
     std::map<unsigned int,DriverSettingsItem> * mConfigMap;
 
@@ -74,6 +76,10 @@ public:
     void CalcGoToPos();
     void SetDriverNumberBuffer(int Number);
     void NextCommand();
+
+    void SendCommand();
+
+    void SetCurrentTimeForCommands(int Time);
 
 
 //       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер

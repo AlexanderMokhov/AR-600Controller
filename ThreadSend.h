@@ -6,6 +6,7 @@
 #include <QUdpSocket>
 #include "BufferController.h"
 #include "ConfigController.h"
+#include "CommandController.h"
 #include <QDebug>
 #include <QTimer>
 
@@ -26,8 +27,6 @@ public:
     void run();
     void ConnectSocket();
     void DisconnectSocket();
-
-signals:
 
 public slots:
     void SendDatagram();

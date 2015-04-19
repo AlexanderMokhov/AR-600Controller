@@ -2,7 +2,9 @@
 
 ThreadReceive::ThreadReceive(QObject *parent) : QThread(parent)
 {
-
+    mUdpSocketResiver = new QUdpSocket;
+    mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
+    mLock=mReceiveBuffer->GetLock();
 }
 
 ThreadReceive::~ThreadReceive()
@@ -14,18 +16,12 @@ ThreadReceive::~ThreadReceive()
 
 void ThreadReceive::run()
 {
-    qDebug() << "Receiver is running..." << endl;
-    mUdpSocketResiver = new QUdpSocket();
-    mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
-    mLock=mReceiveBuffer->GetLock();
-
-    connect(mUdpSocketResiver, SIGNAL(readyRead()), this, SLOT(ProcessPendingDatagrams()),Qt::DirectConnection);
+    qDebug() << "Receiver - running..." << endl;
     exec();
 }
 
 void ThreadReceive::ProcessPendingDatagrams()
 {
-    qDebug()<< "UDPRead";
     while (mUdpSocketResiver->hasPendingDatagrams())
     {
         QByteArray datagram;
@@ -40,23 +36,44 @@ void ThreadReceive::ProcessPendingDatagrams()
         //*mLock = false;
         //Отправляем пакет на обработку
         emit ReadyData();
+        qDebug()<< "Receiver - Read...";
      }
 }
 
 void ThreadReceive::ConnectSocket()
 {
-    qDebug() << "I am Connected" << endl;
+    qDebug() << "Receiver - connecting..." << endl;
     mPort=ConfigController::Instance()->GetPort();
 
     if (!mUdpSocketResiver->bind(10002,QUdpSocket::ShareAddress))
     {
-        qDebug()<< "Not Bind!";
+        qDebug()<< "Receiver - Not Bind!";
+    }
+    connect(mUdpSocketResiver, SIGNAL(readyRead()), this, SLOT(ProcessPendingDatagrams()),Qt::DirectConnection);
+    if (mUdpSocketResiver->state()==QUdpSocket::ConnectedState)
+    {
+        qDebug() << "Receiver - connected";
+    }
+    else
+    {
+        qDebug() << "Receiver - disconnected";
     }
 }
 
 void ThreadReceive::DisconnectSocket()
 {
-    qDebug() << "I am DisConnected" << endl;
-    mUdpSocketResiver->disconnect();
+    qDebug() << "Receiver - disconnecting..." << endl;
+    disconnect(mUdpSocketResiver, SIGNAL(readyRead()), this, SLOT(ProcessPendingDatagrams()));
+    mUdpSocketResiver->close();
+
+    if (mUdpSocketResiver->state()==QUdpSocket::ConnectedState)
+    {
+        qDebug() << "Receiver - connected";
+    }
+    else
+    {
+        qDebug() << "Receiver - disconnected";
+    }
+
 }
 

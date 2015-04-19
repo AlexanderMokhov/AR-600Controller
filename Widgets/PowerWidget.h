@@ -12,10 +12,17 @@ class PowerWidget;
 class PowerWidget : public QWidget
 {
     Q_OBJECT
-
+private:
+    Ui::PowerWidget *ui;
+    QTimer *mTimer;//для задержек включения/откулючения напряжений
+    int mCurrentTime;
+    int mInterval;
+    bool isOn;
+    MBRead              *mReadBuffer;
 public:
     explicit PowerWidget(QWidget *parent = 0);
     ~PowerWidget();
+    void UpdatePowerLabel();
 
 private slots:
     void on_ButtonOnAll_clicked();
@@ -23,22 +30,10 @@ private slots:
 
     void OnTimerTick();
 
-    void on_checkBox48V_clicked(bool checked);
-
-    void on_checkBox8V1_clicked(bool checked);
-
-    void on_checkBox8V2_clicked(bool checked);
-
-    void on_checkBox6V1_clicked(bool checked);
-
-    void on_checkBox6V2_clicked(bool checked);
 
 private:
-    Ui::PowerWidget *ui;
-    QTimer *mTimer;//для задержек включения/откулючения напряжений
-    int mCurrentTime;
-    int mInterval = 2000;
-    bool isOn;
+    void ChechBoxSetEnable(bool enable);
+
 
 };
 

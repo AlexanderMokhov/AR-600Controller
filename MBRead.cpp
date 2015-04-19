@@ -20,9 +20,6 @@ void MBRead::Init(const char BUFF_other[])
     }
 }
 
-//получение данных с сенсоров
-#pragma region Sensor
-
 //получить данные с сенсора рысканья
 short MBRead::Get_SENSOR_YAW(short NOMB)
 {
@@ -85,11 +82,6 @@ short MBRead::Get_SENSOR_FZ(short NOMB)
     return (mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
 
 }
-
-#pragma endregion Sensor
-
-//получение данных с моторов
-#pragma region Motor
 
 //получить напряжение питания мотора
 short MBRead::Get_MOTOR_UBATT(short NOMB)
@@ -280,5 +272,3 @@ bool *MBRead::GetLock()
 {
     return &mLock;
 }
-
-#pragma endregion Motor

@@ -37,7 +37,7 @@
      <property name="title">
       <string>Управление питанием</string>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -48,7 +48,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QGridLayout" name="gridLayoutTools">
          <item row="0" column="0">
           <widget class="QCheckBox" name="checkBox48V">
            <property name="text">
@@ -71,9 +71,9 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QCheckBox" name="checkBox8V1">
+          <widget class="QCheckBox" name="checkBox8V2">
            <property name="text">
-            <string>8 В (1)</string>
+            <string>8 В (2)</string>
            </property>
           </widget>
          </item>
@@ -92,9 +92,9 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QCheckBox" name="checkBox8V2">
+          <widget class="QCheckBox" name="checkBox8V1">
            <property name="text">
-            <string>8 В (2)</string>
+            <string>8 В (1)</string>
            </property>
           </widget>
          </item>
@@ -106,9 +106,9 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QCheckBox" name="checkBox6V1">
+          <widget class="QCheckBox" name="checkBox6V2">
            <property name="text">
-            <string>6 В (1)</string>
+            <string>6 В (2)</string>
            </property>
           </widget>
          </item>
@@ -127,9 +127,9 @@
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QCheckBox" name="checkBox6V2">
+          <widget class="QCheckBox" name="checkBox6V1">
            <property name="text">
-            <string>6 В (2)</string>
+            <string>6 В (1)</string>
            </property>
           </widget>
          </item>

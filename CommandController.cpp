@@ -7,6 +7,7 @@ CommandController::CommandController()
 {
     mCommandId=0;
     IsPlayForwardState=false;
+    mSendDelay = ConfigController::Instance()->GetSendDelay();
 }
 
 CommandController::~CommandController()
@@ -256,6 +257,31 @@ void CommandController::NextCommand()
     qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
 }
 
+void CommandController::SendCommand()
+{
+    if(IsPlayForwardState)
+    {
+        Update(mCurrentTimeForCommands);
+        mCurrentTimeForCommands+=(mSendDelay*1e3);
+
+        //если время закончилось - останавливаем, переводим индекс команды на начало списка
+        if(mTimeRecord<=mCurrentTimeForCommands)
+        {
+            IsPlayForwardState = false;
+            mCommandId = 0;
+        }
+    }
+    if(IsGoToPosState)
+    {
+        GoNextPos();
+    }
+}
+
+void CommandController::SetCurrentTimeForCommands(int Time)
+{
+    mCurrentTimeForCommands = Time;
+}
+
 void CommandController::SetCommandId(int cId)
 {
     mCommandId=cId;
@@ -293,10 +319,6 @@ void CommandController::SetGoToPosState(bool State)
 
 void CommandController::GoNextPos()
 {
-    //bool IsFirst = (mDestPos <= 0 && mCurrentPos <= mDestPos && mStepPos < 0);
-    //bool IsSecond = (mDestPos <= 0 && mCurrentPos >= mDestPos && mStepPos >= 0);
-    //bool IsThird = (mDestPos > 0 && mCurrentPos >= mDestPos && mStepPos >= 0);
-    //bool IsFourth = (mDestPos > 0 && mCurrentPos <= mDestPos && mStepPos < 0);
     bool IsFirst = mDestPos <= mCurrentPos && mDestPos >= mStartPos;
     bool IsSecond = mDestPos >=mCurrentPos && mDestPos <=mStartPos;
     if(IsFirst || IsSecond)

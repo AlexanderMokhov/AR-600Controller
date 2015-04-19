@@ -2,7 +2,10 @@
 
 ThreadSend::ThreadSend(QObject *parent) : QThread(parent)
 {
-
+    mUdpSocketSender = new QUdpSocket;
+    mTimerSend = new QTimer;
+    mSendBuffer = BufferController::Instance()->GetWriteBuffer();
+    //mLock=mSendBuffer->GetLock();
 }
 
 ThreadSend::~ThreadSend()
@@ -14,21 +17,13 @@ ThreadSend::~ThreadSend()
 
 void ThreadSend::run()
 {
-    qDebug() << "Sender is running..." << endl;
-    mUdpSocketSender = new QUdpSocket(this);
-    mTimerSend = new QTimer();
-    mSendBuffer = BufferController::Instance()->GetWriteBuffer();
-    //mLock=mSendBuffer->GetLock();
-
-
-
-    connect(mTimerSend, SIGNAL(timeout()), SLOT(SendDatagram()));
-
-            exec();
+    qDebug() << "Sender - running..." << endl;
+    exec();
 }
 
 void ThreadSend::ConnectSocket()
 {
+    qDebug() << "Sender - connecting..." << endl;
     mPort = ConfigController::Instance()->GetPort();
     mHost = QString::fromStdString(ConfigController::Instance()->GetHost());
     mSendDelay = ConfigController::Instance()->GetSendDelay();
@@ -38,37 +33,40 @@ void ThreadSend::ConnectSocket()
 
     if (mUdpSocketSender->state()==QUdpSocket::ConnectedState)
     {
-        qDebug() << "Sender - Connected";
+        qDebug() << "Sender - connected";
     }
     else
     {
-        qDebug() << "Sender - Disconnected";
+        qDebug() << "Sender - disconnected";
     }
-
+    connect(mTimerSend,SIGNAL(timeout()),this,SLOT(SendDatagram()),Qt::DirectConnection);
     mTimerSend->start(mSendDelay);
 
 }
 
 void ThreadSend::DisconnectSocket()
 {
+    qDebug() << "Sender - disconnecting..." << endl;
     mTimerSend->stop();
     mUdpSocketSender->disconnect();
+    mUdpSocketSender->close();
 
     if (mUdpSocketSender->state()==QUdpSocket::ConnectedState)
     {
-        qDebug() << "Sender - Connected";
+        qDebug() << "Sender - connected";
     }
     else
     {
-        qDebug() << "Sender - Disconnected";
+        qDebug() << "Sender - disconnected";
     }
 }
 
 void ThreadSend::SendDatagram()
 {
-    qDebug() << "Sender - Send..." << endl;
+    qDebug() << "Sender - send..." << endl;
     QHostAddress mAddress = QHostAddress(mHost);
     mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), mAddress, mPort);
     mUdpSocketSender->waitForBytesWritten();
+    CommandController::Instance()->SendCommand();
 }
 

@@ -58,8 +58,8 @@ void CommandControllerWidget::on_ButtonPlayPause_clicked()
     }
     else
     {
+        CommandController::Instance()->SetCurrentTimeForCommands(0);
         CommandController::Instance()->SetPlayForwardState(true);
-        emit StartPlayForward();
         ui->ButtonLoadFile->setEnabled(false);
     }
 }
