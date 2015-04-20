@@ -32,8 +32,9 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     connect(mChannelTableWidget,SIGNAL(RowChanged(int)),mDriverControllerWidget,SLOT(RowChanged(int)));
     //конец настройки виджетов
 
-    ui->MainToolBar->addAction(QIcon("Icons/open.ico"),"Открыть файл настроек",this,SLOT(on_pButtonOpenXML_clicked()));
-    ui->MainToolBar->addAction(QIcon("Icons/save.ico"),"Сохранить файл настроек",this,SLOT(on_pButtonSaveXML_clicked()));
+    //добавление кнопок на тулбар
+    ui->MainToolBar->addAction(QIcon("Icons/open.ico"),"Открыть файл настроек",this,SLOT(OpenXML()));
+    ui->MainToolBar->addAction(QIcon("Icons/save.ico"),"Сохранить файл настроек",this,SLOT(SaveXML()));
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(QIcon("Icons/connect.ico"),"Подключение",this,SLOT(Connect()));
     ui->MainToolBar->addAction(QIcon("Icons/disconnect.ico"),"Отключение",this,SLOT(Disconnect()));
@@ -46,6 +47,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(QIcon("Icons/redo.ico"),"Следующая команда",mCommandControllerWidget,SLOT(on_ButtonNext_clicked()));
     ui->MainToolBar->addSeparator();
+    //конец добавление кнопок на тулбар
 
     //чтение настроек их XML файла
     bool isOk = ConfigController::Instance()->OpenFile("config.xml");
@@ -54,10 +56,9 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
         mPort=ConfigController::Instance()->GetPort();
         mHost=ConfigController::Instance()->GetHost();
         mSendDelay=ConfigController::Instance()->GetSendDelay();
-        *(mSendBuffer->GetLocker())=false;
-        *(mReceiveBuffer->GetLocker())=false;
         ConfigController::Instance()->Update(mSendBuffer);
         BufferController::Instance()->InitBuffers();
+        CommandController::Instance()->Initialize();
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -114,7 +115,7 @@ void AR600MainWindow::ProcessTheDatagram()
     mChannelTableWidget->UpdatePos();
 }
 
-void AR600MainWindow::on_pButtonSaveXML_clicked()
+void AR600MainWindow::SaveXML()
 {
     QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
@@ -124,7 +125,7 @@ void AR600MainWindow::on_pButtonSaveXML_clicked()
     }
 }
 
-void AR600MainWindow::on_pButtonOpenXML_clicked()
+void AR600MainWindow::OpenXML()
 {
     QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())

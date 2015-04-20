@@ -5,6 +5,7 @@ ThreadSend::ThreadSend(QObject *parent) : QThread(parent)
     mUdpSocketSender = new QUdpSocket;
     mTimerSend = new QTimer;
     mSendBuffer = BufferController::Instance()->GetWriteBuffer();
+    mLocker=mSendBuffer->GetLocker();
 }
 
 ThreadSend::~ThreadSend()
@@ -64,11 +65,10 @@ void ThreadSend::SendDatagram()
 {
     qDebug() << "Sender - send..." << endl;
     QHostAddress mAddress = QHostAddress(mHost);
-    //while (*mLock) {;}
-    //*mLock = true;
+    mLocker->lock();
     mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), mAddress, mPort);
     mUdpSocketSender->waitForBytesWritten();
-    //*mLock = false;
+    mLocker->unlock();
     CommandController::Instance()->SendCommand();
 }
 

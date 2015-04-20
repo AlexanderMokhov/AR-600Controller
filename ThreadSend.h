@@ -9,6 +9,8 @@
 #include "CommandController.h"
 #include <QDebug>
 #include <QTimer>
+#include <mutex>
+#include <stdlib.h>
 
 class ThreadSend :  public QThread
 {
@@ -20,6 +22,7 @@ private:
     int             mPort;
     QString         mHost;
     int             mSendDelay;
+    std::mutex *    mLocker;
 public:
     explicit ThreadSend(QObject *parent = 0);
     ~ThreadSend();

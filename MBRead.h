@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <iostream>
 #include <map>
+#include <mutex>
 #include <stdlib.h>
 
 
@@ -11,7 +12,7 @@ private:
     std::map<int,bool> mReverceMap;
     std::map<int,int> mMaxPosMap;
     std::map<int,int> mMinPosMap;
-    bool mLocker;
+    std::mutex mLocker;
 public:
     MBRead(void);
     ~MBRead(void);
@@ -59,6 +60,6 @@ public:
     void SetMinPosMap(std::map<int, int> *MinPosMap);
     void SetMaxPosMap(std::map<int, int> *MaxPosMap);
     const char *GetBuffer();
-    bool * GetLocker();
+    std::mutex *GetLocker();
 };
 

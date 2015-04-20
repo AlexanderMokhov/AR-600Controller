@@ -78,7 +78,8 @@ bool DriverLogController::SaveData(string fileName)
             for(it = data.DriversData.begin();it!=data.DriversData.end();++it)
             {
                 double Pos = (*it).second;
-                Pos = (M_PI*Pos)/(180*100);
+                double pi = 4 * std::atan(1);
+                Pos = (pi*Pos)/(180*100);
                 std::sprintf(buffer,"%f",Pos);
                 file << "\t" << buffer;
             }

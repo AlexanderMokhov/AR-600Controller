@@ -58,8 +58,8 @@ private:
 
 private slots:
     void ProcessTheDatagram();
-    void on_pButtonSaveXML_clicked();
-    void on_pButtonOpenXML_clicked();
+    void SaveXML();
+    void OpenXML();
 
     void play();
     void pause();

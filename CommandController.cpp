@@ -25,7 +25,6 @@ void CommandController::Initialize()
 {
     delete mInstance;
     mInstance = new CommandController;
-
 }
 
 void CommandController::Shutdown()

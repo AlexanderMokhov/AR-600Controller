@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <iostream>
 #include <map>
+#include <mutex>
 #include <stdlib.h>
 #include <QUdpSocket>
 
@@ -13,7 +14,7 @@ private:
     std::map<int,int> mMinPosMap;
     short mMinPos;
     short mMaxPos;
-    bool mLocker;
+    std::mutex mLocker;
 
     QUdpSocket  *mUdpSocketSender;//сокет для отправки
 
@@ -78,7 +79,7 @@ public:
     std::map<int, bool> *GetReverceMap();
     std::map<int, int> *GetMinPosMap();
     std::map<int, int> *GetMaxPosMap();
-    bool * GetLocker();
+    std::mutex *GetLocker();
 
 };
 
