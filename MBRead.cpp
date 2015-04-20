@@ -3,97 +3,158 @@
 
 MBRead::MBRead(void)
 {
-    mLock = false;
+    mLocker = false;
 }
 
 
 MBRead::~MBRead(void)
 {
+
 }
 
 //инициализируем (читаем)
 void MBRead::Init(const char BUFF_other[])
 {
+    while(mLocker){;}
+    mLocker=true;
     for(int i=0;i<1472;i++)
 	{
 		mRXBuffer[i]=BUFF_other[i];
     }
+    mLocker=false;
 }
 
 //получить данные с сенсора рысканья
 short MBRead::Get_SENSOR_YAW(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_yaw =(mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
+    mLocker=false;
+    return sensor_yaw;
 
 }
 
 short MBRead::Get_SENSOR_PITCH(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_pitch = (mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
+    mLocker=false;
+    return sensor_pitch;
 
 }
 
 //получить данные с сенсора вращения/крена
 short MBRead::Get_SENSOR_ROLL(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_roll=(mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
+    mLocker=false;
+    return sensor_roll;
+
 
 }
 
 short MBRead::Get_SENSOR_UCH0(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+9] << 8) + (unsigned char)mRXBuffer[NOMB*16+8];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_uch0=(mRXBuffer[NOMB*16+9] << 8) + (unsigned char)mRXBuffer[NOMB*16+8];
+    mLocker=false;
+    return sensor_uch0;
+
 
 }
 
 short MBRead::Get_SENSOR_UCH1(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+11] << 8) + (unsigned char)mRXBuffer[NOMB*16+10];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_uch1=(mRXBuffer[NOMB*16+11] << 8) + (unsigned char)mRXBuffer[NOMB*16+10];
+    mLocker=false;
+    return sensor_uch1;
+
 
 }
 
 short MBRead::Get_SENSOR_UCH2(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_uch2=(mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12];
+    mLocker=false;
+    return sensor_uch2;
+
 
 }
 
 short MBRead::Get_SENSOR_UCH3(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_uch3=(mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14];
+    mLocker=false;
+    return sensor_uch3;
+
 
 }
 
 short MBRead::Get_SENSOR_TX(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_tx=(mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
+    mLocker=false;
+    return sensor_tx;
+
 
 }
 
 short MBRead::Get_SENSOR_TY(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_ty=(mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
+    mLocker=false;
+    return sensor_ty;
+
 
 }
 
 short MBRead::Get_SENSOR_FZ(short NOMB)
 {
+    while(mLocker){;}
+    mLocker=true;
+    short sensor_fz=(mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
+    mLocker=false;
+    return sensor_fz;
 
-    return (mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
 
 }
 
 //получить напряжение питания мотора
 short MBRead::Get_MOTOR_UBATT(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
+    while(mLocker){;}
+    mLocker=true;
+    short motor_ubatt=(mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
+    mLocker=false;
+    return motor_ubatt;
+
 
 }
 
 //получить ток, потребляемый мотором
 short MBRead::Get_MOTOR_IMOT(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
+    while(mLocker){;}
+    mLocker=true;
+    short motor_imot=(mRXBuffer[NOMB*16+7] << 8) + (unsigned char)mRXBuffer[NOMB*16+6];
+    mLocker=false;
+    return motor_imot;
+
 
 }
 
@@ -101,10 +162,20 @@ short MBRead::Get_MOTOR_IMOT(short NOMB)
 short MBRead::Get_MOTOR_CPOS(short NOMB)
 {
 
+    while(mLocker){;}
+    mLocker=true;
     if(mReverceMap.at(NOMB))
-        return -1*(((unsigned char)mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2]);
+    {
+        short cpos = -1*(((unsigned char)mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2]);
+        mLocker=false;
+        return cpos;
+    }
     else
-        return ((unsigned char)mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
+    {
+        short cpos = ((unsigned char)mRXBuffer[NOMB*16+3] << 8) + (unsigned char)mRXBuffer[NOMB*16+2];
+        mLocker=false;
+        return cpos;
+    }
 
 
 }
@@ -112,134 +183,218 @@ short MBRead::Get_MOTOR_CPOS(short NOMB)
 //получить KP
 short MBRead::Get_MOTOR_STIFF(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+9] << 8) + (unsigned char)mRXBuffer[NOMB*16+8];
+    while(mLocker){;}
+    mLocker=true;
+    short motor_stiff=(mRXBuffer[NOMB*16+9] << 8) + (unsigned char)mRXBuffer[NOMB*16+8];
+    mLocker=false;
+    return motor_stiff;
 
 }
 
 //получить KI
 short MBRead::Get_MOTOR_DAMP(short NOMB)
 {
-    return (mRXBuffer[NOMB*16+11] << 8) + (unsigned char)mRXBuffer[NOMB*16+10];
+    while(mLocker){;}
+    mLocker=true;
+    short motor_damp=(mRXBuffer[NOMB*16+11] << 8) + (unsigned char)mRXBuffer[NOMB*16+10];
+    mLocker=false;
+    return motor_damp;
 
 }
 
 //получить статус мотора
 short MBRead::Get_MOTOR_STAT(short NOMB)
 {
-    return (unsigned char)mRXBuffer[NOMB*16+1];
+    while(mLocker){;}
+    mLocker=true;
+    short motor_stat=(unsigned char)mRXBuffer[NOMB*16+1];
+    mLocker=false;
+    return motor_stat;
 
 }
 
 //получить минимальную позицию мотора
 short MBRead::Get_MOTOR_MIN_POS(short NOMB)
 {
-
+    while(mLocker){;}
+    mLocker=true;
 
     if(mReverceMap.at(NOMB))
-        return -1*((mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14]);
+    {
+        short minpos = -1*((mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14]);
+        mLocker=false;
+        return minpos;
+    }
     else
-        return (mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12];
+    {
+        short minpos = (mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12];
+        mLocker=false;
+        return minpos;
+    }
 
 }
 
 //получить максимальную позицию мотора
 short MBRead::Get_MOTOR_MAX_POS(short NOMB)
 {
+    while(mLocker){;}
+    mLocker=true;
     if(mReverceMap.at(NOMB))
-        return -1*((mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12]);
+    {
+        short maxpos = -1*((mRXBuffer[NOMB*16+13] << 8) + (unsigned char)mRXBuffer[NOMB*16+12]);
+        mLocker=false;
+        return maxpos;
+    }
     else
-        return (mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14];
+    {
+        short maxpos = (mRXBuffer[NOMB*16+15] << 8) + (unsigned char)mRXBuffer[NOMB*16+14];
+        mLocker=false;
+        return maxpos;
+    }
 
 }
 
 //получить напряжение мотора
 float MBRead::Get_MOTOR_U(short NOMB)
 {
-    return (float)((mRXBuffer[NOMB*2+1409] << 8) + (unsigned char)mRXBuffer[NOMB*2+1408]);
+    while(mLocker){;}
+    mLocker=true;
+    float motor_u=(float)((mRXBuffer[NOMB*2+1409] << 8) + (unsigned char)mRXBuffer[NOMB*2+1408]);
+    mLocker=false;
+    return motor_u;
 
 }
 
 //получить ток мотора
 float MBRead::Get_MOTOR_I(short NOMB)
 {
-
-    return float((mRXBuffer[NOMB*2+12+1409] << 8) + (unsigned char)mRXBuffer[NOMB*2+12+1408]);
+    while(mLocker){;}
+    mLocker=true;
+    float motor_i=(float)((mRXBuffer[NOMB*2+12+1409] << 8) + (unsigned char)mRXBuffer[NOMB*2+12+1408]);
+    mLocker=false;
+    return motor_i;
 
 }
 
 //получение данных о напряжении источников питания
 float MBRead::GetU61()
 {
-
-    return (float)((mRXBuffer[0 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[0 * 2 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float u61=(float)((mRXBuffer[0 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[0 * 2 + 1408])/1000;
+    mLocker=false;
+    return u61;
 
 }
 
 float MBRead::GetU62()
 {
-
-    return (float)((mRXBuffer[1 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float u62=(float)((mRXBuffer[1 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/1000;
+    mLocker=false;
+    return u62;
 
 }
 
 float MBRead::GetU81()
 {
-    return (float)((mRXBuffer[2 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[2 * 2 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float u81=(float)((mRXBuffer[2 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[2 * 2 + 1408])/1000;
+    mLocker=false;
+    return u81;
 
 }
 
 float MBRead::GetU82()
 {
-    return (float)((mRXBuffer[3 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[3 * 2 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float u82=(float)((mRXBuffer[3 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[3 * 2 + 1408])/1000;
+    mLocker=false;
+    return u82;
 
 }
 
 float MBRead::GetU12()
 {
-    return (float)((mRXBuffer[4 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float u12=(float)((mRXBuffer[4 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/1000;
+    mLocker=false;
+    return u12;
 
 }
 
 float MBRead::GetU48()
 {
-    return (float)((mRXBuffer[5 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/100;
+    while(mLocker){;}
+    mLocker=true;
+    float u48=(float)((mRXBuffer[5 * 2 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 1408])/100;
+    mLocker=false;
+    return u48;
 
 }
 
 //получение данных о токах источников питания
 float MBRead::GetI61()
 {
-    return (float)((mRXBuffer[0 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[0 * 2 + 12 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float i61=(float)((mRXBuffer[0 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[0 * 2 + 12 + 1408])/1000;
+    mLocker=false;
+    return i61;
 
 }
 
 float MBRead::GetI62()
 {
-    return (float)((mRXBuffer[1 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 12 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float i62=(float)((mRXBuffer[1 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[1 * 2 + 12 + 1408])/1000;
+    mLocker=false;
+    return i62;
 
 }
 
 float MBRead::GetI81()
 {
-    return (float)((mRXBuffer[2 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[2 * 2 + 12 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float i81=(float)((mRXBuffer[2 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[2 * 2 + 12 + 1408])/1000;
+    mLocker=false;
+    return i81;
 
 }
 
 float MBRead::GetI82()
 {
-    return (float)((mRXBuffer[3 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[3 * 2 + 12 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float i82=(float)((mRXBuffer[3 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[3 * 2 + 12 + 1408])/1000;
+    mLocker=false;
+    return i82;
 
 }
 
 float MBRead::GetI48()
 {
-    return (float)((mRXBuffer[5 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[5 * 2 + 12 + 1408])/100;
+    while(mLocker){;}
+    mLocker=true;
+    float i48=(float)((mRXBuffer[5 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[5 * 2 + 12 + 1408])/100;
+    mLocker=false;
+    return i48;
 
 }
 
 float MBRead::GetI12()
 {
-    return (float)((mRXBuffer[4 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[4 * 2 + 12 + 1408])/1000;
+    while(mLocker){;}
+    mLocker=true;
+    float i12=(float)((mRXBuffer[4 * 2 + 12 + 1409] << 8) + (unsigned char)mRXBuffer[4 * 2 + 12 + 1408])/1000;
+    mLocker=false;
+    return i12;
 
 }
 
@@ -268,7 +423,7 @@ const char *MBRead::GetBuffer()
     return mRXBuffer;
 }
 
-bool *MBRead::GetLock()
+bool *MBRead::GetLocker()
 {
-    return &mLock;
+    return &mLocker;
 }

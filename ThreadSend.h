@@ -16,7 +16,6 @@ class ThreadSend :  public QThread
 private:
     QUdpSocket      *mUdpSocketSender;
     MBWrite         *mSendBuffer;
-    bool            *mLock;
     QTimer          *mTimerSend;
     int             mPort;
     QString         mHost;

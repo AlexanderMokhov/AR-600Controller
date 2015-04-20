@@ -13,6 +13,7 @@ private:
     std::map<int,int> mMinPosMap;
     short mMinPos;
     short mMaxPos;
+    bool mLocker;
 
     QUdpSocket  *mUdpSocketSender;//сокет для отправки
 
@@ -77,6 +78,7 @@ public:
     std::map<int, bool> *GetReverceMap();
     std::map<int, int> *GetMinPosMap();
     std::map<int, int> *GetMaxPosMap();
+    bool * GetLocker();
 
 };
 

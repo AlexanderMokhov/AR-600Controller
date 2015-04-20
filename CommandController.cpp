@@ -7,6 +7,7 @@ CommandController::CommandController()
 {
     mCommandId=0;
     IsPlayForwardState=false;
+    IsGoToPosState=false;
     mSendDelay = ConfigController::Instance()->GetSendDelay();
 }
 

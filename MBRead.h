@@ -11,7 +11,7 @@ private:
     std::map<int,bool> mReverceMap;
     std::map<int,int> mMaxPosMap;
     std::map<int,int> mMinPosMap;
-    bool mLock;
+    bool mLocker;
 public:
     MBRead(void);
     ~MBRead(void);
@@ -59,6 +59,6 @@ public:
     void SetMinPosMap(std::map<int, int> *MinPosMap);
     void SetMaxPosMap(std::map<int, int> *MaxPosMap);
     const char *GetBuffer();
-    bool * GetLock();
+    bool * GetLocker();
 };
 

@@ -6,6 +6,7 @@
 
 MBWrite::MBWrite(void)
 {
+    mLocker = false;
 }
 
 
@@ -20,6 +21,7 @@ void MBWrite::Init(unsigned char BUFF_other[])
 	{
 		mWRBuffer[i]=BUFF_other[i];
 	}
+    mLocker = false;
 }
 
 //инициализируем (установка 12 В)
@@ -151,6 +153,11 @@ std::map<int, int> *MBWrite::GetMinPosMap()
 std::map<int, int> *MBWrite::GetMaxPosMap()
 {
     return &mMaxPosMap;
+}
+
+bool *MBWrite::GetLocker()
+{
+    return &mLocker;
 }
 
 #pragma endregion Power

@@ -54,9 +54,11 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
         mPort=ConfigController::Instance()->GetPort();
         mHost=ConfigController::Instance()->GetHost();
         mSendDelay=ConfigController::Instance()->GetSendDelay();
-
+        *(mSendBuffer->GetLocker())=false;
+        *(mReceiveBuffer->GetLocker())=false;
         ConfigController::Instance()->Update(mSendBuffer);
         BufferController::Instance()->InitBuffers();
+
         qDebug() << "Настройки успешно прочитаны";
     }
     //конец чтения настроек
@@ -65,7 +67,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mChannelTableWidget->ShowConfigData();
 
     mTimerUpdate = new QTimer();
-    mTimerUpdate->setInterval(10);
+    mTimerUpdate->setInterval(100);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
     //создание и запуск потоков на отправку и прием буфера
     mThreadRecieve = new ThreadReceive();

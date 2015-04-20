@@ -15,7 +15,6 @@ private:
     QUdpSocket      *mUdpSocketResiver;
     MBRead          *mReceiveBuffer;
     int             mPort;
-    bool            *mLock;
 public:
     explicit ThreadReceive(QObject *parent = 0);
     ~ThreadReceive();

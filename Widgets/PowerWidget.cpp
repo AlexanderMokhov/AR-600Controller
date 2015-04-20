@@ -158,3 +158,63 @@ void PowerWidget::ChechBoxSetEnable(bool enable)
     ui->checkBox6V2->setEnabled(enable);
     ui->checkBox6V1->setEnabled(enable);
 }
+
+void PowerWidget::on_checkBox48V_clicked(bool checked)
+{
+    if(checked)
+    {
+        BufferController::Instance()->GetWriteBuffer()->ON48();
+    }
+    else
+    {
+       BufferController::Instance()->GetWriteBuffer()->OFF48();
+    }
+}
+
+void PowerWidget::on_checkBox8V2_clicked(bool checked)
+{
+    if(checked)
+    {
+        BufferController::Instance()->GetWriteBuffer()->ON82();
+    }
+    else
+    {
+       BufferController::Instance()->GetWriteBuffer()->OFF82();
+    }
+}
+
+void PowerWidget::on_checkBox8V1_clicked(bool checked)
+{
+    if(checked)
+    {
+        BufferController::Instance()->GetWriteBuffer()->ON81();
+    }
+    else
+    {
+       BufferController::Instance()->GetWriteBuffer()->OFF81();
+    }
+}
+
+void PowerWidget::on_checkBox6V2_clicked(bool checked)
+{
+    if(checked)
+    {
+        BufferController::Instance()->GetWriteBuffer()->ON62();
+    }
+    else
+    {
+       BufferController::Instance()->GetWriteBuffer()->OFF62();
+    }
+}
+
+void PowerWidget::on_checkBox6V1_clicked(bool checked)
+{
+    if(checked)
+    {
+        BufferController::Instance()->GetWriteBuffer()->ON61();
+    }
+    else
+    {
+       BufferController::Instance()->GetWriteBuffer()->OFF61();
+    }
+}

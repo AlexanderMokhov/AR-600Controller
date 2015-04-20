@@ -31,6 +31,16 @@ private slots:
     void OnTimerTick();
 
 
+    void on_checkBox48V_clicked(bool checked);
+
+    void on_checkBox8V2_clicked(bool checked);
+
+    void on_checkBox8V1_clicked(bool checked);
+
+    void on_checkBox6V2_clicked(bool checked);
+
+    void on_checkBox6V1_clicked(bool checked);
+
 private:
     void ChechBoxSetEnable(bool enable);
 
