@@ -164,10 +164,12 @@ void PowerWidget::on_checkBox48V_clicked(bool checked)
     if(checked)
     {
         BufferController::Instance()->GetWriteBuffer()->ON48();
+        mCurrentTime=1*500;
     }
     else
     {
        BufferController::Instance()->GetWriteBuffer()->OFF48();
+       mCurrentTime=0*500;
     }
 }
 
@@ -176,10 +178,12 @@ void PowerWidget::on_checkBox8V2_clicked(bool checked)
     if(checked)
     {
         BufferController::Instance()->GetWriteBuffer()->ON82();
+        mCurrentTime=2*500;
     }
     else
     {
        BufferController::Instance()->GetWriteBuffer()->OFF82();
+       mCurrentTime=1*500;
     }
 }
 
@@ -188,10 +192,12 @@ void PowerWidget::on_checkBox8V1_clicked(bool checked)
     if(checked)
     {
         BufferController::Instance()->GetWriteBuffer()->ON81();
+        mCurrentTime=3*500;
     }
     else
     {
        BufferController::Instance()->GetWriteBuffer()->OFF81();
+       mCurrentTime=2*500;
     }
 }
 
@@ -200,10 +206,12 @@ void PowerWidget::on_checkBox6V2_clicked(bool checked)
     if(checked)
     {
         BufferController::Instance()->GetWriteBuffer()->ON62();
+        mCurrentTime=4*500;
     }
     else
     {
        BufferController::Instance()->GetWriteBuffer()->OFF62();
+       mCurrentTime=3*500;
     }
 }
 
@@ -212,9 +220,11 @@ void PowerWidget::on_checkBox6V1_clicked(bool checked)
     if(checked)
     {
         BufferController::Instance()->GetWriteBuffer()->ON61();
+        mCurrentTime=5*500;
     }
     else
     {
        BufferController::Instance()->GetWriteBuffer()->OFF61();
+       mCurrentTime=4*500;
     }
 }

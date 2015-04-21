@@ -41,7 +41,7 @@ void ThreadReceive::ConnectSocket()
     qDebug() << "Receiver - connecting..." << endl;
     mPort=ConfigController::Instance()->GetPort();
 
-    if (!mUdpSocketResiver->bind(10002,QUdpSocket::ShareAddress))
+    if (!mUdpSocketResiver->bind(10001,QUdpSocket::ShareAddress))
     {
         qDebug()<< "Receiver - Not Bind!";
     }

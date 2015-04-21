@@ -155,7 +155,7 @@
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-10441</Ilim>
+	  <Ilim>17376</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>20</Number>
@@ -215,7 +215,7 @@
 	  <Stiff>400</Stiff>
 	  <Dump>1</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>10731</Ilim>
+	  <Ilim>9097</Ilim>
 	</Driver>
 	<Driver>
 	  <Number>45</Number>
@@ -294,7 +294,8 @@
   </SensorSettings>
   <ConnectSettings>
 	<Host>192.169.1.10</Host>
-    <Port>10001</Port>
+	<!--<Host>127.0.0.1</Host>-->
+	<Port>10001</Port>
 	<SendDelay>100</SendDelay>
   </ConnectSettings>
   <CommandControllerSettings>
