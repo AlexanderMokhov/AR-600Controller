@@ -32,8 +32,14 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     connect(mChannelTableWidget,SIGNAL(RowChanged(int)),mDriverControllerWidget,SLOT(RowChanged(int)));
     //конец настройки виджетов
 
+    ActionsLoad();
+
+    actionPlay->setEnabled(false);
+    actionStop->setEnabled(false);
+    actionNext->setEnabled(false);
+
     //добавление кнопок на тулбар
-    ui->MainToolBar->addAction(QIcon("Icons/open.ico"),"Открыть файл настроек",this,SLOT(OpenXML()));
+    ui->MainToolBar->addAction(actionOpen);
     ui->MainToolBar->addAction(QIcon("Icons/save.ico"),"Сохранить файл настроек",this,SLOT(SaveXML()));
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(QIcon("Icons/connect.ico"),"Подключение",this,SLOT(Connect()));
@@ -41,26 +47,42 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(QIcon("Icons/folder.ico"),"Загрузить файл команд",mCommandControllerWidget,SLOT(on_ButtonLoadFile_clicked()));
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(QIcon("Icons/play.ico"),"Начать выполнение",mCommandControllerWidget,SLOT(on_ButtonPlayPause_clicked()));
-    ui->MainToolBar->addAction(QIcon("Icons/pause.ico"),"Пауза",mCommandControllerWidget,SLOT(on_ButtonPlayPause_clicked()));
-    ui->MainToolBar->addAction(QIcon("Icons/stop.ico"),"Остановить выполнение",mCommandControllerWidget,SLOT(on_ButtonStop_clicked()));
+    ui->MainToolBar->addAction(actionPlay);
+    ui->MainToolBar->addAction(actionPlay);
+    ui->MainToolBar->addAction(actionStop);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(QIcon("Icons/redo.ico"),"Следующая команда",mCommandControllerWidget,SLOT(on_ButtonNext_clicked()));
+    ui->MainToolBar->addAction(actionNext);
     ui->MainToolBar->addSeparator();
     //конец добавление кнопок на тулбар
+
+    connect(ui->actionOpenConfigFile,SIGNAL(triggered()),this,SLOT(OpenXML()));
+    connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
+
+    connect(mCommandControllerWidget,SIGNAL(StartWriteLog(int)),mDriverLogWidget,SLOT(StartWriteLog(int)));
+    connect(mCommandControllerWidget,SIGNAL(StopWriteLog()),mDriverLogWidget,SLOT(StopWriteLog()));
+    connect(mCommandControllerWidget,SIGNAL(FileLoaded()),this,SLOT(ActivateActions()));
 
     //чтение настроек их XML файла
     bool isOk = ConfigController::Instance()->OpenFile("config.xml");
     if(isOk)
     {
-        mPort=ConfigController::Instance()->GetPort();
         mHost=ConfigController::Instance()->GetHost();
+        mSendPort=ConfigController::Instance()->GetSendPort();
         mSendDelay=ConfigController::Instance()->GetSendDelay();
+        mReceivePort=ConfigController::Instance()->GetReceivePort();
+        mReceiveDelay=ConfigController::Instance()->GetReceiveDelay();
+
         ConfigController::Instance()->Update(mSendBuffer);
         BufferController::Instance()->InitBuffers();
         CommandController::Instance()->Initialize();
 
         qDebug() << "Настройки успешно прочитаны";
+    }
+    else
+    {
+        QMessageBox::warning(this,"Ошибка при чтении файла настроек","Возможно указан не верный путь или файл содержит ошибки");
+        qDebug() << "Error loading config file...";
+        exit(0);
     }
     //конец чтения настроек
 
@@ -68,7 +90,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mChannelTableWidget->ShowConfigData();
 
     mTimerUpdate = new QTimer();
-    mTimerUpdate->setInterval(100);
+    mTimerUpdate->setInterval(mReceiveDelay);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
     //создание и запуск потоков на отправку и прием буфера
     mThreadRecieve = new ThreadReceive();
@@ -82,6 +104,29 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
 AR600MainWindow::~AR600MainWindow()
 {
     delete ui;
+}
+
+void AR600MainWindow::ActionsLoad()
+{
+    actionOpen = new QAction("Открыть файл настроек",0);
+    actionOpen->setToolTip("Открыть файл настроек");
+    actionOpen->setIcon(QIcon("Icons/open.ico"));
+    connect(actionOpen,SIGNAL(triggered()),this,SLOT(OpenXML()));
+
+    actionPlay = new QAction("Начать выполнение",0);
+    actionPlay->setToolTip("Начать выполнение");
+    actionPlay->setIcon(QIcon("Icons/play.ico"));
+    connect(actionPlay,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonPlayPause_clicked()));
+
+    actionStop = new QAction("Остановить выполнение",0);
+    actionStop->setToolTip("Остановить выполнение");
+    actionStop->setIcon(QIcon("Icons/stop.ico"));
+    connect(actionStop,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonStop_clicked()));
+
+    actionNext = new QAction("Следующая команда",0);
+    actionNext->setToolTip("Следующая команда");
+    actionNext->setIcon(QIcon("Icons/redo.ico"));
+    connect(actionNext,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonNext_clicked()));
 }
 
 //вызывается при запуске подключения к роботу
@@ -101,10 +146,16 @@ void AR600MainWindow::Disconnect()
     mSendBuffer->OFF81();
     mSendBuffer->OFF82();
     mSendBuffer->OFF48();
-
     mThreadSend->DisconnectSocket();
     mThreadRecieve->DisconnectSocket();
     mTimerUpdate->stop();
+}
+
+void AR600MainWindow::ActivateActions()
+{
+    actionPlay->setEnabled(true);
+    actionStop->setEnabled(true);
+    actionNext->setEnabled(true);
 }
 
 //обработка принятого пакета от робота

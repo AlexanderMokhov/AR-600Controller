@@ -78,9 +78,13 @@ bool ConfigController::OpenFile(string FileName)
         //читаем настройки подключения
         TiXmlElement *xml_ConnectSettings = 0;
         xml_ConnectSettings = xml_root->FirstChildElement("ConnectSettings");
+
         mHost = std::string(xml_ConnectSettings->FirstChildElement("Host")->GetText());
-        mPort = atoi(xml_ConnectSettings->FirstChildElement("Port")->GetText());
+        mSendPort = atoi(xml_ConnectSettings->FirstChildElement("SendPort")->GetText());
+        mReceivePort = atoi(xml_ConnectSettings->FirstChildElement("ReceivePort")->GetText());
         mSendDelay = atoi(xml_ConnectSettings->FirstChildElement("SendDelay")->GetText());
+
+        mReceiveDelay = atoi(xml_ConnectSettings->FirstChildElement("ReceiveDelay")->GetText());
 
         //читаем настройки контроллера команд
         TiXmlElement *xml_CommandControllerSettings = 0;
@@ -175,15 +179,25 @@ bool ConfigController::SaveFile(string FileName)
     WriteValue=new TiXmlText(mHost.c_str());
     xml_Host->LinkEndChild(WriteValue);
 
-    TiXmlElement * xml_Port = new TiXmlElement("Port");
-    xml_ConnectSettings->LinkEndChild(xml_Port);
-    WriteValue=new TiXmlText(itoa(mPort,buffer,10));
-    xml_Port->LinkEndChild(WriteValue);
+    TiXmlElement * xml_SendPort = new TiXmlElement("SendPort");
+    xml_ConnectSettings->LinkEndChild(xml_SendPort);
+    WriteValue=new TiXmlText(itoa(mSendPort,buffer,10));
+    xml_SendPort->LinkEndChild(WriteValue);
+
+    TiXmlElement * xml_ReceivePort = new TiXmlElement("ReceivePort");
+    xml_ConnectSettings->LinkEndChild(xml_ReceivePort);
+    WriteValue=new TiXmlText(itoa(mReceivePort,buffer,10));
+    xml_ReceivePort->LinkEndChild(WriteValue);
 
     TiXmlElement * xml_SendDelay = new TiXmlElement("SendDelay");
     xml_ConnectSettings->LinkEndChild(xml_SendDelay);
     WriteValue=new TiXmlText(itoa(mSendDelay,buffer,10));
     xml_SendDelay->LinkEndChild(WriteValue);
+
+    TiXmlElement * xml_ReceiveDelay = new TiXmlElement("ReceiveDelay");
+    xml_ConnectSettings->LinkEndChild(xml_ReceiveDelay);
+    WriteValue=new TiXmlText(itoa(mReceiveDelay,buffer,10));
+    xml_ReceiveDelay->LinkEndChild(WriteValue);
 
     //записываем настройки контроллера команд
     TiXmlElement * xml_CommandControllerSettings = new TiXmlElement("CommandControllerSettings");
@@ -210,9 +224,14 @@ bool ConfigController::SaveFile(string FileName)
 
 }
 
-int ConfigController::GetPort()
+int ConfigController::GetReceivePort()
 {
-    return mPort;
+    return mReceivePort;
+}
+
+int ConfigController::GetSendPort()
+{
+    return mSendPort;
 }
 
 string ConfigController::GetHost()
@@ -223,6 +242,11 @@ string ConfigController::GetHost()
 int ConfigController::GetSendDelay()
 {
     return mSendDelay;
+}
+
+int ConfigController::GetReceiveDelay()
+{
+    return mReceiveDelay;
 }
 
 // что ты тут хотел возвращать?

@@ -42,8 +42,10 @@ private:
     MBRead              *mReceiveBuffer;
 
     std::string         mHost;
-    unsigned int        mPort;
+    unsigned int        mSendPort;
     int                 mSendDelay;
+    unsigned int        mReceivePort;
+    int                 mReceiveDelay;
 
     //виджеты
     DriverControllerWidget  *mDriverControllerWidget;
@@ -52,10 +54,17 @@ private:
     DriverLogWidget         *mDriverLogWidget;
     PowerWidget             *mPowerWidget;
 
+    //действия
+    QAction *actionOpen;
+    QAction *actionPlay;
+    QAction *actionStop;
+    QAction *actionNext;
+
     //потоки
     ThreadReceive           *mThreadRecieve;
     ThreadSend              *mThreadSend;
 
+    void ActionsLoad();
 private slots:
     void ProcessTheDatagram();
     void SaveXML();
@@ -68,6 +77,7 @@ private slots:
 public slots:
     void Connect();
     void Disconnect();
+    void ActivateActions();
 
 };
 

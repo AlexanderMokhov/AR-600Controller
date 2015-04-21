@@ -293,10 +293,12 @@
 	</Sensor>
   </SensorSettings>
   <ConnectSettings>
+  <!--<Host>127.0.0.1</Host>-->
 	<Host>192.169.1.10</Host>
-	<!--<Host>127.0.0.1</Host>-->
-	<Port>10001</Port>
+	<SendPort>10001</SendPort>
+	<ReceivePort>10001</ReceivePort>
 	<SendDelay>100</SendDelay>
+	<ReceiveDelay>100</ReceiveDelay>
   </ConnectSettings>
   <CommandControllerSettings>
     <DefaultStiff>300</DefaultStiff>

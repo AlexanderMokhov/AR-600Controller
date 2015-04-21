@@ -39,9 +39,9 @@ void ThreadReceive::ProcessPendingDatagrams()
 void ThreadReceive::ConnectSocket()
 {
     qDebug() << "Receiver - connecting..." << endl;
-    mPort=ConfigController::Instance()->GetPort();
+    mReceivePort=ConfigController::Instance()->GetReceivePort();
 
-    if (!mUdpSocketResiver->bind(10001,QUdpSocket::ShareAddress))
+    if (!mUdpSocketResiver->bind(mReceivePort,QUdpSocket::ShareAddress))
     {
         qDebug()<< "Receiver - Not Bind!";
     }

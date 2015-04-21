@@ -14,7 +14,7 @@ class ThreadReceive : public QThread
 private:
     QUdpSocket      *mUdpSocketResiver;
     MBRead          *mReceiveBuffer;
-    int             mPort;
+    int             mReceivePort;
 public:
     explicit ThreadReceive(QObject *parent = 0);
     ~ThreadReceive();

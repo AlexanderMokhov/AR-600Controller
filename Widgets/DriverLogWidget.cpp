@@ -47,6 +47,25 @@ DriverLogWidget::WriteRecord()
     }
 }
 
+DriverLogWidget::StartWriteLog(int TimeRecord)
+{
+    mCurrentTime=0;
+    mRecordTime = TimeRecord;
+    ui->spinTimeRecord->setValue(TimeRecord);
+    mDelay = ui->spinDelayRecord->value();
+
+    mRecordTimer = new QTimer(this);
+    connect(mRecordTimer, SIGNAL(timeout()),this, SLOT(WriteRecord()));
+    mDriverLogController=new DriverLogController();
+    mRecordTimer->start(mDelay);
+}
+
+DriverLogWidget::StopWriteLog()
+{
+    mRecordTimer->stop();
+    SaveData();
+}
+
 void DriverLogWidget::SaveData()
 {
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();

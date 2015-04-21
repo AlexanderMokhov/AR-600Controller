@@ -23,9 +23,11 @@ private:
     TiXmlDocument * mXMLfileSetting;
 
     std::map<unsigned int,DriverSettingsItem> mDriverSettingsMap;
-    int mPort;//порт назначения
     std::string mHost;//адрес назначения
+    int mSendPort;//порт назначения
+    int mReceivePort;//порт назначения
     int mSendDelay;
+    int mReceiveDelay;
 
     int mDefaultStiff;
     int mDefaultDump;
@@ -39,9 +41,11 @@ public:
     bool OpenFile(std::string FileName);//открыть файл настроек
     bool SaveFile(std::string FileName);//сохранить файл настроек
 
-    int GetPort();//получить порт
     std::string GetHost();//получить адрес
+    int GetSendPort();//получить порт
+    int GetReceivePort();//получить порт
     int GetSendDelay();//получить интервал отправки
+    int GetReceiveDelay();//получить интервал обновления
 
     bool Update(MBWrite *buffer);
     std::map<unsigned int,DriverSettingsItem> *GetConfigMap();

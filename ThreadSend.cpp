@@ -24,11 +24,11 @@ void ThreadSend::run()
 void ThreadSend::ConnectSocket()
 {
     qDebug() << "Sender - connecting..." << endl;
-    mPort = ConfigController::Instance()->GetPort();
+    mSendPort = ConfigController::Instance()->GetSendPort();
     mHost = QString::fromStdString(ConfigController::Instance()->GetHost());
     mSendDelay = ConfigController::Instance()->GetSendDelay();
 
-    mUdpSocketSender->connectToHost(mHost, mPort);
+    mUdpSocketSender->connectToHost(mHost, mSendPort);
     mUdpSocketSender->waitForConnected(1000);
 
     if (mUdpSocketSender->state()==QUdpSocket::ConnectedState)
@@ -66,7 +66,7 @@ void ThreadSend::SendDatagram()
     qDebug() << "Sender - send..." << endl;
     QHostAddress mAddress = QHostAddress(mHost);
     mLocker->lock();
-    mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), mAddress, mPort);
+    mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
     mUdpSocketSender->waitForBytesWritten();
     mLocker->unlock();
     CommandController::Instance()->SendCommand();

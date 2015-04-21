@@ -29,9 +29,16 @@ private slots:
 
     void on_ButtonNext_clicked();
 
+    void on_checkBoxLog_clicked(bool checked);
+
 private:
     Ui::CommandControllerWidget *ui;
-    QString Defaulttext;
+    QString DefaultText;
+    bool IsLog;
+signals:
+    StartWriteLog(int LogTime);
+    StopWriteLog();
+    FileLoaded();
 };
 
 #endif // COMMANDCONTROLLERWIDGET_H

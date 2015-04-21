@@ -65,6 +65,14 @@
      <height>19</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="actionOpenConfigFile"/>
+    <addaction name="actionSaveConfigFile"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="MainToolBar">
@@ -85,6 +93,16 @@
    </attribute>
    <addaction name="separator"/>
   </widget>
+  <action name="actionOpenConfigFile">
+   <property name="text">
+    <string>Открыть файл настроек</string>
+   </property>
+  </action>
+  <action name="actionSaveConfigFile">
+   <property name="text">
+    <string>Сохранить файл настроек</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

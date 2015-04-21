@@ -7,12 +7,13 @@ CommandControllerWidget::CommandControllerWidget(QWidget *parent) :
     ui(new Ui::CommandControllerWidget)
 {
     ui->setupUi(this);
-    Defaulttext = "Нажмите кнопку \"Загрузить Файл\"";
-    ui->MessageTextBox->setText(Defaulttext);
+    DefaultText = "Нажмите кнопку \"Загрузить Файл\"";
+    ui->MessageTextBox->setText(DefaultText);
 
     ui->ButtonPlayPause->setEnabled(false);
     ui->ButtonNext->setEnabled(false);
     ui->ButtonStop->setEnabled(false);
+    IsLog=false;
 }
 
 CommandControllerWidget::~CommandControllerWidget()
@@ -40,6 +41,7 @@ void CommandControllerWidget::on_ButtonLoadFile_clicked()
             ui->ButtonPlayPause->setEnabled(true);
             ui->ButtonNext->setEnabled(true);
             ui->ButtonStop->setEnabled(true);
+            emit FileLoaded();
         }
         else
         {
@@ -55,12 +57,18 @@ void CommandControllerWidget::on_ButtonPlayPause_clicked()
     {
         CommandController::Instance()->SetPlayForwardState(false);
         ui->ButtonLoadFile->setEnabled(true);
+
     }
     else
     {
         CommandController::Instance()->SetCurrentTimeForCommands(0);
         CommandController::Instance()->SetPlayForwardState(true);
         ui->ButtonLoadFile->setEnabled(false);
+        ui->checkBoxLog->setEnabled(false);
+        if(IsLog)
+        {
+            emit StartWriteLog(CommandController::Instance()->GetTimeRecord()/1e3);
+        }
     }
 }
 
@@ -69,9 +77,19 @@ void CommandControllerWidget::on_ButtonStop_clicked()
     CommandController::Instance()->SetPlayForwardState(false);
     CommandController::Instance()->SetCommandId(0);
     ui->ButtonLoadFile->setEnabled(true);
+    ui->checkBoxLog->setEnabled(true);
+    if(IsLog)
+    {
+        emit StopWriteLog();
+    }
 }
 
 void CommandControllerWidget::on_ButtonNext_clicked()
 {
     CommandController::Instance()->NextCommand();
+}
+
+void CommandControllerWidget::on_checkBoxLog_clicked(bool checked)
+{
+    IsLog = checked;
 }

@@ -19,9 +19,11 @@ private:
     QUdpSocket      *mUdpSocketSender;
     MBWrite         *mSendBuffer;
     QTimer          *mTimerSend;
-    int             mPort;
+
     QString         mHost;
+    int             mSendPort;
     int             mSendDelay;
+
     std::mutex *    mLocker;
 public:
     explicit ThreadSend(QObject *parent = 0);

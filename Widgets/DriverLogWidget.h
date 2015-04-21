@@ -34,6 +34,8 @@ private:
     void SaveData();
 private slots:
     WriteRecord();
+    StartWriteLog(int TimeRecord);
+    StopWriteLog();
 };
 
 #endif // DRIVERLOGWIDGET_H
