@@ -13,6 +13,7 @@ ChannelListItem::ChannelListItem()
     mKI=2;
     mKD=1;
     mIlim=1;
+    mEnable=false;
 }
 
 ChannelListItem::~ChannelListItem()

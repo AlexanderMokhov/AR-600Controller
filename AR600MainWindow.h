@@ -1,4 +1,4 @@
-#ifndef AR600MAINWINDOW_H
+﻿#ifndef AR600MAINWINDOW_H
 #define AR600MAINWINDOW_H
 
 #include <QMainWindow>
@@ -21,6 +21,8 @@
 #include "DriverLogController.h"
 #include "ThreadReceive.h"
 #include "ThreadSend.h"
+#include <QLabel>
+#include "Widgets/DialogConnectConfig.h"
 namespace Ui {
 class AR600MainWindow;
 }
@@ -53,12 +55,18 @@ private:
     ChannelTableWidget      *mChannelTableWidget;
     DriverLogWidget         *mDriverLogWidget;
     PowerWidget             *mPowerWidget;
+    QLabel                  *mConnectStatusLabel;
+    QLabel                  *mCommandControllerStatusLabel;
+    DialogConnectConfig     *mDialog;
 
     //действия
     QAction *actionOpen;
     QAction *actionPlay;
     QAction *actionStop;
     QAction *actionNext;
+    QAction *actionOnPower;
+    QAction *actionOffPower;
+    QAction *actionOpenConnectSettings;
 
     //потоки
     ThreadReceive           *mThreadRecieve;
@@ -78,6 +86,7 @@ public slots:
     void Connect();
     void Disconnect();
     void ActivateActions();
+    void OpenConnectConfig();
 
 };
 

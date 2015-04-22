@@ -62,7 +62,7 @@
      <x>0</x>
      <y>0</y>
      <width>716</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -72,7 +72,24 @@
     <addaction name="actionOpenConfigFile"/>
     <addaction name="actionSaveConfigFile"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Соединение</string>
+    </property>
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
+    <addaction name="actionOpenConnectConfig"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Питание</string>
+    </property>
+    <addaction name="actionOn"/>
+    <addaction name="actionOff"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="MainToolBar">
@@ -101,6 +118,31 @@
   <action name="actionSaveConfigFile">
    <property name="text">
     <string>Сохранить файл настроек</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Подключиться</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="text">
+    <string>Отключиться</string>
+   </property>
+  </action>
+  <action name="actionOn">
+   <property name="text">
+    <string>Включить все</string>
+   </property>
+  </action>
+  <action name="actionOff">
+   <property name="text">
+    <string>Выключить все</string>
+   </property>
+  </action>
+  <action name="actionOpenConnectConfig">
+   <property name="text">
+    <string>Настройки</string>
    </property>
   </action>
  </widget>

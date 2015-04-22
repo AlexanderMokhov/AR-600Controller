@@ -17,11 +17,12 @@ DriverSettingsItem::~DriverSettingsItem()
     mDump =         0;//KI
     mTorque =       0;//KD
     mIlim =         0;
+    mEnable =       false;
 }
 
 DriverSettingsItem::DriverSettingsItem(unsigned int Number,unsigned int NumberBuffer,string Name,
                                        int MinPos,int MaxPos, bool Reverce,
-                                       int Stiff,int Dump,int Torque,int Ilim)
+                                       int Stiff,int Dump,int Torque,int Ilim,bool Enable)
 {
     mNumber = Number;
     mNumberBuffer = NumberBuffer;
@@ -33,6 +34,7 @@ DriverSettingsItem::DriverSettingsItem(unsigned int Number,unsigned int NumberBu
     mDump = Dump;
     mTorque = Torque;
     mIlim = Ilim;
+    mEnable = Enable;
 }
 
 unsigned int DriverSettingsItem::GetNumber()
@@ -101,5 +103,10 @@ void DriverSettingsItem::SetStiff(int oStiff)
 void DriverSettingsItem::SetDump(int oDump)
 {
     mDump=oDump;
+}
+
+bool DriverSettingsItem::GetEnable()
+{
+    return mEnable;
 }
 

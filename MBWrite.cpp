@@ -192,6 +192,11 @@ std::map<int, int> *MBWrite::GetMaxPosMap()
     return &mMaxPosMap;
 }
 
+std::map<int, bool> *MBWrite::GetEnableMap()
+{
+    return &mEnableMap;
+}
+
 std::mutex *MBWrite::GetLocker()
 {
     return &mLocker;
@@ -276,13 +281,13 @@ void MBWrite::Set_MOTOR_ANGLE(short NOMB, short value)
     mMaxPos=mMaxPosMap.at(NOMB);
     if(value < mMinPos)
     {
-        qDebug() << "!!!Значение" << QString::number(value) << "ниже минимума" << QString::number(mMinPos) << endl;
+        qDebug() << QString::number(NOMB) << " !!!Значение" << QString::number(value) << "ниже минимума" << QString::number(mMinPos) << endl;
         value = mMinPos;
 
     }
     else if(value > mMaxPos)
     {
-        qDebug() << "!!!Значение" << QString::number(value) << "выше максимума" << QString::number(mMaxPos) << endl;
+        qDebug() << QString::number(NOMB) << " !!!Значение" << QString::number(value) << "выше максимума" << QString::number(mMaxPos) << endl;
         value = mMaxPos;
 
     }
@@ -376,7 +381,10 @@ void MBWrite::MOTOR_STOP(short NOMB)
 void MBWrite::MOTOR_TRACE(short NOMB)
 {
     mLocker.lock();
-	mWRBuffer[NOMB * 16 + 1] |= 3;
+    if(mEnableMap.at(NOMB))
+    {
+        mWRBuffer[NOMB * 16 + 1] |= 3;
+    }
     mLocker.unlock();
 }
 

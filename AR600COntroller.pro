@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     Widgets/PowerWidget.cpp \
     ThreadReceive.cpp \
     ThreadSend.cpp \
-    AR600MainWindow.cpp
+    AR600MainWindow.cpp \
+    Widgets/DialogConnectConfig.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -62,7 +63,8 @@ HEADERS  += \
     Widgets/PowerWidget.h \
     ThreadReceive.h \
     ThreadSend.h \
-    AR600MainWindow.h
+    AR600MainWindow.h \
+    Widgets/DialogConnectConfig.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \
@@ -70,7 +72,8 @@ FORMS    += \
     Widgets/ChannelTableWidget.ui \
     Widgets/DriverLogWidget.ui \
     Widgets/PowerWidget.ui \
-    AR600MainWindow.ui
+    AR600MainWindow.ui \
+    Widgets/DialogConnectConfig.ui
 
 win32 {
     RC_FILE += resource.rc

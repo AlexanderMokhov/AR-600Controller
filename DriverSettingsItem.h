@@ -17,6 +17,7 @@ private:
     int             mDump;
     int             mTorque;
     int             mIlim;
+    bool            mEnable;
 
 public:
     DriverSettingsItem();
@@ -30,7 +31,8 @@ public:
                        int Stiff,
                        int Dump,
                        int Torque,
-                       int Ilim);
+                       int Ilim,
+                       bool Enable);
     unsigned int GetNumber();
     unsigned int GetNumberBuffer();
     std::string GetName();
@@ -44,6 +46,7 @@ public:
     void SetIlim(int calibrationPos);
     void SetStiff(int oStiff);
     void SetDump(int oDump);
+    bool GetEnable();
 
 };
 

@@ -12,6 +12,7 @@ private:
     std::map<int,bool> mReverceMap;
     std::map<int,int> mMaxPosMap;
     std::map<int,int> mMinPosMap;
+    std::map<int,bool> mEnableMap;
     short mMinPos;
     short mMaxPos;
     std::mutex mLocker;
@@ -79,6 +80,7 @@ public:
     std::map<int, bool> *GetReverceMap();
     std::map<int, int> *GetMinPosMap();
     std::map<int, int> *GetMaxPosMap();
+    std::map<int, bool> *GetEnableMap();
     std::mutex *GetLocker();
 
 };

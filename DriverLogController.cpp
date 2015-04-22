@@ -9,6 +9,7 @@ DriverLogController::DriverLogController()
     {
         int Number = (*it).first;
         int NumbBuffer = (*it).second.GetNumberBuffer();
+
         mDriversMap.insert(pair<int, int>(Number,mReadBuffer->Get_MOTOR_CPOS(NumbBuffer)));
     }
 }
@@ -24,6 +25,7 @@ void DriverLogController::AddRawData(int time)
     for(it = mDriversMap.begin();it!=mDriversMap.end();++it)
     {
         int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at((*it).first).GetNumberBuffer();
+
         (*it).second=mReadBuffer->Get_MOTOR_CPOS(NumberBuffer);
     }
 

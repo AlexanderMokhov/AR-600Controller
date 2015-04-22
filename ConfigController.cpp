@@ -67,8 +67,9 @@ bool ConfigController::OpenFile(string FileName)
             int Dump = atoi(xml_Driver->FirstChildElement("Dump")->GetText());
             int Torque = atoi(xml_Driver->FirstChildElement("Torque")->GetText());
             int Ilim = atoi(xml_Driver->FirstChildElement("Ilim")->GetText());
+            bool Enable = strcmp("false",xml_Driver->FirstChildElement("Enable")->GetText());
 
-            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Ilim);
+            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Ilim,Enable);
             //загоняем в контейнер
             mDriverSettingsMap.insert(pair<unsigned int,DriverSettingsItem>(Number,item));
 
@@ -168,6 +169,14 @@ bool ConfigController::SaveFile(string FileName)
         WriteValue = new TiXmlText(itoa((*it).second.GetIlim(),buffer,10));
         Ilim->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Ilim);
+
+        TiXmlElement* Enable = new TiXmlElement("Enable");
+        if((*it).second.GetEnable()!=0)
+            WriteValue = new TiXmlText("true");
+        else
+            WriteValue = new TiXmlText("false");
+        Enable->LinkEndChild(WriteValue);
+        xml_Driver->LinkEndChild(Enable);
     }
 
     //записываем настройки подключения
@@ -244,6 +253,21 @@ int ConfigController::GetSendDelay()
     return mSendDelay;
 }
 
+void ConfigController::SetHost(string host)
+{
+    mHost = host;
+}
+
+void ConfigController::SetReceivePort(int port)
+{
+    mReceivePort = port;
+}
+
+void ConfigController::SetSendPort(int port)
+{
+    mSendPort = port;
+}
+
 int ConfigController::GetReceiveDelay()
 {
     return mReceiveDelay;
@@ -269,6 +293,8 @@ bool ConfigController::Update(MBWrite *buffer)
         buffer->GetReverceMap()->insert(std::pair<int,bool>(NumbBuffer,(*it).second.GetReverce()));
         buffer->GetMinPosMap()->insert(std::pair<int,int>(NumbBuffer,(*it).second.GetMinPos()));
         buffer->GetMaxPosMap()->insert(std::pair<int,int>(NumbBuffer,(*it).second.GetMaxPos()));
+
+        buffer->GetEnableMap()->insert(std::pair<int,bool>(NumbBuffer,(*it).second.GetEnable()));
 
         buffer->Set_MOTOR_MIN_POS(NumbBuffer,PosMin);
         buffer->Set_MOTOR_MAX_POS(NumbBuffer,PosMax);

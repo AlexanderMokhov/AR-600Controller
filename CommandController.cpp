@@ -126,7 +126,7 @@ bool CommandController::LoadFromFile(std::string fileName)
             temp.clear();
 
             //Переводим позицию в градусы*100
-            Position=(180.0/M_PI)*Position*100;
+            Position=(180.0/M_PI)*Position*100.0;
 
             //проверяем есть ли коэффициэнты PID
             while(std::isspace(str[i],loc))

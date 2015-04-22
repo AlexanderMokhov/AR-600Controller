@@ -19,6 +19,7 @@ public:
     int             mKP;
     int             mKD;
     int             mIlim;
+    bool            mEnable;
     ChannelListItem();
     ~ChannelListItem();
 };

@@ -45,6 +45,9 @@ public:
     int GetSendPort();//получить порт
     int GetReceivePort();//получить порт
     int GetSendDelay();//получить интервал отправки
+    void SetHost(std::string host);
+    void SetReceivePort(int port);
+    void SetSendPort(int port);
     int GetReceiveDelay();//получить интервал обновления
 
     bool Update(MBWrite *buffer);

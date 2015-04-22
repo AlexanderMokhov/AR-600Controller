@@ -13,7 +13,8 @@ ChannelTableModel::ChannelTableModel(QObject *parent) : QAbstractTableModel(pare
                 << QString::fromUtf8(" KP ")
                 << QString::fromUtf8(" KI ")
                 << QString::fromUtf8(" KD ")
-                << QString::fromUtf8(" КалибПол ");
+                << QString::fromUtf8(" КалибПол ")
+                << QString::fromUtf8(" Enable ");
 
     //заполняем пустыми ячейками/*
         for(int i = 0; i < 20; i++){
@@ -35,7 +36,7 @@ int ChannelTableModel::rowCount(const QModelIndex &parent) const
 
 int ChannelTableModel::columnCount(const QModelIndex &parent) const
 {
-    return 11; // 10 столбцов
+    return 12; // 12 столбцов
 }
 
 QVariant ChannelTableModel::data(const QModelIndex &index, int role) const
@@ -70,6 +71,8 @@ QVariant ChannelTableModel::data(const QModelIndex &index, int role) const
             return QString::number(mDataList.at(index.row())->mKD);
         if (index.column() == 10 )
             return QString::number(mDataList.at(index.row())->mIlim);
+        if (index.column() == 11 )
+            return QString::number(mDataList.at(index.row())->mEnable);
     }
     return QVariant();
 }
@@ -111,6 +114,9 @@ bool ChannelTableModel::setData(const QModelIndex &index, const QVariant &value,
         }
         if(index.column()==10){
             mDataList.at(index.row())->mIlim = value.toString().toInt();
+        }
+        if(index.column()==11){
+            mDataList.at(index.row())->mEnable = value.toString().toInt();
         }
         emit dataChanged(index, index);
         return true;
@@ -179,7 +185,7 @@ void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelD
                                   const QString &Status, const QString &Pos,
                                   const QString &MinPos, const QString &MaxPos,
                                   const QString &Reverce, const QString &KP,
-                                  const QString &KI, const QString &KD,const QString &Ilim)
+                                  const QString &KI, const QString &KD,const QString &Ilim, const QString & Enable)
 {
     insertRows( mDataList.size(), 1 );
 
@@ -194,5 +200,6 @@ void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelD
     setData( index( mDataList.size()-1, 8 ), KI );
     setData( index( mDataList.size()-1, 9 ), KD );
     setData( index( mDataList.size()-1, 10 ), Ilim );
+    setData( index( mDataList.size()-1, 11 ), Enable );
 }
 
