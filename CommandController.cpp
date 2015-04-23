@@ -188,6 +188,7 @@ bool CommandController::LoadFromFile(std::string fileName)
         }
         mTimeRecord = currentTime;//в микросекундах
         mCommandId=0;
+        mCurrentTimeForCommands=0;
         qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
         qDebug() << "Время записи " << QString::number((double)mTimeRecord/1e6) << " секунд" << endl;
 

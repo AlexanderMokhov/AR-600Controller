@@ -22,7 +22,7 @@
 #include "ThreadReceive.h"
 #include "ThreadSend.h"
 #include <QLabel>
-#include "Widgets/DialogConnectConfig.h"
+#include "Widgets/ConnectConfigDialog.h"
 namespace Ui {
 class AR600MainWindow;
 }
@@ -57,16 +57,20 @@ private:
     PowerWidget             *mPowerWidget;
     QLabel                  *mConnectStatusLabel;
     QLabel                  *mCommandControllerStatusLabel;
-    DialogConnectConfig     *mDialog;
+    ConnectConfigDialog     *mConnectDialog;
 
     //действия
-    QAction *actionOpen;
-    QAction *actionPlay;
-    QAction *actionStop;
-    QAction *actionNext;
-    QAction *actionOnPower;
-    QAction *actionOffPower;
-    QAction *actionOpenConnectSettings;
+    QAction *TBactionOpenCF;
+    QAction *TBactionSaveCF;
+    QAction *TBactionPlay;
+    QAction *TBactionStop;
+    QAction *TBactionNext;
+    QAction *TBactionOnPower;
+    QAction *TBactionOffPower;
+    QAction *TBactionOpenConnectSettings;
+    QAction *TBactionConnect;
+    QAction *TBactionDisconnect;
+    QAction *TBactionOpenCommandFile;
 
     //потоки
     ThreadReceive           *mThreadRecieve;
@@ -77,10 +81,6 @@ private slots:
     void ProcessTheDatagram();
     void SaveXML();
     void OpenXML();
-
-    void play();
-    void pause();
-    void stop();
 
 public slots:
     void Connect();

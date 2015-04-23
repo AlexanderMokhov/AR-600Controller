@@ -1,21 +1,21 @@
-#include "DialogConnectConfig.h"
-#include "ui_DialogConnectConfig.h"
+#include "ConnectConfigDialog.h"
+#include "ui_ConnectConfigDialog.h"
 
-DialogConnectConfig::DialogConnectConfig(QWidget *parent) :
+ConnectConfigDialog::ConnectConfigDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogConnectConfig)
+    ui(new Ui::ConnectConfigDialog)
 {
     ui->setupUi(this);
     connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(accepted()));
 
 }
 
-DialogConnectConfig::~DialogConnectConfig()
+ConnectConfigDialog::~ConnectConfigDialog()
 {
     delete ui;
 }
 
-void DialogConnectConfig::Update()
+void ConnectConfigDialog::Update()
 {
     mHost=QString::fromStdString(ConfigController::Instance()->GetHost());
     mSendPort=ConfigController::Instance()->GetSendPort();
@@ -26,7 +26,7 @@ void DialogConnectConfig::Update()
     ui->lineEditReceivePort->setText(QString::number(mReceivePort));
 }
 
-DialogConnectConfig::accepted()
+ConnectConfigDialog::accepted()
 {
     ConfigController::Instance()->SetHost(ui->lineEditHost->text().toStdString());
     ConfigController::Instance()->SetReceivePort(ui->lineEditReceivePort->text().toInt());

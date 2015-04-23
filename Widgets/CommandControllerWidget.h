@@ -6,6 +6,10 @@
 #include "BufferController.h"
 #include "ChannelTableModel.h"
 #include <QFileDialog>
+#include <QStateMachine>
+#include <QState>
+#include <QPropertyAnimation>
+#include <QSignalTransition>
 #include "CommandController.h"
 
 namespace Ui {
@@ -35,6 +39,12 @@ private:
     Ui::CommandControllerWidget *ui;
     QString DefaultText;
     bool IsLog;
+
+    QStateMachine *machine;
+    QState        *statePlay;
+    QState        *stateStop;
+    QState        *statePause;
+    QState        *stateNotOpenFile;
 signals:
     StartWriteLog(int LogTime);
     StopWriteLog();

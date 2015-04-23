@@ -28,38 +28,40 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mPowerWidget = new PowerWidget();
     ui->PowerLayout->addWidget(mPowerWidget);
 
+    mConnectDialog = new ConnectConfigDialog();
+
     mDriverControllerWidget->setModel(mChannelTableWidget->getModel());
     connect(mChannelTableWidget,SIGNAL(RowChanged(int)),mDriverControllerWidget,SLOT(RowChanged(int)));
-
-    mDialog = new DialogConnectConfig();
     //конец настройки виджетов
 
+    //настройка кнопок тулбара
     ActionsLoad();
 
-    actionPlay->setEnabled(false);
-    actionStop->setEnabled(false);
-    actionNext->setEnabled(false);
+    TBactionPlay->setEnabled(false);
+    TBactionStop->setEnabled(false);
+    TBactionNext->setEnabled(false);
 
     //добавление кнопок на тулбар
-    ui->MainToolBar->addAction(actionOpen);
-    ui->MainToolBar->addAction(QIcon("Icons/save.ico"),"Сохранить файл настроек",this,SLOT(SaveXML()));
+    ui->MainToolBar->addAction(TBactionOpenCF);
+    ui->MainToolBar->addAction(TBactionSaveCF);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(QIcon("Icons/connect.ico"),"Подключение",this,SLOT(Connect()));
-    ui->MainToolBar->addAction(QIcon("Icons/disconnect.ico"),"Отключение",this,SLOT(Disconnect()));
-    ui->MainToolBar->addAction(actionOpenConnectSettings);
+    ui->MainToolBar->addAction(TBactionConnect);
+    ui->MainToolBar->addAction(TBactionDisconnect);
+    ui->MainToolBar->addAction(TBactionOpenConnectSettings);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(actionOnPower);
-    ui->MainToolBar->addAction(actionOffPower);
+    ui->MainToolBar->addAction(TBactionOnPower);
+    ui->MainToolBar->addAction(TBactionOffPower);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(QIcon("Icons/folder.ico"),"Загрузить файл команд",mCommandControllerWidget,SLOT(on_ButtonLoadFile_clicked()));
+    ui->MainToolBar->addAction(TBactionOpenCommandFile);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(actionPlay);
-    ui->MainToolBar->addAction(actionPlay);
-    ui->MainToolBar->addAction(actionStop);
+    ui->MainToolBar->addAction(TBactionPlay);
+    ui->MainToolBar->addAction(TBactionPlay);
+    ui->MainToolBar->addAction(TBactionStop);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(actionNext);
+    ui->MainToolBar->addAction(TBactionNext);
     ui->MainToolBar->addSeparator();
     //конец добавление кнопок на тулбар
+
     mConnectStatusLabel = new QLabel(this);
     mConnectStatusLabel->setText("Соединение не установленно");
     ui->statusbar->addWidget(mConnectStatusLabel);
@@ -68,7 +70,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mCommandControllerStatusLabel->setText("Файл команд не загружен");
     ui->statusbar->addWidget(mCommandControllerStatusLabel);
 
-
+    //настройка кнопок меню
     connect(ui->actionOpenConfigFile,SIGNAL(triggered()),this,SLOT(OpenXML()));
     connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
     connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
@@ -76,6 +78,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     connect(ui->actionOn,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
     connect(ui->actionOff,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
     connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
+    //конец настройки кнопок меню
 
     connect(mCommandControllerWidget,SIGNAL(StartWriteLog(int)),mDriverLogWidget,SLOT(StartWriteLog(int)));
     connect(mCommandControllerWidget,SIGNAL(StopWriteLog()),mDriverLogWidget,SLOT(StopWriteLog()));
@@ -125,43 +128,63 @@ AR600MainWindow::~AR600MainWindow()
     delete ui;
 }
 
+//Настройка кнопок тулбара
 void AR600MainWindow::ActionsLoad()
 {
-    actionOpen = new QAction("Открыть файл настроек",0);
-    actionOpen->setToolTip("Открыть файл настроек");
-    actionOpen->setIcon(QIcon("Icons/open.ico"));
-    connect(actionOpen,SIGNAL(triggered()),this,SLOT(OpenXML()));
+    TBactionOpenCF = new QAction("Открыть файл настроек",0);
+    TBactionOpenCF->setToolTip("Открыть файл настроек");
+    TBactionOpenCF->setIcon(QIcon("Icons/open.ico"));
+    connect(TBactionOpenCF,SIGNAL(triggered()),this,SLOT(OpenXML()));
 
-    actionPlay = new QAction("Начать выполнение",0);
-    actionPlay->setToolTip("Начать выполнение");
-    actionPlay->setIcon(QIcon("Icons/play.ico"));
-    connect(actionPlay,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonPlayPause_clicked()));
+    TBactionSaveCF = new QAction("Сохранить файл настроек",0);
+    TBactionSaveCF->setToolTip("Сохранить файл настроек");
+    TBactionSaveCF->setIcon(QIcon("Icons/save.ico"));
+    connect(TBactionSaveCF,SIGNAL(triggered()),this,SLOT(SaveXML()));
 
-    actionStop = new QAction("Остановить выполнение",0);
-    actionStop->setToolTip("Остановить выполнение");
-    actionStop->setIcon(QIcon("Icons/stop.ico"));
-    connect(actionStop,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonStop_clicked()));
+    TBactionPlay = new QAction("Начать выполнение",0);
+    TBactionPlay->setToolTip("Начать выполнение");
+    TBactionPlay->setIcon(QIcon("Icons/play.ico"));
+    connect(TBactionPlay,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonPlayPause_clicked()));
 
-    actionNext = new QAction("Следующая команда",0);
-    actionNext->setToolTip("Следующая команда");
-    actionNext->setIcon(QIcon("Icons/redo.ico"));
-    connect(actionNext,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonNext_clicked()));
+    TBactionStop = new QAction("Остановить выполнение",0);
+    TBactionStop->setToolTip("Остановить выполнение");
+    TBactionStop->setIcon(QIcon("Icons/stop.ico"));
+    connect(TBactionStop,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonStop_clicked()));
 
-    actionOnPower = new QAction("Включить все",0);
-    actionOnPower->setToolTip("Включить все");
-    actionOnPower->setIcon(QIcon("Icons/on.ico"));
-    connect(actionOnPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
+    TBactionNext = new QAction("Следующая команда",0);
+    TBactionNext->setToolTip("Следующая команда");
+    TBactionNext->setIcon(QIcon("Icons/redo.ico"));
+    connect(TBactionNext,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonNext_clicked()));
 
-    actionOffPower = new QAction("Выключить все",0);
-    actionOffPower->setToolTip("Выключить все");
-    actionOffPower->setIcon(QIcon("Icons/off.ico"));
-    connect(actionOffPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+    TBactionOpenCommandFile = new QAction("Загрузить файл команд",0);
+    TBactionOpenCommandFile->setToolTip("Загрузить файл команд");
+    TBactionOpenCommandFile->setIcon(QIcon("Icons/folder.ico"));
+    connect(TBactionOpenCommandFile,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonLoadFile_clicked()));
 
-    actionOpenConnectSettings = new QAction("Настройки соединения",0);
-    actionOpenConnectSettings->setToolTip("Настройки соединения");
-    actionOpenConnectSettings->setIcon(QIcon("Icons/settings.ico"));
-    connect(actionOpenConnectSettings,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
+    TBactionOnPower = new QAction("Включить все",0);
+    TBactionOnPower->setToolTip("Включить все");
+    TBactionOnPower->setIcon(QIcon("Icons/on.ico"));
+    connect(TBactionOnPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
 
+    TBactionOffPower = new QAction("Выключить все",0);
+    TBactionOffPower->setToolTip("Выключить все");
+    TBactionOffPower->setIcon(QIcon("Icons/off.ico"));
+    connect(TBactionOffPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+
+    TBactionOpenConnectSettings = new QAction("Настройки соединения",0);
+    TBactionOpenConnectSettings->setToolTip("Настройки соединения");
+    TBactionOpenConnectSettings->setIcon(QIcon("Icons/settings.ico"));
+    connect(TBactionOpenConnectSettings,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
+
+    TBactionConnect = new QAction("Подключение",0);
+    TBactionConnect->setToolTip("Подключение");
+    TBactionConnect->setIcon(QIcon("Icons/connect.ico"));
+    connect(TBactionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
+
+    TBactionDisconnect = new QAction("Отключение",0);
+    TBactionDisconnect->setToolTip("Отключение");
+    TBactionDisconnect->setIcon(QIcon("Icons/disconnect.ico"));
+    connect(TBactionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
 }
 
 //вызывается при запуске подключения к роботу
@@ -190,18 +213,18 @@ void AR600MainWindow::Disconnect()
 
 void AR600MainWindow::ActivateActions()
 {
-    actionPlay->setEnabled(true);
-    actionStop->setEnabled(true);
-    actionNext->setEnabled(true);
+    TBactionPlay->setEnabled(true);
+    TBactionStop->setEnabled(true);
+    TBactionNext->setEnabled(true);
     mCommandControllerStatusLabel->setText("Файл команд загружен");
 }
 
+//открытие диалога настроек подключения
 void AR600MainWindow::OpenConnectConfig()
 {
-    mDialog->setModal(true);
-    mDialog->Update();
-    mDialog->show();
-    //mDialog->activateWindow();
+    mConnectDialog->setModal(true);
+    mConnectDialog->Update();
+    mConnectDialog->show();
 }
 
 //обработка принятого пакета от робота
@@ -212,6 +235,7 @@ void AR600MainWindow::ProcessTheDatagram()
     mChannelTableWidget->UpdatePos();
 }
 
+//сохранение файла настроек
 void AR600MainWindow::SaveXML()
 {
     QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
@@ -222,6 +246,7 @@ void AR600MainWindow::SaveXML()
     }
 }
 
+//открытие файла настроек
 void AR600MainWindow::OpenXML()
 {
     QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
@@ -242,19 +267,4 @@ void AR600MainWindow::OpenXML()
             qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
         }
     }
-}
-
-void AR600MainWindow::play()
-{
-
-}
-
-void AR600MainWindow::pause()
-{
-
-}
-
-void AR600MainWindow::stop()
-{
-
 }

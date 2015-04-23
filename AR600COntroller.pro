@@ -33,14 +33,13 @@ SOURCES += main.cpp\
     Widgets/CommandControllerWidget.cpp \
     DriverLogController.cpp \
     ConfigController.cpp \
-    ChannelTableController.cpp \
     Widgets/ChannelTableWidget.cpp \
     Widgets/DriverLogWidget.cpp \
     Widgets/PowerWidget.cpp \
     ThreadReceive.cpp \
     ThreadSend.cpp \
     AR600MainWindow.cpp \
-    Widgets/DialogConnectConfig.cpp
+    Widgets/ConnectConfigDialog.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -57,14 +56,13 @@ HEADERS  += \
     Widgets/CommandControllerWidget.h \
     DriverLogController.h \
     ConfigController.h \
-    ChannelTableController.h \
     Widgets/ChanneTableWidget.h \
     Widgets/DriverLogWidget.h \
     Widgets/PowerWidget.h \
     ThreadReceive.h \
     ThreadSend.h \
     AR600MainWindow.h \
-    Widgets/DialogConnectConfig.h
+    Widgets/ConnectConfigDialog.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \
@@ -73,7 +71,7 @@ FORMS    += \
     Widgets/DriverLogWidget.ui \
     Widgets/PowerWidget.ui \
     AR600MainWindow.ui \
-    Widgets/DialogConnectConfig.ui
+    Widgets/ConnectConfigDialog.ui
 
 win32 {
     RC_FILE += resource.rc

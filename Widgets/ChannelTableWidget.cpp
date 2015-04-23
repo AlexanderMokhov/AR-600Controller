@@ -6,21 +6,21 @@ ChannelTableWidget::ChannelTableWidget(QWidget *parent) :
     ui(new Ui::ChannelTableWidget)
 {
     ui->setupUi(this);
+
     //заполнение таблицы приводов
     mModel = new ChannelTableModel();
     ui->ChannelTableView->setModel(mModel);
+
     mSelectionModel = ui->ChannelTableView->selectionModel();
+
     ui->ChannelTableView->verticalHeader()->hide();
     ui->ChannelTableView->verticalHeader()->resizeSections(QHeaderView::Fixed);
-    //ui->ChannelTableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
     ui->ChannelTableView->resizeColumnsToContents();
-
     ui->ChannelTableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
     ui->ChannelTableView->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Stretch);
-
     ui->ChannelTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnRowChanged(QModelIndex)));
+    connect(ui->ChannelTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnRowChanged()));
 }
 
 ChannelTableWidget::~ChannelTableWidget()
@@ -58,7 +58,7 @@ void ChannelTableWidget::ShowConfigData()
 }
 
 //происходит при выборе строки в талице моторов
-void ChannelTableWidget::OnRowChanged(QModelIndex index)
+void ChannelTableWidget::OnRowChanged()
 {
     int cRow = mSelectionModel->currentIndex().row();
     emit RowChanged(cRow);

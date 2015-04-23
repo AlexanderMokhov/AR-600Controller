@@ -31,7 +31,7 @@ public slots:
 signals:
     void RowChanged(int cRow);
 private slots:
-    void OnRowChanged(QModelIndex index);
+    void OnRowChanged();
 };
 
 #endif // CHANNETABLEWIDGET_H

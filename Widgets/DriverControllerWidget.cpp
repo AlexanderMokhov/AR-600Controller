@@ -24,6 +24,14 @@ void DriverControllerWidget::setModel(ChannelTableModel *model)
 
 void DriverControllerWidget::RowChanged(int cRow)
 {
+    //останавливаем предыдущий мотор
+    mWriteBuffer->MOTOR_STOP_BR(CurrentNOMB);
+    TRACE=false;
+    Calibration=false;
+    ui->checkBoxTrace->setChecked(false);
+    ui->groupBoxCalibration->setChecked(false);
+    ui->checkBoxTrace->setEnabled(true);
+
     //Считываем номер мотра, адрес буфера, реверс
     currentRow = cRow;
     CurrentNumber = mModel->data(mModel->index(currentRow,0),Qt::EditRole).toInt();
@@ -219,6 +227,7 @@ void DriverControllerWidget::SliderInit()
 
     ui->SliderPosition->setValue(CurrentPos);
     mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, CurrentPos);
+    on_checkBoxTrace_clicked(false);
 }
 
 void DriverControllerWidget::on_ButtonStiffWrite_clicked()
