@@ -44,6 +44,7 @@ void DriverControllerWidget::RowChanged(int cRow)
         ReverceCoeff = 1;
     //инициализируем слайдер
     SliderInit();
+    on_checkBoxTrace_clicked(false);
     //отключаем режим калибрации и управление слайдером
     TRACE = false;
     Calibration=false;
@@ -227,7 +228,7 @@ void DriverControllerWidget::SliderInit()
 
     ui->SliderPosition->setValue(CurrentPos);
     mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, CurrentPos);
-    on_checkBoxTrace_clicked(false);
+
 }
 
 void DriverControllerWidget::on_ButtonStiffWrite_clicked()

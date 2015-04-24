@@ -105,6 +105,7 @@ void CommandControllerWidget::on_ButtonPlayPause_clicked()
 void CommandControllerWidget::on_ButtonStop_clicked()
 {
     CommandController::Instance()->SetPlayForwardState(false);
+    CommandController::Instance()->SetCurrentTimeForCommands(0);
     CommandController::Instance()->SetCommandId(0);
     if(IsLog)
     {

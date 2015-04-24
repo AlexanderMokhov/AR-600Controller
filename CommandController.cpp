@@ -269,6 +269,7 @@ void CommandController::SendCommand()
         if(mTimeRecord<=mCurrentTimeForCommands)
         {
             IsPlayForwardState = false;
+            mCurrentTimeForCommands=0;
             mCommandId = 0;
         }
     }
