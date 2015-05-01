@@ -9,6 +9,9 @@
 #include "MBRead.h"
 #include "stdlib.h"
 #include "ChannelTableModel.h"
+#include "Driver.h"
+#include "FootSensor.h"
+#include "GyroscopeSensor.h"
 
 using namespace std;
 
@@ -52,7 +55,7 @@ public:
 
     bool Update(MBWrite *buffer);
     std::map<unsigned int,DriverSettingsItem> *GetConfigMap();
-    bool UpdateIlim(MBWrite *bufferWrite,MBRead *bufferRead);
+    bool UpdateCalibration(MBWrite *bufferWrite,MBRead *bufferRead);
 
     int GetDefaultStiff();
     int GetDefaultDump();

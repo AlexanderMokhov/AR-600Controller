@@ -48,10 +48,10 @@ void ChannelTableWidget::ShowConfigData()
         QString KP = QString::number((*it).second.GetStiff());
         QString KI = QString::number((*it).second.GetDump());
         QString KD = QString::number((*it).second.GetTorque());
-        QString Ilim = QString::number((*it).second.GetIlim());
+        QString Calibration = QString::number((*it).second.GetCalibration());
         bool Enable = (*it).second.GetEnable();
         QString sEnable = QString::number(Enable);
-        mModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,sReverce,KP,KI,KD,Ilim,sEnable);
+        mModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,sReverce,KP,KI,KD,Calibration,sEnable);
     }
     ui->ChannelTableView->selectRow(0);
     emit RowChanged(0);

@@ -301,7 +301,7 @@ void MBWrite::Set_MOTOR_ANGLE(short NOMB, short value)
     mLocker.unlock();
 }
 
-void MBWrite::Set_MOTOR_ILIM(short NOMB, short value)
+void MBWrite::Set_MOTOR_CALIBRATION(short NOMB, short value)
 {
     mLocker.lock();
 	mWRBuffer[NOMB * 16 + 7] = (value>>8);

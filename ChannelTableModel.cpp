@@ -64,13 +64,13 @@ QVariant ChannelTableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 6 )
             return QString::number(mDataList.at(index.row())->mReverce);
         if (index.column() == 7 )
-            return QString::number(mDataList.at(index.row())->mKP);
+            return QString::number(mDataList.at(index.row())->mStiff);
         if (index.column() == 8 )
-            return QString::number(mDataList.at(index.row())->mKI);
+            return QString::number(mDataList.at(index.row())->mDump);
         if (index.column() == 9 )
-            return QString::number(mDataList.at(index.row())->mKD);
+            return QString::number(mDataList.at(index.row())->mTorque);
         if (index.column() == 10 )
-            return QString::number(mDataList.at(index.row())->mIlim);
+            return QString::number(mDataList.at(index.row())->mCalibration);
         if (index.column() == 11 )
             return QString::number(mDataList.at(index.row())->mEnable);
     }
@@ -104,16 +104,16 @@ bool ChannelTableModel::setData(const QModelIndex &index, const QVariant &value,
             mDataList.at(index.row())->mReverce = value.toString().toInt();
         }
         if(index.column()==7){
-            mDataList.at(index.row())->mKP = value.toString().toInt();
+            mDataList.at(index.row())->mStiff = value.toString().toInt();
         }
         if(index.column()==8){
-            mDataList.at(index.row())->mKI = value.toString().toInt();
+            mDataList.at(index.row())->mDump = value.toString().toInt();
         }
         if(index.column()==9){
-            mDataList.at(index.row())->mKD = value.toString().toInt();
+            mDataList.at(index.row())->mTorque = value.toString().toInt();
         }
         if(index.column()==10){
-            mDataList.at(index.row())->mIlim = value.toString().toInt();
+            mDataList.at(index.row())->mCalibration = value.toString().toInt();
         }
         if(index.column()==11){
             mDataList.at(index.row())->mEnable = value.toString().toInt();
@@ -184,8 +184,8 @@ bool ChannelTableModel::removeRows(int position, int rows, const QModelIndex &in
 void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelDesc,
                                   const QString &Status, const QString &Pos,
                                   const QString &MinPos, const QString &MaxPos,
-                                  const QString &Reverce, const QString &KP,
-                                  const QString &KI, const QString &KD,const QString &Ilim, const QString & Enable)
+                                  const QString &Reverce, const QString &Stiff,
+                                  const QString &Dump, const QString &Torque,const QString &Calibration, const QString & Enable)
 {
     insertRows( mDataList.size(), 1 );
 
@@ -196,10 +196,10 @@ void ChannelTableModel::insertRow(const QString &Number, const QString &ChannelD
     setData( index( mDataList.size()-1, 4 ), MinPos );
     setData( index( mDataList.size()-1, 5 ), MaxPos );
     setData( index( mDataList.size()-1, 6 ), Reverce );
-    setData( index( mDataList.size()-1, 7 ), KP );
-    setData( index( mDataList.size()-1, 8 ), KI );
-    setData( index( mDataList.size()-1, 9 ), KD );
-    setData( index( mDataList.size()-1, 10 ), Ilim );
+    setData( index( mDataList.size()-1, 7 ), Stiff );
+    setData( index( mDataList.size()-1, 8 ), Dump );
+    setData( index( mDataList.size()-1, 9 ), Torque );
+    setData( index( mDataList.size()-1, 10 ), Calibration );
     setData( index( mDataList.size()-1, 11 ), Enable );
 }
 

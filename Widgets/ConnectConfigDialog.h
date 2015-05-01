@@ -23,7 +23,7 @@ private:
     int mSendPort;
     int mReceivePort;
 public slots:
-    accepted();
+    void accepted();
 };
 
 #endif // CONNECTCONFIGDIALOG_H

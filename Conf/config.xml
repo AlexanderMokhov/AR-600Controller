@@ -11,7 +11,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-35</Ilim>
+	  <Calibration>-35</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -24,7 +24,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>527</Ilim>
+	  <Calibration>527</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -37,7 +37,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-7804</Ilim>
+	  <Calibration>-7804</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -50,7 +50,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>4851</Ilim>
+	  <Calibration>4851</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -63,7 +63,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>193</Ilim>
+	  <Calibration>193</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -76,7 +76,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>8208</Ilim>
+	  <Calibration>8208</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -89,7 +89,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>6503</Ilim>
+	  <Calibration>6503</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -102,7 +102,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-694</Ilim>
+	  <Calibration>-694</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -115,7 +115,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-4965</Ilim>
+	  <Calibration>-4965</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -128,7 +128,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-4429</Ilim>
+	  <Calibration>-4429</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -141,7 +141,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>4218</Ilim>
+	  <Calibration>4218</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -154,7 +154,7 @@
 	  <Stiff>900</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>7664</Ilim>
+	  <Calibration>7664</Calibration>
 	  <Enable>true</Enable>
 	</Driver>
 	<Driver>
@@ -167,7 +167,7 @@
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>17376</Ilim>
+	  <Calibration>17376</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -180,7 +180,7 @@
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>11443</Ilim>
+	  <Calibration>11443</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -193,7 +193,7 @@
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-11759</Ilim>
+	  <Calibration>-11759</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -206,7 +206,7 @@
 	  <Stiff>600</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-12199</Ilim>
+	  <Calibration>-12199</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -219,7 +219,7 @@
 	  <Stiff>1000</Stiff>
 	  <Dump>2</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>487</Ilim>
+	  <Calibration>487</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -232,7 +232,7 @@
 	  <Stiff>400</Stiff>
 	  <Dump>1</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>9097</Ilim>
+	  <Calibration>9097</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -245,7 +245,7 @@
 	  <Stiff>400</Stiff>
 	  <Dump>1</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>2988</Ilim>
+	  <Calibration>2988</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -258,7 +258,7 @@
 	  <Stiff>500</Stiff>
 	  <Dump>1</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>8437</Ilim>
+	  <Calibration>8437</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
 	<Driver>
@@ -271,7 +271,7 @@
 	  <Stiff>500</Stiff>
 	  <Dump>1</Dump>
 	  <Torque>1</Torque>
-	  <Ilim>-15864</Ilim>
+	  <Calibration>-15864</Calibration>
 	  <Enable>false</Enable>
 	</Driver>
   </DriverSettings>

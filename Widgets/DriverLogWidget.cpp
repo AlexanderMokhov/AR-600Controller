@@ -34,7 +34,7 @@ void DriverLogWidget::on_ButtonStopRecord_clicked()
 
 
 
-DriverLogWidget::WriteRecord()
+void DriverLogWidget::WriteRecord()
 {
     mDriverLogController->AddRawData(mCurrentTime);
     ui->lineCurrentTime->setText(QString::number(mCurrentTime));
@@ -47,7 +47,7 @@ DriverLogWidget::WriteRecord()
     }
 }
 
-DriverLogWidget::StartWriteLog(int TimeRecord)
+void DriverLogWidget::StartWriteLog(int TimeRecord)
 {
     mCurrentTime=0;
     mRecordTime = TimeRecord;
@@ -60,7 +60,7 @@ DriverLogWidget::StartWriteLog(int TimeRecord)
     mRecordTimer->start(mDelay);
 }
 
-DriverLogWidget::StopWriteLog()
+void DriverLogWidget::StopWriteLog()
 {
     mRecordTimer->stop();
     SaveData();

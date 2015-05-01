@@ -26,6 +26,8 @@ void DriverControllerWidget::RowChanged(int cRow)
 {
     //останавливаем предыдущий мотор
     mWriteBuffer->MOTOR_STOP_BR(CurrentNOMB);
+    //отключаем режим калибрации и управление слайдером
+    on_checkBoxTrace_clicked(false);
     TRACE=false;
     Calibration=false;
     ui->checkBoxTrace->setChecked(false);
@@ -44,10 +46,7 @@ void DriverControllerWidget::RowChanged(int cRow)
         ReverceCoeff = 1;
     //инициализируем слайдер
     SliderInit();
-    on_checkBoxTrace_clicked(false);
-    //отключаем режим калибрации и управление слайдером
-    TRACE = false;
-    Calibration=false;
+
     UpdateData();
 }
 
@@ -132,7 +131,7 @@ void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
         //выходим из режима калибровки
 
         //записываем в мотор калибровочные коэффициенты
-        mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim());
+        mWriteBuffer->Set_MOTOR_CALIBRATION(CurrentNOMB,ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetCalibration());
         mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
         Calibration=false;
 
@@ -147,7 +146,7 @@ void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
 
         //записываем в мотор нулевой колибровочный коэфиициент
         mWriteBuffer->MOTOR_STOP_BR(CurrentNOMB);
-        mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,0);
+        mWriteBuffer->Set_MOTOR_CALIBRATION(CurrentNOMB,0);
         Calibration=true;
 
         //запрещаем вход в режим управления слайдером
@@ -161,13 +160,13 @@ void DriverControllerWidget::on_ButtonSaveZero_clicked()
 {
     //записываем в файл настроек новые калибровочные коэффициенты
     int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
-    int NewIlim=ReverceCoeff*CurrentPos;
-    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetIlim(NewIlim);
-    mModel->setData(mModel->index(currentRow,10),QString::number(NewIlim));
+    int NewCalibration=ReverceCoeff*CurrentPos;
+    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetCalibration(NewCalibration);
+    mModel->setData(mModel->index(currentRow,10),QString::number(NewCalibration));
     ConfigController::Instance()->SaveFile("config.xml");
 
     //записываем в мотор калибровочные коэффициенты
-    mWriteBuffer->Set_MOTOR_ILIM(CurrentNOMB,NewIlim);
+    mWriteBuffer->Set_MOTOR_CALIBRATION(CurrentNOMB,NewCalibration);
     mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, CurrentPos);
 
     //разрешаем вход в режим управления слайдером
@@ -214,7 +213,7 @@ void DriverControllerWidget::SliderInit()
     int MinPos = mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB);
     int MaxPos = mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB);
     int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
-    int CalibrateValue = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetIlim();
+    int CalibrateValue = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetCalibration();
     ui->SliderPosition->setMinimum(MinPos);
     ui->SliderPosition->setMaximum(MaxPos);
     ui->lineMinPos->setText(QString::number(MinPos));

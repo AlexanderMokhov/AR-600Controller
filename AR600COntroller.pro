@@ -39,7 +39,11 @@ SOURCES += main.cpp\
     ThreadReceive.cpp \
     ThreadSend.cpp \
     AR600MainWindow.cpp \
-    Widgets/ConnectConfigDialog.cpp
+    Widgets/ConnectConfigDialog.cpp \
+    Device.cpp \
+    Driver.cpp \
+    FootSensor.cpp \
+    GyroscopeSensor.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -62,7 +66,11 @@ HEADERS  += \
     ThreadReceive.h \
     ThreadSend.h \
     AR600MainWindow.h \
-    Widgets/ConnectConfigDialog.h
+    Widgets/ConnectConfigDialog.h \
+    Device.h \
+    Driver.h \
+    FootSensor.h \
+    GyroscopeSensor.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \

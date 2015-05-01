@@ -35,8 +35,8 @@ public:
 
     void insertRow( const QString & Number,const QString & ChannelDesc, const QString & Status,
                     const QString & Pos, const QString & MinPos, const QString & MaxPos,
-                    const QString & Reverce,const QString & KP,const QString & KI,const QString & KD,
-                    const QString & Ilim, const QString & Enable);
+                    const QString & Reverce,const QString & Stiff,const QString & Dump,const QString & Torque,
+                    const QString & Calibration, const QString & Enable);
 
 signals:
     void editCompleted(const QString &);

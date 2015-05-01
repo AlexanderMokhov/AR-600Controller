@@ -3,7 +3,6 @@
 #include <map>
 #include <mutex>
 #include <stdlib.h>
-#include <QUdpSocket>
 
 class MBWrite
 {
@@ -16,8 +15,6 @@ private:
     short mMinPos;
     short mMaxPos;
     std::mutex mLocker;
-
-    QUdpSocket  *mUdpSocketSender;//сокет для отправки
 
 public:
 	MBWrite(void);
@@ -43,7 +40,7 @@ public:
     void SENSOR_Z_OFFSET(short NOMB,const char RXBuffer[]);
 
     void Set_MOTOR_ANGLE(short NOMB, short value);
-    void Set_MOTOR_ILIM(short NOMB, short value);
+    void Set_MOTOR_CALIBRATION(short NOMB, short value);
     void Set_MOTOR_STIFF(short NOMB, short value);//установить KP
     void Set_MOTOR_DAMP(short NOMB, short value);//установить KI
     void Set_MOTOR_MIN_POS(short NOMB, short value);

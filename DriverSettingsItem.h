@@ -16,7 +16,7 @@ private:
     int             mStiff;
     int             mDump;
     int             mTorque;
-    int             mIlim;
+    int             mCalibration;
     bool            mEnable;
 
 public:
@@ -31,7 +31,7 @@ public:
                        int Stiff,
                        int Dump,
                        int Torque,
-                       int Ilim,
+                       int Calibration,
                        bool Enable);
     unsigned int GetNumber();
     unsigned int GetNumberBuffer();
@@ -42,8 +42,8 @@ public:
     int GetStiff();//получить KP
     int GetDump();//получить KI
     int GetTorque();//получить KD
-    int GetIlim();
-    void SetIlim(int calibrationPos);
+    int GetCalibration();
+    void SetCalibration(int Calibration);
     void SetStiff(int oStiff);
     void SetDump(int oDump);
     bool GetEnable();

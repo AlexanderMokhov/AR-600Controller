@@ -66,10 +66,10 @@ bool ConfigController::OpenFile(string FileName)
             int Stiff = atoi(xml_Driver->FirstChildElement("Stiff")->GetText());
             int Dump = atoi(xml_Driver->FirstChildElement("Dump")->GetText());
             int Torque = atoi(xml_Driver->FirstChildElement("Torque")->GetText());
-            int Ilim = atoi(xml_Driver->FirstChildElement("Ilim")->GetText());
+            int Calibration = atoi(xml_Driver->FirstChildElement("Calibration")->GetText());
             bool Enable = strcmp("false",xml_Driver->FirstChildElement("Enable")->GetText());
 
-            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Ilim,Enable);
+            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
             //загоняем в контейнер
             mDriverSettingsMap.insert(pair<unsigned int,DriverSettingsItem>(Number,item));
 
@@ -165,10 +165,10 @@ bool ConfigController::SaveFile(string FileName)
         Torque->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Torque);
 
-        TiXmlElement* Ilim = new TiXmlElement("Ilim");
-        WriteValue = new TiXmlText(itoa((*it).second.GetIlim(),buffer,10));
-        Ilim->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Ilim);
+        TiXmlElement* Calibration = new TiXmlElement("Calibration");
+        WriteValue = new TiXmlText(itoa((*it).second.GetCalibration(),buffer,10));
+        Calibration->LinkEndChild(WriteValue);
+        xml_Driver->LinkEndChild(Calibration);
 
         TiXmlElement* Enable = new TiXmlElement("Enable");
         if((*it).second.GetEnable()!=0)
@@ -288,7 +288,7 @@ bool ConfigController::Update(MBWrite *buffer)
 
         buffer->Set_MOTOR_STIFF(NumbBuffer,(*it).second.GetStiff());
         buffer->Set_MOTOR_DAMP(NumbBuffer,(*it).second.GetDump());
-        buffer->Set_MOTOR_ILIM(NumbBuffer,(*it).second.GetIlim());
+        buffer->Set_MOTOR_CALIBRATION(NumbBuffer,(*it).second.GetCalibration());
 
         buffer->GetReverceMap()->insert(std::pair<int,bool>(NumbBuffer,(*it).second.GetReverce()));
         buffer->GetMinPosMap()->insert(std::pair<int,int>(NumbBuffer,(*it).second.GetMinPos()));
@@ -309,7 +309,7 @@ map<unsigned int,DriverSettingsItem> *ConfigController::GetConfigMap()
     return &mDriverSettingsMap;
 }
 
-bool ConfigController::UpdateIlim(MBWrite *bufferWrite, MBRead *bufferRead)
+bool ConfigController::UpdateCalibration(MBWrite *bufferWrite, MBRead *bufferRead)
 {
    // map<unsigned int,DriverSettingsItem>::iterator it;
    // for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)

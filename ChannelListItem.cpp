@@ -9,10 +9,10 @@ ChannelListItem::ChannelListItem()
     mMinPos=-500;
     mMaxPos=500;
     mReverce=false;
-    mKP=900;
-    mKI=2;
-    mKD=1;
-    mIlim=1;
+    mStiff=900;
+    mDump=2;
+    mTorque=1;
+    mCalibration=1;
     mEnable=false;
 }
 

@@ -15,10 +15,10 @@ public:
     int             mMinPos;
     int             mMaxPos;
     bool            mReverce;
-    int             mKI;
-    int             mKP;
-    int             mKD;
-    int             mIlim;
+    int             mStiff;
+    int             mDump;
+    int             mTorque;
+    int             mCalibration;
     bool            mEnable;
     ChannelListItem();
     ~ChannelListItem();

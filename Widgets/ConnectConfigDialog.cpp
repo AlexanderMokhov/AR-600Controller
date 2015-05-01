@@ -26,7 +26,7 @@ void ConnectConfigDialog::Update()
     ui->lineEditReceivePort->setText(QString::number(mReceivePort));
 }
 
-ConnectConfigDialog::accepted()
+void ConnectConfigDialog::accepted()
 {
     ConfigController::Instance()->SetHost(ui->lineEditHost->text().toStdString());
     ConfigController::Instance()->SetReceivePort(ui->lineEditReceivePort->text().toInt());

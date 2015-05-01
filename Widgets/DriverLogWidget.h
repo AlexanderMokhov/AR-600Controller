@@ -33,9 +33,9 @@ private:
 
     void SaveData();
 private slots:
-    WriteRecord();
-    StartWriteLog(int TimeRecord);
-    StopWriteLog();
+    void WriteRecord();
+    void StartWriteLog(int TimeRecord);
+    void StopWriteLog();
 };
 
 #endif // DRIVERLOGWIDGET_H

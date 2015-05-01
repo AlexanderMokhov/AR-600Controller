@@ -16,13 +16,13 @@ DriverSettingsItem::~DriverSettingsItem()
     mStiff =        0;//KP
     mDump =         0;//KI
     mTorque =       0;//KD
-    mIlim =         0;
+    mCalibration =  0;
     mEnable =       false;
 }
 
 DriverSettingsItem::DriverSettingsItem(unsigned int Number,unsigned int NumberBuffer,string Name,
                                        int MinPos,int MaxPos, bool Reverce,
-                                       int Stiff,int Dump,int Torque,int Ilim,bool Enable)
+                                       int Stiff,int Dump,int Torque,int Calibration,bool Enable)
 {
     mNumber = Number;
     mNumberBuffer = NumberBuffer;
@@ -33,7 +33,7 @@ DriverSettingsItem::DriverSettingsItem(unsigned int Number,unsigned int NumberBu
     mStiff = Stiff;
     mDump = Dump;
     mTorque = Torque;
-    mIlim = Ilim;
+    mCalibration = Calibration;
     mEnable = Enable;
 }
 
@@ -85,14 +85,14 @@ int DriverSettingsItem::GetTorque()
     return mTorque;
 }
 
-int DriverSettingsItem::GetIlim()
+int DriverSettingsItem::GetCalibration()
 {
-    return mIlim;
+    return mCalibration;
 }
 
-void DriverSettingsItem::SetIlim(int calibrationPos)
+void DriverSettingsItem::SetCalibration(int Calibration)
 {
-    mIlim=calibrationPos;
+    mCalibration=Calibration;
 }
 
 void DriverSettingsItem::SetStiff(int oStiff)
