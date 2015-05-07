@@ -43,7 +43,10 @@ SOURCES += main.cpp\
     Device.cpp \
     Driver.cpp \
     FootSensor.cpp \
-    GyroscopeSensor.cpp
+    GyroscopeSensor.cpp \
+    Widgets/SensorsWidget.cpp \
+    Sensor.cpp \
+    SensorTableModel.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -70,7 +73,10 @@ HEADERS  += \
     Device.h \
     Driver.h \
     FootSensor.h \
-    GyroscopeSensor.h
+    GyroscopeSensor.h \
+    Widgets/SensorsWidget.h \
+    Sensor.h \
+    SensorTableModel.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \
@@ -79,7 +85,8 @@ FORMS    += \
     Widgets/DriverLogWidget.ui \
     Widgets/PowerWidget.ui \
     AR600MainWindow.ui \
-    Widgets/ConnectConfigDialog.ui
+    Widgets/ConnectConfigDialog.ui \
+    Widgets/SensorsWidget.ui
 
 win32 {
     RC_FILE += resource.rc

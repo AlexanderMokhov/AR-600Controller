@@ -12,6 +12,15 @@ GyroscopeSensor::~GyroscopeSensor()
 
 }
 
+GyroscopeSensor::GyroscopeSensor(unsigned int Number,
+                                 unsigned int NumberBuffer,
+                                 string Name):Device (Number,NumberBuffer,Name)
+{
+    mYAW = 0;
+    mPITCH = 0;
+    mROLL = 0;
+}
+
 int GyroscopeSensor::GetYAW()
 {
     return mYAW;

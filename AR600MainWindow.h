@@ -23,6 +23,8 @@
 #include "ThreadSend.h"
 #include <QLabel>
 #include "Widgets/ConnectConfigDialog.h"
+#include "Widgets/SensorsWidget.h"
+
 namespace Ui {
 class AR600MainWindow;
 }
@@ -58,6 +60,7 @@ private:
     QLabel                  *mConnectStatusLabel;
     QLabel                  *mCommandControllerStatusLabel;
     ConnectConfigDialog     *mConnectDialog;
+    SensorsWidget           *mSensorsWidget;
 
     //действия
     QAction *TBactionOpenCF;

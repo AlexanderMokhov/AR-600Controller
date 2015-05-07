@@ -14,6 +14,9 @@ private:
 public:
     GyroscopeSensor();
     ~GyroscopeSensor();
+    GyroscopeSensor(unsigned int Number,
+                    unsigned int NumberBuffer,
+                    std::string Name);
 
     int GetYAW();
     int GetPITCH();

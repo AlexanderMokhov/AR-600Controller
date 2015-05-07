@@ -44,7 +44,11 @@ bool ConfigController::OpenFile(string FileName)
         // обработка
         TiXmlElement *xml_root = mXMLfileSetting->FirstChildElement();//выбор первого тега
         TiXmlElement *xml_DriverSettings = 0;
+        TiXmlElement *xml_SensorSettings = 0;
         TiXmlElement *xml_Driver = 0;
+        TiXmlElement *xml_FootSensor = 0;
+        TiXmlElement *xml_GyroscopeSensor = 0;
+        TiXmlElement *xml_Sensor = 0;
 
         // выбор первого тега после предыдущего (настройки двигателей)
         xml_DriverSettings = xml_root->FirstChildElement("DriverSettings");
@@ -52,6 +56,7 @@ bool ConfigController::OpenFile(string FileName)
         xml_Driver = xml_DriverSettings->FirstChildElement("Driver");
         // очищаем контейнер
         mDriverSettingsMap.clear();
+        mFootSensorMap.clear();
 
         // перебор всех двигателей
         while(xml_Driver != NULL)
@@ -75,6 +80,61 @@ bool ConfigController::OpenFile(string FileName)
 
             xml_Driver = xml_Driver->NextSiblingElement("Driver");
         }
+
+        // выбор первого тега после предыдущего (настройки сенсоров)
+        xml_SensorSettings = xml_root->FirstChildElement("SensorSettings");
+        // читаем сенсоры стоп
+        xml_FootSensor = xml_SensorSettings->FirstChildElement("FootSensor");
+
+        // перебор всех сенсоров стоп
+        while(xml_FootSensor != NULL)
+        {
+            //читаем атрибуты
+            unsigned int Number = atoi(xml_FootSensor->FirstChildElement("Number")->GetText());
+            unsigned int NumberBuffer = atoi(xml_FootSensor->FirstChildElement("NumberBuffer")->GetText());
+            std::string Name = std::string(xml_FootSensor->FirstChildElement("Name")->GetText());
+            int Uch0 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
+            int Uch1 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
+            int Uch2 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
+            int Uch3 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
+            FootSensor item(Number,NumberBuffer,Name,Uch0,Uch1,Uch2,Uch3);
+            //загоняем в контейнер
+            mFootSensorMap.insert(pair<int,FootSensor>(Number,item));
+            xml_FootSensor = xml_FootSensor->NextSiblingElement("FootSensor");
+        }
+
+        // читаем гироскоп
+        xml_GyroscopeSensor = xml_SensorSettings->FirstChildElement("GyroscopeSensor");
+
+        //читаем атрибуты
+        unsigned int Number = atoi(xml_GyroscopeSensor->FirstChildElement("Number")->GetText());
+        unsigned int NumberBuffer = atoi(xml_GyroscopeSensor->FirstChildElement("NumberBuffer")->GetText());
+        std::string Name = std::string(xml_GyroscopeSensor->FirstChildElement("Name")->GetText());
+
+        mGyroscopeSensor = GyroscopeSensor(Number,NumberBuffer,Name);
+
+
+        // читаем двигатели
+        xml_Sensor = xml_SensorSettings->FirstChildElement("Sensor");
+        // очищаем контейнер
+        mSensorMap.clear();
+
+        // перебор всех сенсоров
+        while(xml_Sensor != NULL)
+        {
+            //читаем атрибуты
+            unsigned int Number = atoi(xml_Sensor->FirstChildElement("Number")->GetText());
+            unsigned int NumberBuffer = atoi(xml_Sensor->FirstChildElement("NumberBuffer")->GetText());
+            std::string Name = std::string(xml_Sensor->FirstChildElement("Name")->GetText());
+            int Param = atoi(xml_Sensor->FirstChildElement("Param")->GetText());
+
+            Sensor item = Sensor(Number,NumberBuffer,Name,Param);
+            //загоняем в контейнер
+            mSensorMap.insert(pair<int,Sensor>(Number,item));
+
+            xml_Sensor = xml_Sensor->NextSiblingElement("Sensor");
+        }
+
 
         //читаем настройки подключения
         TiXmlElement *xml_ConnectSettings = 0;
@@ -307,6 +367,11 @@ bool ConfigController::Update(MBWrite *buffer)
 map<unsigned int,DriverSettingsItem> *ConfigController::GetConfigMap()
 {
     return &mDriverSettingsMap;
+}
+
+std::map<int, Sensor> *ConfigController::GetSensorMap()
+{
+    return &mSensorMap;
 }
 
 bool ConfigController::UpdateCalibration(MBWrite *bufferWrite, MBRead *bufferRead)

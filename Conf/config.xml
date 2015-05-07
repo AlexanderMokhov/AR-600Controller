@@ -276,41 +276,112 @@
 	</Driver>
   </DriverSettings>
   <SensorSettings>
-	<Sensor>
+    <GyroscopeSensor>
 	  <Number>14</Number>
 	  <NumberBuffer>14</NumberBuffer>
 	  <Name>Gyroscope</Name>
-	  <MinPos>-500</MinPos>
-	  <MaxPos>500</MaxPos>
-	  <Reverce>false</Reverce>
-	  <Stiff>200</Stiff>
-	  <Dump>1</Dump>
-	  <Torque>1</Torque>
-	  <Ilim>1</Ilim>
-	</Sensor>
-	<Sensor>
+	</GyroscopeSensor>
+	<FootSensor>
 	  <Number>15</Number>
 	  <NumberBuffer>15</NumberBuffer>
 	  <Name>Foot sensor (L)</Name>
-	  <MinPos>900</MinPos>
-	  <MaxPos>3000</MaxPos>
-	  <Reverce>false</Reverce>
-	  <Stiff>1000</Stiff>
-	  <Dump>6000</Dump>
-	  <Torque>1</Torque>
-	  <Ilim>-8542</Ilim>
-	</Sensor>
-	<Sensor>
+	  <Uch0>-500</Uch0>
+	  <Uch1>500</Uch1>
+	  <Uch2>false</Uch2>
+	  <Uch3>200</Uch3>
+	</FootSensor>
+	<FootSensor>
 	  <Number>16</Number>
 	  <NumberBuffer>16</NumberBuffer>
 	  <Name>Foot sensor (R)</Name>
-	  <MinPos>-1400</MinPos>
-	  <MaxPos>1400</MaxPos>
-	  <Reverce>false</Reverce>
-	  <Stiff>900</Stiff>
-	  <Dump>2</Dump>
-	  <Torque>1</Torque>
-	  <Ilim>-993</Ilim>
+	  <Uch0>-500</Uch0>
+	  <Uch1>500</Uch1>
+	  <Uch2>false</Uch2>
+	  <Uch3>200</Uch3>
+	</FootSensor>
+	<Sensor>
+	  <Number>1</Number>
+	  <NumberBuffer>14</NumberBuffer>
+	  <Name>Accelerometr X</Name>
+	  <Param>1</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>2</Number>
+	  <NumberBuffer>14</NumberBuffer>
+	  <Name>Accelerometr Y</Name>
+	  <Param>2</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>3</Number>
+	  <NumberBuffer>14</NumberBuffer>
+	  <Name>Accelerometr Z</Name>
+	  <Param>3</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>4</Number>
+	  <NumberBuffer>14</NumberBuffer>
+	  <Name>Gyroscope X</Name>
+	  <Param>4</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>5</Number>
+	  <NumberBuffer>14</NumberBuffer>
+	  <Name>Gyroscope Y</Name>
+	  <Param>5</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>6</Number>
+	  <NumberBuffer>14</NumberBuffer>
+	  <Name>Gyroscope Z</Name>
+	  <Param>6</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>7</Number>
+	  <NumberBuffer>15</NumberBuffer>
+	  <Name>Pressure on the left leg 0</Name>
+	  <Param>1</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>8</Number>
+	  <NumberBuffer>15</NumberBuffer>
+	  <Name>Pressure on the left leg 1</Name>
+	  <Param>2</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>9</Number>
+	  <NumberBuffer>15</NumberBuffer>
+	  <Name>Pressure on the left leg 2</Name>
+	  <Param>3</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>10</Number>
+	  <NumberBuffer>15</NumberBuffer>
+	  <Name>Pressure on the left leg 3</Name>
+	  <Param>4</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>11</Number>
+	  <NumberBuffer>16</NumberBuffer>
+	  <Name>Pressure on the right leg 0</Name>
+	  <Param>1</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>12</Number>
+	  <NumberBuffer>16</NumberBuffer>
+	  <Name>Pressure on the right leg 1</Name>
+	  <Param>2</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>13</Number>
+	  <NumberBuffer>16</NumberBuffer>
+	  <Name>Pressure on the right leg 2</Name>
+	  <Param>3</Param>
+	</Sensor>
+	<Sensor>
+	  <Number>14</Number>
+	  <NumberBuffer>16</NumberBuffer>
+	  <Name>Pressure on the right leg 3</Name>
+	  <Param>4</Param>
 	</Sensor>
   </SensorSettings>
   <ConnectSettings>

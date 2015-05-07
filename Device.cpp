@@ -34,3 +34,18 @@ string Device::GetName()
     return mName;
 }
 
+void Device::SetNumber(int Number)
+{
+    mNumber = Number;
+}
+
+void Device::SetNumberBuffer(int NumberBuffer)
+{
+    mNumberBuffer = NumberBuffer;
+}
+
+void Device::SetName(string Name)
+{
+    mName = Name;
+}
+

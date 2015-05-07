@@ -12,6 +12,7 @@
 #include "Driver.h"
 #include "FootSensor.h"
 #include "GyroscopeSensor.h"
+#include "Sensor.h"
 
 using namespace std;
 
@@ -26,6 +27,11 @@ private:
     TiXmlDocument * mXMLfileSetting;
 
     std::map<unsigned int,DriverSettingsItem> mDriverSettingsMap;
+    std::map<int, FootSensor> mFootSensorMap;
+    GyroscopeSensor mGyroscopeSensor;
+
+    std::map<int, Sensor> mSensorMap;
+
     std::string mHost;//адрес назначения
     int mSendPort;//порт назначения
     int mReceivePort;//порт назначения
@@ -55,6 +61,7 @@ public:
 
     bool Update(MBWrite *buffer);
     std::map<unsigned int,DriverSettingsItem> *GetConfigMap();
+    std::map<int, Sensor> *GetSensorMap();
     bool UpdateCalibration(MBWrite *bufferWrite,MBRead *bufferRead);
 
     int GetDefaultStiff();

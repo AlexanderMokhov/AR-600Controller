@@ -27,6 +27,8 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui->DriverLogWidgetLayout->addWidget(mDriverLogWidget);
     mPowerWidget = new PowerWidget();
     ui->PowerLayout->addWidget(mPowerWidget);
+    mSensorsWidget = new SensorsWidget();
+    ui->SensorTableLayout->addWidget(mSensorsWidget);
 
     mConnectDialog = new ConnectConfigDialog();
 
@@ -110,6 +112,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
 
     //заполнение таблицы приводов
     mChannelTableWidget->ShowConfigData();
+    mSensorsWidget->ShowConfigData();
 
     mTimerUpdate = new QTimer();
     mTimerUpdate->setInterval(mReceiveDelay);
@@ -233,6 +236,7 @@ void AR600MainWindow::ProcessTheDatagram()
     mPowerWidget->UpdatePowerLabel();
     mDriverControllerWidget->UpdateData();
     mChannelTableWidget->UpdatePos();
+    mSensorsWidget->UpdatePos();
 }
 
 //сохранение файла настроек

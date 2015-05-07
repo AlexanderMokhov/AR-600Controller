@@ -29,10 +29,18 @@ void DriverLogController::AddRawData(int time)
         (*it).second=mReadBuffer->Get_MOTOR_CPOS(NumberBuffer);
     }
 
+    for(it = mSensorsMap.begin();it!=mSensorsMap.end();++it)
+    {
+        int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at((*it).first).GetNumberBuffer();
+
+        (*it).second=mReadBuffer->Get_MOTOR_CPOS(NumberBuffer);
+    }
+
     //создаем элемент вектора с данными моторов
     LogData Data;
     Data.Time=time;
     Data.DriversData=mDriversMap;
+    Data.SensorsData=mSensorsMap;
     //окончание создания
 
     mLogVector.push_back(Data);

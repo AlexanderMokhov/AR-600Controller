@@ -22,6 +22,7 @@ struct LogData
 {
     int Time;
     std::map<int,int> DriversData;
+    std::map<int,int> SensorsData;
 };
 
 class DriverLogController
@@ -34,6 +35,7 @@ public:
 
     MBRead *mReadBuffer;
     std::map<int,int> mDriversMap;
+    std::map<int,int> mSensorsMap;
     std::vector<LogData> mLogVector;
     std::map<unsigned int,DriverSettingsItem> * mConfigMap;
 
