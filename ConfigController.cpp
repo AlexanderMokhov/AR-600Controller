@@ -361,6 +361,12 @@ bool ConfigController::Update(MBWrite *buffer)
 
         buffer->MOTOR_STOP(NumbBuffer);
     }
+    map<int,Sensor>::iterator it2;
+    for(it2 = mSensorMap.begin();it2!=mSensorMap.end();++it2)
+    {
+        int NumbBuffer = (*it2).second.GetNumberBuffer();
+        buffer->AddressUpdate(NumbBuffer,NumbBuffer);
+    }
     return true;
 }
 

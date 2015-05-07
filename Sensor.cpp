@@ -28,32 +28,32 @@ int Sensor::GetValue()
             {
                 case 1:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_TX(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_TX(mNumberBuffer);
                 }
                 break;
                 case 2:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_TY(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_TY(mNumberBuffer);
                 }
                 break;
                 case 3:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_FZ(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_FZ(mNumberBuffer);
                 }
                 break;
                 case 4:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_YAW(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_YAW(mNumberBuffer);
                 }
                 break;
                 case 5:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_PITCH(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_PITCH(mNumberBuffer);
                 }
                 break;
                 case 6:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_ROLL(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_ROLL(mNumberBuffer);
                 }
                 break;
             }
@@ -63,22 +63,22 @@ int Sensor::GetValue()
             {
                 case 1:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH0(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH0(mNumberBuffer);
                 }
                 break;
                 case 2:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH1(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH1(mNumberBuffer);
                 }
                 break;
                 case 3:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH2(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH2(mNumberBuffer);
                 }
                 break;
                 case 4:
                 {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH3(mNumber);
+                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH3(mNumberBuffer);
                 }
                 break;
             }
@@ -97,22 +97,22 @@ void Sensor::SetValue(int value)
             {
                 case 1:
                 {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH0(mNumber,value);
+                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH0(mNumberBuffer,value);
                 }
                 break;
                 case 2:
                 {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH1(mNumber,value);
+                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH1(mNumberBuffer,value);
                 }
                 break;
                 case 3:
                 {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH2(mNumber,value);
+                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH2(mNumberBuffer,value);
                 }
                 break;
                 case 4:
                 {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH3(mNumber,value);
+                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH3(mNumberBuffer,value);
                 }
                 break;
             }

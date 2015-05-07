@@ -5,7 +5,7 @@
 #include <QString>
 #include <QList>
 #include <QStringList>
-#include "Sensor.h"
+#include "SensorListItem.h"
 
 class SensorTableModel : public QAbstractTableModel
 {
@@ -14,7 +14,7 @@ public:
     explicit SensorTableModel(QObject *parent = 0);
     ~SensorTableModel();
 
-    QList<Sensor*> mDataList; // список, в котором хранятся все данные
+    QList<SensorListItem*> mDataList; // список, в котором хранятся все данные
     QStringList mHeaderData; // список заголовков столбцов
 
     int rowCount(const QModelIndex &parent=QModelIndex()) const; //метод возвращает количество строк

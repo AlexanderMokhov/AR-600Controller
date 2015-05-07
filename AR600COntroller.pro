@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     GyroscopeSensor.cpp \
     Widgets/SensorsWidget.cpp \
     Sensor.cpp \
-    SensorTableModel.cpp
+    SensorTableModel.cpp \
+    SensorListItem.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -76,7 +77,8 @@ HEADERS  += \
     GyroscopeSensor.h \
     Widgets/SensorsWidget.h \
     Sensor.h \
-    SensorTableModel.h
+    SensorTableModel.h \
+    SensorListItem.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \

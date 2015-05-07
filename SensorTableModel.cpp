@@ -9,7 +9,7 @@ SensorTableModel::SensorTableModel(QObject *parent) : QAbstractTableModel(parent
 
     //заполняем пустыми ячейками/*
         for(int i = 0; i < 10; i++){
-            Sensor* it = new Sensor;
+            SensorListItem* it = new SensorListItem;
             mDataList.append(it);
         }
 }
@@ -44,7 +44,7 @@ QVariant SensorTableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 1 )
             return QString::fromStdString(mDataList.at(index.row())->GetName());
         if (index.column() == 2 )
-            return QString::number(mDataList.at(index.row())->GetValue());
+            return QString::number(mDataList.at(index.row())->mValue);
     }
     return QVariant();
 }
@@ -61,7 +61,7 @@ bool SensorTableModel::setData(const QModelIndex &index, const QVariant &value, 
             mDataList.at(index.row())->SetName(value.toString().toStdString());
         }
         if(index.column()==2){
-            mDataList.at(index.row())->SetValue(value.toString().toInt());
+            mDataList.at(index.row())->mValue=value.toString().toInt();
         }
         emit dataChanged(index, index);
         return true;
@@ -99,7 +99,7 @@ bool SensorTableModel::insertRows(int position, int rows, const QModelIndex &ind
 
     for (int row = 0; row < rows; ++row )
     {
-        Sensor* it = new Sensor;
+        SensorListItem* it = new SensorListItem;
         mDataList.insert(position,it);
     }
 
