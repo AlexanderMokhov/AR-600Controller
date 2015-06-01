@@ -1,5 +1,5 @@
-#ifndef DRIVERLOGCONTROLLER_H
-#define DRIVERLOGCONTROLLER_H
+#ifndef UDPLOGCONTROLLER_H
+#define UDPLOGCONTROLLER_H
 #include "BufferController.h"
 #include "ConfigController.h"
 
@@ -25,11 +25,11 @@ struct LogData
     std::map<int,int> SensorsData;
 };
 
-class DriverLogController
+class UDPLogController
 {
 public:
-    DriverLogController();
-    ~DriverLogController();
+    UDPLogController();
+    ~UDPLogController();
 
 
 
@@ -47,4 +47,4 @@ public:
 
 };
 
-#endif // DRIVERLOGCONTROLLER_H
+#endif // UDPLOGCONTROLLER_H

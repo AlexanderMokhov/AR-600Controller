@@ -18,7 +18,7 @@
 #include "CommandController.h"
 #include <QMessageBox>
 #include <qfiledialog.h>
-#include "DriverLogController.h"
+#include "UDPLogController.h"
 #include "ThreadReceive.h"
 #include "ThreadSend.h"
 #include <QLabel>

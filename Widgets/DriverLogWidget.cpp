@@ -6,7 +6,7 @@ DriverLogWidget::DriverLogWidget(QWidget *parent) :
     ui(new Ui::DriverLogWidget)
 {
     ui->setupUi(this);
-    mDriverLogController = new DriverLogController();
+    mUDPLogController = new UDPLogController();
 }
 
 DriverLogWidget::~DriverLogWidget()
@@ -22,7 +22,7 @@ void DriverLogWidget::on_ButtonStartRecord_clicked()
 
     mRecordTimer = new QTimer(this);
     connect(mRecordTimer, SIGNAL(timeout()),this, SLOT(WriteRecord()));
-    mDriverLogController=new DriverLogController();
+    mUDPLogController = new UDPLogController();
     mRecordTimer->start(mDelay);
 }
 
@@ -36,7 +36,7 @@ void DriverLogWidget::on_ButtonStopRecord_clicked()
 
 void DriverLogWidget::WriteRecord()
 {
-    mDriverLogController->AddRawData(mCurrentTime);
+    mUDPLogController->AddRawData(mCurrentTime);
     ui->lineCurrentTime->setText(QString::number(mCurrentTime));
     mCurrentTime+=mDelay;
 
@@ -56,7 +56,7 @@ void DriverLogWidget::StartWriteLog(int TimeRecord)
 
     mRecordTimer = new QTimer(this);
     connect(mRecordTimer, SIGNAL(timeout()),this, SLOT(WriteRecord()));
-    mDriverLogController=new DriverLogController();
+    mUDPLogController = new UDPLogController();
     mRecordTimer->start(mDelay);
 }
 
@@ -70,5 +70,5 @@ void DriverLogWidget::SaveData()
 {
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();
     QString FileName = "DriverLog_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
-    mDriverLogController->SaveData(FileName.toStdString());
+    mUDPLogController->SaveData(FileName.toStdString());
 }

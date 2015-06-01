@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QDateTime>
-#include "DriverLogController.h"
+#include "UDPLogController.h"
 
 namespace Ui {
 class DriverLogWidget;
@@ -25,7 +25,7 @@ private slots:
 
 private:
     Ui::DriverLogWidget *ui;
-    DriverLogController *mDriverLogController;
+    UDPLogController *mUDPLogController;
     QTimer              *mRecordTimer;
     int                  mCurrentTime;
     int                  mRecordTime;

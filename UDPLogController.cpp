@@ -1,6 +1,6 @@
-#include "DriverLogController.h"
+#include "UDPLogController.h"
 
-DriverLogController::DriverLogController()
+UDPLogController::UDPLogController()
 {
     mReadBuffer = BufferController::Instance()->GetReadBuffer();
     mConfigMap = ConfigController::Instance()->GetConfigMap();
@@ -14,12 +14,12 @@ DriverLogController::DriverLogController()
     }
 }
 
-DriverLogController::~DriverLogController()
+UDPLogController::~UDPLogController()
 {
 
 }
 
-void DriverLogController::AddRawData(int time)
+void UDPLogController::AddRawData(int time)
 {
     map<int,int>::iterator it;
     for(it = mDriversMap.begin();it!=mDriversMap.end();++it)
@@ -47,7 +47,7 @@ void DriverLogController::AddRawData(int time)
 
 }
 
-bool DriverLogController::SaveData(string fileName)
+bool UDPLogController::SaveData(string fileName)
 {
     std::ofstream file;
     file.open(fileName.c_str(),ios_base::out | ios_base::trunc);
@@ -104,7 +104,7 @@ bool DriverLogController::SaveData(string fileName)
 
 }
 
-void DriverLogController::ClearLog()
+void UDPLogController::ClearLog()
 {
    mLogVector.clear();
 }

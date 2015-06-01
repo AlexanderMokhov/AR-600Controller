@@ -48,47 +48,35 @@
       <item row="1" column="0" colspan="2">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabDriver">
          <attribute name="title">
           <string>Двигатели</string>
          </attribute>
-         <widget class="QWidget" name="">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>661</width>
-            <height>381</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="ChannelTableLayout">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetFixedSize</enum>
-           </property>
-          </layout>
-         </widget>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="ChannelTableLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+           </layout>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="tabSensor">
          <attribute name="title">
           <string>Датчики</string>
          </attribute>
-         <widget class="QWidget" name="verticalLayoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>9</x>
-            <y>9</y>
-            <width>661</width>
-            <height>381</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="SensorTableLayout">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetFixedSize</enum>
-           </property>
-          </layout>
-         </widget>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="SensorTableLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>

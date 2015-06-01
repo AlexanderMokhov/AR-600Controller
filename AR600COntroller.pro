@@ -31,7 +31,6 @@ SOURCES += main.cpp\
     Widgets/DriverControllerWidget.cpp \
     BufferController.cpp \
     Widgets/CommandControllerWidget.cpp \
-    DriverLogController.cpp \
     ConfigController.cpp \
     Widgets/ChannelTableWidget.cpp \
     Widgets/DriverLogWidget.cpp \
@@ -47,7 +46,9 @@ SOURCES += main.cpp\
     Widgets/SensorsWidget.cpp \
     Sensor.cpp \
     SensorTableModel.cpp \
-    SensorListItem.cpp
+    SensorListItem.cpp \
+    PreciseTimer.cpp \
+    UDPLogController.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -62,7 +63,6 @@ HEADERS  += \
     Widgets/DriverControllerWidget.h \
     BufferController.h \
     Widgets/CommandControllerWidget.h \
-    DriverLogController.h \
     ConfigController.h \
     Widgets/ChanneTableWidget.h \
     Widgets/DriverLogWidget.h \
@@ -78,7 +78,9 @@ HEADERS  += \
     Widgets/SensorsWidget.h \
     Sensor.h \
     SensorTableModel.h \
-    SensorListItem.h
+    SensorListItem.h \
+    PreciseTimer.h \
+    UDPLogController.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \
