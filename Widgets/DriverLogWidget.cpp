@@ -24,6 +24,7 @@ void DriverLogWidget::on_ButtonStartRecord_clicked()
     connect(mRecordTimer, SIGNAL(timeout()),this, SLOT(WriteRecord()));
     mUDPLogController = new UDPLogController();
     mRecordTimer->start(mDelay);
+    mUDPLogController->StartWrite();
 }
 
 void DriverLogWidget::on_ButtonStopRecord_clicked()
@@ -37,14 +38,20 @@ void DriverLogWidget::on_ButtonStopRecord_clicked()
 void DriverLogWidget::WriteRecord()
 {
     mUDPLogController->AddRawData(mCurrentTime);
-    ui->lineCurrentTime->setText(QString::number(mCurrentTime));
+    //ui->lineCurrentTime->setText(QString::number(mCurrentTime));
+    ui->lineCurrentTime->setText(QString::number(mUDPLogController->mTime.elapsed()));
     mCurrentTime+=mDelay;
 
-    if(mCurrentTime> mRecordTime)
+    if(mUDPLogController->mTime.elapsed()> mRecordTime)
     {
         mRecordTimer->stop();
         SaveData();
     }
+//    if(mCurrentTime> mRecordTime)
+//    {
+//        mRecordTimer->stop();
+//        SaveData();
+//    }
 }
 
 void DriverLogWidget::StartWriteLog(int TimeRecord)
@@ -58,6 +65,7 @@ void DriverLogWidget::StartWriteLog(int TimeRecord)
     connect(mRecordTimer, SIGNAL(timeout()),this, SLOT(WriteRecord()));
     mUDPLogController = new UDPLogController();
     mRecordTimer->start(mDelay);
+    mUDPLogController->StartWrite();
 }
 
 void DriverLogWidget::StopWriteLog()

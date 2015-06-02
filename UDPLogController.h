@@ -16,6 +16,7 @@
 //#include <cmath>
 #include <sstream>
 #include <stdlib.h>
+#include <QTime>
 using namespace std;
 
 struct LogData
@@ -38,10 +39,13 @@ public:
     std::map<int,int> mSensorsMap;
     std::vector<LogData> mLogVector;
     std::map<unsigned int,DriverSettingsItem> * mConfigMap;
+    std::map<int,Sensor> * mSensMap;
+    QTime mTime;
 
     void AddRawData(int time);
     bool SaveData(std::string fileName);
     void ClearLog();
+    void StartWrite();
 
 
 

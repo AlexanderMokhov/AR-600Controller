@@ -4,6 +4,8 @@ UDPLogController::UDPLogController()
 {
     mReadBuffer = BufferController::Instance()->GetReadBuffer();
     mConfigMap = ConfigController::Instance()->GetConfigMap();
+    mSensMap = ConfigController::Instance()->GetSensorMap();
+
     map<unsigned int,DriverSettingsItem>::iterator it;
     for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
     {
@@ -11,6 +13,15 @@ UDPLogController::UDPLogController()
         int NumbBuffer = (*it).second.GetNumberBuffer();
 
         mDriversMap.insert(pair<int, int>(Number,mReadBuffer->Get_MOTOR_CPOS(NumbBuffer)));
+    }
+
+    map<unsigned int,Sensor>::iterator it2;
+
+    for(it2 = mSensMap->begin();it2!=mConfigMap->end();++it2)
+    {
+        int Number = (*it2).first;
+        int Value = (*it2).second.GetValue();
+        mSensorsMap.insert(pair<int, int>(Number,Value));
     }
 }
 
@@ -24,21 +35,22 @@ void UDPLogController::AddRawData(int time)
     map<int,int>::iterator it;
     for(it = mDriversMap.begin();it!=mDriversMap.end();++it)
     {
-        int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at((*it).first).GetNumberBuffer();
+        int NumberBuffer = mConfigMap->at((*it).first).GetNumberBuffer();
 
         (*it).second=mReadBuffer->Get_MOTOR_CPOS(NumberBuffer);
     }
 
     for(it = mSensorsMap.begin();it!=mSensorsMap.end();++it)
     {
-        int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at((*it).first).GetNumberBuffer();
+        int Value = mSensMap->at((*it).first).GetValue();
 
-        (*it).second=mReadBuffer->Get_MOTOR_CPOS(NumberBuffer);
+        (*it).second=Value;
     }
 
     //создаем элемент вектора с данными моторов
     LogData Data;
-    Data.Time=time;
+    Data.Time=mTime.elapsed();
+    //Data.Time=time;
     Data.DriversData=mDriversMap;
     Data.SensorsData=mSensorsMap;
     //окончание создания
@@ -63,10 +75,19 @@ bool UDPLogController::SaveData(string fileName)
         buffer = (char*)malloc(15*sizeof(char));
 
         file << "\t" << "TIME";
+
         map<int,int>::iterator it;
 
         //записываем номера приводов
         for(it = mDriversMap.begin();it!=mDriversMap.end();++it)
+        {
+            file << "\t";
+
+            file << itoa((*it).first,buffer,10);
+        }
+
+        //записываем номера сенсоров
+        for(it = mSensorsMap.begin();it!=mSensorsMap.end();++it)
         {
             file << "\t";
 
@@ -94,6 +115,15 @@ bool UDPLogController::SaveData(string fileName)
                 file << "\t" << buffer;
             }
 
+            //записываем значения сенсоров
+            for(it = data.SensorsData.begin();it!=data.SensorsData.end();++it)
+            {
+                double Value = (*it).second;
+                std::sprintf(buffer,"%f",Pos);
+                file << "\t" << buffer;
+            }
+
+
             file << "\n";
 
         }
@@ -106,6 +136,11 @@ bool UDPLogController::SaveData(string fileName)
 
 void UDPLogController::ClearLog()
 {
-   mLogVector.clear();
+    mLogVector.clear();
+}
+
+void UDPLogController::StartWrite()
+{
+    mTime.start();
 }
 

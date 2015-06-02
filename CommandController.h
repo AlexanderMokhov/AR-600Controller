@@ -59,7 +59,7 @@ public:
     static CommandController* Instance();
     static void Initialize();
     static void Shutdown();
-    void Update(long mTime);
+    void Update(long time);
     bool LoadFromFile(std::string fileName);
     int GetCountRows();
     int GetTimeRecord();

@@ -34,14 +34,18 @@ void CommandController::Shutdown()
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
-void CommandController::Update(long mTime)
+void CommandController::Update(long time)
 {
     if(mCommandId>=mCountRows)
+    {
         return;
-    while(mCommandsList.at(mCommandId).GetTime() <= mTime)
+    }
+    while(mCommandsList.at(mCommandId).GetTime() <= time)
     {
         if(mCommandId>=mCountRows)
+        {
             return;
+        }
         //записываем значение в мотор и проверяем следующую команду
         int Number = mCommandsList.at(mCommandId).GetNumber();
         int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
@@ -49,8 +53,10 @@ void CommandController::Update(long mTime)
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
         mCommandId++;
         if(mCommandId>=mCountRows)
+        {
             return;
-        //qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
+        }
+        qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
     }
 }
 
