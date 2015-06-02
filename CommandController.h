@@ -18,6 +18,8 @@
 #include "ConfigController.h"
 #include <QStateMachine>
 #include <QState>
+#include <PreciseTimer.h>
+#include <QTime>
 
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
@@ -48,6 +50,8 @@ private:
     bool IsGoToPosState;//состояние выполнения перехода в позицию за время
     int mCurrentTimeForCommands;
     int mSendDelay;
+    ext::PreciseTimer mPreciseTimer;
+    QTime mTime;
 
     std::map<unsigned int,DriverSettingsItem> * mConfigMap;
 

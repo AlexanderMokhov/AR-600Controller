@@ -63,7 +63,7 @@ void ThreadSend::DisconnectSocket()
 
 void ThreadSend::SendDatagram()
 {
-    qDebug() << "Sender - send..." << endl;
+    //qDebug() << "Sender - send..." << endl;
     QHostAddress mAddress = QHostAddress(mHost);
     mLocker->lock();
     mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);

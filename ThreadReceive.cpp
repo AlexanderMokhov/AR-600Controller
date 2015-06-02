@@ -32,7 +32,7 @@ void ThreadReceive::ProcessPendingDatagrams()
         mReceiveBuffer->Init(datagram.data());
         //Отправляем пакет на обработку
         emit ReadyData();
-        qDebug()<< "Receiver - Read...";
+        //qDebug()<< "Receiver - Read...";
      }
 }
 

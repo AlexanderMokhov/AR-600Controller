@@ -36,15 +36,21 @@ void CommandController::Shutdown()
 //на вход поступает время в микросекундах (10e-6 c)
 void CommandController::Update(long mTime)
 {
+    if(mCommandId>=mCountRows)
+        return;
     while(mCommandsList.at(mCommandId).GetTime() <= mTime)
     {
+        if(mCommandId>=mCountRows)
+            return;
         //записываем значение в мотор и проверяем следующую команду
         int Number = mCommandsList.at(mCommandId).GetNumber();
         int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
         int Position = mCommandsList.at(mCommandId).GetPosition();
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
         mCommandId++;
-        qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
+        if(mCommandId>=mCountRows)
+            return;
+        //qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
     }
 }
 
@@ -222,6 +228,7 @@ void CommandController::SetPlayForwardState(bool State)
 {
     if(State)
     {
+        //переход в состояние отправки последовательности
         mConfigMap=ConfigController::Instance()->GetConfigMap();
         map<unsigned int,DriverSettingsItem>::iterator it;
         for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
@@ -231,9 +238,13 @@ void CommandController::SetPlayForwardState(bool State)
             BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer,MotorAngle);
             BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
         }
+
+        mPreciseTimer.mark_mks();
+        mTime.start();
     }
     else
     {
+        //переход в состояние после отправки последовательности
         mConfigMap=ConfigController::Instance()->GetConfigMap();
         map<unsigned int,DriverSettingsItem>::iterator it;
         for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
@@ -255,15 +266,17 @@ void CommandController::NextCommand()
     BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
     BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumberBuffer);
     mCommandId++;
-    qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
+    //qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
 }
 
 void CommandController::SendCommand()
 {
     if(IsPlayForwardState)
     {
+        //mCurrentTimeForCommands = mPreciseTimer.release()*1e3;
+        mCurrentTimeForCommands = mTime.elapsed()*1e3;
         Update(mCurrentTimeForCommands);
-        mCurrentTimeForCommands+=(mSendDelay*1e3);
+        //mCurrentTimeForCommands+=(mSendDelay*1e3);
 
         //если время закончилось - останавливаем, переводим индекс команды на начало списка
         if(mTimeRecord<=mCurrentTimeForCommands)
@@ -271,6 +284,7 @@ void CommandController::SendCommand()
             IsPlayForwardState = false;
             mCurrentTimeForCommands=0;
             mCommandId = 0;
+            qDebug() << "Выполнена последняя строка "  << endl;
         }
     }
     if(IsGoToPosState)
