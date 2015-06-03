@@ -15,9 +15,9 @@ UDPLogController::UDPLogController()
         mDriversMap.insert(pair<int, int>(Number,mReadBuffer->Get_MOTOR_CPOS(NumbBuffer)));
     }
 
-    map<unsigned int,Sensor>::iterator it2;
+    map<int,Sensor>::iterator it2;
 
-    for(it2 = mSensMap->begin();it2!=mConfigMap->end();++it2)
+    for(it2 = mSensMap->begin();it2!=mSensMap->end();++it2)
     {
         int Number = (*it2).first;
         int Value = (*it2).second.GetValue();
@@ -86,12 +86,15 @@ bool UDPLogController::SaveData(string fileName)
             file << itoa((*it).first,buffer,10);
         }
 
+        map<int,Sensor>::iterator it2;
+
         //записываем номера сенсоров
-        for(it = mSensorsMap.begin();it!=mSensorsMap.end();++it)
+        for(it2 = mSensMap->begin();it2!=mSensMap->end();++it2)
         {
             file << "\t";
 
-            file << itoa((*it).first,buffer,10);
+            //file << itoa((*it2).first,buffer,10);
+            file << (*it2).second.GetName();
         }
 
         file << "\n";
@@ -119,7 +122,7 @@ bool UDPLogController::SaveData(string fileName)
             for(it = data.SensorsData.begin();it!=data.SensorsData.end();++it)
             {
                 double Value = (*it).second;
-                std::sprintf(buffer,"%f",Pos);
+                std::sprintf(buffer,"%f",Value);
                 file << "\t" << buffer;
             }
 

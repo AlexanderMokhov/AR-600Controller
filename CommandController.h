@@ -52,7 +52,7 @@ private:
     int mSendDelay;
     ext::PreciseTimer mPreciseTimer;
     QTime mTime;
-
+    int mPrevComand;
     std::map<unsigned int,DriverSettingsItem> * mConfigMap;
 
 public:

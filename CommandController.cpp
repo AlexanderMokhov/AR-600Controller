@@ -3,11 +3,13 @@
 
 CommandController * CommandController::mInstance = 0;
 
-CommandController::CommandController()
+CommandController::CommandController():
+                        mPrevComand(0),
+                        mCommandId(0),
+                        IsPlayForwardState(false),
+                        IsGoToPosState(false)
+
 {
-    mCommandId=0;
-    IsPlayForwardState=false;
-    IsGoToPosState=false;
     mSendDelay = ConfigController::Instance()->GetSendDelay();
 }
 
@@ -52,11 +54,13 @@ void CommandController::Update(long time)
         int Position = mCommandsList.at(mCommandId).GetPosition();
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
         mCommandId++;
+        //mPrevComand = mCommandId;
         if(mCommandId>=mCountRows)
         {
             return;
         }
-        qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
+
+       // qDebug() << QString::number(mCommandId) << endl;
     }
 }
 
