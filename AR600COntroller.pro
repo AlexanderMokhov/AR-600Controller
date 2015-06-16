@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     SensorTableModel.cpp \
     SensorListItem.cpp \
     PreciseTimer.cpp \
-    UDPLogController.cpp
+    UDPLogController.cpp \
+    Widgets/CommandFilesTable.cpp
 
 HEADERS  += \
     MBRead.h \
@@ -80,7 +81,8 @@ HEADERS  += \
     SensorTableModel.h \
     SensorListItem.h \
     PreciseTimer.h \
-    UDPLogController.h
+    UDPLogController.h \
+    Widgets/CommandFilesTable.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \
@@ -90,7 +92,8 @@ FORMS    += \
     Widgets/PowerWidget.ui \
     AR600MainWindow.ui \
     Widgets/ConnectConfigDialog.ui \
-    Widgets/SensorsWidget.ui
+    Widgets/SensorsWidget.ui \
+    Widgets/CommandFilesTable.ui
 
 win32 {
     RC_FILE += resource.rc

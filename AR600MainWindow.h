@@ -24,6 +24,7 @@
 #include <QLabel>
 #include "Widgets/ConnectConfigDialog.h"
 #include "Widgets/SensorsWidget.h"
+#include "Widgets/CommandFilesTable.h"
 
 namespace Ui {
 class AR600MainWindow;
@@ -61,6 +62,7 @@ private:
     QLabel                  *mCommandControllerStatusLabel;
     ConnectConfigDialog     *mConnectDialog;
     SensorsWidget           *mSensorsWidget;
+    CommandFilesTable       *mCommandFileTableWidget;
 
     //действия
     QAction *TBactionOpenCF;

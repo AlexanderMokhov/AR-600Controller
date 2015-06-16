@@ -29,6 +29,8 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui->PowerLayout->addWidget(mPowerWidget);
     mSensorsWidget = new SensorsWidget();
     ui->SensorTableLayout->addWidget(mSensorsWidget);
+    mCommandFileTableWidget = new CommandFilesTable();
+    ui->CommandFilesTableLayout->addWidget(mCommandFileTableWidget);
 
     mConnectDialog = new ConnectConfigDialog();
 
