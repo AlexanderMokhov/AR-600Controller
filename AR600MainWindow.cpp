@@ -29,8 +29,8 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui->PowerLayout->addWidget(mPowerWidget);
     mSensorsWidget = new SensorsWidget();
     ui->SensorTableLayout->addWidget(mSensorsWidget);
-    mCommandFileTableWidget = new CommandFilesTable();
-    ui->CommandFilesTableLayout->addWidget(mCommandFileTableWidget);
+    mCommandsTableWidget = new CommandsTableWidget();
+    ui->CommandFilesTableLayout->addWidget(mCommandsTableWidget);
 
     mConnectDialog = new ConnectConfigDialog();
 
@@ -86,7 +86,10 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
 
     connect(mCommandControllerWidget,SIGNAL(StartWriteLog(int)),mDriverLogWidget,SLOT(StartWriteLog(int)));
     connect(mCommandControllerWidget,SIGNAL(StopWriteLog()),mDriverLogWidget,SLOT(StopWriteLog()));
-    connect(mCommandControllerWidget,SIGNAL(FileLoaded()),this,SLOT(ActivateActions()));
+    connect(mCommandControllerWidget,SIGNAL(FileLoaded(QString, QString, QString)),this,SLOT(ActivateActions(QString,QString, QString)));
+    connect(mCommandControllerWidget,SIGNAL(FileLoaded(QString, QString, QString)),mCommandsTableWidget,SLOT(AddRow(QString, QString, QString)));
+    connect(mCommandsTableWidget,SIGNAL(RowChanged(int)),mCommandControllerWidget,SLOT(onRowChanged(int)));
+
 
     //чтение настроек их XML файла
     bool isOk = ConfigController::Instance()->OpenFile("config.xml");
@@ -115,6 +118,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     //заполнение таблицы приводов
     mChannelTableWidget->ShowConfigData();
     mSensorsWidget->ShowConfigData();
+    mCommandsTableWidget->Clear();
 
     mTimerUpdate = new QTimer();
     mTimerUpdate->setInterval(mReceiveDelay);
@@ -216,7 +220,7 @@ void AR600MainWindow::Disconnect()
     mConnectStatusLabel->setText("Соединение не установленно");
 }
 
-void AR600MainWindow::ActivateActions()
+void AR600MainWindow::ActivateActions(QString aa,QString bb, QString cc)
 {
     TBactionPlay->setEnabled(true);
     TBactionStop->setEnabled(true);

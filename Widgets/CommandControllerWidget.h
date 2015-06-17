@@ -48,7 +48,9 @@ private:
 signals:
     StartWriteLog(int LogTime);
     StopWriteLog();
-    FileLoaded();
+    FileLoaded(QString Description, QString CountRows, QString Duration);
+public slots:
+    void onRowChanged(int Row);
 };
 
 #endif // COMMANDCONTROLLERWIDGET_H

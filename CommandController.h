@@ -34,6 +34,7 @@ private:
 
     //для выполнения команд из файла
     std::vector<DriverCommand> mCommandsList;//список команд
+    std::vector<std::vector<DriverCommand>> mCommandsList2;
     int mCommandId;
     int mTimeRecord;
     int mCountRows;
@@ -54,6 +55,7 @@ private:
     QTime mTime;
     int mPrevComand;
     std::map<unsigned int,DriverSettingsItem> * mConfigMap;
+    int mCurrentSequence;
 
 public:
     static CommandController* Instance();
@@ -84,6 +86,8 @@ public:
     void SendCommand();
 
     void SetCurrentTimeForCommands(int Time);
+    int GetCurrentSequence();
+    void SetCurrentSequence(int Number);
 
 
 //       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер

@@ -11,6 +11,7 @@ CommandController::CommandController():
 
 {
     mSendDelay = ConfigController::Instance()->GetSendDelay();
+    mCurrentSequence = 0;
 }
 
 CommandController::~CommandController()
@@ -42,16 +43,16 @@ void CommandController::Update(long time)
     {
         return;
     }
-    while(mCommandsList.at(mCommandId).GetTime() <= time)
+    while(mCommandsList2.at(mCurrentSequence).at(mCommandId).GetTime() <= time)
     {
         if(mCommandId>=mCountRows)
         {
             return;
         }
         //записываем значение в мотор и проверяем следующую команду
-        int Number = mCommandsList.at(mCommandId).GetNumber();
+        int Number = mCommandsList2.at(mCurrentSequence).at(mCommandId).GetNumber();
         int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
-        int Position = mCommandsList.at(mCommandId).GetPosition();
+        int Position = mCommandsList2.at(mCurrentSequence).at(mCommandId).GetPosition();
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
         mCommandId++;
         //mPrevComand = mCommandId;
@@ -70,6 +71,7 @@ bool CommandController::LoadFromFile(std::string fileName)
 
     if(file.is_open())
     {
+        int countSecuence = mCommandsList2.size();
         //очищаем список команд
         mCommandsList.clear();
         std::string str;
@@ -197,7 +199,7 @@ bool CommandController::LoadFromFile(std::string fileName)
             nextCommand.SetPosition((int)Position);
             nextCommand.SetPID(mPID);
 
-            //добавляем команду в список
+            //добавляем команду в последовательность
             mCommandsList.push_back(nextCommand);
             mCountRows++;
             currentTime=Time;
@@ -208,6 +210,10 @@ bool CommandController::LoadFromFile(std::string fileName)
         qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
         qDebug() << "Время записи " << QString::number((double)mTimeRecord/1e6) << " секунд" << endl;
 
+        //добавляем последовательность в список
+        mCommandsList2.push_back(mCommandsList);
+        //делаем последовательность текущей
+        mCurrentSequence = mCommandsList2.size()-1;
         file.close();
         return true;
     }
@@ -306,6 +312,23 @@ void CommandController::SendCommand()
 void CommandController::SetCurrentTimeForCommands(int Time)
 {
     mCurrentTimeForCommands = Time;
+}
+
+int CommandController::GetCurrentSequence()
+{
+    return mCurrentSequence;
+}
+
+void CommandController::SetCurrentSequence(int Number)
+{
+    mCurrentSequence=Number;
+    mCountRows = mCommandsList2.at(mCurrentSequence).size();
+    mTimeRecord = mCommandsList2.at(mCurrentSequence).at(mCountRows-1).GetTime();//в микросекундах
+    mCommandId=0;
+    mCurrentTimeForCommands=0;
+    qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
+    qDebug() << "Время записи " << QString::number((double)mTimeRecord/1e6) << " секунд" << endl;
+
 }
 
 void CommandController::SetCommandId(int cId)

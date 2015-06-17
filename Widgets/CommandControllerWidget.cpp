@@ -23,7 +23,7 @@ CommandControllerWidget::CommandControllerWidget(QWidget *parent) :
     stateNotOpenFile->assignProperty(ui->ButtonStop,"enabled",false);
     stateNotOpenFile->assignProperty(ui->ButtonNext,"enabled",false);
 
-    stateNotOpenFile->addTransition(this, SIGNAL(FileLoaded()), stateStop);
+    stateNotOpenFile->addTransition(this, SIGNAL(FileLoaded(QString,QString,QString)), stateStop);
 
     stateStop->assignProperty(ui->ButtonLoadFile,"enabled",true);
     stateStop->assignProperty(ui->ButtonPlayPause,"enabled",true);
@@ -75,7 +75,8 @@ void CommandControllerWidget::on_ButtonLoadFile_clicked()
             ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
 
-            emit FileLoaded();
+
+            emit FileLoaded(fileName,QString::number(mCountRows),QString::number(mTimeRecord));
         }
         else
         {
@@ -121,4 +122,15 @@ void CommandControllerWidget::on_ButtonNext_clicked()
 void CommandControllerWidget::on_checkBoxLog_clicked(bool checked)
 {
     IsLog = checked;
+}
+
+void CommandControllerWidget::onRowChanged(int Row)
+{
+    CommandController::Instance()->SetCurrentSequence(Row);
+    int mCountRows = CommandController::Instance()->GetCountRows();
+    int mTimeRecord = CommandController::Instance()->GetTimeRecord();
+    ui->MessageTextBox->clear();
+    ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
+    ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
+
 }
