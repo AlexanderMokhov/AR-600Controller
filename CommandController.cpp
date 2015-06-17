@@ -276,9 +276,9 @@ void CommandController::SetPlayForwardState(bool State)
 
 void CommandController::NextCommand()
 {
-    int Number = mCommandsList.at(mCommandId).GetNumber();
+    int Number = mCommandsList2.at(mCurrentSequence).at(mCommandId).GetNumber();
     int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
-    int Position = mCommandsList.at(mCommandId).GetPosition();
+    int Position = mCommandsList2.at(mCurrentSequence).at(mCommandId).GetPosition();
     BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
     BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumberBuffer);
     mCommandId++;
