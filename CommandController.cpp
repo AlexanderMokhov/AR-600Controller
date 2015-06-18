@@ -51,7 +51,15 @@ void CommandController::Update(long time)
         //записываем значение в мотор и проверяем следующую команду
         int Number = mCommandsList.at(mCommandId).GetNumber();
         int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
+
         int Position = mCommandsList.at(mCommandId).GetPosition();
+        int Stiff = mCommandsList.at(mCommandId).GetPID().Stiff;
+        int Dump = mCommandsList.at(mCommandId).GetPID().Dump;
+        int Torque = mCommandsList.at(mCommandId).GetPID().Torque;
+
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_STIFF(NumberBuffer,Stiff);
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_DAMP(NumberBuffer,Dump);
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_TORQUE(NumberBuffer,Torque);
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
         mCommandId++;
         //mPrevComand = mCommandId;
@@ -60,7 +68,9 @@ void CommandController::Update(long time)
             return;
         }
 
-       // qDebug() << QString::number(mCommandId) << endl;
+        //qDebug() << "String Number" << QString::number(mCommandId) << endl;
+        //qDebug() << "Motor Number" << QString::number(Number) << endl;
+        //qDebug() << "Pisition" << QString::number(Position) << endl;
     }
 }
 
@@ -245,11 +255,18 @@ void CommandController::SetPlayForwardState(bool State)
         {
             int NumbBuffer = (*it).second.GetNumberBuffer();
             int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+            int Stiff = (*it).second.GetStiff();
+            int Dump = (*it).second.GetDump();
+            int Torque = (*it).second.GetTorque();
+
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_STIFF(NumbBuffer,Stiff);
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_DAMP(NumbBuffer,Dump);
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_TORQUE(NumbBuffer,Torque);
             BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer,MotorAngle);
             BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
         }
 
-        mPreciseTimer.mark_mks();
+        //mPreciseTimer.mark_mks();
         mTime.start();
     }
     else
@@ -261,6 +278,14 @@ void CommandController::SetPlayForwardState(bool State)
         {
             int NumbBuffer = (*it).second.GetNumberBuffer();
             int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+            int Stiff = (*it).second.GetStiff();
+            int Dump = (*it).second.GetDump();
+            int Torque = (*it).second.GetTorque();
+
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_STIFF(NumbBuffer,Stiff);
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_DAMP(NumbBuffer,Dump);
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_TORQUE(NumbBuffer,Torque);
+
             BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer,MotorAngle);
             BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP(NumbBuffer);
         }

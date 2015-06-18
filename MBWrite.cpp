@@ -325,6 +325,14 @@ void MBWrite::Set_MOTOR_DAMP(short NOMB, short value)
     mLocker.unlock();
 }
 
+void MBWrite::Set_MOTOR_TORQUE(short NOMB, short value)
+{
+    mLocker.lock();
+    mWRBuffer[NOMB * 16 + 5] = (value>>8);
+    mWRBuffer[NOMB * 16 + 4] = value;
+    mLocker.unlock();
+}
+
 void MBWrite::Set_MOTOR_MIN_POS(short NOMB, short value)
 {
     mMinPosMap.at(NOMB) = value;//запоминаем отображаемое значение

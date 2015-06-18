@@ -91,6 +91,7 @@ void CommandControllerWidget::on_ButtonPlayPause_clicked()
     {
         //пауза
         CommandController::Instance()->SetPlayForwardState(false);
+        emit PlayStop();
     }
     else
     {
@@ -98,7 +99,9 @@ void CommandControllerWidget::on_ButtonPlayPause_clicked()
         if(IsLog)
         {
             emit StartWriteLog(CommandController::Instance()->GetTimeRecord()/1e3);
+
         }
+        emit PlayStart();
     }
 }
 
@@ -111,6 +114,7 @@ void CommandControllerWidget::on_ButtonStop_clicked()
     {
         emit StopWriteLog();
     }
+    emit PlayStop();
 }
 
 void CommandControllerWidget::on_ButtonNext_clicked()

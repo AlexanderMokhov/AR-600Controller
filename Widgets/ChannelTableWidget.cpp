@@ -112,3 +112,12 @@ void ChannelTableWidget::UpdatePos()
     }
 }
 
+void ChannelTableWidget::Activate()
+{
+    ui->ChannelTableView->setEnabled(true);
+}
+
+void ChannelTableWidget::DisActivate()
+{
+    ui->ChannelTableView->setEnabled(false);
+}

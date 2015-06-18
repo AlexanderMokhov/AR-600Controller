@@ -86,6 +86,9 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     connect(mCommandControllerWidget,SIGNAL(StopWriteLog()),mDriverLogWidget,SLOT(StopWriteLog()));
     connect(mCommandControllerWidget,SIGNAL(FileLoaded()),this,SLOT(ActivateActions()));
 
+    connect(mCommandControllerWidget,SIGNAL(PlayStart()),mChannelTableWidget,SLOT(DisActivate()));
+    connect(mCommandControllerWidget,SIGNAL(PlayStop()),mChannelTableWidget,SLOT(Activate()));
+
     //чтение настроек их XML файла
     bool isOk = ConfigController::Instance()->OpenFile("config.xml");
     if(isOk)

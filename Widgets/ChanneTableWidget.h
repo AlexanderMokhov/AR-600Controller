@@ -28,6 +28,8 @@ private:
     QItemSelectionModel *mSelectionModel;
 public slots:
     //void OnEnterTableRow(QModelIndex Index);
+    void Activate();
+    void DisActivate();
 signals:
     void RowChanged(int cRow);
 private slots:

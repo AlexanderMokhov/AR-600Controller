@@ -43,6 +43,7 @@ public:
     void Set_MOTOR_CALIBRATION(short NOMB, short value);
     void Set_MOTOR_STIFF(short NOMB, short value);//установить KP
     void Set_MOTOR_DAMP(short NOMB, short value);//установить KI
+    void Set_MOTOR_TORQUE(short NOMB, short value);//установить KD
     void Set_MOTOR_MIN_POS(short NOMB, short value);
     void Set_MOTOR_MAX_POS(short NOMB, short value);
     void MOTOR_CENTER(short NOMB, unsigned char RXBuffer[]);//без фиксации - динамическое торможение

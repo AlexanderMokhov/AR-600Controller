@@ -333,7 +333,6 @@ int ConfigController::GetReceiveDelay()
     return mReceiveDelay;
 }
 
-// что ты тут хотел возвращать?
 bool ConfigController::Update(MBWrite *buffer)
 {
     map<unsigned int,DriverSettingsItem>::iterator it;
@@ -348,6 +347,7 @@ bool ConfigController::Update(MBWrite *buffer)
 
         buffer->Set_MOTOR_STIFF(NumbBuffer,(*it).second.GetStiff());
         buffer->Set_MOTOR_DAMP(NumbBuffer,(*it).second.GetDump());
+        buffer->Set_MOTOR_TORQUE(NumbBuffer,(*it).second.GetTorque());
         buffer->Set_MOTOR_CALIBRATION(NumbBuffer,(*it).second.GetCalibration());
 
         buffer->GetReverceMap()->insert(std::pair<int,bool>(NumbBuffer,(*it).second.GetReverce()));

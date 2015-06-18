@@ -49,6 +49,8 @@ signals:
     StartWriteLog(int LogTime);
     StopWriteLog();
     FileLoaded();
+    PlayStart();
+    PlayStop();
 };
 
 #endif // COMMANDCONTROLLERWIDGET_H
