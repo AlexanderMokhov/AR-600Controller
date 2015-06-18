@@ -68,7 +68,7 @@ void CommandController::Update(long time)
             return;
         }
 
-        //qDebug() << "String Number" << QString::number(mCommandId) << endl;
+        //qDebug() << "String Number" << QString::number(mCommandId) << " Time: " << QString::number(time)<< endl;
         //qDebug() << "Motor Number" << QString::number(Number) << endl;
         //qDebug() << "Pisition" << QString::number(Position) << endl;
     }
@@ -310,7 +310,13 @@ void CommandController::SendCommand()
     {
         //mCurrentTimeForCommands = mPreciseTimer.release()*1e3;
         mCurrentTimeForCommands = mTime.elapsed()*1e3;
+        QTime *timepres = new QTime();
+        timepres->start();
         Update(mCurrentTimeForCommands);
+        long timeprescount = timepres->elapsed();
+        //qDebug() << "Time Update: " << QString::number(timeprescount) << " ms"<< endl;
+        //qDebug() << "Time : " << QString::number(mTime.elapsed()*1e3)<< endl;
+
         //mCurrentTimeForCommands+=(mSendDelay*1e3);
 
         //если время закончилось - останавливаем, переводим индекс команды на начало списка
