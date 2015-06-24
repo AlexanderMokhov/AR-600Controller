@@ -35,7 +35,6 @@ public:
     short Get_MOTOR_CPOS(short NOMB);//получить текущую позицию мотора
     short Get_MOTOR_STIFF(short NOMB);//получить KP
     short Get_MOTOR_DAMP(short NOMB);//получить KI
-    short Get_MOTOR_TORQUE(short NOMB);//получить KD
     short Get_MOTOR_STAT(short NOMB);//получить статус мотора
     short Get_MOTOR_MIN_POS(short NOMB);//получить минимальную позицию мотора
     short Get_MOTOR_MAX_POS(short NOMB);//получить максималную позицию мотора

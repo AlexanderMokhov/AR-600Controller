@@ -222,7 +222,7 @@ void DriverControllerWidget::SliderInit()
 
     ui->spinDump->setValue(mReadBuffer->Get_MOTOR_DAMP(CurrentNOMB));
     ui->spinStiff->setValue(mReadBuffer->Get_MOTOR_STIFF(CurrentNOMB));
-    ui->spinTorque->setValue(mReadBuffer->Get_MOTOR_TORQUE(CurrentNOMB));
+    ui->spinTorque->setValue(mWriteBuffer->Get_MOTOR_TORQUE(CurrentNOMB));
     ui->spinPosToGo->setMinimum(MinPos);
     ui->spinPosToGo->setMaximum(MaxPos);
 

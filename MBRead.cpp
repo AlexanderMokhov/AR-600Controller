@@ -158,14 +158,6 @@ short MBRead::Get_MOTOR_DAMP(short NOMB)
     return motor_damp;
 }
 
-short MBRead::Get_MOTOR_TORQUE(short NOMB)
-{
-    mLocker.lock();
-    short motor_torque=(mRXBuffer[NOMB*16+5] << 8) + (unsigned char)mRXBuffer[NOMB*16+4];
-    mLocker.unlock();
-    return motor_torque;
-}
-
 //получить статус мотора
 short MBRead::Get_MOTOR_STAT(short NOMB)
 {

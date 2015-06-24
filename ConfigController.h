@@ -62,7 +62,6 @@ public:
     bool Update(MBWrite *buffer);
     std::map<unsigned int,DriverSettingsItem> *GetConfigMap();
     std::map<int, Sensor> *GetSensorMap();
-    bool UpdateCalibration(MBWrite *bufferWrite,MBRead *bufferRead);
 
     int GetDefaultStiff();
     int GetDefaultDump();

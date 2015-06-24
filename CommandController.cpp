@@ -310,10 +310,10 @@ void CommandController::SendCommand()
     {
         //mCurrentTimeForCommands = mPreciseTimer.release()*1e3;
         mCurrentTimeForCommands = mTime.elapsed()*1e3;
-        QTime *timepres = new QTime();
-        timepres->start();
+        //QTime *timepres = new QTime();
+        //timepres->start();
         Update(mCurrentTimeForCommands);
-        long timeprescount = timepres->elapsed();
+        //long timeprescount = timepres->elapsed();
         //qDebug() << "Time Update: " << QString::number(timeprescount) << " ms"<< endl;
         //qDebug() << "Time : " << QString::number(mTime.elapsed()*1e3)<< endl;
 
@@ -381,7 +381,7 @@ void CommandController::GoNextPos()
     if(IsFirst || IsSecond)
     {
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,mDestPos);
-        BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP(mDriverNumberBuffer);
+        BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP_BR(mDriverNumberBuffer);
         IsGoToPosState = false;
         qDebug() << "Отправлено конечное положение " << QString::number(mDestPos) << endl;
         return;

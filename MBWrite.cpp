@@ -428,3 +428,11 @@ void MBWrite::MOTOR_CLR_REVERS(short NOMB)
 	mWRBuffer[NOMB * 16 + 1] &= (255 - 128);
     mLocker.unlock();
 }
+
+short MBWrite::Get_MOTOR_TORQUE(short NOMB)
+{
+    mLocker.lock();
+    short motor_torque=(mWRBuffer[NOMB*16+5] << 8) + (unsigned char)mWRBuffer[NOMB*16+4];
+    mLocker.unlock();
+    return motor_torque;
+}

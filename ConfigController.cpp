@@ -380,23 +380,6 @@ std::map<int, Sensor> *ConfigController::GetSensorMap()
     return &mSensorMap;
 }
 
-bool ConfigController::UpdateCalibration(MBWrite *bufferWrite, MBRead *bufferRead)
-{
-   // map<unsigned int,DriverSettingsItem>::iterator it;
-   // for(it = m_DriverSettingsMap.begin();it!=m_DriverSettingsMap.end();++it)
-   // {
-    //    bufferRead->MOTOR_POS_MIN_set((*it).first,(*it).second.getMinPos());
-    //    bufferRead->MOTOR_POS_MAX_set((*it).first,(*it).second.getMaxPos());
-    //    bufferRead->MOTOR_STIFF_set((*it).first,(*it).second.getStiff());
-    //    bufferRead->MOTOR_DAMP_set((*it).first,(*it).second.getDump());
-    //    if((*it).second.getReverce())
-     //       bufferRead->MOTOR_SET_REVERS((*it).first);
-    //    bufferRead->MOTOR_ILIM_set((*it).first,bufferRead->MOTOR_CPOS_get((*it).first));
-    //}
-    //return true;
-    return false;
-}
-
 int ConfigController::GetDefaultStiff()
 {
     return mDefaultStiff;
