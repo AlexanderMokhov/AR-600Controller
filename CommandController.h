@@ -20,6 +20,7 @@
 #include <QState>
 #include <PreciseTimer.h>
 #include <QTime>
+#include <QVector>
 
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
@@ -34,6 +35,7 @@ private:
 
     //для выполнения команд из файла
     std::vector<DriverCommand> mCommandsList;//список команд
+    //QVector<DriverCommand> mCommandsList;
     int mCommandId;
     int mTimeRecord;
     int mCountRows;

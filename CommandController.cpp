@@ -42,20 +42,20 @@ void CommandController::Update(long time)
     {
         return;
     }
-    while(mCommandsList.at(mCommandId).GetTime() <= time)
+    while(mCommandsList[mCommandId].GetTime() <= time)
     {
         if(mCommandId>=mCountRows)
         {
             return;
         }
         //записываем значение в мотор и проверяем следующую команду
-        int Number = mCommandsList.at(mCommandId).GetNumber();
+        int Number = mCommandsList[mCommandId].GetNumber();
         int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
 
-        int Position = mCommandsList.at(mCommandId).GetPosition();
-        int Stiff = mCommandsList.at(mCommandId).GetPID().Stiff;
-        int Dump = mCommandsList.at(mCommandId).GetPID().Dump;
-        int Torque = mCommandsList.at(mCommandId).GetPID().Torque;
+        int Position = mCommandsList[mCommandId].GetPosition();
+        int Stiff = mCommandsList[mCommandId].GetPID().Stiff;
+        int Dump = mCommandsList[mCommandId].GetPID().Dump;
+        int Torque = mCommandsList[mCommandId].GetPID().Torque;
 
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_STIFF(NumberBuffer,Stiff);
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_DAMP(NumberBuffer,Dump);
@@ -295,9 +295,9 @@ void CommandController::SetPlayForwardState(bool State)
 
 void CommandController::NextCommand()
 {
-    int Number = mCommandsList.at(mCommandId).GetNumber();
+    int Number = mCommandsList[mCommandId].GetNumber();
     int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
-    int Position = mCommandsList.at(mCommandId).GetPosition();
+    int Position = mCommandsList[mCommandId].GetPosition();
     BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
     BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumberBuffer);
     mCommandId++;
@@ -310,12 +310,12 @@ void CommandController::SendCommand()
     {
         //mCurrentTimeForCommands = mPreciseTimer.release()*1e3;
         mCurrentTimeForCommands = mTime.elapsed()*1e3;
-        //QTime *timepres = new QTime();
-        //timepres->start();
+       QTime *timepres = new QTime();
+        timepres->start();
         Update(mCurrentTimeForCommands);
-        //long timeprescount = timepres->elapsed();
-        //qDebug() << "Time Update: " << QString::number(timeprescount) << " ms"<< endl;
-        //qDebug() << "Time : " << QString::number(mTime.elapsed()*1e3)<< endl;
+        long timeprescount = timepres->elapsed();
+        qDebug() << "Time Update: " << QString::number(timeprescount) << " ms"<< endl;
+        qDebug() << "Time : " << QString::number(mTime.elapsed()*1e3)<< endl;
 
         //mCurrentTimeForCommands+=(mSendDelay*1e3);
 
