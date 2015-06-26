@@ -38,7 +38,7 @@ public:
     std::map<int,int> mDriversMap;
     std::map<int,int> mSensorsMap;
     std::vector<LogData> mLogVector;
-    std::map<unsigned int,DriverSettingsItem> * mConfigMap;
+    std::map<int,DriverSettingsItem> * mConfigMap;
     std::map<int,Sensor> * mSensMap;
     QTime mTime;
 

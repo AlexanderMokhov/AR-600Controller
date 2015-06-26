@@ -46,8 +46,6 @@ bool ConfigController::OpenFile(string FileName)
         TiXmlElement *xml_DriverSettings = 0;
         TiXmlElement *xml_SensorSettings = 0;
         TiXmlElement *xml_Driver = 0;
-        TiXmlElement *xml_FootSensor = 0;
-        TiXmlElement *xml_GyroscopeSensor = 0;
         TiXmlElement *xml_Sensor = 0;
 
         // выбор первого тега после предыдущего (настройки двигателей)
@@ -56,14 +54,13 @@ bool ConfigController::OpenFile(string FileName)
         xml_Driver = xml_DriverSettings->FirstChildElement("Driver");
         // очищаем контейнер
         mDriverSettingsMap.clear();
-        mFootSensorMap.clear();
 
         // перебор всех двигателей
         while(xml_Driver != NULL)
         {
             //читаем атрибуты
-            unsigned int Number = atoi(xml_Driver->FirstChildElement("Number")->GetText());
-            unsigned int NumberBuffer = atoi(xml_Driver->FirstChildElement("NumberBuffer")->GetText());
+            int Number = atoi(xml_Driver->FirstChildElement("Number")->GetText());
+            int NumberBuffer = atoi(xml_Driver->FirstChildElement("NumberBuffer")->GetText());
             std::string Name = std::string(xml_Driver->FirstChildElement("Name")->GetText());
             int MinPos = atoi(xml_Driver->FirstChildElement("MinPos")->GetText());
             int MaxPos = atoi(xml_Driver->FirstChildElement("MaxPos")->GetText());
@@ -76,45 +73,14 @@ bool ConfigController::OpenFile(string FileName)
 
             DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
             //загоняем в контейнер
-            mDriverSettingsMap.insert(pair<unsigned int,DriverSettingsItem>(Number,item));
+            mDriverSettingsMap.insert(pair<int,DriverSettingsItem>(Number,item));
 
             xml_Driver = xml_Driver->NextSiblingElement("Driver");
         }
 
         // выбор первого тега после предыдущего (настройки сенсоров)
         xml_SensorSettings = xml_root->FirstChildElement("SensorSettings");
-        // читаем сенсоры стоп
-        xml_FootSensor = xml_SensorSettings->FirstChildElement("FootSensor");
-
-        // перебор всех сенсоров стоп
-        while(xml_FootSensor != NULL)
-        {
-            //читаем атрибуты
-            unsigned int Number = atoi(xml_FootSensor->FirstChildElement("Number")->GetText());
-            unsigned int NumberBuffer = atoi(xml_FootSensor->FirstChildElement("NumberBuffer")->GetText());
-            std::string Name = std::string(xml_FootSensor->FirstChildElement("Name")->GetText());
-            int Uch0 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
-            int Uch1 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
-            int Uch2 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
-            int Uch3 = atoi(xml_FootSensor->FirstChildElement("Uch0")->GetText());
-            FootSensor item(Number,NumberBuffer,Name,Uch0,Uch1,Uch2,Uch3);
-            //загоняем в контейнер
-            mFootSensorMap.insert(pair<int,FootSensor>(Number,item));
-            xml_FootSensor = xml_FootSensor->NextSiblingElement("FootSensor");
-        }
-
-        // читаем гироскоп
-        xml_GyroscopeSensor = xml_SensorSettings->FirstChildElement("GyroscopeSensor");
-
-        //читаем атрибуты
-        unsigned int Number = atoi(xml_GyroscopeSensor->FirstChildElement("Number")->GetText());
-        unsigned int NumberBuffer = atoi(xml_GyroscopeSensor->FirstChildElement("NumberBuffer")->GetText());
-        std::string Name = std::string(xml_GyroscopeSensor->FirstChildElement("Name")->GetText());
-
-        mGyroscopeSensor = GyroscopeSensor(Number,NumberBuffer,Name);
-
-
-        // читаем двигатели
+        // читаем сенсоры
         xml_Sensor = xml_SensorSettings->FirstChildElement("Sensor");
         // очищаем контейнер
         mSensorMap.clear();
@@ -123,12 +89,13 @@ bool ConfigController::OpenFile(string FileName)
         while(xml_Sensor != NULL)
         {
             //читаем атрибуты
-            unsigned int Number = atoi(xml_Sensor->FirstChildElement("Number")->GetText());
-            unsigned int NumberBuffer = atoi(xml_Sensor->FirstChildElement("NumberBuffer")->GetText());
+            int Number = atoi(xml_Sensor->FirstChildElement("Number")->GetText());
+            int NumberBuffer = atoi(xml_Sensor->FirstChildElement("NumberBuffer")->GetText());
             std::string Name = std::string(xml_Sensor->FirstChildElement("Name")->GetText());
+            std::string NameLog = std::string(xml_Sensor->FirstChildElement("NameLog")->GetText());
             int Param = atoi(xml_Sensor->FirstChildElement("Param")->GetText());
 
-            Sensor item = Sensor(Number,NumberBuffer,Name,Param);
+            Sensor item = Sensor(Number,NumberBuffer,Name,NameLog,Param);
             //загоняем в контейнер
             mSensorMap.insert(pair<int,Sensor>(Number,item));
 
@@ -160,7 +127,7 @@ bool ConfigController::OpenFile(string FileName)
 bool ConfigController::SaveFile(string FileName)
 {
     TiXmlDocument XMLFile;
-    TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","yes");
+    TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","ANSI","yes");
     XMLFile.LinkEndChild(decl);
     TiXmlElement * xml_root = new TiXmlElement("AR600ControllerConf");
     XMLFile.LinkEndChild(xml_root);
@@ -170,7 +137,7 @@ bool ConfigController::SaveFile(string FileName)
     TiXmlText * WriteValue;
     char * buffer;
     buffer=(char*)malloc(15*sizeof(char));
-    map<unsigned int,DriverSettingsItem>::iterator it;
+    map<int,DriverSettingsItem>::iterator it;
     //заполняем массив двигателей из контейнера
     for(it = mDriverSettingsMap.begin();it!=mDriverSettingsMap.end();++it)
     {
@@ -237,6 +204,43 @@ bool ConfigController::SaveFile(string FileName)
             WriteValue = new TiXmlText("false");
         Enable->LinkEndChild(WriteValue);
         xml_Driver->LinkEndChild(Enable);
+    }
+
+    TiXmlElement * xml_SensorSettings = new TiXmlElement("SensorSettings");
+    xml_root->LinkEndChild(xml_SensorSettings);
+
+    buffer=(char*)malloc(15*sizeof(char));
+    map<int,Sensor>::iterator it2;
+    //заполняем массив двигателей из контейнера
+    for(it2 = mSensorMap.begin();it2!=mSensorMap.end();++it2)
+    {
+        TiXmlElement * xml_Sensor = new TiXmlElement("Sensor");
+        xml_SensorSettings->LinkEndChild(xml_Sensor);
+
+        TiXmlElement* Number = new TiXmlElement("Number");
+        WriteValue = new TiXmlText(itoa((*it2).second.GetNumber(),buffer,10));
+        Number->LinkEndChild(WriteValue);
+        xml_Sensor->LinkEndChild(Number);
+
+        TiXmlElement* NumberBuffer = new TiXmlElement("NumberBuffer");
+        WriteValue = new TiXmlText(itoa((*it2).second.GetNumberBuffer(),buffer,10));
+        NumberBuffer->LinkEndChild(WriteValue);
+        xml_Sensor->LinkEndChild(NumberBuffer);
+
+        TiXmlElement* Name = new TiXmlElement("Name");
+        WriteValue = new TiXmlText((*it2).second.GetName().c_str());
+        Name->LinkEndChild(WriteValue);
+        xml_Sensor->LinkEndChild(Name);
+
+        TiXmlElement* NameLog = new TiXmlElement("NameLog");
+        WriteValue = new TiXmlText((*it2).second.GetNameLog().c_str());
+        NameLog->LinkEndChild(WriteValue);
+        xml_Sensor->LinkEndChild(NameLog);
+
+        TiXmlElement* Param = new TiXmlElement("Param");
+        WriteValue = new TiXmlText(itoa((*it2).second.GetParam(),buffer,10));
+        Param->LinkEndChild(WriteValue);
+        xml_Sensor->LinkEndChild(Param);\
     }
 
     //записываем настройки подключения
@@ -335,7 +339,7 @@ int ConfigController::GetReceiveDelay()
 
 bool ConfigController::Update(MBWrite *buffer)
 {
-    map<unsigned int,DriverSettingsItem>::iterator it;
+    map<int,DriverSettingsItem>::iterator it;
     for(it = mDriverSettingsMap.begin();it!=mDriverSettingsMap.end();++it)
     {
         int NumbBuffer = (*it).second.GetNumberBuffer();
@@ -370,7 +374,7 @@ bool ConfigController::Update(MBWrite *buffer)
     return true;
 }
 
-map<unsigned int,DriverSettingsItem> *ConfigController::GetConfigMap()
+std::map<int,DriverSettingsItem> *ConfigController::GetConfigMap()
 {
     return &mDriverSettingsMap;
 }

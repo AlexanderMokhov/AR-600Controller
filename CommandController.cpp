@@ -250,7 +250,7 @@ void CommandController::SetPlayForwardState(bool State)
     {
         //переход в состояние отправки последовательности
         mConfigMap=ConfigController::Instance()->GetConfigMap();
-        map<unsigned int,DriverSettingsItem>::iterator it;
+        map<int,DriverSettingsItem>::iterator it;
         for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
         {
             int NumbBuffer = (*it).second.GetNumberBuffer();
@@ -273,7 +273,7 @@ void CommandController::SetPlayForwardState(bool State)
     {
         //переход в состояние после отправки последовательности
         mConfigMap=ConfigController::Instance()->GetConfigMap();
-        map<unsigned int,DriverSettingsItem>::iterator it;
+        map<int,DriverSettingsItem>::iterator it;
         for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
         {
             int NumbBuffer = (*it).second.GetNumberBuffer();

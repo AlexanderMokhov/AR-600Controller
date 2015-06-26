@@ -38,7 +38,7 @@ void SensorsWidget::ShowConfigData()
     for(it = mMap->begin();it!=mMap->end();++it)
     {
         QString Number = QString::number((*it).first);
-        QString Name = QString::fromStdString((*it).second.GetName());
+        QString Name = QString::fromLocal8Bit((*it).second.GetName().c_str());
         QString Value = QString::number((*it).second.GetValue());
         mModel->insertRow(Number,Name,Value);
     }

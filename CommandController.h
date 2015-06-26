@@ -55,7 +55,7 @@ private:
     ext::PreciseTimer mPreciseTimer;
     QTime mTime;
     int mPrevComand;
-    std::map<unsigned int,DriverSettingsItem> * mConfigMap;
+    std::map<int,DriverSettingsItem> * mConfigMap;
 
 public:
     static CommandController* Instance();

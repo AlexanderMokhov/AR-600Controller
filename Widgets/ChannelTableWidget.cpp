@@ -30,16 +30,17 @@ ChannelTableWidget::~ChannelTableWidget()
 
 void ChannelTableWidget::ShowConfigData()
 {
-    std::map<unsigned int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
+    std::map<int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
     mModel->removeRows(0,mModel->rowCount());
 
-    std::map<unsigned int,DriverSettingsItem>::iterator it;
+    std::map<int,DriverSettingsItem>::iterator it;
 
     for(it = mMap->begin();it!=mMap->end();++it)
     {
         QString Number = QString::number((*it).first);
         QString NumberBuffer = QString::number((*it).second.GetNumberBuffer());
-        QString Name = QString::fromStdString((*it).second.GetName());
+        //QString Name = QString::fromStdString((*it).second.GetName());
+        QString Name = QString::fromLocal8Bit((*it).second.GetName().c_str());
         QString Status = "0";
         bool Reverce = (*it).second.GetReverce();
         QString sReverce = QString::number(Reverce);
@@ -71,8 +72,8 @@ ChannelTableModel *ChannelTableWidget::getModel()
 
 void ChannelTableWidget::UpdatePos()
 {
-    std::map<unsigned int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
-    std::map<unsigned int,DriverSettingsItem>::iterator it;
+    std::map<int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
+    std::map<int,DriverSettingsItem>::iterator it;
     int i=0;
     for(it = mMap->begin();it!=mMap->end();++it)
     {

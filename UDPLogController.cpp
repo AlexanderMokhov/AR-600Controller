@@ -6,7 +6,7 @@ UDPLogController::UDPLogController()
     mConfigMap = ConfigController::Instance()->GetConfigMap();
     mSensMap = ConfigController::Instance()->GetSensorMap();
 
-    map<unsigned int,DriverSettingsItem>::iterator it;
+    map<int,DriverSettingsItem>::iterator it;
     for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
     {
         int Number = (*it).first;
@@ -94,7 +94,7 @@ bool UDPLogController::SaveData(string fileName)
             file << "\t";
 
             //file << itoa((*it2).first,buffer,10);
-            file << (*it2).second.GetName();
+            file << (*it2).second.GetNameLog();
         }
 
         file << "\n";

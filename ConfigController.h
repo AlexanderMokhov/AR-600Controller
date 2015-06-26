@@ -26,10 +26,7 @@ private:
 
     TiXmlDocument * mXMLfileSetting;
 
-    std::map<unsigned int,DriverSettingsItem> mDriverSettingsMap;
-    std::map<int, FootSensor> mFootSensorMap;
-    GyroscopeSensor mGyroscopeSensor;
-
+    std::map<int, DriverSettingsItem> mDriverSettingsMap;
     std::map<int, Sensor> mSensorMap;
 
     std::string mHost;//адрес назначения
@@ -60,7 +57,7 @@ public:
     int GetReceiveDelay();//получить интервал обновления
 
     bool Update(MBWrite *buffer);
-    std::map<unsigned int,DriverSettingsItem> *GetConfigMap();
+    std::map<int, DriverSettingsItem> *GetConfigMap();
     std::map<int, Sensor> *GetSensorMap();
 
     int GetDefaultStiff();
