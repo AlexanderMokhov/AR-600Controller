@@ -47,11 +47,6 @@ void DriverLogWidget::WriteRecord()
         mRecordTimer->stop();
         SaveData();
     }
-//    if(mCurrentTime> mRecordTime)
-//    {
-//        mRecordTimer->stop();
-//        SaveData();
-//    }
 }
 
 void DriverLogWidget::StartWriteLog(int TimeRecord)

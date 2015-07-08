@@ -53,7 +53,7 @@ bool ConfigController::OpenFile(string FileName)
         // читаем двигатели
         xml_Driver = xml_DriverSettings->FirstChildElement("Driver");
         // очищаем контейнер
-        mDriverSettingsMap.clear();
+        mDriverMap.clear();
 
         // перебор всех двигателей
         while(xml_Driver != NULL)
@@ -71,9 +71,9 @@ bool ConfigController::OpenFile(string FileName)
             int Calibration = atoi(xml_Driver->FirstChildElement("Calibration")->GetText());
             bool Enable = strcmp("false",xml_Driver->FirstChildElement("Enable")->GetText());
 
-            DriverSettingsItem item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
+            Driver item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
             //загоняем в контейнер
-            mDriverSettingsMap.insert(pair<int,DriverSettingsItem>(Number,item));
+            mDriverMap.insert(pair<int,Driver>(Number,item));
 
             xml_Driver = xml_Driver->NextSiblingElement("Driver");
         }
@@ -137,9 +137,9 @@ bool ConfigController::SaveFile(string FileName)
     TiXmlText * WriteValue;
     char * buffer;
     buffer=(char*)malloc(15*sizeof(char));
-    map<int,DriverSettingsItem>::iterator it;
+    map<int,Driver>::iterator it;
     //заполняем массив двигателей из контейнера
-    for(it = mDriverSettingsMap.begin();it!=mDriverSettingsMap.end();++it)
+    for(it = mDriverMap.begin();it!=mDriverMap.end();++it)
     {
         TiXmlElement * xml_Driver = new TiXmlElement("Driver");
         xml_DriverSettings->LinkEndChild(xml_Driver);
@@ -339,8 +339,8 @@ int ConfigController::GetReceiveDelay()
 
 bool ConfigController::Update(MBWrite *buffer)
 {
-    map<int,DriverSettingsItem>::iterator it;
-    for(it = mDriverSettingsMap.begin();it!=mDriverSettingsMap.end();++it)
+    map<int,Driver>::iterator it;
+    for(it = mDriverMap.begin();it!=mDriverMap.end();++it)
     {
         int NumbBuffer = (*it).second.GetNumberBuffer();
         buffer->AddressUpdate(NumbBuffer,(*it).first);
@@ -374,9 +374,9 @@ bool ConfigController::Update(MBWrite *buffer)
     return true;
 }
 
-std::map<int,DriverSettingsItem> *ConfigController::GetConfigMap()
+std::map<int,Driver> *ConfigController::GetDriverMap()
 {
-    return &mDriverSettingsMap;
+    return &mDriverMap;
 }
 
 std::map<int, Sensor> *ConfigController::GetSensorMap()

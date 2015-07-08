@@ -38,9 +38,15 @@ public:
     std::map<int,int> mDriversMap;
     std::map<int,int> mSensorsMap;
     std::vector<LogData> mLogVector;
-    std::map<int,DriverSettingsItem> * mConfigMap;
+    std::map<int,Driver> * mConfigMap;
     std::map<int,Sensor> * mSensMap;
     QTime mTime;
+
+    long countTimers;
+    long dt_min;
+    long dt_max;
+    long LastTime;
+
 
     void AddRawData(int time);
     bool SaveData(std::string fileName);

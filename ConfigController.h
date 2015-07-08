@@ -4,7 +4,7 @@
 #include <iostream>
 #include <map>
 #include "TinyXML/tinyxml.h"
-#include "DriverSettingsItem.h"
+#include "Driver.h"
 #include "MBWrite.h"
 #include "MBRead.h"
 #include "stdlib.h"
@@ -26,7 +26,7 @@ private:
 
     TiXmlDocument * mXMLfileSetting;
 
-    std::map<int, DriverSettingsItem> mDriverSettingsMap;
+    std::map<int, Driver> mDriverMap;
     std::map<int, Sensor> mSensorMap;
 
     std::string mHost;//адрес назначения
@@ -57,7 +57,7 @@ public:
     int GetReceiveDelay();//получить интервал обновления
 
     bool Update(MBWrite *buffer);
-    std::map<int, DriverSettingsItem> *GetConfigMap();
+    std::map<int, Driver> *GetDriverMap();
     std::map<int, Sensor> *GetSensorMap();
 
     int GetDefaultStiff();

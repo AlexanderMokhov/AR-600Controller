@@ -19,14 +19,12 @@ CONFIG += c++11
 SOURCES += main.cpp\
     MBRead.cpp \
     MBWrite.cpp \
-    DriverCommand.cpp \
     CommandController.cpp \
     TinyXML/tinystr.cpp \
     TinyXML/tinyxml.cpp \
     TinyXML/tinyxmlerror.cpp \
     TinyXML/tinyxmlparser.cpp \
     ChannelListItem.cpp \
-    DriverSettingsItem.cpp \
     ChannelTableModel.cpp \
     Widgets/DriverControllerWidget.cpp \
     BufferController.cpp \
@@ -48,17 +46,16 @@ SOURCES += main.cpp\
     SensorTableModel.cpp \
     SensorListItem.cpp \
     PreciseTimer.cpp \
-    UDPLogController.cpp
+    UDPLogController.cpp \
+    Command.cpp
 
 HEADERS  += \
     MBRead.h \
     MBWrite.h \
-    DriverCommand.h \
     CommandController.h \
     TinyXML/tinystr.h \
     TinyXML/tinyxml.h \
     ChannelListItem.h \
-    DriverSettingsItem.h \
     ChannelTableModel.h \
     Widgets/DriverControllerWidget.h \
     BufferController.h \
@@ -80,7 +77,8 @@ HEADERS  += \
     SensorTableModel.h \
     SensorListItem.h \
     PreciseTimer.h \
-    UDPLogController.h
+    UDPLogController.h \
+    Command.h
 
 FORMS    += \
     Widgets/DriverControllerWidget.ui \

@@ -1,5 +1,5 @@
-#ifndef DRIVERCOMMAND_H
-#define DRIVERCOMMAND_H
+#ifndef COMMAND_H
+#define COMMAND_H
 
 #include <iostream>
 #include <fstream>
@@ -21,7 +21,7 @@ struct PID
     int Torque;
 };
 
-class DriverCommand
+class Command
 {
 private:
     int mTime; //Время исполнения
@@ -32,8 +32,8 @@ private:
 
 public:
 
-    DriverCommand();
-    ~DriverCommand();
+    Command();
+    ~Command();
 
     int GetNumber();
     int GetTime();
@@ -48,4 +48,4 @@ public:
 
 };
 
-#endif // DRIVERCOMMAND_H
+#endif // COMMAND_H

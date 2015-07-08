@@ -1,12 +1,13 @@
 #include "UDPLogController.h"
+#include <qdebug.h>
 
 UDPLogController::UDPLogController()
 {
     mReadBuffer = BufferController::Instance()->GetReadBuffer();
-    mConfigMap = ConfigController::Instance()->GetConfigMap();
+    mConfigMap = ConfigController::Instance()->GetDriverMap();
     mSensMap = ConfigController::Instance()->GetSensorMap();
 
-    map<int,DriverSettingsItem>::iterator it;
+    map<int,Driver>::iterator it;
     for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
     {
         int Number = (*it).first;
@@ -50,6 +51,13 @@ void UDPLogController::AddRawData(int time)
     //создаем элемент вектора с данными моторов
     LogData Data;
     Data.Time=mTime.elapsed();
+
+    //Mi=(Mi*countTimers-(Data.Time-LastTime))/++countTimers;
+    if(dt_max<(Data.Time-LastTime)){dt_max=(Data.Time-LastTime);}
+    if(dt_min>(Data.Time-LastTime)){dt_min=(Data.Time-LastTime);}
+    LastTime = Data.Time;
+    qDebug() << " DtMax=: " << QString::number(dt_max)<< " DtMin=: " << QString::number(dt_min)<< endl;
+
     //Data.Time=time;
     Data.DriversData=mDriversMap;
     Data.SensorsData=mSensorsMap;
@@ -145,5 +153,9 @@ void UDPLogController::ClearLog()
 void UDPLogController::StartWrite()
 {
     mTime.start();
+    dt_min = 10000000;
+    dt_max = -10000000;
+    countTimers=0;
+    LastTime=0;
 }
 

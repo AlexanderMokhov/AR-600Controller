@@ -38,8 +38,8 @@ void DriverControllerWidget::RowChanged(int cRow)
     currentRow = cRow;
     CurrentNumber = mModel->data(mModel->index(currentRow,0),Qt::EditRole).toInt();
     ui->lineNumber->setText(QString::number(CurrentNumber));
-    CurrentNOMB = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetNumberBuffer();
-    Reverce = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetReverce();
+    CurrentNOMB = ConfigController::Instance()->GetDriverMap()->at(CurrentNumber).GetNumberBuffer();
+    Reverce = ConfigController::Instance()->GetDriverMap()->at(CurrentNumber).GetReverce();
     if(Reverce)
         ReverceCoeff = -1;
     else
@@ -76,25 +76,17 @@ void DriverControllerWidget::UpdateData()
 
     //начало чтения статуса
     unsigned char status = mReadBuffer->Get_MOTOR_STAT(CurrentNOMB);
-    int BRK=0,DT=0,RELAX=0,TRACE=0;
     QString statusString;
 
     if((unsigned char)(status & 0) == 0)
-        BRK=1;
+    {statusString="BRAKE";}
     if((unsigned char)(status & 1) == 1)
-        DT=1;
+    {statusString+="-DT";}
     if((unsigned char)(status & 2) == 2)
-    {
-        RELAX=1; BRK=0;
-    }
+    {statusString="RELAX";}
     if((unsigned char)(status & 3) == 3)
-    {
-        TRACE=1; BRK=DT=RELAX=0;
-    }
-    if(BRK){statusString+="BRAKE";}
-    if(DT){statusString+="-DT";}
-    if(RELAX){statusString+="RELAX";}
-    if(TRACE){statusString+="TRACE";}
+    {statusString="TRACE";}
+
     ui->lineStatus->setText(statusString);
     //конец чтения статуса
 }
@@ -131,7 +123,7 @@ void DriverControllerWidget::on_groupBoxCalibration_clicked(bool checked)
         //выходим из режима калибровки
 
         //записываем в мотор калибровочные коэффициенты
-        mWriteBuffer->Set_MOTOR_CALIBRATION(CurrentNOMB,ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetCalibration());
+        mWriteBuffer->Set_MOTOR_CALIBRATION(CurrentNOMB,ConfigController::Instance()->GetDriverMap()->at(CurrentNumber).GetCalibration());
         mWriteBuffer->Set_MOTOR_ANGLE(CurrentNOMB, mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB));
         Calibration=false;
 
@@ -161,7 +153,7 @@ void DriverControllerWidget::on_ButtonSaveZero_clicked()
     //записываем в файл настроек новые калибровочные коэффициенты
     int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
     int NewCalibration=ReverceCoeff*CurrentPos;
-    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetCalibration(NewCalibration);
+    ConfigController::Instance()->GetDriverMap()->at(CurrentNumber).SetCalibration(NewCalibration);
     mModel->setData(mModel->index(currentRow,10),QString::number(NewCalibration));
     ConfigController::Instance()->SaveFile("config.xml");
 
@@ -213,7 +205,7 @@ void DriverControllerWidget::SliderInit()
     int MinPos = mReadBuffer->Get_MOTOR_MIN_POS(CurrentNOMB);
     int MaxPos = mReadBuffer->Get_MOTOR_MAX_POS(CurrentNOMB);
     int CurrentPos = mReadBuffer->Get_MOTOR_CPOS(CurrentNOMB);
-    int CalibrateValue = ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).GetCalibration();
+    int CalibrateValue = ConfigController::Instance()->GetDriverMap()->at(CurrentNumber).GetCalibration();
     ui->SliderPosition->setMinimum(MinPos);
     ui->SliderPosition->setMaximum(MaxPos);
     ui->lineMinPos->setText(QString::number(MinPos));
@@ -238,12 +230,12 @@ void DriverControllerWidget::on_ButtonStiffWrite_clicked()
 
 void DriverControllerWidget::on_ButtonStiffSave_clicked()
 {
-    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
+    ConfigController::Instance()->GetDriverMap()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
 }
 
 void DriverControllerWidget::on_ButtonDumpSave_clicked()
 {
-    ConfigController::Instance()->GetConfigMap()->at(CurrentNumber).SetDump(ui->spinDump->value());
+    ConfigController::Instance()->GetDriverMap()->at(CurrentNumber).SetDump(ui->spinDump->value());
 }
 
 

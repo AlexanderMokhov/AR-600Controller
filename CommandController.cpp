@@ -50,7 +50,7 @@ void CommandController::Update(long time)
         }
         //записываем значение в мотор и проверяем следующую команду
         int Number = mCommandsList[mCommandId].GetNumber();
-        int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
+        int NumberBuffer = ConfigController::Instance()->GetDriverMap()->at(Number).GetNumberBuffer();
 
         int Position = mCommandsList[mCommandId].GetPosition();
         int Stiff = mCommandsList[mCommandId].GetPID().Stiff;
@@ -62,7 +62,7 @@ void CommandController::Update(long time)
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_TORQUE(NumberBuffer,Torque);
         BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
         mCommandId++;
-        //mPrevComand = mCommandId;
+
         if(mCommandId>=mCountRows)
         {
             return;
@@ -85,7 +85,7 @@ bool CommandController::LoadFromFile(std::string fileName)
         std::string str;
 
         int currentTime=0;
-        DriverCommand nextCommand;
+        Command nextCommand;
         mCountRows=0;
 
         PID mPID;
@@ -249,9 +249,9 @@ void CommandController::SetPlayForwardState(bool State)
     if(State)
     {
         //переход в состояние отправки последовательности
-        mConfigMap=ConfigController::Instance()->GetConfigMap();
-        map<int,DriverSettingsItem>::iterator it;
-        for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
+        mDriverMap=ConfigController::Instance()->GetDriverMap();
+        map<int,Driver>::iterator it;
+        for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
         {
             int NumbBuffer = (*it).second.GetNumberBuffer();
             int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
@@ -266,15 +266,15 @@ void CommandController::SetPlayForwardState(bool State)
             BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
         }
 
-        //mPreciseTimer.mark_mks();
+        mPreciseTimer.mark_mks();
         mTime.start();
     }
     else
     {
         //переход в состояние после отправки последовательности
-        mConfigMap=ConfigController::Instance()->GetConfigMap();
-        map<int,DriverSettingsItem>::iterator it;
-        for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
+        mDriverMap=ConfigController::Instance()->GetDriverMap();
+        map<int,Driver>::iterator it;
+        for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
         {
             int NumbBuffer = (*it).second.GetNumberBuffer();
             int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
@@ -296,7 +296,7 @@ void CommandController::SetPlayForwardState(bool State)
 void CommandController::NextCommand()
 {
     int Number = mCommandsList[mCommandId].GetNumber();
-    int NumberBuffer = ConfigController::Instance()->GetConfigMap()->at(Number).GetNumberBuffer();
+    int NumberBuffer = ConfigController::Instance()->GetDriverMap()->at(Number).GetNumberBuffer();
     int Position = mCommandsList[mCommandId].GetPosition();
     BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
     BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumberBuffer);
@@ -310,7 +310,7 @@ void CommandController::SendCommand()
     {
         //mCurrentTimeForCommands = mPreciseTimer.release()*1e3;
         mCurrentTimeForCommands = mTime.elapsed()*1e3;
-       QTime *timepres = new QTime();
+        QTime *timepres = new QTime();
         timepres->start();
         Update(mCurrentTimeForCommands);
         long timeprescount = timepres->elapsed();

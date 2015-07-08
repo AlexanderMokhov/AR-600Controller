@@ -3,7 +3,7 @@
 
 #define _USE_MATH_DEFINES
 
-#include "DriverCommand.h"
+#include "Command.h"
 #include "MBWrite.h"
 #include <iostream>
 #include <fstream>
@@ -34,8 +34,7 @@ private:
     static CommandController* mInstance;
 
     //для выполнения команд из файла
-    std::vector<DriverCommand> mCommandsList;//список команд
-    //QVector<DriverCommand> mCommandsList;
+    std::vector<Command> mCommandsList;//список команд
     int mCommandId;
     int mTimeRecord;
     int mCountRows;
@@ -55,7 +54,7 @@ private:
     ext::PreciseTimer mPreciseTimer;
     QTime mTime;
     int mPrevComand;
-    std::map<int,DriverSettingsItem> * mConfigMap;
+    std::map<int,Driver> * mDriverMap;
 
 public:
     static CommandController* Instance();

@@ -30,10 +30,10 @@ ChannelTableWidget::~ChannelTableWidget()
 
 void ChannelTableWidget::ShowConfigData()
 {
-    std::map<int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
+    std::map<int,Driver> * mMap = ConfigController::Instance()->GetDriverMap();
     mModel->removeRows(0,mModel->rowCount());
 
-    std::map<int,DriverSettingsItem>::iterator it;
+    std::map<int,Driver>::iterator it;
 
     for(it = mMap->begin();it!=mMap->end();++it)
     {
@@ -72,8 +72,8 @@ ChannelTableModel *ChannelTableWidget::getModel()
 
 void ChannelTableWidget::UpdatePos()
 {
-    std::map<int,DriverSettingsItem> * mMap = ConfigController::Instance()->GetConfigMap();
-    std::map<int,DriverSettingsItem>::iterator it;
+    std::map<int,Driver> * mMap = ConfigController::Instance()->GetDriverMap();
+    std::map<int,Driver>::iterator it;
     int i=0;
     for(it = mMap->begin();it!=mMap->end();++it)
     {
@@ -83,30 +83,16 @@ void ChannelTableWidget::UpdatePos()
 
         //начало чтения статуса
         unsigned char status = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_STAT(NOMB);
-        int BRK=0,DT=0,RELAX=0,TRACE=0;
         QString statusString;
 
         if((unsigned char)(status & 0) == 0)
-            BRK=1;
+        {statusString="BRAKE";}
         if((unsigned char)(status & 1) == 1)
-            DT=1;
+        {statusString+="-DT";}
         if((unsigned char)(status & 2) == 2)
-        {
-            RELAX=1;
-            BRK=0;
-        }
+        {statusString="RELAX";}
         if((unsigned char)(status & 3) == 3)
-        {
-            TRACE=1;
-            BRK=0;
-            DT=0;
-            RELAX=0;
-        }
-        if(BRK){statusString+="BRAKE";}
-        if(DT){statusString+="-DT";}
-        if(RELAX){statusString+="RELAX";}
-        if(TRACE){statusString+="TRACE";}
-        //конец чтения статуса
+        {statusString="TRACE";}
 
         mModel->setData(mModel->index(i,2),statusString);
         i++;

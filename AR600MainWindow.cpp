@@ -118,6 +118,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mSensorsWidget->ShowConfigData();
 
     mTimerUpdate = new QTimer();
+    //mTimerUpdate->setTimerType(Qt::PreciseTimer);
     mTimerUpdate->setInterval(mReceiveDelay);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
     //создание и запуск потоков на отправку и прием буфера
