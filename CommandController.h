@@ -22,10 +22,20 @@
 #include <QTime>
 #include <QVector>
 
+struct DriverPos
+{
+    double CurrentPos;
+    int StartPos;
+    int DestPos;
+    double StepPos;
+    bool isEndPos;
+};
+
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
-class CommandController
+class CommandController: public QObject
 {
+    Q_OBJECT
 private:
     CommandController();
     ~CommandController();
@@ -49,12 +59,15 @@ private:
     double mStepPos;
     int mDriverNumberBuffer;
     bool IsGoToPosState;//состояние выполнения перехода в позицию за время
+    int IsPosState;
     int mCurrentTimeForCommands;
     int mSendDelay;
     ext::PreciseTimer mPreciseTimer;
     QTime mTime;
     int mPrevComand;
     std::map<int,Driver> * mDriverMap;
+    std::map<int,DriverPos> mDriverPosMap;
+
 
 public:
     static CommandController* Instance();
@@ -74,11 +87,15 @@ public:
     void SetStartPos(int StartPos);
     int GetCurrentPos();
 
+    void SetPos(int NumberBuffer,int DestPos, int StartPos);
+
     bool GetGoToPosState();
     void SetGoToPosState(bool State);
 
     void GoNextPos();
     void CalcGoToPos();
+    void CalcPos(long TimeToGo);
+
     void SetDriverNumberBuffer(int Number);
     void NextCommand();
 
@@ -86,10 +103,12 @@ public:
 
     void SetCurrentTimeForCommands(int Time);
 
+    void SetPosState(int State);
+    void GoPos();
+    void initPos(bool mode);
 
-//       Update (время, буфер) искать в списке команд время и по найденому значению заполнять буфер
-//       загрузка списка команд из файла, если файл не праильного формата, сообщать об этом, список команд обнулять
-//         сохраниние команд в файл
+signals:
+    void initEnd();
 };
 
 #endif // COMMANDCONTROLLER_H

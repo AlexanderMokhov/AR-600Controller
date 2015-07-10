@@ -4,6 +4,7 @@ ThreadReceive::ThreadReceive(QObject *parent) : QThread(parent)
 {
     mUdpSocketResiver = new QUdpSocket;
     mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
+    timepres = new QTime();
 }
 
 ThreadReceive::~ThreadReceive()
@@ -15,12 +16,15 @@ ThreadReceive::~ThreadReceive()
 
 void ThreadReceive::run()
 {
-    qDebug() << "Receiver - running..." << endl;
     exec();
 }
 
 void ThreadReceive::ProcessPendingDatagrams()
 {
+    long timeprescount = timepres->elapsed();
+    //qDebug() << "Time Receive Delay: " << QString::number(timeprescount) << " ms"<< endl;
+
+
     while (mUdpSocketResiver->hasPendingDatagrams())
     {
         QByteArray datagram;
@@ -32,8 +36,9 @@ void ThreadReceive::ProcessPendingDatagrams()
         mReceiveBuffer->Init(datagram.data());
         //Отправляем пакет на обработку
         emit ReadyData();
-        //qDebug()<< "Receiver - Read...";
      }
+
+    timepres->start();
 }
 
 void ThreadReceive::ConnectSocket()

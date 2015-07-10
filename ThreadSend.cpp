@@ -6,6 +6,8 @@ ThreadSend::ThreadSend(QObject *parent) : QThread(parent)
     mTimerSend = new QTimer;
     mSendBuffer = BufferController::Instance()->GetWriteBuffer();
     mLocker=mSendBuffer->GetLocker();
+
+    timepres = new QTime();
 }
 
 ThreadSend::~ThreadSend()
@@ -17,7 +19,6 @@ ThreadSend::~ThreadSend()
 
 void ThreadSend::run()
 {
-    qDebug() << "Sender - running..." << endl;
     exec();
 }
 
@@ -63,12 +64,17 @@ void ThreadSend::DisconnectSocket()
 
 void ThreadSend::SendDatagram()
 {
-    //qDebug() << "Sender - send..." << endl;
+    long timeprescount = timepres->elapsed();
+    //qDebug() << "Time Send Delay: " << QString::number(timeprescount) << " ms"<< endl;
+
     QHostAddress mAddress = QHostAddress(mHost);
     mLocker->lock();
     mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
     mUdpSocketSender->waitForBytesWritten();
     mLocker->unlock();
     CommandController::Instance()->SendCommand();
+
+    timepres->start();
+
 }
 

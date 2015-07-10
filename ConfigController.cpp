@@ -120,6 +120,7 @@ bool ConfigController::OpenFile(string FileName)
         mDefaultStiff = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultStiff")->GetText());
         mDefaultDump = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultDump")->GetText());
         mDefaultTorque = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultTorque")->GetText());
+        mDefaultSpeed = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultSpeed")->GetText());
         return true;
     }
 }
@@ -291,6 +292,11 @@ bool ConfigController::SaveFile(string FileName)
     WriteValue=new TiXmlText(itoa(mDefaultTorque,buffer,10));
     xml_DefaultTorque->LinkEndChild(WriteValue);
 
+    TiXmlElement * xml_DefaultSpeed = new TiXmlElement("DefaultSpeed");
+    xml_CommandControllerSettings->LinkEndChild(xml_DefaultSpeed);
+    WriteValue=new TiXmlText(itoa(mDefaultSpeed,buffer,10));
+    xml_DefaultSpeed->LinkEndChild(WriteValue);
+
     //записываем в файл
     XMLFile.SaveFile(FileName.c_str());
     return true;
@@ -397,6 +403,11 @@ int ConfigController::GetDefaultDump()
 int ConfigController::GetDefaultTorque()
 {
     return mDefaultTorque;
+}
+
+int ConfigController::GetDefaultSpeed()
+{
+    return mDefaultSpeed;
 }
 
 

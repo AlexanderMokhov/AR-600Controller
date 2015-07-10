@@ -22,6 +22,7 @@
 #include "ThreadReceive.h"
 #include "ThreadSend.h"
 #include <QLabel>
+#include <QDesktopWidget>
 #include "Widgets/ConnectConfigDialog.h"
 #include "Widgets/SensorsWidget.h"
 

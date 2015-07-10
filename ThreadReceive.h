@@ -7,6 +7,7 @@
 #include "BufferController.h"
 #include "ConfigController.h"
 #include <QDebug>
+#include <QTime>
 
 class ThreadReceive : public QThread
 {
@@ -15,6 +16,8 @@ private:
     QUdpSocket      *mUdpSocketResiver;
     MBRead          *mReceiveBuffer;
     int             mReceivePort;
+
+    QTime *timepres;
 public:
     explicit ThreadReceive(QObject *parent = 0);
     ~ThreadReceive();

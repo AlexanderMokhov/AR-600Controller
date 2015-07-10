@@ -6,7 +6,6 @@ DriverLogWidget::DriverLogWidget(QWidget *parent) :
     ui(new Ui::DriverLogWidget)
 {
     ui->setupUi(this);
-    mUDPLogController = new UDPLogController();
 }
 
 DriverLogWidget::~DriverLogWidget()
@@ -22,9 +21,8 @@ void DriverLogWidget::on_ButtonStartRecord_clicked()
 
     mRecordTimer = new QTimer(this);
     connect(mRecordTimer, SIGNAL(timeout()),this, SLOT(WriteRecord()));
-    mUDPLogController = new UDPLogController();
     mRecordTimer->start(mDelay);
-    mUDPLogController->StartWrite();
+    UDPLogController::Instance()->StartWrite();
 }
 
 void DriverLogWidget::on_ButtonStopRecord_clicked()
@@ -37,16 +35,17 @@ void DriverLogWidget::on_ButtonStopRecord_clicked()
 
 void DriverLogWidget::WriteRecord()
 {
-    mUDPLogController->AddRawData(mCurrentTime);
+    UDPLogController::Instance()->AddRawData(mCurrentTime);
     //ui->lineCurrentTime->setText(QString::number(mCurrentTime));
-    ui->lineCurrentTime->setText(QString::number(mUDPLogController->mTime.elapsed()));
+    ui->lineCurrentTime->setText(QString::number(UDPLogController::Instance()->mTime.elapsed()));
     mCurrentTime+=mDelay;
 
-    if(mUDPLogController->mTime.elapsed()> mRecordTime)
+    if(UDPLogController::Instance()->mTime.elapsed()> mRecordTime)
     {
         mRecordTimer->stop();
         SaveData();
     }
+
 }
 
 void DriverLogWidget::StartWriteLog(int TimeRecord)
@@ -58,9 +57,8 @@ void DriverLogWidget::StartWriteLog(int TimeRecord)
 
     mRecordTimer = new QTimer(this);
     connect(mRecordTimer, SIGNAL(timeout()),this, SLOT(WriteRecord()));
-    mUDPLogController = new UDPLogController();
     mRecordTimer->start(mDelay);
-    mUDPLogController->StartWrite();
+    UDPLogController::Instance()->StartWrite();
 }
 
 void DriverLogWidget::StopWriteLog()
@@ -73,5 +71,5 @@ void DriverLogWidget::SaveData()
 {
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();
     QString FileName = "DriverLog_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
-    mUDPLogController->SaveData(FileName.toStdString());
+    UDPLogController::Instance()->SaveData(FileName.toStdString());
 }

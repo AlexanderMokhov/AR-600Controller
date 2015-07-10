@@ -7,10 +7,25 @@ CommandController::CommandController():
                         mPrevComand(0),
                         mCommandId(0),
                         IsPlayForwardState(false),
-                        IsGoToPosState(false)
+                        IsGoToPosState(false),
+                        IsPosState(0)
 
 {
     mSendDelay = ConfigController::Instance()->GetSendDelay();
+
+    //переход в состояние отправки последовательности
+    mDriverMap=ConfigController::Instance()->GetDriverMap();
+    map<int,Driver>::iterator it;
+
+    mDriverPosMap.clear();
+
+    for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
+    {
+        int NumbBuffer = (*it).second.GetNumberBuffer();
+        DriverPos item;
+        item.isEndPos = false;
+        mDriverPosMap.insert(pair<int,DriverPos>(NumbBuffer,item));
+    }
 }
 
 CommandController::~CommandController()
@@ -308,16 +323,12 @@ void CommandController::SendCommand()
 {
     if(IsPlayForwardState)
     {
-        //mCurrentTimeForCommands = mPreciseTimer.release()*1e3;
         mCurrentTimeForCommands = mTime.elapsed()*1e3;
         QTime *timepres = new QTime();
         timepres->start();
         Update(mCurrentTimeForCommands);
         long timeprescount = timepres->elapsed();
         qDebug() << "Time Update: " << QString::number(timeprescount) << " ms"<< endl;
-        qDebug() << "Time : " << QString::number(mTime.elapsed()*1e3)<< endl;
-
-        //mCurrentTimeForCommands+=(mSendDelay*1e3);
 
         //если время закончилось - останавливаем, переводим индекс команды на начало списка
         if(mTimeRecord<=mCurrentTimeForCommands)
@@ -331,6 +342,10 @@ void CommandController::SendCommand()
     if(IsGoToPosState)
     {
         GoNextPos();
+    }
+    if(IsPosState>0)
+    {
+        GoPos();
     }
 }
 
@@ -364,6 +379,12 @@ int CommandController::GetCurrentPos()
     return mCurrentPos;
 }
 
+void CommandController::SetPos(int NumberBuffer, int DestPos, int StartPos)
+{
+    mDriverPosMap[NumberBuffer].DestPos = DestPos;
+    mDriverPosMap[NumberBuffer].StartPos = StartPos;
+}
+
 bool CommandController::GetGoToPosState()
 {
     return IsGoToPosState;
@@ -372,6 +393,11 @@ bool CommandController::GetGoToPosState()
 void CommandController::SetGoToPosState(bool State)
 {
     IsGoToPosState = State;
+}
+
+void CommandController::SetPosState(int State)
+{
+    IsPosState = State;
 }
 
 void CommandController::GoNextPos()
@@ -392,8 +418,77 @@ void CommandController::GoNextPos()
         qDebug() << "Отправлено положение " << QString::number(mCurrentPos) << endl;
         mCurrentPos+=mStepPos;
     }
+}
 
+void CommandController::GoPos()
+{
+    map<int,DriverPos>::iterator it;
+    for(it = mDriverPosMap.begin();it!=mDriverPosMap.end();++it)
+    {
+        bool IsFirst = (*it).second.DestPos <= (*it).second.CurrentPos
+                && (*it).second.DestPos >= (*it).second.StartPos;
+        bool IsSecond = (*it).second.DestPos >=(*it).second.CurrentPos
+                && (*it).second.DestPos <=(*it).second.StartPos;
 
+        if(IsFirst || IsSecond)
+        {
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE((*it).first,(*it).second.DestPos);
+            BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP_BR((*it).first);
+            if(!(*it).second.isEndPos)
+            {
+                IsPosState--;
+
+                (*it).second.isEndPos = true;
+
+            }
+            qDebug() << "Отправлено конечное положение " << QString::number((*it).second.DestPos) << endl;
+            //return;
+        }
+        else
+        {
+            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE((*it).first,(short)(*it).second.CurrentPos);
+            qDebug() << "Отправлено положение " << QString::number((*it).second.CurrentPos) << endl;
+            (*it).second.CurrentPos+=(*it).second.StepPos;
+        }
+    }
+    if(!IsPosState) emit initEnd();
+}
+
+void CommandController::initPos(bool mode)
+{
+    IsPosState = 0;
+    int MaxDelta = 0;
+    map<int,Driver>::iterator it;
+    mDriverMap = ConfigController::Instance()->GetDriverMap();
+    int i=0;
+    for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
+    {
+        int NumbBuffer = (*it).second.GetNumberBuffer();
+        int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+        //взять значение из файла
+        long pos = 0;
+        if(mode)
+        {
+            pos = mCommandsList[i].GetPosition();
+        }
+        int TempDelta = std::abs(MotorAngle - pos);
+        MaxDelta = (TempDelta > MaxDelta)? TempDelta : MaxDelta;
+        if(!mode)
+        {
+            SetPos(NumbBuffer,0,MotorAngle);
+        }
+        else
+        {
+            SetPos(NumbBuffer,pos,MotorAngle);
+        }
+        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer, MotorAngle);
+        BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
+        i++;
+    }
+
+    long Time = MaxDelta * 1000/ (ConfigController::Instance()->GetDefaultSpeed()*100);
+    CalcPos(Time);
+    SetPosState(21);
 }
 
 void CommandController::CalcGoToPos()
@@ -402,6 +497,27 @@ void CommandController::CalcGoToPos()
     int diffPos = mDestPos-mStartPos;//разница в градус*100
     mStepPos = (double)diffPos/((double)mTimeToGo/(double)SendDelay);//шаг в градус*100
     mCurrentPos = mStartPos;
+}
+
+void CommandController::CalcPos(long TimeToGo)
+{
+    int SendDelay = ConfigController::Instance()->GetSendDelay();
+    long TimeToGoMs = TimeToGo;
+    map<int,DriverPos>::iterator it;
+    for(it = mDriverPosMap.begin();it!=mDriverPosMap.end();++it)
+    {
+        int diffPos = (*it).second.DestPos - (*it).second.StartPos;//разница в градус*100
+        if(TimeToGoMs!=0)
+        {
+            (*it).second.StepPos = (double)diffPos/((double)TimeToGoMs/(double)SendDelay);//шаг в градус*100
+        }
+        else
+        {
+            (*it).second.StepPos = diffPos;
+        }
+        (*it).second.CurrentPos = (*it).second.StartPos;
+        (*it).second.isEndPos = false;
+    }
 }
 
 void CommandController::SetDriverNumberBuffer(int Number)

@@ -51,6 +51,8 @@ CommandControllerWidget::CommandControllerWidget(QWidget *parent) :
     machine->setInitialState(stateNotOpenFile);
     machine->start();
 
+    isFileCommand = false;
+
 }
 
 CommandControllerWidget::~CommandControllerWidget()
@@ -87,26 +89,13 @@ void CommandControllerWidget::on_ButtonLoadFile_clicked()
 
 void CommandControllerWidget::on_ButtonPlayPause_clicked()
 {
-    if(CommandController::Instance()->GetPlayForwardState())
-    {
-        //пауза
-        CommandController::Instance()->SetPlayForwardState(false);
-        emit PlayStop();
-    }
-    else
-    {
-        CommandController::Instance()->SetPlayForwardState(true);
-        if(IsLog)
-        {
-            emit StartWriteLog(CommandController::Instance()->GetTimeRecord()/1e3);
-
-        }
-        emit PlayStart();
-    }
+    isFileCommand = true;
+    CommandController::Instance()->initPos(true);
 }
 
 void CommandControllerWidget::on_ButtonStop_clicked()
 {
+    isFileCommand = false;
     CommandController::Instance()->SetPlayForwardState(false);
     CommandController::Instance()->SetCurrentTimeForCommands(0);
     CommandController::Instance()->SetCommandId(0);
@@ -125,4 +114,30 @@ void CommandControllerWidget::on_ButtonNext_clicked()
 void CommandControllerWidget::on_checkBoxLog_clicked(bool checked)
 {
     IsLog = checked;
+}
+
+void CommandControllerWidget::on_ButtonGoStartPos_clicked()
+{
+    isFileCommand = false;
+    CommandController::Instance()->initPos(false);
+}
+
+void CommandControllerWidget::on_ButtonStartFile_clicked()
+{
+    isFileCommand = false;
+    CommandController::Instance()->initPos(true);
+}
+
+void CommandControllerWidget::startCommand()
+{
+    if(isFileCommand)
+    {
+        CommandController::Instance()->SetPlayForwardState(true);
+        if(IsLog)
+        {
+            emit StartWriteLog(CommandController::Instance()->GetTimeRecord()/1e3);
+
+        }
+        emit PlayStart();
+    }
 }

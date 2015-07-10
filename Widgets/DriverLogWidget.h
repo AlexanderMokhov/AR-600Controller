@@ -1,10 +1,11 @@
 #ifndef DRIVERLOGWIDGET_H
 #define DRIVERLOGWIDGET_H
-
+#include "windows.h"
 #include <QWidget>
 #include <QTimer>
 #include <QDateTime>
 #include "UDPLogController.h"
+#include <QDebug>
 
 namespace Ui {
 class DriverLogWidget;
@@ -25,7 +26,6 @@ private slots:
 
 private:
     Ui::DriverLogWidget *ui;
-    UDPLogController *mUDPLogController;
     QTimer              *mRecordTimer;
     int                  mCurrentTime;
     int                  mRecordTime;

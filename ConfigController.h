@@ -39,6 +39,8 @@ private:
     int mDefaultDump;
     int mDefaultTorque;
 
+    int mDefaultSpeed;//градусов за секунду при возвращении в стартовую позицию
+
 public:
     static ConfigController* Instance();
     static void Initialize();
@@ -63,5 +65,7 @@ public:
     int GetDefaultStiff();
     int GetDefaultDump();
     int GetDefaultTorque();
+
+    int GetDefaultSpeed();
 };
 #endif // CONFIGCONTROLLER_H

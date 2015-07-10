@@ -7,18 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>312</width>
-    <height>208</height>
+    <height>249</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
-     </property>
      <item row="0" column="0" colspan="2">
       <widget class="QLineEdit" name="FilePathTextBox">
        <property name="sizePolicy">
@@ -49,6 +46,16 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="2">
+      <widget class="QCheckBox" name="checkBoxLog">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Вести лог</string>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="0" colspan="3">
       <widget class="QTextEdit" name="MessageTextBox">
        <property name="enabled">
@@ -68,7 +75,7 @@
      <item row="3" column="0">
       <widget class="QPushButton" name="ButtonPlayPause">
        <property name="text">
-        <string>Запуск / Пауза</string>
+        <string>Запуск</string>
        </property>
       </widget>
      </item>
@@ -86,13 +93,17 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QCheckBox" name="checkBoxLog">
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
+     <item row="4" column="0" colspan="2">
+      <widget class="QPushButton" name="ButtonGoStartPos">
        <property name="text">
-        <string>Вести лог</string>
+        <string>Стартовое положение</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QPushButton" name="ButtonStartFile">
+       <property name="text">
+        <string>Из файла</string>
        </property>
       </widget>
      </item>

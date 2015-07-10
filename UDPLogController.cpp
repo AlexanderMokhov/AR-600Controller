@@ -1,6 +1,8 @@
 #include "UDPLogController.h"
 #include <qdebug.h>
 
+UDPLogController * UDPLogController::mInstance = 0;
+
 UDPLogController::UDPLogController()
 {
     mReadBuffer = BufferController::Instance()->GetReadBuffer();
@@ -24,11 +26,31 @@ UDPLogController::UDPLogController()
         int Value = (*it2).second.GetValue();
         mSensorsMap.insert(pair<int, int>(Number,Value));
     }
+
 }
 
 UDPLogController::~UDPLogController()
 {
 
+}
+
+UDPLogController *UDPLogController::Instance()
+{
+    return mInstance;
+}
+
+void UDPLogController::Initialize()
+{
+    delete mInstance;
+    mInstance = new UDPLogController;
+
+
+}
+
+void UDPLogController::Shutdown()
+{
+    delete mInstance;
+    mInstance = 0;
 }
 
 void UDPLogController::AddRawData(int time)
@@ -64,7 +86,6 @@ void UDPLogController::AddRawData(int time)
     //окончание создания
 
     mLogVector.push_back(Data);
-
 }
 
 bool UDPLogController::SaveData(string fileName)
@@ -152,6 +173,7 @@ void UDPLogController::ClearLog()
 
 void UDPLogController::StartWrite()
 {
+    mLogVector.clear();
     mTime.start();
     dt_min = 10000000;
     dt_max = -10000000;

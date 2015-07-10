@@ -35,6 +35,10 @@ private slots:
 
     void on_checkBoxLog_clicked(bool checked);
 
+    void on_ButtonGoStartPos_clicked();
+
+    void on_ButtonStartFile_clicked();
+
 private:
     Ui::CommandControllerWidget *ui;
     QString DefaultText;
@@ -45,12 +49,16 @@ private:
     QState        *stateStop;
     QState        *statePause;
     QState        *stateNotOpenFile;
+    bool            isFileCommand;
+
 signals:
     StartWriteLog(int LogTime);
     StopWriteLog();
     FileLoaded();
     PlayStart();
     PlayStop();
+public slots:
+    void startCommand();
 };
 
 #endif // COMMANDCONTROLLERWIDGET_H

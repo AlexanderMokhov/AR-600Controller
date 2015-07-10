@@ -6,11 +6,13 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui(new Ui::AR600MainWindow)
 {
     ui->setupUi(this);
+    QRect rect = frameGeometry();
+    rect.moveCenter(QDesktopWidget().availableGeometry().center());
+    move(rect.topLeft());
 
     //инициализация контроллеров
     ConfigController::Instance()->Initialize();
     BufferController::Instance()->Initialize();
-    CommandController::Instance()->Initialize();
     //конец инициализации контроллеров
 
     mSendBuffer = BufferController::Instance()->GetWriteBuffer();
@@ -65,7 +67,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     //конец добавление кнопок на тулбар
 
     mConnectStatusLabel = new QLabel(this);
-    mConnectStatusLabel->setText("Соединение не установленно");
+    mConnectStatusLabel->setText("Соединение не установлено");
     ui->statusbar->addWidget(mConnectStatusLabel);
 
     mCommandControllerStatusLabel = new QLabel(this);
@@ -102,6 +104,8 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
         ConfigController::Instance()->Update(mSendBuffer);
         BufferController::Instance()->InitBuffers();
         CommandController::Instance()->Initialize();
+        UDPLogController::Instance()->Initialize();
+        connect(CommandController::Instance(),SIGNAL(initEnd()),mCommandControllerWidget,SLOT(startCommand()));
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -200,7 +204,7 @@ void AR600MainWindow::Connect()
     mThreadRecieve->ConnectSocket();
     mThreadSend->ConnectSocket();
     mTimerUpdate->start();
-    mConnectStatusLabel->setText("Соединение установленно");
+    mConnectStatusLabel->setText("Соединение установлено");
 }
 
 //вызывается при запуске остановки подключения к роботу
@@ -215,7 +219,7 @@ void AR600MainWindow::Disconnect()
     mThreadSend->DisconnectSocket();
     mThreadRecieve->DisconnectSocket();
     mTimerUpdate->stop();
-    mConnectStatusLabel->setText("Соединение не установленно");
+    mConnectStatusLabel->setText("Соединение не установлено");
 }
 
 void AR600MainWindow::ActivateActions()
@@ -272,7 +276,7 @@ void AR600MainWindow::OpenXML()
         else
         {
             qDebug() << "Файл настроек не был загружен из " << fileName << endl;
-            qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
+            qDebug() << "Возможно, имя или формат файла заданы неверно" <<endl;
         }
     }
 }

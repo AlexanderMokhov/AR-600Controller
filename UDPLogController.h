@@ -28,12 +28,13 @@ struct LogData
 
 class UDPLogController
 {
-public:
+
+private:
     UDPLogController();
     ~UDPLogController();
-
-
-
+    UDPLogController(UDPLogController const&);
+    static UDPLogController* mInstance;
+public:
     MBRead *mReadBuffer;
     std::map<int,int> mDriversMap;
     std::map<int,int> mSensorsMap;
@@ -47,6 +48,9 @@ public:
     long dt_max;
     long LastTime;
 
+    static UDPLogController* Instance();
+    static void Initialize();
+    static void Shutdown();
 
     void AddRawData(int time);
     bool SaveData(std::string fileName);

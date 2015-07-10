@@ -11,7 +11,7 @@
 #include <QTimer>
 #include <mutex>
 #include <stdlib.h>
-
+#include <QTime>
 class ThreadSend :  public QThread
 {
     Q_OBJECT
@@ -25,6 +25,8 @@ private:
     int             mSendDelay;
 
     std::mutex *    mLocker;
+
+    QTime *timepres;
 public:
     explicit ThreadSend(QObject *parent = 0);
     ~ThreadSend();
