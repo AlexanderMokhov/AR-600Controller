@@ -14,17 +14,16 @@ CommandController::CommandController():
     mSendDelay = ConfigController::Instance()->GetSendDelay();
 
     //переход в состояние отправки последовательности
-    mDriverMap=ConfigController::Instance()->GetDriverMap();
-    map<int,Driver>::iterator it;
+    mMotorMap=ConfigController::Instance()->GetMotorMap();
+    map<int,Motor>::iterator it;
 
-    mDriverPosMap.clear();
+    mMotorPosMap.clear();
 
-    for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
+    for(it = mMotorMap->begin();it!=mMotorMap->end();++it)
     {
-        int NumbBuffer = (*it).second.GetNumberBuffer();
-        DriverPos item;
+        MotorPos item;
         item.isEndPos = false;
-        mDriverPosMap.insert(pair<int,DriverPos>(NumbBuffer,item));
+        mMotorPosMap.insert(pair<int,MotorPos>((*it).first,item));
     }
 }
 
@@ -44,12 +43,6 @@ void CommandController::Initialize()
     mInstance = new CommandController;
 }
 
-void CommandController::Shutdown()
-{
-    delete mInstance;
-    mInstance = 0;
-}
-
 //на вход поступает время в микросекундах (10e-6 c)
 void CommandController::Update(long time)
 {
@@ -65,17 +58,15 @@ void CommandController::Update(long time)
         }
         //записываем значение в мотор и проверяем следующую команду
         int Number = mCommandsList[mCommandId].GetNumber();
-        int NumberBuffer = ConfigController::Instance()->GetDriverMap()->at(Number).GetNumberBuffer();
-
         int Position = mCommandsList[mCommandId].GetPosition();
         int Stiff = mCommandsList[mCommandId].GetPID().Stiff;
         int Dump = mCommandsList[mCommandId].GetPID().Dump;
         int Torque = mCommandsList[mCommandId].GetPID().Torque;
 
-        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_STIFF(NumberBuffer,Stiff);
-        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_DAMP(NumberBuffer,Dump);
-        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_TORQUE(NumberBuffer,Torque);
-        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
+        BufferController::Instance()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
+        BufferController::Instance()->GetWriteBuffer()->SetMotorDump(Number,Dump);
+        BufferController::Instance()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
+        BufferController::Instance()->GetWriteBuffer()->SetMotorAngle(Number,Position);
         mCommandId++;
 
         if(mCommandId>=mCountRows)
@@ -264,45 +255,43 @@ void CommandController::SetPlayForwardState(bool State)
     if(State)
     {
         //переход в состояние отправки последовательности
-        mDriverMap=ConfigController::Instance()->GetDriverMap();
-        map<int,Driver>::iterator it;
-        for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
+        mMotorMap=ConfigController::Instance()->GetMotorMap();
+        map<int,Motor>::iterator it;
+        for(it = mMotorMap->begin();it!=mMotorMap->end();++it)
         {
-            int NumbBuffer = (*it).second.GetNumberBuffer();
-            int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+            int Number = (*it).first;
+            int MotorAngle = BufferController::Instance()->GetReadBuffer()->GetMotorAngle(Number);
             int Stiff = (*it).second.GetStiff();
             int Dump = (*it).second.GetDump();
             int Torque = (*it).second.GetTorque();
 
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_STIFF(NumbBuffer,Stiff);
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_DAMP(NumbBuffer,Dump);
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_TORQUE(NumbBuffer,Torque);
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer,MotorAngle);
-            BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorDump(Number,Dump);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorAngle(Number,MotorAngle);
+            BufferController::Instance()->GetWriteBuffer()->MotorTrace(Number);
         }
-
-        mPreciseTimer.mark_mks();
         mTime.start();
     }
     else
     {
         //переход в состояние после отправки последовательности
-        mDriverMap=ConfigController::Instance()->GetDriverMap();
-        map<int,Driver>::iterator it;
-        for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
+        mMotorMap=ConfigController::Instance()->GetMotorMap();
+        map<int,Motor>::iterator it;
+        for(it = mMotorMap->begin();it!=mMotorMap->end();++it)
         {
-            int NumbBuffer = (*it).second.GetNumberBuffer();
-            int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+            int Number = (*it).second.GetNumberBuffer();
+            int MotorAngle = BufferController::Instance()->GetReadBuffer()->GetMotorAngle(Number);
             int Stiff = (*it).second.GetStiff();
             int Dump = (*it).second.GetDump();
             int Torque = (*it).second.GetTorque();
 
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_STIFF(NumbBuffer,Stiff);
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_DAMP(NumbBuffer,Dump);
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_TORQUE(NumbBuffer,Torque);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorDump(Number,Dump);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
 
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer,MotorAngle);
-            BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP(NumbBuffer);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorAngle(Number,MotorAngle);
+            BufferController::Instance()->GetWriteBuffer()->MotorStop(Number);
         }
     }
     IsPlayForwardState = State;
@@ -311,10 +300,9 @@ void CommandController::SetPlayForwardState(bool State)
 void CommandController::NextCommand()
 {
     int Number = mCommandsList[mCommandId].GetNumber();
-    int NumberBuffer = ConfigController::Instance()->GetDriverMap()->at(Number).GetNumberBuffer();
     int Position = mCommandsList[mCommandId].GetPosition();
-    BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumberBuffer,Position);
-    BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumberBuffer);
+    BufferController::Instance()->GetWriteBuffer()->SetMotorAngle(Number,Position);
+    BufferController::Instance()->GetWriteBuffer()->MotorTrace(Number);
     mCommandId++;
     //qDebug() << "Выполнена строка " << QString::number(mCommandId) << endl;
 }
@@ -379,10 +367,10 @@ int CommandController::GetCurrentPos()
     return mCurrentPos;
 }
 
-void CommandController::SetPos(int NumberBuffer, int DestPos, int StartPos)
+void CommandController::SetPos(int Number, int DestPos, int StartPos)
 {
-    mDriverPosMap[NumberBuffer].DestPos = DestPos;
-    mDriverPosMap[NumberBuffer].StartPos = StartPos;
+    mMotorPosMap[Number].DestPos = DestPos;
+    mMotorPosMap[Number].StartPos = StartPos;
 }
 
 bool CommandController::GetGoToPosState()
@@ -406,15 +394,15 @@ void CommandController::GoNextPos()
     bool IsSecond = mDestPos >=mCurrentPos && mDestPos <=mStartPos;
     if(IsFirst || IsSecond)
     {
-        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,mDestPos);
-        BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP_BR(mDriverNumberBuffer);
+        BufferController::Instance()->GetWriteBuffer()->SetMotorAngle(mMotorNumber,mDestPos);
+        BufferController::Instance()->GetWriteBuffer()->MotorStopBrake(mMotorNumber);
         IsGoToPosState = false;
         qDebug() << "Отправлено конечное положение " << QString::number(mDestPos) << endl;
         return;
     }
     else
     {
-        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(mDriverNumberBuffer,(short)mCurrentPos);
+        BufferController::Instance()->GetWriteBuffer()->SetMotorAngle(mMotorNumber,(short)mCurrentPos);
         qDebug() << "Отправлено положение " << QString::number(mCurrentPos) << endl;
         mCurrentPos+=mStepPos;
     }
@@ -422,8 +410,8 @@ void CommandController::GoNextPos()
 
 void CommandController::GoPos()
 {
-    map<int,DriverPos>::iterator it;
-    for(it = mDriverPosMap.begin();it!=mDriverPosMap.end();++it)
+    map<int,MotorPos>::iterator it;
+    for(it = mMotorPosMap.begin();it!=mMotorPosMap.end();++it)
     {
         bool IsFirst = (*it).second.DestPos <= (*it).second.CurrentPos
                 && (*it).second.DestPos >= (*it).second.StartPos;
@@ -432,8 +420,8 @@ void CommandController::GoPos()
 
         if(IsFirst || IsSecond)
         {
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE((*it).first,(*it).second.DestPos);
-            BufferController::Instance()->GetWriteBuffer()->MOTOR_STOP_BR((*it).first);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorAngle((*it).first,(*it).second.DestPos);
+            BufferController::Instance()->GetWriteBuffer()->MotorStopBrake((*it).first);
             if(!(*it).second.isEndPos)
             {
                 IsPosState--;
@@ -446,7 +434,7 @@ void CommandController::GoPos()
         }
         else
         {
-            BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE((*it).first,(short)(*it).second.CurrentPos);
+            BufferController::Instance()->GetWriteBuffer()->SetMotorAngle((*it).first,(short)(*it).second.CurrentPos);
             qDebug() << "Отправлено положение " << QString::number((*it).second.CurrentPos) << endl;
             (*it).second.CurrentPos+=(*it).second.StepPos;
         }
@@ -458,13 +446,13 @@ void CommandController::initPos(bool mode)
 {
     IsPosState = 0;
     int MaxDelta = 0;
-    map<int,Driver>::iterator it;
-    mDriverMap = ConfigController::Instance()->GetDriverMap();
+    map<int,Motor>::iterator it;
+    mMotorMap = ConfigController::Instance()->GetMotorMap();
     int i=0;
-    for(it = mDriverMap->begin();it!=mDriverMap->end();++it)
+    for(it = mMotorMap->begin();it!=mMotorMap->end();++it)
     {
-        int NumbBuffer = (*it).second.GetNumberBuffer();
-        int MotorAngle = BufferController::Instance()->GetReadBuffer()->Get_MOTOR_CPOS(NumbBuffer);
+        int Number = (*it).first;
+        int MotorAngle = BufferController::Instance()->GetReadBuffer()->GetMotorAngle(Number);
         //взять значение из файла
         long pos = 0;
         if(mode)
@@ -475,14 +463,14 @@ void CommandController::initPos(bool mode)
         MaxDelta = (TempDelta > MaxDelta)? TempDelta : MaxDelta;
         if(!mode)
         {
-            SetPos(NumbBuffer,0,MotorAngle);
+            SetPos(Number,0,MotorAngle);
         }
         else
         {
-            SetPos(NumbBuffer,pos,MotorAngle);
+            SetPos(Number,pos,MotorAngle);
         }
-        BufferController::Instance()->GetWriteBuffer()->Set_MOTOR_ANGLE(NumbBuffer, MotorAngle);
-        BufferController::Instance()->GetWriteBuffer()->MOTOR_TRACE(NumbBuffer);
+        BufferController::Instance()->GetWriteBuffer()->SetMotorAngle(Number, MotorAngle);
+        BufferController::Instance()->GetWriteBuffer()->MotorTrace(Number);
         i++;
     }
 
@@ -503,8 +491,8 @@ void CommandController::CalcPos(long TimeToGo)
 {
     int SendDelay = ConfigController::Instance()->GetSendDelay();
     long TimeToGoMs = TimeToGo;
-    map<int,DriverPos>::iterator it;
-    for(it = mDriverPosMap.begin();it!=mDriverPosMap.end();++it)
+    map<int,MotorPos>::iterator it;
+    for(it = mMotorPosMap.begin();it!=mMotorPosMap.end();++it)
     {
         int diffPos = (*it).second.DestPos - (*it).second.StartPos;//разница в градус*100
         if(TimeToGoMs!=0)
@@ -520,9 +508,9 @@ void CommandController::CalcPos(long TimeToGo)
     }
 }
 
-void CommandController::SetDriverNumberBuffer(int Number)
+void CommandController::SetMotorNumber(int Number)
 {
-    mDriverNumberBuffer = Number;
+    mMotorNumber = Number;
 }
 
 

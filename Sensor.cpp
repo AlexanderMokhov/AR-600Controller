@@ -23,103 +23,12 @@ Sensor::Sensor(unsigned int Number,
 
 int Sensor::GetValue()
 {
-    switch(mNumberBuffer)
-    {
-        case 14:
-            switch(mParam)
-            {
-                case 1:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_TX(mNumberBuffer);
-                }
-                break;
-                case 2:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_TY(mNumberBuffer);
-                }
-                break;
-                case 3:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_FZ(mNumberBuffer);
-                }
-                break;
-                case 4:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_YAW(mNumberBuffer);
-                }
-                break;
-                case 5:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_PITCH(mNumberBuffer);
-                }
-                break;
-                case 6:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_ROLL(mNumberBuffer);
-                }
-                break;
-            }
-        break;
-        default:
-            switch(mParam)
-            {
-                case 1:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH0(mNumberBuffer);
-                }
-                break;
-                case 2:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH1(mNumberBuffer);
-                }
-                break;
-                case 3:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH2(mNumberBuffer);
-                }
-                break;
-                case 4:
-                {
-                    return BufferController::Instance()->GetReadBuffer()->Get_SENSOR_UCH3(mNumberBuffer);
-                }
-                break;
-            }
-        break;
-    }
+    return mValue;
 }
 
 void Sensor::SetValue(int value)
 {
-    switch(mNumberBuffer)
-    {
-        case 14:
-        break;
-        default:
-            switch(mParam)
-            {
-                case 1:
-                {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH0(mNumberBuffer,value);
-                }
-                break;
-                case 2:
-                {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH1(mNumberBuffer,value);
-                }
-                break;
-                case 3:
-                {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH2(mNumberBuffer,value);
-                }
-                break;
-                case 4:
-                {
-                    return BufferController::Instance()->GetWriteBuffer()->Set_SENSOR_UCH3(mNumberBuffer,value);
-                }
-                break;
-            }
-        break;
-    }
+    mValue = value;
 }
 
 string Sensor::GetNameLog()

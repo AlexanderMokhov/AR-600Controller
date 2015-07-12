@@ -19,23 +19,23 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
 
     //настраиваем виджеты
-    mDriverControllerWidget = new DriverControllerWidget();
-    ui->DriverControlLayout->addWidget(mDriverControllerWidget);
-    mCommandControllerWidget = new CommandControllerWidget();
-    ui->CommandControlLayout->addWidget(mCommandControllerWidget);
-    mChannelTableWidget = new ChannelTableWidget();
-    ui->ChannelTableLayout->addWidget(mChannelTableWidget);
-    mDriverLogWidget = new DriverLogWidget();
-    ui->DriverLogWidgetLayout->addWidget(mDriverLogWidget);
-    mPowerWidget = new PowerWidget();
-    ui->PowerLayout->addWidget(mPowerWidget);
-    mSensorsWidget = new SensorsWidget();
-    ui->SensorTableLayout->addWidget(mSensorsWidget);
+    mMotorControlWidget = new MotorControlWidget();
+    ui->MotorControlLayout->addWidget(mMotorControlWidget);
+    mCommandControlWidget = new CommandControlWidget();
+    ui->CommandControlLayout->addWidget(mCommandControlWidget);
+    mMotorTableWidget = new MotorTableWidget();
+    ui->MotorTableLayout->addWidget(mMotorTableWidget);
+    mDeviceLogWidget = new DeviceLogWidget();
+    ui->DeviceLogWidgetLayout->addWidget(mDeviceLogWidget);
+    mPowerControlWidget = new PowerControlWidget();
+    ui->PowerControlLayout->addWidget(mPowerControlWidget);
+    mSensorTableWidget = new SensorTableWidget();
+    ui->SensorTableLayout->addWidget(mSensorTableWidget);
 
     mConnectDialog = new ConnectConfigDialog();
 
-    mDriverControllerWidget->setModel(mChannelTableWidget->getModel());
-    connect(mChannelTableWidget,SIGNAL(RowChanged(int)),mDriverControllerWidget,SLOT(RowChanged(int)));
+    mMotorControlWidget->setModel(mMotorTableWidget->getModel());
+    connect(mMotorTableWidget,SIGNAL(RowChanged(int)),mMotorControlWidget,SLOT(RowChanged(int)));
     //конец настройки виджетов
 
     //настройка кнопок тулбара
@@ -79,17 +79,17 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
     connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
     connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
-    connect(ui->actionOn,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
-    connect(ui->actionOff,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+    connect(ui->actionOn,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOnAll_clicked()));
+    connect(ui->actionOff,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOffAll_clicked()));
     connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
     //конец настройки кнопок меню
 
-    connect(mCommandControllerWidget,SIGNAL(StartWriteLog(int)),mDriverLogWidget,SLOT(StartWriteLog(int)));
-    connect(mCommandControllerWidget,SIGNAL(StopWriteLog()),mDriverLogWidget,SLOT(StopWriteLog()));
-    connect(mCommandControllerWidget,SIGNAL(FileLoaded()),this,SLOT(ActivateActions()));
+    connect(mCommandControlWidget,SIGNAL(StartWriteLog(int)),mDeviceLogWidget,SLOT(StartWriteLog(int)));
+    connect(mCommandControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
+    connect(mCommandControlWidget,SIGNAL(FileLoaded()),this,SLOT(ActivateActions()));
 
-    connect(mCommandControllerWidget,SIGNAL(PlayStart()),mChannelTableWidget,SLOT(DisActivate()));
-    connect(mCommandControllerWidget,SIGNAL(PlayStop()),mChannelTableWidget,SLOT(Activate()));
+    connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
 
     //чтение настроек их XML файла
     bool isOk = ConfigController::Instance()->OpenFile("config.xml");
@@ -101,11 +101,10 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
         mReceivePort=ConfigController::Instance()->GetReceivePort();
         mReceiveDelay=ConfigController::Instance()->GetReceiveDelay();
 
-        ConfigController::Instance()->Update(mSendBuffer);
         BufferController::Instance()->InitBuffers();
         CommandController::Instance()->Initialize();
-        UDPLogController::Instance()->Initialize();
-        connect(CommandController::Instance(),SIGNAL(initEnd()),mCommandControllerWidget,SLOT(startCommand()));
+        DeviceLogController::Instance()->Initialize();
+        connect(CommandController::Instance(),SIGNAL(initEnd()),mCommandControlWidget,SLOT(startCommand()));
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -118,8 +117,8 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     //конец чтения настроек
 
     //заполнение таблицы приводов
-    mChannelTableWidget->ShowConfigData();
-    mSensorsWidget->ShowConfigData();
+    mMotorTableWidget->ShowConfigData();
+    mSensorTableWidget->ShowConfigData();
 
     mTimerUpdate = new QTimer();
     //mTimerUpdate->setTimerType(Qt::PreciseTimer);
@@ -155,32 +154,32 @@ void AR600MainWindow::ActionsLoad()
     TBactionPlay = new QAction("Начать выполнение",0);
     TBactionPlay->setToolTip("Начать выполнение");
     TBactionPlay->setIcon(QIcon("Icons/play.ico"));
-    connect(TBactionPlay,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonPlayPause_clicked()));
+    connect(TBactionPlay,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonPlayPause_clicked()));
 
     TBactionStop = new QAction("Остановить выполнение",0);
     TBactionStop->setToolTip("Остановить выполнение");
     TBactionStop->setIcon(QIcon("Icons/stop.ico"));
-    connect(TBactionStop,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonStop_clicked()));
+    connect(TBactionStop,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonStop_clicked()));
 
     TBactionNext = new QAction("Следующая команда",0);
     TBactionNext->setToolTip("Следующая команда");
     TBactionNext->setIcon(QIcon("Icons/redo.ico"));
-    connect(TBactionNext,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonNext_clicked()));
+    connect(TBactionNext,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonNext_clicked()));
 
     TBactionOpenCommandFile = new QAction("Загрузить файл команд",0);
     TBactionOpenCommandFile->setToolTip("Загрузить файл команд");
     TBactionOpenCommandFile->setIcon(QIcon("Icons/folder.ico"));
-    connect(TBactionOpenCommandFile,SIGNAL(triggered()),mCommandControllerWidget,SLOT(on_ButtonLoadFile_clicked()));
+    connect(TBactionOpenCommandFile,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonLoadFile_clicked()));
 
     TBactionOnPower = new QAction("Включить все",0);
     TBactionOnPower->setToolTip("Включить все");
     TBactionOnPower->setIcon(QIcon("Icons/on.ico"));
-    connect(TBactionOnPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
+    connect(TBactionOnPower,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOnAll_clicked()));
 
     TBactionOffPower = new QAction("Выключить все",0);
     TBactionOffPower->setToolTip("Выключить все");
     TBactionOffPower->setIcon(QIcon("Icons/off.ico"));
-    connect(TBactionOffPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+    connect(TBactionOffPower,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOffAll_clicked()));
 
     TBactionOpenConnectSettings = new QAction("Настройки соединения",0);
     TBactionOpenConnectSettings->setToolTip("Настройки соединения");
@@ -211,11 +210,11 @@ void AR600MainWindow::Connect()
 void AR600MainWindow::Disconnect()
 {
     //выключаем напряжения
-    mSendBuffer->OFF61();
-    mSendBuffer->OFF62();
-    mSendBuffer->OFF81();
-    mSendBuffer->OFF82();
-    mSendBuffer->OFF48();
+    mSendBuffer->PowerOff61();
+    mSendBuffer->PowerOff62();
+    mSendBuffer->PowerOff81();
+    mSendBuffer->PowerOff82();
+    mSendBuffer->PowerOff48();
     mThreadSend->DisconnectSocket();
     mThreadRecieve->DisconnectSocket();
     mTimerUpdate->stop();
@@ -241,10 +240,10 @@ void AR600MainWindow::OpenConnectConfig()
 //обработка принятого пакета от робота
 void AR600MainWindow::ProcessTheDatagram()
 {
-    mPowerWidget->UpdatePowerLabel();
-    mDriverControllerWidget->UpdateData();
-    mChannelTableWidget->UpdatePos();
-    mSensorsWidget->UpdatePos();
+    mPowerControlWidget->UpdatePowerLabel();
+    mMotorControlWidget->UpdateData();
+    mMotorTableWidget->UpdatePos();
+    mSensorTableWidget->UpdatePos();
 }
 
 //сохранение файла настроек
@@ -269,7 +268,7 @@ void AR600MainWindow::OpenXML()
         if(isOk)
         {
             //загоняем в отправляемый массив
-            ConfigController::Instance()->Update(mSendBuffer);
+            BufferController::Instance()->InitBuffers();
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
         }

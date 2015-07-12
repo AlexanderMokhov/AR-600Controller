@@ -1,14 +1,13 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include "BufferController.h"
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 //Класс устройств робота
 class Device
 {
-protected:
+public:
     unsigned int    mNumber;//номер
     unsigned int    mNumberBuffer;//адрес буфера
     std::string     mName;//название

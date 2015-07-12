@@ -4,7 +4,7 @@
 #define _USE_MATH_DEFINES
 
 #include "Command.h"
-#include "MBWrite.h"
+#include "WriteBuffer.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -18,11 +18,10 @@
 #include "ConfigController.h"
 #include <QStateMachine>
 #include <QState>
-#include <PreciseTimer.h>
 #include <QTime>
 #include <QVector>
 
-struct DriverPos
+struct MotorPos
 {
     double CurrentPos;
     int StartPos;
@@ -57,22 +56,20 @@ private:
     double mCurrentPos;
     int mCurrentTime;
     double mStepPos;
-    int mDriverNumberBuffer;
+    int mMotorNumber;
     bool IsGoToPosState;//состояние выполнения перехода в позицию за время
     int IsPosState;
     int mCurrentTimeForCommands;
     int mSendDelay;
-    ext::PreciseTimer mPreciseTimer;
     QTime mTime;
     int mPrevComand;
-    std::map<int,Driver> * mDriverMap;
-    std::map<int,DriverPos> mDriverPosMap;
+    std::map<int,Motor> * mMotorMap;
+    std::map<int,MotorPos> mMotorPosMap;
 
 
 public:
     static CommandController* Instance();
     static void Initialize();
-    static void Shutdown();
     void Update(long time);
     bool LoadFromFile(std::string fileName);
     int GetCountRows();
@@ -96,7 +93,7 @@ public:
     void CalcGoToPos();
     void CalcPos(long TimeToGo);
 
-    void SetDriverNumberBuffer(int Number);
+    void SetMotorNumber(int Number);
     void NextCommand();
 
     void SendCommand();

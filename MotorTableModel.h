@@ -1,20 +1,21 @@
-#ifndef SENSORTABLEMODEL_H
-#define SENSORTABLEMODEL_H
+#ifndef MOTORTABLEMODEL_H
+#define MOTORTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QString>
 #include <QList>
 #include <QStringList>
-#include "Sensor.h"
+#include "Motor.h"
 
-class SensorTableModel : public QAbstractTableModel
+class MotorTableModel : public QAbstractTableModel
 {
+
     Q_OBJECT
 public:
-    explicit SensorTableModel(QObject *parent = 0);
-    ~SensorTableModel();
+    explicit MotorTableModel(QObject *parent = 0);
+    ~MotorTableModel();
 
-    QList<Sensor*> mDataList; // список, в котором хранятся все данные
+    QList<Motor*> mDataList; // список, в котором хранятся все данные
     QStringList mHeaderData; // список заголовков столбцов
 
     int rowCount(const QModelIndex &parent=QModelIndex()) const; //метод возвращает количество строк
@@ -32,10 +33,16 @@ public:
     bool insertRows( int position, int rows,const QModelIndex & index = QModelIndex());
     bool removeRows( int position, int rows,const QModelIndex & index = QModelIndex());
 
-    void insertRow( const QString & Number,const QString & Name, const QString & Value);
+    void insertRow( const QString & Number,const QString & Name, const QString & Status,
+                    const QString & Pos, const QString & MinPos, const QString & MaxPos,
+                    const QString & Reverce,const QString & Stiff,const QString & Dump,const QString & Torque,
+                    const QString & Calibration, const QString & Enable);
 
 signals:
     void editCompleted(const QString &);
+public slots:
+
+private:
 };
 
-#endif // SENSORTABLEMODEL_H
+#endif // MOTORTABLEMODEL_H

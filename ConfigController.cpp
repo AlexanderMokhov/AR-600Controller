@@ -2,10 +2,9 @@
 
 ConfigController * ConfigController::mInstance = 0;
 
-ConfigController::ConfigController():
-	mXMLfileSetting(NULL)
+ConfigController::ConfigController()
 {
-
+    mXMLConfigFile = NULL;
 }
 
 ConfigController::~ConfigController()
@@ -24,71 +23,65 @@ ConfigController* ConfigController::Instance()
     return mInstance;
 }
 
-void ConfigController::Shutdown()
-{
-    delete mInstance;
-    mInstance = 0;
-}
-
 bool ConfigController::OpenFile(string FileName)
 {
-    mXMLfileSetting = new TiXmlDocument(FileName.c_str());
+    mXMLConfigFile = new TiXmlDocument(FileName.c_str());
 
-    if(!mXMLfileSetting->LoadFile())
+    if(!mXMLConfigFile->LoadFile())
     {
-        // Файл не был открыт или содежит ошибки | file have any errors
+        //Файл не был открыт или содежит ошибки | file have any errors
         return false;
     }
     else
     {
-        // обработка
-        TiXmlElement *xml_root = mXMLfileSetting->FirstChildElement();//выбор первого тега
-        TiXmlElement *xml_DriverSettings = 0;
+        //Обработка
+        TiXmlElement *xml_root = mXMLConfigFile->FirstChildElement();//выбор первого тега
+        TiXmlElement *xml_MotorSettings = 0;
         TiXmlElement *xml_SensorSettings = 0;
-        TiXmlElement *xml_Driver = 0;
+        TiXmlElement *xml_Motor = 0;
         TiXmlElement *xml_Sensor = 0;
 
-        // выбор первого тега после предыдущего (настройки двигателей)
-        xml_DriverSettings = xml_root->FirstChildElement("DriverSettings");
-        // читаем двигатели
-        xml_Driver = xml_DriverSettings->FirstChildElement("Driver");
-        // очищаем контейнер
-        mDriverMap.clear();
+        //Выбор первого тега после предыдущего (настройки двигателей)
+        xml_MotorSettings = xml_root->FirstChildElement("DriverSettings");
+        //Читаем двигатели
+        xml_Motor = xml_MotorSettings->FirstChildElement("Driver");
+        //Очищаем контейнер
+        mMotorMap.clear();
 
-        // перебор всех двигателей
-        while(xml_Driver != NULL)
+        //Перебор всех двигателей
+        while(xml_Motor != NULL)
         {
-            //читаем атрибуты
-            int Number = atoi(xml_Driver->FirstChildElement("Number")->GetText());
-            int NumberBuffer = atoi(xml_Driver->FirstChildElement("NumberBuffer")->GetText());
-            std::string Name = std::string(xml_Driver->FirstChildElement("Name")->GetText());
-            int MinPos = atoi(xml_Driver->FirstChildElement("MinPos")->GetText());
-            int MaxPos = atoi(xml_Driver->FirstChildElement("MaxPos")->GetText());
-            bool Reverce = strcmp("false",xml_Driver->FirstChildElement("Reverce")->GetText());
-            int Stiff = atoi(xml_Driver->FirstChildElement("Stiff")->GetText());
-            int Dump = atoi(xml_Driver->FirstChildElement("Dump")->GetText());
-            int Torque = atoi(xml_Driver->FirstChildElement("Torque")->GetText());
-            int Calibration = atoi(xml_Driver->FirstChildElement("Calibration")->GetText());
-            bool Enable = strcmp("false",xml_Driver->FirstChildElement("Enable")->GetText());
+            //Читаем атрибуты
+            int Number = atoi(xml_Motor->FirstChildElement("Number")->GetText());
+            int NumberBuffer = atoi(xml_Motor->FirstChildElement("NumberBuffer")->GetText());
+            std::string Name = std::string(xml_Motor->FirstChildElement("Name")->GetText());
+            int MinPos = atoi(xml_Motor->FirstChildElement("MinPos")->GetText());
+            int MaxPos = atoi(xml_Motor->FirstChildElement("MaxPos")->GetText());
+            bool Reverce = strcmp("false",xml_Motor->FirstChildElement("Reverce")->GetText());
+            int Stiff = atoi(xml_Motor->FirstChildElement("Stiff")->GetText());
+            int Dump = atoi(xml_Motor->FirstChildElement("Dump")->GetText());
+            int Torque = atoi(xml_Motor->FirstChildElement("Torque")->GetText());
+            int Calibration = atoi(xml_Motor->FirstChildElement("Calibration")->GetText());
+            bool Enable = strcmp("false",xml_Motor->FirstChildElement("Enable")->GetText());
 
-            Driver item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
-            //загоняем в контейнер
-            mDriverMap.insert(pair<int,Driver>(Number,item));
+            Motor item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
+            //Добавляем в контейнер
+            mMotorMap.insert(pair<int,Motor>(Number,item));
 
-            xml_Driver = xml_Driver->NextSiblingElement("Driver");
+            xml_Motor = xml_Motor->NextSiblingElement("Driver");
         }
 
-        // выбор первого тега после предыдущего (настройки сенсоров)
+        //Выбор первого тега после предыдущего (настройки сенсоров)
         xml_SensorSettings = xml_root->FirstChildElement("SensorSettings");
-        // читаем сенсоры
+        //Читаем сенсоры
         xml_Sensor = xml_SensorSettings->FirstChildElement("Sensor");
-        // очищаем контейнер
+        //Очищаем контейнер
         mSensorMap.clear();
 
-        // перебор всех сенсоров
+        //Перебор всех сенсоров
         while(xml_Sensor != NULL)
         {
-            //читаем атрибуты
+            //Читаем атрибуты
             int Number = atoi(xml_Sensor->FirstChildElement("Number")->GetText());
             int NumberBuffer = atoi(xml_Sensor->FirstChildElement("NumberBuffer")->GetText());
             std::string Name = std::string(xml_Sensor->FirstChildElement("Name")->GetText());
@@ -96,14 +89,14 @@ bool ConfigController::OpenFile(string FileName)
             int Param = atoi(xml_Sensor->FirstChildElement("Param")->GetText());
 
             Sensor item = Sensor(Number,NumberBuffer,Name,NameLog,Param);
-            //загоняем в контейнер
+            //Добавляем в контейнер
             mSensorMap.insert(pair<int,Sensor>(Number,item));
 
             xml_Sensor = xml_Sensor->NextSiblingElement("Sensor");
         }
 
 
-        //читаем настройки подключения
+        //Читаем настройки подключения
         TiXmlElement *xml_ConnectSettings = 0;
         xml_ConnectSettings = xml_root->FirstChildElement("ConnectSettings");
 
@@ -111,64 +104,65 @@ bool ConfigController::OpenFile(string FileName)
         mSendPort = atoi(xml_ConnectSettings->FirstChildElement("SendPort")->GetText());
         mReceivePort = atoi(xml_ConnectSettings->FirstChildElement("ReceivePort")->GetText());
         mSendDelay = atoi(xml_ConnectSettings->FirstChildElement("SendDelay")->GetText());
-
         mReceiveDelay = atoi(xml_ConnectSettings->FirstChildElement("ReceiveDelay")->GetText());
 
-        //читаем настройки контроллера команд
+        //Читаем настройки контроллера команд
         TiXmlElement *xml_CommandControllerSettings = 0;
         xml_CommandControllerSettings = xml_root->FirstChildElement("CommandControllerSettings");
         mDefaultStiff = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultStiff")->GetText());
         mDefaultDump = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultDump")->GetText());
         mDefaultTorque = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultTorque")->GetText());
         mDefaultSpeed = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultSpeed")->GetText());
+
         return true;
     }
 }
 
 bool ConfigController::SaveFile(string FileName)
 {
-    TiXmlDocument XMLFile;
+    mXMLConfigFile = new TiXmlDocument();
     TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","ANSI","yes");
-    XMLFile.LinkEndChild(decl);
+    mXMLConfigFile->LinkEndChild(decl);
     TiXmlElement * xml_root = new TiXmlElement("AR600ControllerConf");
-    XMLFile.LinkEndChild(xml_root);
-    TiXmlElement * xml_DriverSettings = new TiXmlElement("DriverSettings");
-    xml_root->LinkEndChild(xml_DriverSettings);
+    mXMLConfigFile->LinkEndChild(xml_root);
+    TiXmlElement * xml_MotorSettings = new TiXmlElement("DriverSettings");
+    xml_root->LinkEndChild(xml_MotorSettings);
 
     TiXmlText * WriteValue;
     char * buffer;
-    buffer=(char*)malloc(15*sizeof(char));
-    map<int,Driver>::iterator it;
-    //заполняем массив двигателей из контейнера
-    for(it = mDriverMap.begin();it!=mDriverMap.end();++it)
+    buffer=(char*)malloc(20*sizeof(char));
+    map<int,Motor>::iterator it;
+
+    //Заполняем массив двигателей из контейнера
+    for(it = mMotorMap.begin();it!=mMotorMap.end();++it)
     {
-        TiXmlElement * xml_Driver = new TiXmlElement("Driver");
-        xml_DriverSettings->LinkEndChild(xml_Driver);
+        TiXmlElement * xml_Motor = new TiXmlElement("Driver");
+        xml_MotorSettings->LinkEndChild(xml_Motor);
 
         TiXmlElement* Number = new TiXmlElement("Number");
         WriteValue = new TiXmlText(itoa((*it).second.GetNumber(),buffer,10));
         Number->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Number);
+        xml_Motor->LinkEndChild(Number);
 
         TiXmlElement* NumberBuffer = new TiXmlElement("NumberBuffer");
         WriteValue = new TiXmlText(itoa((*it).second.GetNumberBuffer(),buffer,10));
         NumberBuffer->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(NumberBuffer);
+        xml_Motor->LinkEndChild(NumberBuffer);
 
         TiXmlElement* Name = new TiXmlElement("Name");
         WriteValue = new TiXmlText((*it).second.GetName().c_str());
         Name->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Name);
+        xml_Motor->LinkEndChild(Name);
 
         TiXmlElement* MinPos = new TiXmlElement("MinPos");
         WriteValue = new TiXmlText(itoa((*it).second.GetMinPos(),buffer,10));
         MinPos->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(MinPos);
+        xml_Motor->LinkEndChild(MinPos);
 
         TiXmlElement* MaxPos = new TiXmlElement("MaxPos");
         WriteValue = new TiXmlText(itoa((*it).second.GetMaxPos(),buffer,10));
         MaxPos->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(MaxPos);
+        xml_Motor->LinkEndChild(MaxPos);
 
         TiXmlElement* Reverce = new TiXmlElement("Reverce");
         if((*it).second.GetReverce()!=0)
@@ -176,27 +170,27 @@ bool ConfigController::SaveFile(string FileName)
         else
             WriteValue = new TiXmlText("false");
         Reverce->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Reverce);
+        xml_Motor->LinkEndChild(Reverce);
 
         TiXmlElement* Stiff = new TiXmlElement("Stiff");
         WriteValue = new TiXmlText(itoa((*it).second.GetStiff(),buffer,10));
         Stiff->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Stiff);
+        xml_Motor->LinkEndChild(Stiff);
 
         TiXmlElement* Dump = new TiXmlElement("Dump");
         WriteValue = new TiXmlText(itoa((*it).second.GetDump(),buffer,10));
         Dump->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Dump);
+        xml_Motor->LinkEndChild(Dump);
 
         TiXmlElement* Torque = new TiXmlElement("Torque");
         WriteValue = new TiXmlText(itoa((*it).second.GetTorque(),buffer,10));
         Torque->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Torque);
+        xml_Motor->LinkEndChild(Torque);
 
         TiXmlElement* Calibration = new TiXmlElement("Calibration");
         WriteValue = new TiXmlText(itoa((*it).second.GetCalibration(),buffer,10));
         Calibration->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Calibration);
+        xml_Motor->LinkEndChild(Calibration);
 
         TiXmlElement* Enable = new TiXmlElement("Enable");
         if((*it).second.GetEnable()!=0)
@@ -204,13 +198,13 @@ bool ConfigController::SaveFile(string FileName)
         else
             WriteValue = new TiXmlText("false");
         Enable->LinkEndChild(WriteValue);
-        xml_Driver->LinkEndChild(Enable);
+        xml_Motor->LinkEndChild(Enable);
     }
 
     TiXmlElement * xml_SensorSettings = new TiXmlElement("SensorSettings");
     xml_root->LinkEndChild(xml_SensorSettings);
 
-    buffer=(char*)malloc(15*sizeof(char));
+    buffer=(char*)malloc(20*sizeof(char));
     map<int,Sensor>::iterator it2;
     //заполняем массив двигателей из контейнера
     for(it2 = mSensorMap.begin();it2!=mSensorMap.end();++it2)
@@ -244,7 +238,7 @@ bool ConfigController::SaveFile(string FileName)
         xml_Sensor->LinkEndChild(Param);\
     }
 
-    //записываем настройки подключения
+    //Записываем настройки подключения
     TiXmlElement * xml_ConnectSettings = new TiXmlElement("ConnectSettings");
     xml_root->LinkEndChild(xml_ConnectSettings);
 
@@ -273,7 +267,7 @@ bool ConfigController::SaveFile(string FileName)
     WriteValue=new TiXmlText(itoa(mReceiveDelay,buffer,10));
     xml_ReceiveDelay->LinkEndChild(WriteValue);
 
-    //записываем настройки контроллера команд
+    //Записываем настройки контроллера команд
     TiXmlElement * xml_CommandControllerSettings = new TiXmlElement("CommandControllerSettings");
     xml_root->LinkEndChild(xml_CommandControllerSettings);
 
@@ -297,8 +291,8 @@ bool ConfigController::SaveFile(string FileName)
     WriteValue=new TiXmlText(itoa(mDefaultSpeed,buffer,10));
     xml_DefaultSpeed->LinkEndChild(WriteValue);
 
-    //записываем в файл
-    XMLFile.SaveFile(FileName.c_str());
+    //Сохраняем файл
+    mXMLConfigFile->SaveFile(FileName.c_str());
     return true;
 
 }
@@ -343,46 +337,9 @@ int ConfigController::GetReceiveDelay()
     return mReceiveDelay;
 }
 
-bool ConfigController::Update(MBWrite *buffer)
+std::map<int,Motor> *ConfigController::GetMotorMap()
 {
-    map<int,Driver>::iterator it;
-    for(it = mDriverMap.begin();it!=mDriverMap.end();++it)
-    {
-        int NumbBuffer = (*it).second.GetNumberBuffer();
-        buffer->AddressUpdate(NumbBuffer,(*it).first);
-        int PosMin = (*it).second.GetMinPos();
-        int PosMax = (*it).second.GetMaxPos();
-
-        buffer->MOTOR_STOP(NumbBuffer);
-
-        buffer->Set_MOTOR_STIFF(NumbBuffer,(*it).second.GetStiff());
-        buffer->Set_MOTOR_DAMP(NumbBuffer,(*it).second.GetDump());
-        buffer->Set_MOTOR_TORQUE(NumbBuffer,(*it).second.GetTorque());
-        buffer->Set_MOTOR_CALIBRATION(NumbBuffer,(*it).second.GetCalibration());
-
-        buffer->GetReverceMap()->insert(std::pair<int,bool>(NumbBuffer,(*it).second.GetReverce()));
-        buffer->GetMinPosMap()->insert(std::pair<int,int>(NumbBuffer,(*it).second.GetMinPos()));
-        buffer->GetMaxPosMap()->insert(std::pair<int,int>(NumbBuffer,(*it).second.GetMaxPos()));
-
-        buffer->GetEnableMap()->insert(std::pair<int,bool>(NumbBuffer,(*it).second.GetEnable()));
-
-        buffer->Set_MOTOR_MIN_POS(NumbBuffer,PosMin);
-        buffer->Set_MOTOR_MAX_POS(NumbBuffer,PosMax);
-
-        buffer->MOTOR_STOP(NumbBuffer);
-    }
-    map<int,Sensor>::iterator it2;
-    for(it2 = mSensorMap.begin();it2!=mSensorMap.end();++it2)
-    {
-        int NumbBuffer = (*it2).second.GetNumberBuffer();
-        buffer->AddressUpdate(NumbBuffer,NumbBuffer);
-    }
-    return true;
-}
-
-std::map<int,Driver> *ConfigController::GetDriverMap()
-{
-    return &mDriverMap;
+    return &mMotorMap;
 }
 
 std::map<int, Sensor> *ConfigController::GetSensorMap()

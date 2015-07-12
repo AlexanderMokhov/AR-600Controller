@@ -17,78 +17,69 @@ CONFIG += c++11
 
 
 SOURCES += main.cpp\
-    MBRead.cpp \
-    MBWrite.cpp \
     CommandController.cpp \
     TinyXML/tinystr.cpp \
     TinyXML/tinyxml.cpp \
     TinyXML/tinyxmlerror.cpp \
     TinyXML/tinyxmlparser.cpp \
-    ChannelListItem.cpp \
-    ChannelTableModel.cpp \
-    Widgets/DriverControllerWidget.cpp \
     BufferController.cpp \
-    Widgets/CommandControllerWidget.cpp \
     ConfigController.cpp \
-    Widgets/ChannelTableWidget.cpp \
-    Widgets/DriverLogWidget.cpp \
-    Widgets/PowerWidget.cpp \
     ThreadReceive.cpp \
     ThreadSend.cpp \
     AR600MainWindow.cpp \
     Widgets/ConnectConfigDialog.cpp \
     Device.cpp \
-    Driver.cpp \
-    FootSensor.cpp \
-    GyroscopeSensor.cpp \
-    Widgets/SensorsWidget.cpp \
     Sensor.cpp \
     SensorTableModel.cpp \
-    SensorListItem.cpp \
-    PreciseTimer.cpp \
-    UDPLogController.cpp \
-    Command.cpp
+    Command.cpp \
+    ReadBuffer.cpp \
+    WriteBuffer.cpp \
+    Motor.cpp \
+    Widgets/DeviceLogWidget.cpp \
+    MotorTableModel.cpp \
+    Widgets/MotorTableWidget.cpp \
+    Widgets/SensorTableWidget.cpp \
+    Widgets/MotorControlWidget.cpp \
+    Widgets/CommandControlWidget.cpp \
+    DeviceLogController.cpp \
+    Widgets/PowerControlWidget.cpp
 
 HEADERS  += \
-    MBRead.h \
-    MBWrite.h \
     CommandController.h \
     TinyXML/tinystr.h \
     TinyXML/tinyxml.h \
-    ChannelListItem.h \
-    ChannelTableModel.h \
-    Widgets/DriverControllerWidget.h \
     BufferController.h \
-    Widgets/CommandControllerWidget.h \
     ConfigController.h \
-    Widgets/ChanneTableWidget.h \
-    Widgets/DriverLogWidget.h \
-    Widgets/PowerWidget.h \
     ThreadReceive.h \
     ThreadSend.h \
     AR600MainWindow.h \
     Widgets/ConnectConfigDialog.h \
     Device.h \
-    Driver.h \
-    FootSensor.h \
-    GyroscopeSensor.h \
-    Widgets/SensorsWidget.h \
     Sensor.h \
     SensorTableModel.h \
-    SensorListItem.h \
-    PreciseTimer.h \
-    UDPLogController.h \
-    Command.h
+    Command.h \
+    ReadBuffer.h \
+    WriteBuffer.h \
+    ADefinition.h \
+    Motor.h \
+    Widgets/DeviceLogWidget.h \
+    MotorTableModel.h \
+    Widgets/MotorTableWidget.h \
+    Widgets/SensorTableWidget.h \
+    Widgets/MotorControlWidget.h \
+    Widgets/CommandControlWidget.h \
+    DeviceLogController.h \
+    Widgets/PowerControlWidget.h
 
 FORMS    += \
-    Widgets/DriverControllerWidget.ui \
-    Widgets/CommandControllerWidget.ui \
-    Widgets/ChannelTableWidget.ui \
-    Widgets/DriverLogWidget.ui \
-    Widgets/PowerWidget.ui \
     AR600MainWindow.ui \
     Widgets/ConnectConfigDialog.ui \
-    Widgets/SensorsWidget.ui
+    Widgets/DeviceLogWidget.ui \
+    Widgets/SensorTableWidget.ui \
+    Widgets/MotorTableWidget.ui \
+    Widgets/MotorControlWidget.ui \
+    Widgets/CommandControlWidget.ui \
+    Widgets/PowerControlWidget.ui
 
 win32 {
     RC_FILE += resource.rc

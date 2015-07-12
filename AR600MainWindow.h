@@ -8,23 +8,23 @@
 #include <QItemSelectionModel>
 #include "TinyXML/tinyxml.h"
 #include "ConfigController.h"
-#include "ChannelTableModel.h"
-#include "Widgets/DriverControllerWidget.h"
-#include "Widgets/CommandControllerWidget.h"
-#include "Widgets/ChanneTableWidget.h"
-#include "Widgets/DriverLogWidget.h"
-#include "Widgets/PowerWidget.h"
+#include "MotorTableModel.h"
+#include "Widgets/MotorControlWidget.h"
+#include "Widgets/CommandControlWidget.h"
+#include "Widgets/MotorTableWidget.h"
+#include "Widgets/DeviceLogWidget.h"
+#include "Widgets/PowerControlWidget.h"
 #include "BufferController.h"
 #include "CommandController.h"
 #include <QMessageBox>
 #include <qfiledialog.h>
-#include "UDPLogController.h"
+#include "DeviceLogController.h"
 #include "ThreadReceive.h"
 #include "ThreadSend.h"
 #include <QLabel>
 #include <QDesktopWidget>
 #include "Widgets/ConnectConfigDialog.h"
-#include "Widgets/SensorsWidget.h"
+#include "Widgets/SensorTableWidget.h"
 
 namespace Ui {
 class AR600MainWindow;
@@ -43,8 +43,8 @@ private:
 
     QTimer*             mTimerUpdate;
 
-    MBWrite             *mSendBuffer;
-    MBRead              *mReceiveBuffer;
+    WriteBuffer             *mSendBuffer;
+    ReadBuffer              *mReceiveBuffer;
 
     std::string         mHost;
     unsigned int        mSendPort;
@@ -53,15 +53,15 @@ private:
     int                 mReceiveDelay;
 
     //виджеты
-    DriverControllerWidget  *mDriverControllerWidget;
-    CommandControllerWidget *mCommandControllerWidget;
-    ChannelTableWidget      *mChannelTableWidget;
-    DriverLogWidget         *mDriverLogWidget;
-    PowerWidget             *mPowerWidget;
+    MotorControlWidget   *mMotorControlWidget;
+    CommandControlWidget *mCommandControlWidget;
+    MotorTableWidget        *mMotorTableWidget;
+    DeviceLogWidget         *mDeviceLogWidget;
+    PowerControlWidget      *mPowerControlWidget;
     QLabel                  *mConnectStatusLabel;
     QLabel                  *mCommandControllerStatusLabel;
     ConnectConfigDialog     *mConnectDialog;
-    SensorsWidget           *mSensorsWidget;
+    SensorTableWidget       *mSensorTableWidget;
 
     //действия
     QAction *TBactionOpenCF;

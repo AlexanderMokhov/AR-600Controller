@@ -24,28 +24,51 @@ void BufferController::Initialize()
     mInstance = new BufferController;
 }
 
-void BufferController::Shutdown()
-{
-    delete mInstance;
-    mInstance = 0;
-}
-
-MBRead *BufferController::GetReadBuffer()
+ReadBuffer *BufferController::GetReadBuffer()
 {
     return &mReadBuffer;
 }
 
-MBWrite *BufferController::GetWriteBuffer()
+WriteBuffer *BufferController::GetWriteBuffer()
 {
     return &mWriteBuffer;
 }
 
 void BufferController::InitBuffers()
 {
-    //mWriteBuffer.Init();
-    mReadBuffer.Init(mWriteBuffer.GetBuffer());
+    map<int,Motor>::iterator it;
+    for(it = ConfigController::Instance()->GetMotorMap()->begin();
+        it != ConfigController::Instance()->GetMotorMap()->end();++it)
+    {
+        int NumbBuffer = (*it).second.GetNumberBuffer();
+        mWriteBuffer.SetDeviceChannel((*it).first,NumbBuffer);
+        mReadBuffer.SetDeviceChannel((*it).first,NumbBuffer);
+        int PosMin = (*it).second.GetMinPos();
+        int PosMax = (*it).second.GetMaxPos();
 
-    mReadBuffer.SetReverceMap(mWriteBuffer.GetReverceMap());
-    //mWriteBuffer.SENSOR_OFFSET(10,mReadBuffer.GetBuffer());
+        mWriteBuffer.SetMotorStiff((*it).first,(*it).second.GetStiff());
+        mWriteBuffer.SetMotorDump((*it).first,(*it).second.GetDump());
+        mWriteBuffer.SetMotorTorque((*it).first,(*it).second.GetTorque());
+        mWriteBuffer.SetMotorCalibration((*it).first,(*it).second.GetCalibration());
+
+        mWriteBuffer.SetMotorReverce((*it).first,(*it).second.GetReverce());
+        mReadBuffer.SetMotorReverce((*it).first,(*it).second.GetReverce());
+
+        mWriteBuffer.SetMotorEnable((*it).first,(*it).second.GetEnable());
+        mWriteBuffer.SetMotorMinAngle((*it).first,PosMin);
+        mWriteBuffer.SetMotorMaxAngle((*it).first,PosMax);
+        mWriteBuffer.SetDeviceChannel((*it).first,NumbBuffer);
+
+        mWriteBuffer.MotorStop((*it).first);
+    }
+    map<int,Sensor>::iterator it2;
+    for(it2 = ConfigController::Instance()->GetSensorMap()->begin();
+        it2 != ConfigController::Instance()->GetSensorMap()->end();++it2)
+    {
+        int NumbBuffer = (*it2).second.GetNumberBuffer();
+        mWriteBuffer.SetDeviceChannel((*it).first,NumbBuffer);
+        mReadBuffer.SetDeviceChannel((*it).first,NumbBuffer);
+    }
+    mReadBuffer.Init(mWriteBuffer.GetRAW());
 }
 

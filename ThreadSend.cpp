@@ -69,7 +69,7 @@ void ThreadSend::SendDatagram()
 
     QHostAddress mAddress = QHostAddress(mHost);
     mLocker->lock();
-    mUdpSocketSender->writeDatagram(mSendBuffer->GetBuffer(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
+    mUdpSocketSender->writeDatagram(mSendBuffer->GetRAW(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
     mUdpSocketSender->waitForBytesWritten();
     mLocker->unlock();
     CommandController::Instance()->SendCommand();

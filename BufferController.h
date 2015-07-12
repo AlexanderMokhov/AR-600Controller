@@ -1,8 +1,9 @@
 #ifndef BUFFERCONTROLLER_H
 #define BUFFERCONTROLLER_H
 
-#include "MBWrite.h"
-#include "MBRead.h"
+#include "ConfigController.h"
+#include "WriteBuffer.h"
+#include "ReadBuffer.h"
 #include <iostream>
 #include "stdlib.h"
 
@@ -16,15 +17,14 @@ private:
 
     static BufferController* mInstance;
 
-    MBRead mReadBuffer;
-    MBWrite mWriteBuffer;
+    ReadBuffer mReadBuffer;
+    WriteBuffer mWriteBuffer;
 public:
     static BufferController* Instance();
     static void Initialize();
-    static void Shutdown();
 
-    MBRead *GetReadBuffer();
-    MBWrite *GetWriteBuffer();
+    ReadBuffer *GetReadBuffer();
+    WriteBuffer *GetWriteBuffer();
     void InitBuffers();
 
 
