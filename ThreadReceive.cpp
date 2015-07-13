@@ -22,7 +22,7 @@ void ThreadReceive::run()
 void ThreadReceive::ProcessPendingDatagrams()
 {
     long timeprescount = timepres->elapsed();
-    //qDebug() << "Time Receive Delay: " << QString::number(timeprescount) << " ms"<< endl;
+    qDebug() << "Time Receive Delay: " << QString::number(timeprescount) << " ms"<< endl;
 
 
     while (mUdpSocketResiver->hasPendingDatagrams())

@@ -48,7 +48,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tabDriver">
          <attribute name="title">
@@ -78,6 +78,20 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Список файлов для выполнения</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="CommandFilesLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+           </layout>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -90,7 +104,7 @@
      <x>0</x>
      <y>0</y>
      <width>716</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

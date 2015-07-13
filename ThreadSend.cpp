@@ -40,7 +40,7 @@ void ThreadSend::ConnectSocket()
     {
         qDebug() << "Sender - disconnected";
     }
-    connect(mTimerSend,SIGNAL(timeout()),this,SLOT(SendDatagram()),Qt::DirectConnection);
+    connect(mTimerSend,SIGNAL(timeout()),SLOT(SendDatagram()));
     mTimerSend->start(mSendDelay);
 
 }
@@ -65,7 +65,7 @@ void ThreadSend::DisconnectSocket()
 void ThreadSend::SendDatagram()
 {
     long timeprescount = timepres->elapsed();
-    //qDebug() << "Time Send Delay: " << QString::number(timeprescount) << " ms"<< endl;
+    qDebug() << "Time Send Delay: " << QString::number(timeprescount) << " ms"<< endl;
 
     QHostAddress mAddress = QHostAddress(mHost);
     mLocker->lock();

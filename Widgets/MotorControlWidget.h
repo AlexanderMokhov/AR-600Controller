@@ -28,8 +28,6 @@ private slots:
 
     void on_ButtonRELAX_clicked();
 
-    void on_ButtonTRACE_clicked();
-
     void on_groupBoxCalibration_clicked(bool checked);
 
     void on_ButtonSaveZero_clicked();

@@ -59,8 +59,8 @@ void DeviceLogController::AddRawData(int time)
 
     for(it = mSensorsMap.begin();it!=mSensorsMap.end();++it)
     {
-        int Value = mSensMap->at((*it).first).GetValue();
-
+        int Value = mReadBuffer->GetSensorValue(mSensMap->at((*it).first).GetNumberBuffer(),
+                                                mSensMap->at((*it).first).GetParam()) ;
         (*it).second=Value;
     }
 

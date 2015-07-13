@@ -42,9 +42,9 @@ bool ConfigController::OpenFile(string FileName)
         TiXmlElement *xml_Sensor = 0;
 
         //Выбор первого тега после предыдущего (настройки двигателей)
-        xml_MotorSettings = xml_root->FirstChildElement("DriverSettings");
+        xml_MotorSettings = xml_root->FirstChildElement("MotorSettings");
         //Читаем двигатели
-        xml_Motor = xml_MotorSettings->FirstChildElement("Driver");
+        xml_Motor = xml_MotorSettings->FirstChildElement("Motor");
         //Очищаем контейнер
         mMotorMap.clear();
 
@@ -68,7 +68,7 @@ bool ConfigController::OpenFile(string FileName)
             //Добавляем в контейнер
             mMotorMap.insert(pair<int,Motor>(Number,item));
 
-            xml_Motor = xml_Motor->NextSiblingElement("Driver");
+            xml_Motor = xml_Motor->NextSiblingElement("Motor");
         }
 
         //Выбор первого тега после предыдущего (настройки сенсоров)
@@ -125,7 +125,7 @@ bool ConfigController::SaveFile(string FileName)
     mXMLConfigFile->LinkEndChild(decl);
     TiXmlElement * xml_root = new TiXmlElement("AR600ControllerConf");
     mXMLConfigFile->LinkEndChild(xml_root);
-    TiXmlElement * xml_MotorSettings = new TiXmlElement("DriverSettings");
+    TiXmlElement * xml_MotorSettings = new TiXmlElement("MotorSettings");
     xml_root->LinkEndChild(xml_MotorSettings);
 
     TiXmlText * WriteValue;
@@ -136,7 +136,7 @@ bool ConfigController::SaveFile(string FileName)
     //Заполняем массив двигателей из контейнера
     for(it = mMotorMap.begin();it!=mMotorMap.end();++it)
     {
-        TiXmlElement * xml_Motor = new TiXmlElement("Driver");
+        TiXmlElement * xml_Motor = new TiXmlElement("Motor");
         xml_MotorSettings->LinkEndChild(xml_Motor);
 
         TiXmlElement* Number = new TiXmlElement("Number");
@@ -235,7 +235,7 @@ bool ConfigController::SaveFile(string FileName)
         TiXmlElement* Param = new TiXmlElement("Param");
         WriteValue = new TiXmlText(itoa((*it2).second.GetParam(),buffer,10));
         Param->LinkEndChild(WriteValue);
-        xml_Sensor->LinkEndChild(Param);\
+        xml_Sensor->LinkEndChild(Param);
     }
 
     //Записываем настройки подключения

@@ -13,7 +13,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = AR600COntroller
 TEMPLATE = app
-CONFIG += c++11
+CONFIG += qt c++11 thread debug
 
 
 SOURCES += main.cpp\
@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     Widgets/MotorControlWidget.cpp \
     Widgets/CommandControlWidget.cpp \
     DeviceLogController.cpp \
-    Widgets/PowerControlWidget.cpp
+    Widgets/PowerControlWidget.cpp \
+    Widgets/CommandFilesWidget.cpp
 
 HEADERS  += \
     CommandController.h \
@@ -69,7 +70,8 @@ HEADERS  += \
     Widgets/MotorControlWidget.h \
     Widgets/CommandControlWidget.h \
     DeviceLogController.h \
-    Widgets/PowerControlWidget.h
+    Widgets/PowerControlWidget.h \
+    Widgets/CommandFilesWidget.h
 
 FORMS    += \
     AR600MainWindow.ui \
@@ -79,7 +81,8 @@ FORMS    += \
     Widgets/MotorTableWidget.ui \
     Widgets/MotorControlWidget.ui \
     Widgets/CommandControlWidget.ui \
-    Widgets/PowerControlWidget.ui
+    Widgets/PowerControlWidget.ui \
+    Widgets/CommandFilesWidget.ui
 
 win32 {
     RC_FILE += resource.rc

@@ -460,7 +460,7 @@ void CommandController::initPos(bool mode)
             pos = mCommandsList[i].GetPosition();
         }
         int TempDelta = std::abs(MotorAngle - pos);
-        MaxDelta = (TempDelta > MaxDelta)? TempDelta : MaxDelta;
+        MaxDelta = (TempDelta > MaxDelta && (*it).second.GetEnable())? TempDelta : MaxDelta;
         if(!mode)
         {
             SetPos(Number,0,MotorAngle);

@@ -58,7 +58,7 @@ void SensorTableWidget::UpdatePos()
     int i=0;
     for(it = mMap->begin();it!=mMap->end();++it)
     {
-        int Number = (*it).second.GetNumber();
+        int Number = (*it).second.GetNumberBuffer();
         int Param = (*it).second.GetParam();
         QString cValue = QString::number(BufferController::Instance()->GetReadBuffer()->GetSensorValue(Number,Param));
         mModel->setData(mModel->index(i,2),cValue,Qt::EditRole);

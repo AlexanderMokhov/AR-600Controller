@@ -66,8 +66,8 @@ void BufferController::InitBuffers()
         it2 != ConfigController::Instance()->GetSensorMap()->end();++it2)
     {
         int NumbBuffer = (*it2).second.GetNumberBuffer();
-        mWriteBuffer.SetDeviceChannel((*it).first,NumbBuffer);
-        mReadBuffer.SetDeviceChannel((*it).first,NumbBuffer);
+        mWriteBuffer.SetDeviceChannel(NumbBuffer,NumbBuffer);
+        mReadBuffer.SetDeviceChannel(NumbBuffer,NumbBuffer);
     }
     mReadBuffer.Init(mWriteBuffer.GetRAW());
 }

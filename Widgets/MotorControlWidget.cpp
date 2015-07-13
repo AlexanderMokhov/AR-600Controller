@@ -107,13 +107,6 @@ void MotorControlWidget::on_ButtonRELAX_clicked()
     mWriteBuffer->MotorRelax(CurrentNumber);
 }
 
-void MotorControlWidget::on_ButtonTRACE_clicked()
-{
-    mWriteBuffer->MotorTrace(CurrentNumber);
-    ui->groupBoxCalibration->setEnabled(false);
-}
-
-
 //происходит при входе и выходе в режим калибрации
 void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
 {
@@ -204,12 +197,8 @@ void MotorControlWidget::SliderInit()
     int MinPos = mReadBuffer->GetMotorMinAngle(CurrentNumber);
     int MaxPos = mReadBuffer->GetMotorMaxAngle(CurrentNumber);
     int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
-    int CalibrateValue = ConfigController::Instance()->GetMotorMap()->at(CurrentNumber).GetCalibration();
     ui->SliderPosition->setMinimum(MinPos);
     ui->SliderPosition->setMaximum(MaxPos);
-    ui->lineMinPos->setText(QString::number(MinPos));
-    ui->lineMaxPos->setText(QString::number(MaxPos));
-    ui->lineCalibrateValue->setText(QString::number(CalibrateValue));
 
     ui->spinDump->setValue(mReadBuffer->GetMotorDamp(CurrentNumber));
     ui->spinStiff->setValue(mReadBuffer->GetMotorStiff(CurrentNumber));
