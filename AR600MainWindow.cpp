@@ -31,6 +31,8 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui->PowerControlLayout->addWidget(mPowerControlWidget);
     mSensorTableWidget = new SensorTableWidget();
     ui->SensorTableLayout->addWidget(mSensorTableWidget);
+    mCommandFilesWidget = new CommandFilesWidget();
+    ui->CommandFilesLayout->addWidget(mCommandFilesWidget);
 
     mConnectDialog = new ConnectConfigDialog();
 
@@ -86,10 +88,13 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
 
     connect(mCommandControlWidget,SIGNAL(StartWriteLog(int)),mDeviceLogWidget,SLOT(StartWriteLog(int)));
     connect(mCommandControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
-    connect(mCommandControlWidget,SIGNAL(FileLoaded()),this,SLOT(ActivateActions()));
+    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
 
     connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
     connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
+    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
+
+    connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mCommandControlWidget,SLOT(openFile(QString,bool)));
 
     //чтение настроек их XML файла
     bool isOk = ConfigController::Instance()->OpenFile("config.xml");

@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     Widgets/CommandControlWidget.cpp \
     DeviceLogController.cpp \
     Widgets/PowerControlWidget.cpp \
-    Widgets/CommandFilesWidget.cpp
+    Widgets/CommandFilesWidget.cpp \
+    CommandTableModel.cpp
 
 HEADERS  += \
     CommandController.h \
@@ -71,7 +72,8 @@ HEADERS  += \
     Widgets/CommandControlWidget.h \
     DeviceLogController.h \
     Widgets/PowerControlWidget.h \
-    Widgets/CommandFilesWidget.h
+    Widgets/CommandFilesWidget.h \
+    CommandTableModel.h
 
 FORMS    += \
     AR600MainWindow.ui \

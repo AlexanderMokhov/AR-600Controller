@@ -23,7 +23,7 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
     stateNotOpenFile->assignProperty(ui->ButtonStop,"enabled",false);
     stateNotOpenFile->assignProperty(ui->ButtonNext,"enabled",false);
 
-    stateNotOpenFile->addTransition(this, SIGNAL(FileLoaded()), stateStop);
+    stateNotOpenFile->addTransition(this, SIGNAL(FileLoaded(QString,int,int,bool)), stateStop);
 
     stateStop->assignProperty(ui->ButtonLoadFile,"enabled",true);
     stateStop->assignProperty(ui->ButtonPlayPause,"enabled",true);
@@ -31,6 +31,7 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
     stateStop->assignProperty(ui->ButtonNext,"enabled",true);
 
     stateStop->addTransition(ui->ButtonPlayPause, SIGNAL(clicked()), statePlay);
+    stateStop->addTransition(this, SIGNAL(PlayStart()), statePlay);
 
     statePause->assignProperty(ui->ButtonLoadFile,"enabled",true);
     statePause->assignProperty(ui->ButtonPlayPause,"enabled",true);
@@ -39,6 +40,7 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
 
     statePause->addTransition(ui->ButtonPlayPause, SIGNAL(clicked()), statePlay);
     statePause->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
+
 
     statePlay->assignProperty(ui->ButtonLoadFile,"enabled",false);
     statePlay->assignProperty(ui->ButtonPlayPause,"enabled",true);
@@ -63,28 +65,7 @@ CommandControlWidget::~CommandControlWidget()
 void CommandControlWidget::on_ButtonLoadFile_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(0,"Open Commands List Dialog","","*.txt");
-    if (!fileName.isEmpty())
-    {
-        ui->FilePathTextBox->setText(fileName);
-        bool isOk = CommandController::Instance()->LoadFromFile(fileName.toStdString());
-        if(isOk)
-        {
-            qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
-            qDebug() << "Команды успешно прочитаны" <<endl;
-            int mCountRows = CommandController::Instance()->GetCountRows();
-            int mTimeRecord = CommandController::Instance()->GetTimeRecord();
-            ui->MessageTextBox->clear();
-            ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
-            ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
-
-            emit FileLoaded();
-        }
-        else
-        {
-            qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
-            qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
-        }
-    }
+    openFile(fileName, true);
 }
 
 void CommandControlWidget::on_ButtonPlayPause_clicked()
@@ -138,6 +119,39 @@ void CommandControlWidget::startCommand()
             emit StartWriteLog(CommandController::Instance()->GetTimeRecord()/1e3);
 
         }
+        emit PlayStart();
+    }
+}
+
+void CommandControlWidget::openFile(QString fileName, bool mode)
+{
+    if (!fileName.isEmpty())
+    {
+        ui->FilePathTextBox->setText(fileName);
+        bool isOk = CommandController::Instance()->LoadFromFile(fileName.toStdString());
+        if(isOk)
+        {
+            qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
+            qDebug() << "Команды успешно прочитаны" <<endl;
+            int mCountRows = CommandController::Instance()->GetCountRows();
+            int mTimeRecord = CommandController::Instance()->GetTimeRecord();
+            ui->MessageTextBox->clear();
+            ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
+            ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
+
+            emit FileLoaded(fileName,mCountRows,mTimeRecord, mode);
+        }
+        else
+        {
+            qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
+            qDebug() << "Возможно имя, или формат файл()а заданы неверно" <<endl;
+        }
+    }
+
+    if(mode)
+    {
+        isFileCommand = true;
+        CommandController::Instance()->initPos(true);
         emit PlayStart();
     }
 }

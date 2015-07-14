@@ -54,11 +54,12 @@ private:
 signals:
     StartWriteLog(int LogTime);
     StopWriteLog();
-    FileLoaded();
+    FileLoaded(QString FileName,int CountRows, int Duration,bool Mode);
     PlayStart();
     PlayStop();
 public slots:
     void startCommand();
+    void openFile(QString fileName, bool mode);
 };
 
 #endif // COMMANDCONTROLWIDGET_H
