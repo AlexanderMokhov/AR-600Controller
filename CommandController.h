@@ -105,7 +105,9 @@ public:
     void initPos(bool mode);
 
 signals:
+    void initStart();
     void initEnd();
+    void PlayEnd();
 };
 
 #endif // COMMANDCONTROLLER_H

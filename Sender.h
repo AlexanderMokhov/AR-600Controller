@@ -1,5 +1,5 @@
-#ifndef THREADSEND_H
-#define THREADSEND_H
+#ifndef SENDER_H
+#define SENDER_H
 
 #include <QObject>
 #include <QThread>
@@ -12,30 +12,31 @@
 #include <mutex>
 #include <stdlib.h>
 #include <QTime>
-class ThreadSend :  public QThread
+
+class Sender : public QThread
 {
     Q_OBJECT
 private:
     QUdpSocket      *mUdpSocketSender;
-    WriteBuffer         *mSendBuffer;
+    WriteBuffer     *mSendBuffer;
     QTimer          *mTimerSend;
+    std::mutex      *mLocker;
+    QTime           *mTime;
 
     QString         mHost;
     int             mSendPort;
     int             mSendDelay;
 
-    std::mutex *    mLocker;
-
-    QTime *timepres;
+    bool isRunning;
+    void PrintConnectionState();
 public:
-    explicit ThreadSend(QObject *parent = 0);
-    ~ThreadSend();
+    explicit Sender(QObject *parent = 0);
+    ~Sender();
     void run();
-    void ConnectSocket();
-    void DisconnectSocket();
-
-public slots:
+    void Connect();
+    void Disconnect();
+private slots:
     void SendDatagram();
 };
 
-#endif // THREADSEND_H
+#endif // SENDER_H

@@ -47,7 +47,6 @@ private:
     QStateMachine *machine;
     QState        *statePlay;
     QState        *stateStop;
-    QState        *statePause;
     QState        *stateNotOpenFile;
     bool            isFileCommand;
 

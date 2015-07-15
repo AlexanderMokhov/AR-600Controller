@@ -48,7 +48,7 @@ public:
     static DeviceLogController* Instance();
     static void Initialize();
 
-    void AddRawData(int time);
+    void AddRawData();
     bool SaveData(std::string fileName);
     void ClearLog();
     void StartWrite();

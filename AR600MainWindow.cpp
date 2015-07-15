@@ -6,9 +6,6 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui(new Ui::AR600MainWindow)
 {
     ui->setupUi(this);
-    QRect rect = frameGeometry();
-    rect.moveCenter(QDesktopWidget().availableGeometry().center());
-    move(rect.topLeft());
 
     //инициализация контроллеров
     ConfigController::Instance()->Initialize();
@@ -17,84 +14,6 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
 
     mSendBuffer = BufferController::Instance()->GetWriteBuffer();
     mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
-
-    //настраиваем виджеты
-    mMotorControlWidget = new MotorControlWidget();
-    ui->MotorControlLayout->addWidget(mMotorControlWidget);
-    mCommandControlWidget = new CommandControlWidget();
-    ui->CommandControlLayout->addWidget(mCommandControlWidget);
-    mMotorTableWidget = new MotorTableWidget();
-    ui->MotorTableLayout->addWidget(mMotorTableWidget);
-    mDeviceLogWidget = new DeviceLogWidget();
-    ui->DeviceLogWidgetLayout->addWidget(mDeviceLogWidget);
-    mPowerControlWidget = new PowerControlWidget();
-    ui->PowerControlLayout->addWidget(mPowerControlWidget);
-    mSensorTableWidget = new SensorTableWidget();
-    ui->SensorTableLayout->addWidget(mSensorTableWidget);
-    mCommandFilesWidget = new CommandFilesWidget();
-    ui->CommandFilesLayout->addWidget(mCommandFilesWidget);
-
-    mConnectDialog = new ConnectConfigDialog();
-
-    mMotorControlWidget->setModel(mMotorTableWidget->getModel());
-    connect(mMotorTableWidget,SIGNAL(RowChanged(int)),mMotorControlWidget,SLOT(RowChanged(int)));
-    //конец настройки виджетов
-
-    //настройка кнопок тулбара
-    ActionsLoad();
-
-    TBactionPlay->setEnabled(false);
-    TBactionStop->setEnabled(false);
-    TBactionNext->setEnabled(false);
-
-    //добавление кнопок на тулбар
-    ui->MainToolBar->addAction(TBactionOpenCF);
-    ui->MainToolBar->addAction(TBactionSaveCF);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionConnect);
-    ui->MainToolBar->addAction(TBactionDisconnect);
-    ui->MainToolBar->addAction(TBactionOpenConnectSettings);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionOnPower);
-    ui->MainToolBar->addAction(TBactionOffPower);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionOpenCommandFile);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionPlay);
-    ui->MainToolBar->addAction(TBactionPlay);
-    ui->MainToolBar->addAction(TBactionStop);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionNext);
-    ui->MainToolBar->addSeparator();
-    //конец добавление кнопок на тулбар
-
-    mConnectStatusLabel = new QLabel(this);
-    mConnectStatusLabel->setText("Соединение не установлено");
-    ui->statusbar->addWidget(mConnectStatusLabel);
-
-    mCommandControllerStatusLabel = new QLabel(this);
-    mCommandControllerStatusLabel->setText("Файл команд не загружен");
-    ui->statusbar->addWidget(mCommandControllerStatusLabel);
-
-    //настройка кнопок меню
-    connect(ui->actionOpenConfigFile,SIGNAL(triggered()),this,SLOT(OpenXML()));
-    connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
-    connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
-    connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
-    connect(ui->actionOn,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOnAll_clicked()));
-    connect(ui->actionOff,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOffAll_clicked()));
-    connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
-    //конец настройки кнопок меню
-
-    connect(mCommandControlWidget,SIGNAL(StartWriteLog(int)),mDeviceLogWidget,SLOT(StartWriteLog(int)));
-    connect(mCommandControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
-    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
-
-    connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
-    connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
-
-    connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mCommandControlWidget,SLOT(openFile(QString,bool)));
 
     //чтение настроек их XML файла
     bool isOk = ConfigController::Instance()->OpenFile("config.xml");
@@ -109,6 +28,9 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
         BufferController::Instance()->InitBuffers();
         CommandController::Instance()->Initialize();
         DeviceLogController::Instance()->Initialize();
+
+        mCommandControlWidget = new CommandControlWidget();
+        ui->CommandControlLayout->addWidget(mCommandControlWidget);
         connect(CommandController::Instance(),SIGNAL(initEnd()),mCommandControlWidget,SLOT(startCommand()));
 
         qDebug() << "Настройки успешно прочитаны";
@@ -121,6 +43,34 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     }
     //конец чтения настроек
 
+    //настраиваем виджеты
+    WidgetsInit();
+
+    mConnectDialog = new ConnectConfigDialog();
+
+    mMotorControlWidget->setModel(mMotorTableWidget->getModel());
+    connect(mMotorTableWidget,SIGNAL(RowChanged(int)),mMotorControlWidget,SLOT(RowChanged(int)));
+    //конец настройки виджетов
+
+    //настройка кнопок тулбара
+    ActionsLoad();
+
+    TBactionPlay->setEnabled(false);
+    TBactionStop->setEnabled(false);
+    TBactionNext->setEnabled(false);
+
+    ToolBarInit();
+
+    mConnectStatusLabel = new QLabel(this);
+    mConnectStatusLabel->setText("Соединение не установлено");
+    ui->statusbar->addWidget(mConnectStatusLabel);
+
+    mCommandControllerStatusLabel = new QLabel(this);
+    mCommandControllerStatusLabel->setText("Файл команд не загружен");
+    ui->statusbar->addWidget(mCommandControllerStatusLabel);
+
+    ConnectionsInit();
+
     //заполнение таблицы приводов
     mMotorTableWidget->ShowConfigData();
     mSensorTableWidget->ShowConfigData();
@@ -130,12 +80,11 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mTimerUpdate->setInterval(mReceiveDelay);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
     //создание и запуск потоков на отправку и прием буфера
-    mThreadRecieve = new ThreadReceive();
-    //connect(mThreadRecieve,SIGNAL(ReadyData()),this,SLOT(ProcessTheDatagram()));
-    mThreadRecieve->start();
 
-    mThreadSend = new ThreadSend();
-    mThreadSend->start();
+    mSender = new Sender;
+    mReceiver = new Receiver;
+    connect(mReceiver,SIGNAL(ReadyData()),this,SLOT(ProcessTheDatagram()));
+
 }
 
 AR600MainWindow::~AR600MainWindow()
@@ -202,11 +151,77 @@ void AR600MainWindow::ActionsLoad()
     connect(TBactionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
 }
 
+void AR600MainWindow::WidgetsInit()
+{
+    mMotorControlWidget = new MotorControlWidget();
+    ui->MotorControlLayout->addWidget(mMotorControlWidget);
+    mMotorTableWidget = new MotorTableWidget();
+    ui->MotorTableLayout->addWidget(mMotorTableWidget);
+    mDeviceLogWidget = new DeviceLogWidget();
+    ui->DeviceLogWidgetLayout->addWidget(mDeviceLogWidget);
+    mPowerControlWidget = new PowerControlWidget();
+    ui->PowerControlLayout->addWidget(mPowerControlWidget);
+    mSensorTableWidget = new SensorTableWidget();
+    ui->SensorTableLayout->addWidget(mSensorTableWidget);
+    mCommandFilesWidget = new CommandFilesWidget();
+    ui->CommandFilesLayout->addWidget(mCommandFilesWidget);
+}
+
+void AR600MainWindow::ConnectionsInit()
+{
+    //настройка кнопок меню
+    connect(ui->actionOpenConfigFile,SIGNAL(triggered()),this,SLOT(OpenXML()));
+    connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
+    connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
+    connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
+    connect(ui->actionOn,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOnAll_clicked()));
+    connect(ui->actionOff,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOffAll_clicked()));
+    connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
+    //конец настройки кнопок меню
+
+    connect(mCommandControlWidget,SIGNAL(StartWriteLog(int)),mDeviceLogWidget,SLOT(StartWriteLog(int)));
+    connect(mCommandControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
+    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
+
+    connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
+    connect(CommandController::Instance(),SIGNAL(initStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(CommandController::Instance(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
+    connect(CommandController::Instance(),SIGNAL(initEnd()),mMotorTableWidget,SLOT(Activate()));
+    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
+
+    connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mCommandControlWidget,SLOT(openFile(QString,bool)));
+}
+
+void AR600MainWindow::ToolBarInit()
+{
+    //добавление кнопок на тулбар
+    ui->MainToolBar->addAction(TBactionOpenCF);
+    ui->MainToolBar->addAction(TBactionSaveCF);
+    ui->MainToolBar->addSeparator();
+    ui->MainToolBar->addAction(TBactionConnect);
+    ui->MainToolBar->addAction(TBactionDisconnect);
+    ui->MainToolBar->addAction(TBactionOpenConnectSettings);
+    ui->MainToolBar->addSeparator();
+    ui->MainToolBar->addAction(TBactionOnPower);
+    ui->MainToolBar->addAction(TBactionOffPower);
+    ui->MainToolBar->addSeparator();
+    ui->MainToolBar->addAction(TBactionOpenCommandFile);
+    ui->MainToolBar->addSeparator();
+    ui->MainToolBar->addAction(TBactionPlay);
+    ui->MainToolBar->addAction(TBactionPlay);
+    ui->MainToolBar->addAction(TBactionStop);
+    ui->MainToolBar->addSeparator();
+    ui->MainToolBar->addAction(TBactionNext);
+    ui->MainToolBar->addSeparator();
+    //конец добавление кнопок на тулбар
+}
+
 //вызывается при запуске подключения к роботу
 void AR600MainWindow::Connect()
 {
-    mThreadRecieve->ConnectSocket();
-    mThreadSend->ConnectSocket();
+    mReceiver->Connect();
+    mSender->Connect();
     mTimerUpdate->start();
     mConnectStatusLabel->setText("Соединение установлено");
 }
@@ -220,8 +235,10 @@ void AR600MainWindow::Disconnect()
     mSendBuffer->PowerOff81();
     mSendBuffer->PowerOff82();
     mSendBuffer->PowerOff48();
-    mThreadSend->DisconnectSocket();
-    mThreadRecieve->DisconnectSocket();
+
+    mReceiver->Disconnect();
+    mSender->Disconnect();
+
     mTimerUpdate->stop();
     mConnectStatusLabel->setText("Соединение не установлено");
 }

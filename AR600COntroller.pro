@@ -24,8 +24,6 @@ SOURCES += main.cpp\
     TinyXML/tinyxmlparser.cpp \
     BufferController.cpp \
     ConfigController.cpp \
-    ThreadReceive.cpp \
-    ThreadSend.cpp \
     AR600MainWindow.cpp \
     Widgets/ConnectConfigDialog.cpp \
     Device.cpp \
@@ -44,7 +42,10 @@ SOURCES += main.cpp\
     DeviceLogController.cpp \
     Widgets/PowerControlWidget.cpp \
     Widgets/CommandFilesWidget.cpp \
-    CommandTableModel.cpp
+    CommandTableModel.cpp \
+    Receiver.cpp \
+    Sender.cpp \
+    Logger.cpp
 
 HEADERS  += \
     CommandController.h \
@@ -52,8 +53,6 @@ HEADERS  += \
     TinyXML/tinyxml.h \
     BufferController.h \
     ConfigController.h \
-    ThreadReceive.h \
-    ThreadSend.h \
     AR600MainWindow.h \
     Widgets/ConnectConfigDialog.h \
     Device.h \
@@ -73,7 +72,10 @@ HEADERS  += \
     DeviceLogController.h \
     Widgets/PowerControlWidget.h \
     Widgets/CommandFilesWidget.h \
-    CommandTableModel.h
+    CommandTableModel.h \
+    Receiver.h \
+    Sender.h \
+    Logger.h
 
 FORMS    += \
     AR600MainWindow.ui \

@@ -321,10 +321,11 @@ void CommandController::SendCommand()
         //если время закончилось - останавливаем, переводим индекс команды на начало списка
         if(mTimeRecord<=mCurrentTimeForCommands)
         {
-            IsPlayForwardState = false;
             mCurrentTimeForCommands=0;
             mCommandId = 0;
             qDebug() << "Выполнена последняя строка "  << endl;
+            emit PlayEnd();
+            SetPlayForwardState(false);
         }
     }
     if(IsGoToPosState)
@@ -444,6 +445,7 @@ void CommandController::GoPos()
 
 void CommandController::initPos(bool mode)
 {
+    emit initStart();
     IsPosState = 0;
     int MaxDelta = 0;
     map<int,Motor>::iterator it;

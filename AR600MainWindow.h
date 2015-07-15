@@ -19,13 +19,14 @@
 #include <QMessageBox>
 #include <qfiledialog.h>
 #include "DeviceLogController.h"
-#include "ThreadReceive.h"
-#include "ThreadSend.h"
 #include <QLabel>
 #include <QDesktopWidget>
 #include "Widgets/ConnectConfigDialog.h"
 #include "Widgets/SensorTableWidget.h"
 #include "Widgets/CommandFilesWidget.h"
+
+#include "Receiver.h"
+#include "Sender.h"
 
 namespace Ui {
 class AR600MainWindow;
@@ -79,10 +80,13 @@ private:
     QAction *TBactionOpenCommandFile;
 
     //потоки
-    ThreadReceive           *mThreadRecieve;
-    ThreadSend              *mThreadSend;
+    Receiver                *mReceiver;
+    Sender                  *mSender;
 
     void ActionsLoad();
+    void WidgetsInit();
+    void ConnectionsInit();
+    void ToolBarInit();
 private slots:
     void ProcessTheDatagram();
     void SaveXML();

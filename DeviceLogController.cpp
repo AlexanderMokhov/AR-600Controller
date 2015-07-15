@@ -47,7 +47,7 @@ void DeviceLogController::Initialize()
 
 }
 
-void DeviceLogController::AddRawData(int time)
+void DeviceLogController::AddRawData()
 {
     map<int,int>::iterator it;
     for(it = mDriversMap.begin();it!=mDriversMap.end();++it)

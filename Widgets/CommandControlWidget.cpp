@@ -10,12 +10,12 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
     DefaultText = "Нажмите кнопку \"Загрузить Файл\"";
     ui->MessageTextBox->setText(DefaultText);
 
-    IsLog=false;
+    IsLog = false;
 
     machine = new QStateMachine(this);
+
     stateStop = new QState(machine);
     statePlay = new QState(machine);
-    statePause = new QState(machine);
     stateNotOpenFile = new QState(machine);
 
     stateNotOpenFile->assignProperty(ui->ButtonLoadFile,"enabled",true);
@@ -33,22 +33,13 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
     stateStop->addTransition(ui->ButtonPlayPause, SIGNAL(clicked()), statePlay);
     stateStop->addTransition(this, SIGNAL(PlayStart()), statePlay);
 
-    statePause->assignProperty(ui->ButtonLoadFile,"enabled",true);
-    statePause->assignProperty(ui->ButtonPlayPause,"enabled",true);
-    statePause->assignProperty(ui->ButtonStop,"enabled",true);
-    statePause->assignProperty(ui->ButtonNext,"enabled",true);
-
-    statePause->addTransition(ui->ButtonPlayPause, SIGNAL(clicked()), statePlay);
-    statePause->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
-
-
     statePlay->assignProperty(ui->ButtonLoadFile,"enabled",false);
     statePlay->assignProperty(ui->ButtonPlayPause,"enabled",true);
     statePlay->assignProperty(ui->ButtonStop,"enabled",true);
     statePlay->assignProperty(ui->ButtonNext,"enabled",true);
 
-    statePlay->addTransition(ui->ButtonPlayPause, SIGNAL(clicked()), statePause);
     statePlay->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
+    statePlay->addTransition(CommandController::Instance(), SIGNAL(PlayEnd()), stateStop);
 
     machine->setInitialState(stateNotOpenFile);
     machine->start();
@@ -148,7 +139,7 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
         }
     }
 
-    if(mode)
+    if(!mode)
     {
         isFileCommand = true;
         CommandController::Instance()->initPos(true);
