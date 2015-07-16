@@ -7,27 +7,29 @@
 #include <iostream>
 #include "stdlib.h"
 
+//BufferController * BufferController::mInst = 0;
+
 using namespace std;
 class BufferController
 {
 private:
-    BufferController();
-    ~BufferController();
+    BufferController(){}
+    ~BufferController(){}
     BufferController(BufferController const&);
 
-    static BufferController* mInstance;
+    static BufferController* mInst;
 
     ReadBuffer mReadBuffer;
     WriteBuffer mWriteBuffer;
 public:
-    static BufferController* Instance();
-    static void Initialize();
+    static BufferController* Inst() {return mInst;}
+    static void Init(){delete mInst; mInst = new BufferController;}
 
-    ReadBuffer *GetReadBuffer();
-    WriteBuffer *GetWriteBuffer();
+    ReadBuffer *GetReadBuffer(){return &mReadBuffer;}
+    WriteBuffer *GetWriteBuffer(){return &mWriteBuffer;}
     void InitBuffers();
-
-
 };
 
 #endif // BUFFERCONTROLLER_H
+
+

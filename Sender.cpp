@@ -3,7 +3,7 @@
 Sender::Sender(QObject *parent) : QThread(parent)
 {
     mTime = new QTime;
-    mSendBuffer = BufferController::Instance()->GetWriteBuffer();
+    mSendBuffer = BufferController::Inst()->GetWriteBuffer();
     mLocker = mSendBuffer->GetLocker();
     isRunning = false;
 }
@@ -19,9 +19,9 @@ void Sender::run()
 
     qDebug() << "Sender - connecting..." << endl;
 
-    mSendPort = ConfigController::Instance()->GetSendPort();
-    mHost = QString::fromStdString(ConfigController::Instance()->GetHost());
-    mSendDelay = ConfigController::Instance()->GetSendDelay();
+    mSendPort = ConfigController::Inst()->GetSendPort();
+    mHost = QString::fromStdString(ConfigController::Inst()->GetHost());
+    mSendDelay = ConfigController::Inst()->GetSendDelay();
 
     mUdpSocketSender->connectToHost(mHost, mSendPort);
     mUdpSocketSender->waitForConnected(1000);
@@ -65,7 +65,7 @@ void Sender::SendDatagram()
     mUdpSocketSender->writeDatagram(mSendBuffer->GetRAW(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
     mUdpSocketSender->waitForBytesWritten();
     mLocker->unlock();
-    CommandController::Instance()->SendCommand();
+    CommandController::Inst()->SendCommand();
     //mTime->start();
 }
 

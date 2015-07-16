@@ -3,7 +3,6 @@
 
 #define _USE_MATH_DEFINES
 
-#include "Command.h"
 #include "WriteBuffer.h"
 #include <iostream>
 #include <fstream>
@@ -20,13 +19,29 @@
 #include <QState>
 #include <QTime>
 #include <QVector>
+#include <QDebug>
+
+struct PID
+{
+    int Stiff = 0;
+    int Dump = 0;
+    int Torque = 0;
+};
+
+struct Command
+{
+    int Time = 0;
+    int Number = 0;
+    int Angle = 0;
+    PID PIDs;
+};
 
 struct MotorPos
 {
     double CurrentPos;
     int StartPos;
     int DestPos;
-    double StepPos;
+    double Step;
     bool isEndPos;
 };
 
@@ -37,10 +52,10 @@ class CommandController: public QObject
     Q_OBJECT
 private:
     CommandController();
-    ~CommandController();
+    ~CommandController(){}
     CommandController(CommandController const&);
 
-    static CommandController* mInstance;
+    static CommandController* mInst;
 
     //для выполнения команд из файла
     std::vector<Command> mCommandsList;//список команд
@@ -62,14 +77,13 @@ private:
     int mCurrentTimeForCommands;
     int mSendDelay;
     QTime mTime;
-    int mPrevComand;
     std::map<int,Motor> * mMotorMap;
     std::map<int,MotorPos> mMotorPosMap;
 
-
 public:
-    static CommandController* Instance();
-    static void Initialize();
+    static CommandController* Inst(){return mInst;}
+    static void Init(){delete mInst; mInst = new CommandController;}
+
     void Update(long time);
     bool LoadFromFile(std::string fileName);
     int GetCountRows();
@@ -109,5 +123,7 @@ signals:
     void initEnd();
     void PlayEnd();
 };
+
+
 
 #endif // COMMANDCONTROLLER_H

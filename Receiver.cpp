@@ -3,7 +3,7 @@
 Receiver::Receiver(QObject *parent) : QThread(parent)
 {
     mTime = new QTime;
-    mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
+    mReceiveBuffer = BufferController::Inst()->GetReadBuffer();
     isRunning = false;
 }
 
@@ -32,7 +32,7 @@ void Receiver::run()
 
     qDebug() << "Receiver - connecting..." << endl;
 
-    int ReceivePort = ConfigController::Instance()->GetReceivePort();
+    int ReceivePort = ConfigController::Inst()->GetReceivePort();
 
     if (!mUdpSocketResiver->bind(ReceivePort,QUdpSocket::ShareAddress))
     {

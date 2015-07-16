@@ -1,26 +1,10 @@
 #include "ConfigController.h"
 
-ConfigController * ConfigController::mInstance = 0;
+ConfigController * ConfigController::mInst = 0;
 
 ConfigController::ConfigController()
 {
     mXMLConfigFile = NULL;
-}
-
-ConfigController::~ConfigController()
-{
-
-}
-
-void ConfigController::Initialize()
-{
-    delete mInstance;
-    mInstance = new ConfigController;
-}
-
-ConfigController* ConfigController::Instance()
-{
-    return mInstance;
 }
 
 bool ConfigController::OpenFile(string FileName)

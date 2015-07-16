@@ -8,30 +8,30 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //инициализация контроллеров
-    ConfigController::Instance()->Initialize();
-    BufferController::Instance()->Initialize();
+    ConfigController::Inst()->Init();
+    BufferController::Inst()->Init();
     //конец инициализации контроллеров
 
-    mSendBuffer = BufferController::Instance()->GetWriteBuffer();
-    mReceiveBuffer = BufferController::Instance()->GetReadBuffer();
+    mSendBuffer = BufferController::Inst()->GetWriteBuffer();
+    mReceiveBuffer = BufferController::Inst()->GetReadBuffer();
 
     //чтение настроек их XML файла
-    bool isOk = ConfigController::Instance()->OpenFile("config.xml");
+    bool isOk = ConfigController::Inst()->OpenFile("config.xml");
     if(isOk)
     {
-        mHost=ConfigController::Instance()->GetHost();
-        mSendPort=ConfigController::Instance()->GetSendPort();
-        mSendDelay=ConfigController::Instance()->GetSendDelay();
-        mReceivePort=ConfigController::Instance()->GetReceivePort();
-        mReceiveDelay=ConfigController::Instance()->GetReceiveDelay();
+        mHost=ConfigController::Inst()->GetHost();
+        mSendPort=ConfigController::Inst()->GetSendPort();
+        mSendDelay=ConfigController::Inst()->GetSendDelay();
+        mReceivePort=ConfigController::Inst()->GetReceivePort();
+        mReceiveDelay=ConfigController::Inst()->GetReceiveDelay();
 
-        BufferController::Instance()->InitBuffers();
-        CommandController::Instance()->Initialize();
-        DeviceLogController::Instance()->Initialize();
+        BufferController::Inst()->InitBuffers();
+        CommandController::Inst()->Init();
+        DeviceLogController::Inst()->Init();
 
         mCommandControlWidget = new CommandControlWidget();
         ui->CommandControlLayout->addWidget(mCommandControlWidget);
-        connect(CommandController::Instance(),SIGNAL(initEnd()),mCommandControlWidget,SLOT(startCommand()));
+        connect(CommandController::Inst(),SIGNAL(initEnd()),mCommandControlWidget,SLOT(startCommand()));
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -89,6 +89,8 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
 
 AR600MainWindow::~AR600MainWindow()
 {
+    mReceiver->Disconnect();
+    mSender->Disconnect();
     delete ui;
 }
 
@@ -185,9 +187,9 @@ void AR600MainWindow::ConnectionsInit()
 
     connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
     connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    connect(CommandController::Instance(),SIGNAL(initStart()),mMotorTableWidget,SLOT(DisActivate()));
-    connect(CommandController::Instance(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
-    connect(CommandController::Instance(),SIGNAL(initEnd()),mMotorTableWidget,SLOT(Activate()));
+    connect(CommandController::Inst(),SIGNAL(initStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(CommandController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
+    connect(CommandController::Inst(),SIGNAL(initEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
     connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mCommandControlWidget,SLOT(openFile(QString,bool)));
@@ -274,7 +276,7 @@ void AR600MainWindow::SaveXML()
     QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        ConfigController::Instance()->SaveFile(fileName.toStdString());
+        ConfigController::Inst()->SaveFile(fileName.toStdString());
         qDebug() << "Файл настроек успешно сохранен в " << fileName << endl;
     }
 }
@@ -285,12 +287,12 @@ void AR600MainWindow::OpenXML()
     QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        bool isOk = ConfigController::Instance()->OpenFile(fileName.toStdString());
+        bool isOk = ConfigController::Inst()->OpenFile(fileName.toStdString());
 
         if(isOk)
         {
             //загоняем в отправляемый массив
-            BufferController::Instance()->InitBuffers();
+            BufferController::Inst()->InitBuffers();
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
         }

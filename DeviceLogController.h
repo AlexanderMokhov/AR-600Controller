@@ -14,6 +14,8 @@
 #include <sstream>
 #include <stdlib.h>
 #include <QTime>
+#include <QDebug>
+
 using namespace std;
 
 struct LogData
@@ -28,9 +30,9 @@ class DeviceLogController
 
 private:
     DeviceLogController();
-    ~DeviceLogController();
+    ~DeviceLogController(){}
     DeviceLogController(DeviceLogController const&);
-    static DeviceLogController* mInstance;
+    static DeviceLogController* mInst;
 public:
     ReadBuffer *mReadBuffer;
     std::map<int,int> mDriversMap;
@@ -45,8 +47,8 @@ public:
     long dt_max;
     long LastTime;
 
-    static DeviceLogController* Instance();
-    static void Initialize();
+    static DeviceLogController* Inst(){return mInst;}
+    static void Init(){delete mInst; mInst = new DeviceLogController;}
 
     void AddRawData();
     bool SaveData(std::string fileName);

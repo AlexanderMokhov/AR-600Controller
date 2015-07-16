@@ -39,7 +39,7 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
     statePlay->assignProperty(ui->ButtonNext,"enabled",true);
 
     statePlay->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
-    statePlay->addTransition(CommandController::Instance(), SIGNAL(PlayEnd()), stateStop);
+    statePlay->addTransition(CommandController::Inst(), SIGNAL(PlayEnd()), stateStop);
 
     machine->setInitialState(stateNotOpenFile);
     machine->start();
@@ -62,15 +62,15 @@ void CommandControlWidget::on_ButtonLoadFile_clicked()
 void CommandControlWidget::on_ButtonPlayPause_clicked()
 {
     isFileCommand = true;
-    CommandController::Instance()->initPos(true);
+    CommandController::Inst()->initPos(true);
 }
 
 void CommandControlWidget::on_ButtonStop_clicked()
 {
     isFileCommand = false;
-    CommandController::Instance()->SetPlayForwardState(false);
-    CommandController::Instance()->SetCurrentTimeForCommands(0);
-    CommandController::Instance()->SetCommandId(0);
+    CommandController::Inst()->SetPlayForwardState(false);
+    CommandController::Inst()->SetCurrentTimeForCommands(0);
+    CommandController::Inst()->SetCommandId(0);
     if(IsLog)
     {
         emit StopWriteLog();
@@ -80,7 +80,7 @@ void CommandControlWidget::on_ButtonStop_clicked()
 
 void CommandControlWidget::on_ButtonNext_clicked()
 {
-    CommandController::Instance()->NextCommand();
+    CommandController::Inst()->NextCommand();
 }
 
 void CommandControlWidget::on_checkBoxLog_clicked(bool checked)
@@ -91,23 +91,23 @@ void CommandControlWidget::on_checkBoxLog_clicked(bool checked)
 void CommandControlWidget::on_ButtonGoStartPos_clicked()
 {
     isFileCommand = false;
-    CommandController::Instance()->initPos(false);
+    CommandController::Inst()->initPos(false);
 }
 
 void CommandControlWidget::on_ButtonStartFile_clicked()
 {
     isFileCommand = false;
-    CommandController::Instance()->initPos(true);
+    CommandController::Inst()->initPos(true);
 }
 
 void CommandControlWidget::startCommand()
 {
     if(isFileCommand)
     {
-        CommandController::Instance()->SetPlayForwardState(true);
+        CommandController::Inst()->SetPlayForwardState(true);
         if(IsLog)
         {
-            emit StartWriteLog(CommandController::Instance()->GetTimeRecord()/1e3);
+            emit StartWriteLog(CommandController::Inst()->GetTimeRecord()/1e3);
 
         }
         emit PlayStart();
@@ -119,13 +119,13 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if (!fileName.isEmpty())
     {
         ui->FilePathTextBox->setText(fileName);
-        bool isOk = CommandController::Instance()->LoadFromFile(fileName.toStdString());
+        bool isOk = CommandController::Inst()->LoadFromFile(fileName.toStdString());
         if(isOk)
         {
             qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
             qDebug() << "Команды успешно прочитаны" <<endl;
-            int mCountRows = CommandController::Instance()->GetCountRows();
-            int mTimeRecord = CommandController::Instance()->GetTimeRecord();
+            int mCountRows = CommandController::Inst()->GetCountRows();
+            int mTimeRecord = CommandController::Inst()->GetTimeRecord();
             ui->MessageTextBox->clear();
             ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
@@ -142,7 +142,7 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if(!mode)
     {
         isFileCommand = true;
-        CommandController::Instance()->initPos(true);
+        CommandController::Inst()->initPos(true);
         emit PlayStart();
     }
 }

@@ -16,10 +16,10 @@ using namespace std;
 class ConfigController
 {
 private:
-    static ConfigController* mInstance;
+    static ConfigController* mInst;
     ConfigController();
     ConfigController(ConfigController const&);
-    ~ConfigController();
+    ~ConfigController(){}
 
     TiXmlDocument * mXMLConfigFile;
 
@@ -41,8 +41,8 @@ private:
     int mDefaultSpeed;              //Скорость перехода в позицию (град за сек)
 
 public:
-    static ConfigController* Instance();
-    static void Initialize();
+    static ConfigController* Inst(){return mInst;}
+    static void Init(){delete mInst; mInst = new ConfigController;}
 
     bool OpenFile(std::string FileName);//Открыть файл настроек
     bool SaveFile(std::string FileName);//Сохранить файл настроек
@@ -64,4 +64,6 @@ public:
     int GetDefaultTorque();
     int GetDefaultSpeed();
 };
+
+
 #endif // CONFIGCONTROLLER_H

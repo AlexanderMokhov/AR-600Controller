@@ -15,7 +15,7 @@ void Logger::run()
     mTimer = new QTimer;
     mTimer->setInterval(mDelay);
     connect(mTimer, SIGNAL(timeout()),SLOT(WriteRecord()),Qt::DirectConnection);
-    DeviceLogController::Instance()->StartWrite();
+    DeviceLogController::Inst()->StartWrite();
     mTimer->start();
     //До окончания работы
     exec();
@@ -44,9 +44,9 @@ void Logger::SetParam(int delay, long duration)
 
 void Logger::WriteRecord()
 {
-    DeviceLogController::Instance()->AddRawData();
+    DeviceLogController::Inst()->AddRawData();
 
-    if(DeviceLogController::Instance()->mTime.elapsed()> mDuration)
+    if(DeviceLogController::Inst()->mTime.elapsed()> mDuration)
     {
         exit();
     }
@@ -57,6 +57,6 @@ void Logger::SaveData()
     qDebug() << "Log was saved" << endl;
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();
     QString FileName = "DriverLog_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
-    DeviceLogController::Instance()->SaveData(FileName.toStdString());
+    DeviceLogController::Inst()->SaveData(FileName.toStdString());
 }
 

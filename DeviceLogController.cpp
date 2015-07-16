@@ -1,13 +1,12 @@
 #include "DeviceLogController.h"
-#include <qdebug.h>
 
-DeviceLogController * DeviceLogController::mInstance = 0;
+DeviceLogController * DeviceLogController::mInst = 0;
 
 DeviceLogController::DeviceLogController()
 {
-    mReadBuffer = BufferController::Instance()->GetReadBuffer();
-    mConfigMap = ConfigController::Instance()->GetMotorMap();
-    mSensMap = ConfigController::Instance()->GetSensorMap();
+    mReadBuffer = BufferController::Inst()->GetReadBuffer();
+    mConfigMap = ConfigController::Inst()->GetMotorMap();
+    mSensMap = ConfigController::Inst()->GetSensorMap();
 
     map<int,Motor>::iterator it;
     for(it = mConfigMap->begin();it!=mConfigMap->end();++it)
@@ -26,24 +25,6 @@ DeviceLogController::DeviceLogController()
         int Value = (*it2).second.GetValue();
         mSensorsMap.insert(pair<int, int>(Number,Value));
     }
-
-}
-
-DeviceLogController::~DeviceLogController()
-{
-
-}
-
-DeviceLogController *DeviceLogController::Instance()
-{
-    return mInstance;
-}
-
-void DeviceLogController::Initialize()
-{
-    delete mInstance;
-    mInstance = new DeviceLogController;
-
 
 }
 

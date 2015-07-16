@@ -30,7 +30,7 @@ SensorTableWidget::~SensorTableWidget()
 
 void SensorTableWidget::ShowConfigData()
 {
-    std::map<int,Sensor> * mMap = ConfigController::Instance()->GetSensorMap();
+    std::map<int,Sensor> * mMap = ConfigController::Inst()->GetSensorMap();
     mModel->removeRows(0,mModel->rowCount());
 
     std::map<int,Sensor>::iterator it;
@@ -53,14 +53,14 @@ SensorTableModel *SensorTableWidget::getModel()
 
 void SensorTableWidget::UpdatePos()
 {
-    std::map<int,Sensor> * mMap = ConfigController::Instance()->GetSensorMap();
+    std::map<int,Sensor> * mMap = ConfigController::Inst()->GetSensorMap();
     std::map<int,Sensor>::iterator it;
     int i=0;
     for(it = mMap->begin();it!=mMap->end();++it)
     {
         int Number = (*it).second.GetNumberBuffer();
         int Param = (*it).second.GetParam();
-        QString cValue = QString::number(BufferController::Instance()->GetReadBuffer()->GetSensorValue(Number,Param));
+        QString cValue = QString::number(BufferController::Inst()->GetReadBuffer()->GetSensorValue(Number,Param));
         mModel->setData(mModel->index(i,2),cValue,Qt::EditRole);
         i++;
     }

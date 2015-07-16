@@ -1,44 +1,12 @@
 #include "BufferController.h"
 
-BufferController * BufferController::mInstance = 0;
-
-BufferController::BufferController()
-{
-
-}
-
-BufferController::~BufferController()
-{
-
-}
-
-
-BufferController *BufferController::Instance()
-{
-    return mInstance;
-}
-
-void BufferController::Initialize()
-{
-    delete mInstance;
-    mInstance = new BufferController;
-}
-
-ReadBuffer *BufferController::GetReadBuffer()
-{
-    return &mReadBuffer;
-}
-
-WriteBuffer *BufferController::GetWriteBuffer()
-{
-    return &mWriteBuffer;
-}
+BufferController * BufferController::mInst = 0;
 
 void BufferController::InitBuffers()
 {
     map<int,Motor>::iterator it;
-    for(it = ConfigController::Instance()->GetMotorMap()->begin();
-        it != ConfigController::Instance()->GetMotorMap()->end();++it)
+    for(it = ConfigController::Inst()->GetMotorMap()->begin();
+        it != ConfigController::Inst()->GetMotorMap()->end();++it)
     {
         int NumbBuffer = (*it).second.GetNumberBuffer();
         mWriteBuffer.SetDeviceChannel((*it).first,NumbBuffer);
@@ -62,8 +30,8 @@ void BufferController::InitBuffers()
         mWriteBuffer.MotorStop((*it).first);
     }
     map<int,Sensor>::iterator it2;
-    for(it2 = ConfigController::Instance()->GetSensorMap()->begin();
-        it2 != ConfigController::Instance()->GetSensorMap()->end();++it2)
+    for(it2 = ConfigController::Inst()->GetSensorMap()->begin();
+        it2 != ConfigController::Inst()->GetSensorMap()->end();++it2)
     {
         int NumbBuffer = (*it2).second.GetNumberBuffer();
         mWriteBuffer.SetDeviceChannel(NumbBuffer,NumbBuffer);

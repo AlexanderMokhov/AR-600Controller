@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     Device.cpp \
     Sensor.cpp \
     SensorTableModel.cpp \
-    Command.cpp \
     ReadBuffer.cpp \
     WriteBuffer.cpp \
     Motor.cpp \
@@ -58,7 +57,6 @@ HEADERS  += \
     Device.h \
     Sensor.h \
     SensorTableModel.h \
-    Command.h \
     ReadBuffer.h \
     WriteBuffer.h \
     ADefinition.h \

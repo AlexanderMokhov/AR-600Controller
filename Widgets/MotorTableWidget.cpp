@@ -30,7 +30,7 @@ MotorTableWidget::~MotorTableWidget()
 
 void MotorTableWidget::ShowConfigData()
 {
-    std::map<int,Motor> * mMap = ConfigController::Instance()->GetMotorMap();
+    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotorMap();
     mModel->removeRows(0,mModel->rowCount());
 
     std::map<int,Motor>::iterator it;
@@ -70,17 +70,17 @@ MotorTableModel *MotorTableWidget::getModel()
 
 void MotorTableWidget::UpdatePos()
 {
-    std::map<int,Motor> * mMap = ConfigController::Instance()->GetMotorMap();
+    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotorMap();
     std::map<int,Motor>::iterator it;
     int i=0;
     for(it = mMap->begin();it!=mMap->end();++it)
     {
         int Number = (*it).second.GetNumber();
-        QString cPos = QString::number(BufferController::Instance()->GetReadBuffer()->GetMotorAngle(Number));
+        QString cPos = QString::number(BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number));
         mModel->setData(mModel->index(i,3),cPos,Qt::EditRole);
 
         //начало чтения статуса
-        unsigned char status = BufferController::Instance()->GetReadBuffer()->GetMotorStatus(Number);
+        unsigned char status = BufferController::Inst()->GetReadBuffer()->GetMotorStatus(Number);
         QString statusString;
 
         if((unsigned char)(status & 0) == 0)
