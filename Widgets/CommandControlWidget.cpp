@@ -68,7 +68,7 @@ void CommandControlWidget::on_ButtonPlayPause_clicked()
 void CommandControlWidget::on_ButtonStop_clicked()
 {
     isFileCommand = false;
-    CommandController::Inst()->SetPlayForwardState(false);
+    CommandController::Inst()->SetPlaySequenceState(false);
     CommandController::Inst()->SetCurrentTimeForCommands(0);
     CommandController::Inst()->SetCommandId(0);
     if(IsLog)
@@ -104,7 +104,7 @@ void CommandControlWidget::startCommand()
 {
     if(isFileCommand)
     {
-        CommandController::Inst()->SetPlayForwardState(true);
+        CommandController::Inst()->SetPlaySequenceState(true);
         if(IsLog)
         {
             emit StartWriteLog(CommandController::Inst()->GetTimeRecord()/1e3);

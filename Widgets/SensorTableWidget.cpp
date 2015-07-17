@@ -33,9 +33,7 @@ void SensorTableWidget::ShowConfigData()
     std::map<int,Sensor> * mMap = ConfigController::Inst()->GetSensorMap();
     mModel->removeRows(0,mModel->rowCount());
 
-    std::map<int,Sensor>::iterator it;
-
-    for(it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin();it!=mMap->end();++it)
     {
         QString Number = QString::number((*it).first);
         QString Name = QString::fromLocal8Bit((*it).second.GetName().c_str());
@@ -54,9 +52,8 @@ SensorTableModel *SensorTableWidget::getModel()
 void SensorTableWidget::UpdatePos()
 {
     std::map<int,Sensor> * mMap = ConfigController::Inst()->GetSensorMap();
-    std::map<int,Sensor>::iterator it;
     int i=0;
-    for(it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin();it!=mMap->end();++it)
     {
         int Number = (*it).second.GetNumberBuffer();
         int Param = (*it).second.GetParam();

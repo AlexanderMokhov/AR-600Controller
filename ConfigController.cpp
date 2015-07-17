@@ -115,10 +115,9 @@ bool ConfigController::SaveFile(string FileName)
     TiXmlText * WriteValue;
     char * buffer;
     buffer=(char*)malloc(20*sizeof(char));
-    map<int,Motor>::iterator it;
 
     //Заполняем массив двигателей из контейнера
-    for(it = mMotorMap.begin();it!=mMotorMap.end();++it)
+    for(auto it = mMotorMap.begin();it!=mMotorMap.end();++it)
     {
         TiXmlElement * xml_Motor = new TiXmlElement("Motor");
         xml_MotorSettings->LinkEndChild(xml_Motor);
@@ -189,9 +188,8 @@ bool ConfigController::SaveFile(string FileName)
     xml_root->LinkEndChild(xml_SensorSettings);
 
     buffer=(char*)malloc(20*sizeof(char));
-    map<int,Sensor>::iterator it2;
     //заполняем массив двигателей из контейнера
-    for(it2 = mSensorMap.begin();it2!=mSensorMap.end();++it2)
+    for(auto it2 = mSensorMap.begin();it2!=mSensorMap.end();++it2)
     {
         TiXmlElement * xml_Sensor = new TiXmlElement("Sensor");
         xml_SensorSettings->LinkEndChild(xml_Sensor);

@@ -4,8 +4,7 @@ BufferController * BufferController::mInst = 0;
 
 void BufferController::InitBuffers()
 {
-    map<int,Motor>::iterator it;
-    for(it = ConfigController::Inst()->GetMotorMap()->begin();
+    for(auto it = ConfigController::Inst()->GetMotorMap()->begin();
         it != ConfigController::Inst()->GetMotorMap()->end();++it)
     {
         int NumbBuffer = (*it).second.GetNumberBuffer();
@@ -29,8 +28,8 @@ void BufferController::InitBuffers()
 
         mWriteBuffer.MotorStop((*it).first);
     }
-    map<int,Sensor>::iterator it2;
-    for(it2 = ConfigController::Inst()->GetSensorMap()->begin();
+
+    for(auto it2 = ConfigController::Inst()->GetSensorMap()->begin();
         it2 != ConfigController::Inst()->GetSensorMap()->end();++it2)
     {
         int NumbBuffer = (*it2).second.GetNumberBuffer();

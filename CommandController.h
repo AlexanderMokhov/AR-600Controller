@@ -62,7 +62,7 @@ private:
     int mCommandId;
     int mTimeRecord;
     int mCountRows;
-    bool IsPlayForwardState;//состояние выполнения команд из файла
+    bool IsPlaySequenceState;//состояние выполнения команд из файла
 
     //для выполнения перехода в заданную позицию
     int mTimeToGo;
@@ -73,7 +73,7 @@ private:
     double mStepPos;
     int mMotorNumber;
     bool IsGoToPosState;//состояние выполнения перехода в позицию за время
-    int IsPosState;
+    int IsGoToStartPosState;
     int mCurrentTimeForCommands;
     int mSendDelay;
     QTime mTime;
@@ -89,34 +89,34 @@ public:
     int GetCountRows();
     int GetTimeRecord();
     void InitStateMachine();
-    bool GetPlayForwardState();
-    void SetPlayForwardState(bool State);
+    bool GetPlaySequenceState();
+    void SetPlaySequenceState(bool State);
     void SetCommandId(int cId);
-
-    void SetTimeToGo(int TimeToGo);
-    void SetDestPos(int DestPos);
-    void SetStartPos(int StartPos);
+    void NextCommand();
+    void SendCommand();
+    void SetCurrentTimeForCommands(int Time);
     int GetCurrentPos();
-
-    void SetPos(int NumberBuffer,int DestPos, int StartPos);
 
     bool GetGoToPosState();
     void SetGoToPosState(bool State);
 
+    //для перехода в заданный угол (один двигатель)
     void GoNextPos();
     void CalcGoToPos();
-    void CalcPos(long TimeToGo);
-
+    void SetTimeToGo(int TimeToGo);
+    void SetDestPos(int DestPos);
+    void SetStartPos(int StartPos);
     void SetMotorNumber(int Number);
-    void NextCommand();
 
-    void SendCommand();
-
-    void SetCurrentTimeForCommands(int Time);
-
-    void SetPosState(int State);
+    //для перехода в начальную позицию (все двигатели)
+    void SetPos(int NumberBuffer,int DestPos, int StartPos);
     void GoPos();
     void initPos(bool mode);
+    void SetGoToStartPosState(int State);
+    void CalcGoToStartPos(long TimeToGo);
+
+
+
 
 signals:
     void initStart();

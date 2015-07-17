@@ -33,9 +33,7 @@ void MotorTableWidget::ShowConfigData()
     std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotorMap();
     mModel->removeRows(0,mModel->rowCount());
 
-    std::map<int,Motor>::iterator it;
-
-    for(it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin();it!=mMap->end();++it)
     {
         QString Number = QString::number((*it).first);
         QString Name = QString::fromLocal8Bit((*it).second.GetName().c_str());
@@ -71,9 +69,8 @@ MotorTableModel *MotorTableWidget::getModel()
 void MotorTableWidget::UpdatePos()
 {
     std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotorMap();
-    std::map<int,Motor>::iterator it;
     int i=0;
-    for(it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin();it!=mMap->end();++it)
     {
         int Number = (*it).second.GetNumber();
         QString cPos = QString::number(BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number));
