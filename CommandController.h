@@ -107,8 +107,8 @@ public:
     void SetPosData(int Number, int DestPos, int StartPos);
 
 signals:
-    void GoStart();
-    void GoEnd();
+    void InitStart();
+    void InitEnd();
 
     void PlayEnd();
 };

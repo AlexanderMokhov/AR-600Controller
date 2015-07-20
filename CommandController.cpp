@@ -19,6 +19,10 @@ CommandController::CommandController():
     for(auto it = mMotors->begin();it!=mMotors->end();++it)
     {
         PosData item;
+        item.CurrentPos = 0;
+        item.DestPos = 0;
+        item.StartPos = 0;
+        item.Step = 0;
         item.isEndPos = false;
         mGoToPosData[(*it).first] = item;
     }
@@ -220,7 +224,7 @@ void CommandController::SetPlaySequenceState(bool State)
     if(State)
     {
         //переход в состояние отправки последовательности
-        mMotors=ConfigController::Inst()->GetMotors();
+        mMotors = ConfigController::Inst()->GetMotors();
         for(auto it = mMotors->begin();it!=mMotors->end();++it)
         {
             int Number = (*it).second.GetNumber();
@@ -316,7 +320,7 @@ void CommandController::StepGoToPos()
 
         if(IsFirst || IsSecond)
         {
-            BufferController::Inst()->GetWriteBuffer()->SetMotorAngle((*it).first,(*it).second.DestPos);
+            BufferController::Inst()->GetWriteBuffer()->SetMotorAngle((*it).first,(short)(*it).second.DestPos);
             BufferController::Inst()->GetWriteBuffer()->MotorStopBrake((*it).first);
 
             if(!(*it).second.isEndPos)
@@ -330,18 +334,17 @@ void CommandController::StepGoToPos()
         {
             BufferController::Inst()->GetWriteBuffer()->SetMotorAngle((*it).first,(short)(*it).second.CurrentPos);
             qDebug() << "Отправлено положение " << QString::number((*it).second.CurrentPos) << endl;
-            (*it).second.CurrentPos+=(*it).second.Step;
+            (*it).second.CurrentPos += (*it).second.Step;
         }
     }
 
     //Если равно 0 то конец
-    if(!IsGoToPosState) emit GoEnd();
+    if(IsGoToPosState == 0) emit InitEnd();
 }
 
 void CommandController::StartGoToInitialPos(bool toFirstCommand)
 {
-    emit GoStart();
-
+    emit InitStart();
     IsGoToPosState = 0;
     int MaxDiff = 0;
     int i=0;

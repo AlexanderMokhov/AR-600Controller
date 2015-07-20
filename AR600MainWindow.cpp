@@ -31,7 +31,7 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
 
         mCommandControlWidget = new CommandControlWidget();
         ui->CommandControlLayout->addWidget(mCommandControlWidget);
-        connect(CommandController::Inst(),SIGNAL(GoEnd()),mCommandControlWidget,SLOT(startCommand()));
+        connect(CommandController::Inst(),SIGNAL(InitEnd()),mCommandControlWidget,SLOT(startCommand()));
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -187,9 +187,9 @@ void AR600MainWindow::ConnectionsInit()
 
     connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
     connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    connect(CommandController::Inst(),SIGNAL(GoStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(CommandController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(DisActivate()));
     connect(CommandController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
-    connect(CommandController::Inst(),SIGNAL(GoEnd()),mMotorTableWidget,SLOT(Activate()));
+    connect(CommandController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
     connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mCommandControlWidget,SLOT(openFile(QString,bool)));
