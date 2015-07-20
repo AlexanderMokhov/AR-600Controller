@@ -351,7 +351,7 @@ void CommandController::StartGoToInitialPos(bool toFirstCommand)
     {
         int Number = (*it).first;
         int StartAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
-        int DestAngle = toFirstCommand == true ? 0 : mCommands[i].Angle;
+        int DestAngle = toFirstCommand == true ? mCommands[i].Angle : 0;
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.GetEnable()) ? DiffAngle : MaxDiff;
 
@@ -371,11 +371,11 @@ void CommandController::SetupGoToInitialPos(long TimeToGo)
 {
     int SendDelay = ConfigController::Inst()->GetSendDelay();
 
-    for(auto it = mGoToPosData.begin();it!=mGoToPosData.end();++it)
+    for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
     {
         int diffPos = (*it).second.DestPos - (*it).second.StartPos;
 
-        if(TimeToGo!=0)
+        if(TimeToGo != 0)
         {
             (*it).second.Step = (double)diffPos/((double)TimeToGo/(double)SendDelay);
         }
@@ -432,7 +432,8 @@ void CommandController::StepGoToAngle()
 
 void CommandController::StopGoToAngle()
 {
-    BufferController::Inst()->GetWriteBuffer()->MotorStop(mMotorNumber);
     IsGoToAngleState = false;
+    BufferController::Inst()->GetWriteBuffer()->MotorStop(mMotorNumber);
+
 }
 //Конец команд для перехода в заданный угол (один двигатель)
