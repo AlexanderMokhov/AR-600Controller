@@ -389,12 +389,12 @@ void CommandController::GoNextPos()
 
 void CommandController::GoPos()
 {
-    for(auto it = mMotorPosMap.begin();it!=mMotorPosMap.end();++it)
+    for(auto it = mMotorPosMap.begin();it != mMotorPosMap.end();++it)
     {
         bool IsFirst = (*it).second.DestPos <= (*it).second.CurrentPos
                 && (*it).second.DestPos >= (*it).second.StartPos;
-        bool IsSecond = (*it).second.DestPos >=(*it).second.CurrentPos
-                && (*it).second.DestPos <=(*it).second.StartPos;
+        bool IsSecond = (*it).second.DestPos >= (*it).second.CurrentPos
+                && (*it).second.DestPos <= (*it).second.StartPos;
 
         if(IsFirst || IsSecond)
         {
@@ -427,26 +427,21 @@ void CommandController::initPos(bool mode)
     int MaxDelta = 0;
     mMotorMap = ConfigController::Inst()->GetMotorMap();
     int i=0;
-    for(auto it = mMotorMap->begin();it!=mMotorMap->end();++it)
+    for(auto it = mMotorMap->begin();it != mMotorMap->end();++it)
     {
         int Number = (*it).first;
         int MotorAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
         //взять значение из файла
-        long pos = 0;
+        int pos = 0;
         if(mode)
         {
             pos = mCommandsList[i].Angle;
         }
         int TempDelta = std::abs(MotorAngle - pos);
         MaxDelta = (TempDelta > MaxDelta && (*it).second.GetEnable())? TempDelta : MaxDelta;
-        if(!mode)
-        {
-            SetPos(Number,0,MotorAngle);
-        }
-        else
-        {
-            SetPos(Number,pos,MotorAngle);
-        }
+
+        SetPos(Number,pos,MotorAngle);
+
         BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number, MotorAngle);
         BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
         i++;
@@ -468,13 +463,12 @@ void CommandController::CalcGoToPos()
 void CommandController::CalcGoToStartPos(long TimeToGo)
 {
     int SendDelay = ConfigController::Inst()->GetSendDelay();
-    long TimeToGoMs = TimeToGo;
     for(auto it = mMotorPosMap.begin();it!=mMotorPosMap.end();++it)
     {
         int diffPos = (*it).second.DestPos - (*it).second.StartPos;//разница в градус*100
-        if(TimeToGoMs!=0)
+        if(TimeToGo != 0)
         {
-            (*it).second.Step = (double)diffPos/((double)TimeToGoMs/(double)SendDelay);//шаг в градус*100
+            (*it).second.Step = (double)diffPos/((double)TimeToGo/(double)SendDelay);//шаг в градус*100
         }
         else
         {
