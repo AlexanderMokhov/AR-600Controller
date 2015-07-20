@@ -4,14 +4,15 @@ BufferController * BufferController::mInst = 0;
 
 void BufferController::InitBuffers()
 {
-    for(auto it = ConfigController::Inst()->GetMotorMap()->begin();
-        it != ConfigController::Inst()->GetMotorMap()->end();++it)
+    for(auto it = ConfigController::Inst()->GetMotors()->begin();
+        it != ConfigController::Inst()->GetMotors()->end();++it)
     {
-        int NumbBuffer = (*it).second.GetNumberBuffer();
-        mWriteBuffer.SetDeviceChannel((*it).first,NumbBuffer);
-        mReadBuffer.SetDeviceChannel((*it).first,NumbBuffer);
+        int Channel = (*it).second.GetChannel();
         int PosMin = (*it).second.GetMinPos();
         int PosMax = (*it).second.GetMaxPos();
+
+        mWriteBuffer.SetDeviceChannel((*it).first,Channel);
+        mReadBuffer.SetDeviceChannel((*it).first,Channel);
 
         mWriteBuffer.SetMotorStiff((*it).first,(*it).second.GetStiff());
         mWriteBuffer.SetMotorDump((*it).first,(*it).second.GetDump());
@@ -24,17 +25,15 @@ void BufferController::InitBuffers()
         mWriteBuffer.SetMotorEnable((*it).first,(*it).second.GetEnable());
         mWriteBuffer.SetMotorMinAngle((*it).first,PosMin);
         mWriteBuffer.SetMotorMaxAngle((*it).first,PosMax);
-        mWriteBuffer.SetDeviceChannel((*it).first,NumbBuffer);
-
         mWriteBuffer.MotorStop((*it).first);
     }
 
-    for(auto it2 = ConfigController::Inst()->GetSensorMap()->begin();
-        it2 != ConfigController::Inst()->GetSensorMap()->end();++it2)
+    for(auto it = ConfigController::Inst()->GetSensors()->begin();
+        it != ConfigController::Inst()->GetSensors()->end();++it)
     {
-        int NumbBuffer = (*it2).second.GetNumberBuffer();
-        mWriteBuffer.SetDeviceChannel(NumbBuffer,NumbBuffer);
-        mReadBuffer.SetDeviceChannel(NumbBuffer,NumbBuffer);
+        int Channel = (*it).second.GetChannel();
+        mWriteBuffer.SetDeviceChannel(Channel,Channel);
+        mReadBuffer.SetDeviceChannel(Channel,Channel);
     }
     mReadBuffer.Init(mWriteBuffer.GetRAW());
 }

@@ -17,6 +17,7 @@ private:
     int mDelay;
     int mDuration;
     bool isRunning;
+    bool isRestart;
     void SaveData();
 
 public:

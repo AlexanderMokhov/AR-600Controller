@@ -30,7 +30,7 @@ MotorTableWidget::~MotorTableWidget()
 
 void MotorTableWidget::ShowConfigData()
 {
-    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotorMap();
+    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotors();
     mModel->removeRows(0,mModel->rowCount());
 
     for(auto it = mMap->begin();it!=mMap->end();++it)
@@ -68,7 +68,7 @@ MotorTableModel *MotorTableWidget::getModel()
 
 void MotorTableWidget::UpdatePos()
 {
-    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotorMap();
+    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotors();
     int i=0;
     for(auto it = mMap->begin();it!=mMap->end();++it)
     {

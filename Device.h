@@ -8,23 +8,23 @@ using namespace std;
 class Device
 {
 public:
-    unsigned int    mNumber;//номер
-    unsigned int    mNumberBuffer;//адрес буфера
-    std::string     mName;//название
+    int mNumber;//номер
+    int mChannel;//адрес буфера
+    std::string mName;//название
 
 public:
     Device();
     ~Device();
-    Device(unsigned int Number, unsigned int NumberBuffer, std::string Name);
+    Device(int Number, int Channel, std::string Name);
 
     //геттеры
-    unsigned int GetNumber();
-    unsigned int GetNumberBuffer();
+    int GetNumber();
+    int GetChannel();
     std::string GetName();
 
     //сеттеры
     void SetNumber(int Number);
-    void SetNumberBuffer(int NumberBuffer);
+    void SetChannel(int Channel);
     void SetName(string Name);
 
 };

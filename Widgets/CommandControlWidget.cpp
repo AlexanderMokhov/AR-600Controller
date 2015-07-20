@@ -62,19 +62,19 @@ void CommandControlWidget::on_ButtonLoadFile_clicked()
 void CommandControlWidget::on_ButtonPlayPause_clicked()
 {
     isFileCommand = true;
-    CommandController::Inst()->initPos(true);
+    CommandController::Inst()->StartGoToInitialPos(true);
 }
 
 void CommandControlWidget::on_ButtonStop_clicked()
 {
     isFileCommand = false;
     CommandController::Inst()->SetPlaySequenceState(false);
-    CommandController::Inst()->SetCurrentTimeForCommands(0);
-    CommandController::Inst()->SetCommandId(0);
+
     if(IsLog)
     {
         emit StopWriteLog();
     }
+
     emit PlayStop();
 }
 
@@ -91,13 +91,13 @@ void CommandControlWidget::on_checkBoxLog_clicked(bool checked)
 void CommandControlWidget::on_ButtonGoStartPos_clicked()
 {
     isFileCommand = false;
-    CommandController::Inst()->initPos(false);
+    CommandController::Inst()->StartGoToInitialPos(false);
 }
 
 void CommandControlWidget::on_ButtonStartFile_clicked()
 {
     isFileCommand = false;
-    CommandController::Inst()->initPos(true);
+    CommandController::Inst()->StartGoToInitialPos(true);
 }
 
 void CommandControlWidget::startCommand()
@@ -107,7 +107,7 @@ void CommandControlWidget::startCommand()
         CommandController::Inst()->SetPlaySequenceState(true);
         if(IsLog)
         {
-            emit StartWriteLog(CommandController::Inst()->GetTimeRecord()/1e3);
+            emit StartWriteLog(CommandController::Inst()->GetDuration()/1e3);
 
         }
         emit PlayStart();
@@ -119,18 +119,18 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if (!fileName.isEmpty())
     {
         ui->FilePathTextBox->setText(fileName);
-        bool isOk = CommandController::Inst()->LoadFromFile(fileName.toStdString());
+        bool isOk = CommandController::Inst()->OpenFile(fileName.toStdString());
         if(isOk)
         {
             qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
             qDebug() << "Команды успешно прочитаны" <<endl;
-            int mCountRows = CommandController::Inst()->GetCountRows();
-            int mTimeRecord = CommandController::Inst()->GetTimeRecord();
+            int CountRows = CommandController::Inst()->GetCountRows();
+            int Duration = CommandController::Inst()->GetDuration();
             ui->MessageTextBox->clear();
-            ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
-            ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
+            ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
+            ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
 
-            emit FileLoaded(fileName,mCountRows,mTimeRecord, mode);
+            emit FileLoaded(fileName,CountRows,Duration, mode);
         }
         else
         {
@@ -142,7 +142,7 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if(!mode)
     {
         isFileCommand = true;
-        CommandController::Inst()->initPos(true);
+        CommandController::Inst()->StartGoToInitialPos(true);
         emit PlayStart();
     }
 }

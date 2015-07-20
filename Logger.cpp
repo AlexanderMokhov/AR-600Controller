@@ -2,7 +2,8 @@
 
 Logger::Logger(QObject *parent) : QThread(parent)
 {
-    isRunning=false;
+    isRunning = false;
+    isRestart = false;
 }
 
 Logger::~Logger()
@@ -12,22 +13,37 @@ Logger::~Logger()
 
 void Logger::run()
 {
+    //нить потока создана
+    pointStart:
+    isRestart = false;
+
     mTimer = new QTimer;
     mTimer->setInterval(mDelay);
     connect(mTimer, SIGNAL(timeout()),SLOT(WriteRecord()),Qt::DirectConnection);
     DeviceLogController::Inst()->StartWrite();
     mTimer->start();
-    //До окончания работы
+    //Запускаем цикл обработки событий
     exec();
-    //После окончания работы
+    //Завершился цикл обработки событий
     mTimer->stop();
     SaveData();
+
+    if(isRestart) goto pointStart;
+    //нить потока удалена
 }
 
 void Logger::StartWriting()
 {
-    isRunning = true;
-    start();
+    if(isRunning == false)
+    {
+        isRunning = true;
+        start();
+    }
+    else
+    {
+        isRestart = true;
+        exit();
+    }
 }
 
 void Logger::StopWriting()
@@ -56,7 +72,7 @@ void Logger::SaveData()
 {
     qDebug() << "Log was saved" << endl;
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();
-    QString FileName = "DriverLog_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
+    QString FileName = "DeviceLog_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
     DeviceLogController::Inst()->SaveData(FileName.toStdString());
 }
 

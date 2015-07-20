@@ -17,15 +17,15 @@ Motor::~Motor()
 
 }
 
-Motor::Motor(unsigned int Number,
-               unsigned int NumberBuffer,
+Motor::Motor(int Number,
+               int Channel,
                string Name, int MinPos,
                int MaxPos, bool Reverce,
                int Stiff,
                int Dump,
                int Torque,
                int Calibration,
-               bool Enable) : Device(Number,NumberBuffer,Name)
+               bool Enable) : Device(Number,Channel,Name)
 {
     mMinPos = MinPos;
     mMaxPos = MaxPos;

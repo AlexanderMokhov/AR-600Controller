@@ -38,7 +38,7 @@ void MotorControlWidget::RowChanged(int cRow)
     currentRow = cRow;
     CurrentNumber = mModel->data(mModel->index(currentRow,0),Qt::EditRole).toInt();
     ui->lineNumber->setText(QString::number(CurrentNumber));
-    Reverce = ConfigController::Inst()->GetMotorMap()->at(CurrentNumber).GetReverce();
+    Reverce = ConfigController::Inst()->GetMotors()->at(CurrentNumber).GetReverce();
     if(Reverce)
         ReverceCoeff = -1;
     else
@@ -115,7 +115,7 @@ void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
         //выходим из режима калибровки
 
         //записываем в мотор калибровочные коэффициенты
-        mWriteBuffer->SetMotorCalibration(CurrentNumber,ConfigController::Inst()->GetMotorMap()->at(CurrentNumber).GetCalibration());
+        mWriteBuffer->SetMotorCalibration(CurrentNumber,ConfigController::Inst()->GetMotors()->at(CurrentNumber).GetCalibration());
         mWriteBuffer->SetMotorAngle(CurrentNumber, mReadBuffer->GetMotorAngle(CurrentNumber));
         Calibration=false;
 
@@ -145,7 +145,7 @@ void MotorControlWidget::on_ButtonSaveZero_clicked()
     //записываем в файл настроек новые калибровочные коэффициенты
     int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
     int NewCalibration=ReverceCoeff*CurrentPos;
-    ConfigController::Inst()->GetMotorMap()->at(CurrentNumber).SetCalibration(NewCalibration);
+    ConfigController::Inst()->GetMotors()->at(CurrentNumber).SetCalibration(NewCalibration);
     mModel->setData(mModel->index(currentRow,10),QString::number(NewCalibration));
     ConfigController::Inst()->SaveFile("config.xml");
 
@@ -218,12 +218,12 @@ void MotorControlWidget::on_ButtonStiffWrite_clicked()
 
 void MotorControlWidget::on_ButtonStiffSave_clicked()
 {
-    ConfigController::Inst()->GetMotorMap()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
+    ConfigController::Inst()->GetMotors()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
 }
 
 void MotorControlWidget::on_ButtonDumpSave_clicked()
 {
-    ConfigController::Inst()->GetMotorMap()->at(CurrentNumber).SetDump(ui->spinDump->value());
+    ConfigController::Inst()->GetMotors()->at(CurrentNumber).SetDump(ui->spinDump->value());
 }
 
 
@@ -234,22 +234,15 @@ void MotorControlWidget::on_ButtonDumpWrite_clicked()
 
 void MotorControlWidget::on_ButtonGoToPos_clicked()
 {
-    int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
-
-    mWriteBuffer->SetMotorAngle(CurrentNumber, CurrentPos);
-    mWriteBuffer->MotorTrace(CurrentNumber);
-
-    CommandController::Inst()->SetDestPos(ui->spinPosToGo->value());
-    CommandController::Inst()->SetStartPos(CurrentPos);
-    CommandController::Inst()->SetTimeToGo(ui->spinTimeToGo->value());
-    CommandController::Inst()->SetMotorNumber(CurrentNumber);
-    CommandController::Inst()->CalcGoToPos();
-    CommandController::Inst()->SetGoToPosState(true);
+    CommandController::Inst()->SetupGoToAngle(CurrentNumber,
+                                              ui->spinPosToGo->value(),
+                                              ui->spinTimeToGo->value());
+    CommandController::Inst()->StartGoToAngle();
 }
 
 void MotorControlWidget::on_ButtonStopGoToPos_clicked()
 {
-    mWriteBuffer->MotorStop(CurrentNumber);
-    CommandController::Inst()->SetGoToPosState(false);
+
+    CommandController::Inst()->StopGoToAngle();
 }
 

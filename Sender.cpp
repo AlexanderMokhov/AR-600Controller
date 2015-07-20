@@ -15,6 +15,7 @@ Sender::~Sender()
 
 void Sender::run()
 {
+    //нить создана
     mUdpSocketSender = new QUdpSocket();
 
     qDebug() << "Sender - connecting..." << endl;
@@ -33,7 +34,9 @@ void Sender::run()
 
     PrintConnectionState();
 
+    //Запускаем цикл обработки событий
     exec();
+    //Завершился цикл обработки событий
 
     qDebug() << "Sender - disconnecting..." << endl;
     disconnect(mTimerSend,SIGNAL(timeout()));
@@ -41,32 +44,35 @@ void Sender::run()
     mUdpSocketSender->disconnect();
     mUdpSocketSender->close();
     PrintConnectionState();
+    //нить удалена
 }
 
 void Sender::Connect()
 {
-    isRunning = true;
-    start();
+    if(isRunning == false)
+    {
+        isRunning = true;
+        start();
+    }
 }
 
 void Sender::Disconnect()
 {
-    isRunning = false;
-    exit();
+    if(isRunning == true)
+    {
+        isRunning = false;
+        exit();
+    }
 }
 
 void Sender::SendDatagram()
 {
-
-    //qDebug() << "Time Send Delay: " << QString::number(mTime->elapsed()) << " ms"<< endl;
-
     QHostAddress mAddress = QHostAddress(mHost);
     mLocker->lock();
     mUdpSocketSender->writeDatagram(mSendBuffer->GetRAW(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
     mUdpSocketSender->waitForBytesWritten();
     mLocker->unlock();
-    CommandController::Inst()->SendCommand();
-    //mTime->start();
+    CommandController::Inst()->DoStepWork();
 }
 
 void Sender::PrintConnectionState()

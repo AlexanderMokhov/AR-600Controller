@@ -12,8 +12,8 @@ private:
 public:
     Sensor();
     ~Sensor();
-    Sensor(unsigned int Number,
-           unsigned int NumberBuffer,
+    Sensor(int Number,
+           int Channel,
            std::string Name,
            std::string NameLog,
            int param);

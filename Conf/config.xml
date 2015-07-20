@@ -3,7 +3,7 @@
     <MotorSettings>
         <Motor>
             <Number>1</Number>
-            <NumberBuffer>1</NumberBuffer>
+            <Channel>1</Channel>
             <Name>Стопа Y (R)</Name>
             <MinPos>-1200</MinPos>
             <MaxPos>1500</MaxPos>
@@ -16,7 +16,7 @@
         </Motor>
         <Motor>
             <Number>2</Number>
-            <NumberBuffer>2</NumberBuffer>
+            <Channel>2</Channel>
             <Name>Стопа X (R)</Name>
             <MinPos>-1000</MinPos>
             <MaxPos>4000</MaxPos>
@@ -29,7 +29,7 @@
         </Motor>
         <Motor>
             <Number>3</Number>
-            <NumberBuffer>3</NumberBuffer>
+            <Channel>3</Channel>
             <Name>Колено (R)</Name>
             <MinPos>-9000</MinPos>
             <MaxPos>700</MaxPos>
@@ -42,7 +42,7 @@
         </Motor>
         <Motor>
             <Number>4</Number>
-            <NumberBuffer>4</NumberBuffer>
+            <Channel>4</Channel>
             <Name>Бедро X (R)</Name>
             <MinPos>-1000</MinPos>
             <MaxPos>4000</MaxPos>
@@ -55,7 +55,7 @@
         </Motor>
         <Motor>
             <Number>5</Number>
-            <NumberBuffer>5</NumberBuffer>
+            <Channel>5</Channel>
             <Name>Бедро Y (R)</Name>
             <MinPos>-1400</MinPos>
             <MaxPos>1500</MaxPos>
@@ -68,7 +68,7 @@
         </Motor>
         <Motor>
             <Number>6</Number>
-            <NumberBuffer>6</NumberBuffer>
+            <Channel>6</Channel>
             <Name>Бедро вращение (R)</Name>
             <MinPos>-1000</MinPos>
             <MaxPos>1000</MaxPos>
@@ -81,7 +81,7 @@
         </Motor>
         <Motor>
             <Number>7</Number>
-            <NumberBuffer>7</NumberBuffer>
+            <Channel>7</Channel>
             <Name>Стопа Y (L)</Name>
             <MinPos>-1200</MinPos>
             <MaxPos>1500</MaxPos>
@@ -94,7 +94,7 @@
         </Motor>
         <Motor>
             <Number>8</Number>
-            <NumberBuffer>8</NumberBuffer>
+            <Channel>8</Channel>
             <Name>Стопа X (L)</Name>
             <MinPos>-1000</MinPos>
             <MaxPos>4000</MaxPos>
@@ -107,7 +107,7 @@
         </Motor>
         <Motor>
             <Number>9</Number>
-            <NumberBuffer>9</NumberBuffer>
+            <Channel>9</Channel>
             <Name>Колено (L)</Name>
             <MinPos>-9000</MinPos>
             <MaxPos>700</MaxPos>
@@ -120,7 +120,7 @@
         </Motor>
         <Motor>
             <Number>10</Number>
-            <NumberBuffer>10</NumberBuffer>
+            <Channel>10</Channel>
             <Name>Бедро X (L)</Name>
             <MinPos>-1000</MinPos>
             <MaxPos>4000</MaxPos>
@@ -133,7 +133,7 @@
         </Motor>
         <Motor>
             <Number>11</Number>
-            <NumberBuffer>11</NumberBuffer>
+            <Channel>11</Channel>
             <Name>Бедро Y (L)</Name>
             <MinPos>-1400</MinPos>
             <MaxPos>1500</MaxPos>
@@ -146,7 +146,7 @@
         </Motor>
         <Motor>
             <Number>12</Number>
-            <NumberBuffer>12</NumberBuffer>
+            <Channel>12</Channel>
             <Name>Бедро вращение (L)</Name>
             <MinPos>-1000</MinPos>
             <MaxPos>1000</MaxPos>
@@ -159,7 +159,7 @@
         </Motor>
         <Motor>
             <Number>19</Number>
-            <NumberBuffer>26</NumberBuffer>
+            <Channel>26</Channel>
             <Name>Рука Y (R)</Name>
             <MinPos>-500</MinPos>
             <MaxPos>9000</MaxPos>
@@ -172,7 +172,7 @@
         </Motor>
         <Motor>
             <Number>20</Number>
-            <NumberBuffer>27</NumberBuffer>
+            <Channel>27</Channel>
             <Name>Рука X (R)</Name>
             <MinPos>-500</MinPos>
             <MaxPos>9500</MaxPos>
@@ -185,7 +185,7 @@
         </Motor>
         <Motor>
             <Number>35</Number>
-            <NumberBuffer>36</NumberBuffer>
+            <Channel>36</Channel>
             <Name>Рука Y (L)</Name>
             <MinPos>-500</MinPos>
             <MaxPos>9000</MaxPos>
@@ -198,7 +198,7 @@
         </Motor>
         <Motor>
             <Number>36</Number>
-            <NumberBuffer>37</NumberBuffer>
+            <Channel>37</Channel>
             <Name>Рука X (L)</Name>
             <MinPos>-500</MinPos>
             <MaxPos>9500</MaxPos>
@@ -211,7 +211,7 @@
         </Motor>
         <Motor>
             <Number>43</Number>
-            <NumberBuffer>18</NumberBuffer>
+            <Channel>18</Channel>
             <Name>Голова вращение</Name>
             <MinPos>-3500</MinPos>
             <MaxPos>3500</MaxPos>
@@ -224,7 +224,7 @@
         </Motor>
         <Motor>
             <Number>44</Number>
-            <NumberBuffer>20</NumberBuffer>
+            <Channel>20</Channel>
             <Name>Голова наклон</Name>
             <MinPos>-1500</MinPos>
             <MaxPos>1500</MaxPos>
@@ -237,7 +237,7 @@
         </Motor>
         <Motor>
             <Number>45</Number>
-            <NumberBuffer>21</NumberBuffer>
+            <Channel>21</Channel>
             <Name>Голова качание</Name>
             <MinPos>-1000</MinPos>
             <MaxPos>1000</MaxPos>
@@ -250,7 +250,7 @@
         </Motor>
         <Motor>
             <Number>46</Number>
-            <NumberBuffer>22</NumberBuffer>
+            <Channel>22</Channel>
             <Name>Шея</Name>
             <MinPos>-500</MinPos>
             <MaxPos>1500</MaxPos>
@@ -263,7 +263,7 @@
         </Motor>
         <Motor>
             <Number>49</Number>
-            <NumberBuffer>23</NumberBuffer>
+            <Channel>23</Channel>
             <Name>Торс</Name>
             <MinPos>-1500</MinPos>
             <MaxPos>1500</MaxPos>
@@ -278,98 +278,98 @@
 	<SensorSettings>
 	<Sensor>
 	  <Number>1</Number>
-	  <NumberBuffer>14</NumberBuffer>
+	  <Channel>14</Channel>
 	  <Name>Акселерометр X</Name>
 	  <NameLog>Accelerometr_X</NameLog>
 	  <Param>1</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>2</Number>
-	  <NumberBuffer>14</NumberBuffer>
+	  <Channel>14</Channel>
 	  <Name>Акселерометр Y</Name>
 	  <NameLog>Accelerometr_Y</NameLog>
 	  <Param>2</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>3</Number>
-	  <NumberBuffer>14</NumberBuffer>
+	  <Channel>14</Channel>
 	  <Name>Акселерометр Z</Name>
 	  <NameLog>Accelerometr_Z</NameLog>
 	  <Param>3</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>4</Number>
-	  <NumberBuffer>14</NumberBuffer>
+	  <Channel>14</Channel>
 	  <Name>Гироскоп X</Name>
 	  <NameLog>Gyroscope_X</NameLog>
 	  <Param>4</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>5</Number>
-	  <NumberBuffer>14</NumberBuffer>
+	  <Channel>14</Channel>
 	  <Name>Гироскоп Y</Name>
 	  <NameLog>Gyroscope_Y</NameLog>
 	  <Param>5</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>6</Number>
-	  <NumberBuffer>14</NumberBuffer>
+	  <Channel>14</Channel>
 	  <Name>Гироскоп Z</Name>
 	  <NameLog>Gyroscope_Z</NameLog>
 	  <Param>6</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>7</Number>
-	  <NumberBuffer>15</NumberBuffer>
+	  <Channel>15</Channel>
 	  <Name>Давление на левой ноге 0</Name>
 	  <NameLog>Pressure_on_the_left_leg_0</NameLog>
 	  <Param>1</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>8</Number>
-	  <NumberBuffer>15</NumberBuffer>
+	  <Channel>15</Channel>
 	  <Name>Давление на левой ноге 1</Name>
 	  <NameLog>Pressure_on_the_left_leg_1</NameLog>
 	  <Param>2</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>9</Number>
-	  <NumberBuffer>15</NumberBuffer>
+	  <Channel>15</Channel>
 	  <Name>Давление на левой ноге 2</Name>
 	  <NameLog>Pressure_on_the_left_leg_2</NameLog>
 	  <Param>3</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>10</Number>
-	  <NumberBuffer>15</NumberBuffer>
+	  <Channel>15</Channel>
 	  <Name>Давление на левой ноге 3</Name>
 	  <NameLog>Pressure_on_the_left_leg_3</NameLog>
 	  <Param>4</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>11</Number>
-	  <NumberBuffer>16</NumberBuffer>
+	  <Channel>16</Channel>
 	  <Name>Давление на правой ноге 0</Name>
 	  <NameLog>Pressure_on_the_right_leg_0</NameLog>
 	  <Param>1</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>12</Number>
-	  <NumberBuffer>16</NumberBuffer>
+	  <Channel>16</Channel>
 	  <Name>Давление на правой ноге 1</Name>
 	  <NameLog>Pressure_on_the_right_leg_1</NameLog>
 	  <Param>2</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>13</Number>
-	  <NumberBuffer>16</NumberBuffer>
+	  <Channel>16</Channel>
 	  <Name>Давление на правой ноге 2</Name>
 	  <NameLog>Pressure_on_the_right_leg_2</NameLog>
 	  <Param>3</Param>
 	</Sensor>
 	<Sensor>
 	  <Number>14</Number>
-	  <NumberBuffer>16</NumberBuffer>
+	  <Channel>16</Channel>
 	  <Name>Давление на правой ноге 3</Name>
 	  <NameLog>Pressure_on_the_right_leg_3</NameLog>
 	  <Param>4</Param>

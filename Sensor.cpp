@@ -10,11 +10,11 @@ Sensor::~Sensor()
 
 }
 
-Sensor::Sensor(unsigned int Number,
-               unsigned int NumberBuffer,
+Sensor::Sensor(int Number,
+               int Channel,
                string Name,
                string NameLog,
-               int param): Device(Number,NumberBuffer,Name)
+               int param): Device(Number,Channel,Name)
 {
     mParam = param;
     mValue = 0;

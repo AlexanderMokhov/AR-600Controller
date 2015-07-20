@@ -2,9 +2,9 @@
 
 Device::Device()
 {
-    mNumber =       0;
-    mNumberBuffer = 0;
-    mName =         "";
+    mNumber = 0;
+    mChannel = 0;
+    mName = "";
 }
 
 Device::~Device()
@@ -12,21 +12,21 @@ Device::~Device()
 
 }
 
-Device::Device(unsigned int Number, unsigned int NumberBuffer, string Name)
+Device::Device(int Number, int Channel, string Name)
 {
     mNumber = Number;
-    mNumberBuffer = NumberBuffer;
+    mChannel = Channel;
     mName = Name;
 }
 
-unsigned int Device::GetNumber()
+int Device::GetNumber()
 {
     return mNumber;
 }
 
-unsigned int Device::GetNumberBuffer()
+int Device::GetChannel()
 {
-    return mNumberBuffer;
+    return mChannel;
 }
 
 string Device::GetName()
@@ -39,9 +39,9 @@ void Device::SetNumber(int Number)
     mNumber = Number;
 }
 
-void Device::SetNumberBuffer(int NumberBuffer)
+void Device::SetChannel(int Channel)
 {
-    mNumberBuffer = NumberBuffer;
+    mChannel = Channel;
 }
 
 void Device::SetName(string Name)

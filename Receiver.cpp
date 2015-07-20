@@ -26,6 +26,7 @@ Receiver::~Receiver()
 
 void Receiver::run()
 {
+    //нить создана
     mUdpSocketResiver = new QUdpSocket;
 
     connect(mUdpSocketResiver, SIGNAL(readyRead()), SLOT(ProcessPendingDatagrams()),Qt::DirectConnection);
@@ -41,7 +42,9 @@ void Receiver::run()
 
     PrintConnectionState();
 
+    //Запускаем цикл обработки событий
     exec();
+    //Завершился цикл обработки событий
 
     qDebug() << "Receiver - disconnecting..." << endl;
 
@@ -49,24 +52,29 @@ void Receiver::run()
     mUdpSocketResiver->close();
 
     PrintConnectionState();
+    //нить удалена
 }
 
 void Receiver::Connect()
 {
-    isRunning = true;
-    start();
+    if(isRunning == false)
+    {
+        isRunning = true;
+        start();
+    }
 }
 
 void Receiver::Disconnect()
 {
-    isRunning = false;
-    exit();
+    if(isRunning == true)
+    {
+        isRunning = false;
+        exit();
+    }
 }
 
 void Receiver::ProcessPendingDatagrams()
 {
-    //qDebug() << "Time Receive Delay: " << QString::number(mTime->elapsed()) << " ms"<< endl;
-
     while (mUdpSocketResiver->hasPendingDatagrams())
     {
         QByteArray datagram;
@@ -79,7 +87,5 @@ void Receiver::ProcessPendingDatagrams()
         //Отправляем пакет на обработку
         emit ReadyData();
      }
-
-    //mTime->start();
 }
 

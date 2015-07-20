@@ -7,8 +7,6 @@
 #include <iostream>
 #include "stdlib.h"
 
-//BufferController * BufferController::mInst = 0;
-
 using namespace std;
 class BufferController
 {

@@ -30,14 +30,14 @@ bool ConfigController::OpenFile(string FileName)
         //Читаем двигатели
         xml_Motor = xml_MotorSettings->FirstChildElement("Motor");
         //Очищаем контейнер
-        mMotorMap.clear();
+        mMotors.clear();
 
         //Перебор всех двигателей
         while(xml_Motor != NULL)
         {
             //Читаем атрибуты
             int Number = atoi(xml_Motor->FirstChildElement("Number")->GetText());
-            int NumberBuffer = atoi(xml_Motor->FirstChildElement("NumberBuffer")->GetText());
+            int Channel = atoi(xml_Motor->FirstChildElement("Channel")->GetText());
             std::string Name = std::string(xml_Motor->FirstChildElement("Name")->GetText());
             int MinPos = atoi(xml_Motor->FirstChildElement("MinPos")->GetText());
             int MaxPos = atoi(xml_Motor->FirstChildElement("MaxPos")->GetText());
@@ -48,9 +48,9 @@ bool ConfigController::OpenFile(string FileName)
             int Calibration = atoi(xml_Motor->FirstChildElement("Calibration")->GetText());
             bool Enable = strcmp("false",xml_Motor->FirstChildElement("Enable")->GetText());
 
-            Motor item(Number,NumberBuffer,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
+            Motor item(Number,Channel,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
             //Добавляем в контейнер
-            mMotorMap.insert(pair<int,Motor>(Number,item));
+            mMotors[Number] = item;
 
             xml_Motor = xml_Motor->NextSiblingElement("Motor");
         }
@@ -60,21 +60,21 @@ bool ConfigController::OpenFile(string FileName)
         //Читаем сенсоры
         xml_Sensor = xml_SensorSettings->FirstChildElement("Sensor");
         //Очищаем контейнер
-        mSensorMap.clear();
+        mSensors.clear();
 
         //Перебор всех сенсоров
         while(xml_Sensor != NULL)
         {
             //Читаем атрибуты
             int Number = atoi(xml_Sensor->FirstChildElement("Number")->GetText());
-            int NumberBuffer = atoi(xml_Sensor->FirstChildElement("NumberBuffer")->GetText());
+            int Channel = atoi(xml_Sensor->FirstChildElement("Channel")->GetText());
             std::string Name = std::string(xml_Sensor->FirstChildElement("Name")->GetText());
             std::string NameLog = std::string(xml_Sensor->FirstChildElement("NameLog")->GetText());
             int Param = atoi(xml_Sensor->FirstChildElement("Param")->GetText());
 
-            Sensor item = Sensor(Number,NumberBuffer,Name,NameLog,Param);
+            Sensor item = Sensor(Number,Channel,Name,NameLog,Param);
             //Добавляем в контейнер
-            mSensorMap.insert(pair<int,Sensor>(Number,item));
+            mSensors[Number] = item;
 
             xml_Sensor = xml_Sensor->NextSiblingElement("Sensor");
         }
@@ -117,7 +117,7 @@ bool ConfigController::SaveFile(string FileName)
     buffer=(char*)malloc(20*sizeof(char));
 
     //Заполняем массив двигателей из контейнера
-    for(auto it = mMotorMap.begin();it!=mMotorMap.end();++it)
+    for(auto it = mMotors.begin();it!=mMotors.end();++it)
     {
         TiXmlElement * xml_Motor = new TiXmlElement("Motor");
         xml_MotorSettings->LinkEndChild(xml_Motor);
@@ -127,10 +127,10 @@ bool ConfigController::SaveFile(string FileName)
         Number->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Number);
 
-        TiXmlElement* NumberBuffer = new TiXmlElement("NumberBuffer");
-        WriteValue = new TiXmlText(itoa((*it).second.GetNumberBuffer(),buffer,10));
-        NumberBuffer->LinkEndChild(WriteValue);
-        xml_Motor->LinkEndChild(NumberBuffer);
+        TiXmlElement* Channel = new TiXmlElement("Channel");
+        WriteValue = new TiXmlText(itoa((*it).second.GetChannel(),buffer,10));
+        Channel->LinkEndChild(WriteValue);
+        xml_Motor->LinkEndChild(Channel);
 
         TiXmlElement* Name = new TiXmlElement("Name");
         WriteValue = new TiXmlText((*it).second.GetName().c_str());
@@ -189,7 +189,7 @@ bool ConfigController::SaveFile(string FileName)
 
     buffer=(char*)malloc(20*sizeof(char));
     //заполняем массив двигателей из контейнера
-    for(auto it2 = mSensorMap.begin();it2!=mSensorMap.end();++it2)
+    for(auto it2 = mSensors.begin();it2!=mSensors.end();++it2)
     {
         TiXmlElement * xml_Sensor = new TiXmlElement("Sensor");
         xml_SensorSettings->LinkEndChild(xml_Sensor);
@@ -199,10 +199,10 @@ bool ConfigController::SaveFile(string FileName)
         Number->LinkEndChild(WriteValue);
         xml_Sensor->LinkEndChild(Number);
 
-        TiXmlElement* NumberBuffer = new TiXmlElement("NumberBuffer");
-        WriteValue = new TiXmlText(itoa((*it2).second.GetNumberBuffer(),buffer,10));
-        NumberBuffer->LinkEndChild(WriteValue);
-        xml_Sensor->LinkEndChild(NumberBuffer);
+        TiXmlElement* Channel = new TiXmlElement("Channel");
+        WriteValue = new TiXmlText(itoa((*it2).second.GetChannel(),buffer,10));
+        Channel->LinkEndChild(WriteValue);
+        xml_Sensor->LinkEndChild(Channel);
 
         TiXmlElement* Name = new TiXmlElement("Name");
         WriteValue = new TiXmlText((*it2).second.GetName().c_str());
@@ -276,77 +276,4 @@ bool ConfigController::SaveFile(string FileName)
     //Сохраняем файл
     mXMLConfigFile->SaveFile(FileName.c_str());
     return true;
-
 }
-
-int ConfigController::GetReceivePort()
-{
-    return mReceivePort;
-}
-
-int ConfigController::GetSendPort()
-{
-    return mSendPort;
-}
-
-string ConfigController::GetHost()
-{
-    return mHost;
-}
-
-int ConfigController::GetSendDelay()
-{
-    return mSendDelay;
-}
-
-void ConfigController::SetHost(string host)
-{
-    mHost = host;
-}
-
-void ConfigController::SetReceivePort(int port)
-{
-    mReceivePort = port;
-}
-
-void ConfigController::SetSendPort(int port)
-{
-    mSendPort = port;
-}
-
-int ConfigController::GetReceiveDelay()
-{
-    return mReceiveDelay;
-}
-
-std::map<int,Motor> *ConfigController::GetMotorMap()
-{
-    return &mMotorMap;
-}
-
-std::map<int, Sensor> *ConfigController::GetSensorMap()
-{
-    return &mSensorMap;
-}
-
-int ConfigController::GetDefaultStiff()
-{
-    return mDefaultStiff;
-}
-
-int ConfigController::GetDefaultDump()
-{
-    return mDefaultDump;
-}
-
-int ConfigController::GetDefaultTorque()
-{
-    return mDefaultTorque;
-}
-
-int ConfigController::GetDefaultSpeed()
-{
-    return mDefaultSpeed;
-}
-
-

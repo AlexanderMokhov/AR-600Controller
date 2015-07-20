@@ -36,7 +36,7 @@ struct Command
     PID PIDs;
 };
 
-struct MotorPos
+struct PosData
 {
     double CurrentPos;
     int StartPos;
@@ -57,70 +57,59 @@ private:
 
     static CommandController* mInst;
 
-    //для выполнения команд из файла
-    std::vector<Command> mCommandsList;//список команд
-    int mCommandId;
-    int mTimeRecord;
-    int mCountRows;
-    bool IsPlaySequenceState;//состояние выполнения команд из файла
+    QTime mTime;
+    std::map<int,Motor> * mMotors;
+    std::map<int,PosData> mGoToPosData;
 
-    //для выполнения перехода в заданную позицию
-    int mTimeToGo;
-    int mDestPos;
-    int mStartPos;
-    double mCurrentPos;
-    int mCurrentTime;
-    double mStepPos;
-    int mMotorNumber;
-    bool IsGoToPosState;//состояние выполнения перехода в позицию за время
-    int IsGoToStartPosState;
+    bool IsPlaySequenceState;//состояние выполнения команд из файла
+    bool IsGoToAngleState;//состояние выполнения перехода в позицию за время
+    int IsGoToPosState;
+
+    //для выполнения команд из файла
+    std::vector<Command> mCommands;
+    int mCommandId;
+    int mDuration;
+    int mCountRows;
     int mCurrentTimeForCommands;
     int mSendDelay;
-    QTime mTime;
-    std::map<int,Motor> * mMotorMap;
-    std::map<int,MotorPos> mMotorPosMap;
 
+    //для выполнения перехода в заданный угол
+    int mTimeToGo;
+    int mDestAngle;
+    int mStartAngle;
+    double mCurrentAngle;
+    double mStep;
+    int mMotorNumber;
 public:
     static CommandController* Inst(){return mInst;}
     static void Init(){delete mInst; mInst = new CommandController;}
 
-    void Update(long time);
-    bool LoadFromFile(std::string fileName);
-    int GetCountRows();
-    int GetTimeRecord();
-    void InitStateMachine();
-    bool GetPlaySequenceState();
-    void SetPlaySequenceState(bool State);
-    void SetCommandId(int cId);
-    void NextCommand();
-    void SendCommand();
-    void SetCurrentTimeForCommands(int Time);
-    int GetCurrentPos();
+    void DoStepWork();
 
-    bool GetGoToPosState();
-    void SetGoToPosState(bool State);
+    //для воспроизведения последовательности команд
+    bool OpenFile(std::string fileName);
+    void StepPlay(long time);
+    int GetCountRows();
+    int GetDuration();
+    void SetPlaySequenceState(bool State);
+    void NextCommand();
 
     //для перехода в заданный угол (один двигатель)
-    void GoNextPos();
-    void CalcGoToPos();
-    void SetTimeToGo(int TimeToGo);
-    void SetDestPos(int DestPos);
-    void SetStartPos(int StartPos);
-    void SetMotorNumber(int Number);
+    void SetupGoToAngle(int MotorNumber, int DestPos, int Time);
+    void StartGoToAngle();
+    void StepGoToAngle();
+    void StopGoToAngle();
 
     //для перехода в начальную позицию (все двигатели)
-    void SetPos(int NumberBuffer,int DestPos, int StartPos);
-    void GoPos();
-    void initPos(bool mode);
-    void SetGoToStartPosState(int State);
-    void CalcGoToStartPos(long TimeToGo);
-
-
-
+    void StartGoToInitialPos(bool mode);
+    void SetupGoToInitialPos(long TimeToGo);
+    void StepGoToPos();
+    void SetPosData(int Number, int DestPos, int StartPos);
 
 signals:
-    void initStart();
-    void initEnd();
+    void GoStart();
+    void GoEnd();
+
     void PlayEnd();
 };
 

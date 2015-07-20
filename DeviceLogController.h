@@ -42,17 +42,11 @@ public:
     std::map<int,Sensor> * mSensMap;
     QTime mTime;
 
-    long countTimers;
-    long dt_min;
-    long dt_max;
-    long LastTime;
-
     static DeviceLogController* Inst(){return mInst;}
     static void Init(){delete mInst; mInst = new DeviceLogController;}
 
     void AddRawData();
     bool SaveData(std::string fileName);
-    void ClearLog();
     void StartWrite();
 };
 

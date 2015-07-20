@@ -5,20 +5,18 @@ DeviceLogController * DeviceLogController::mInst = 0;
 DeviceLogController::DeviceLogController()
 {
     mReadBuffer = BufferController::Inst()->GetReadBuffer();
-    mConfigMap = ConfigController::Inst()->GetMotorMap();
-    mSensMap = ConfigController::Inst()->GetSensorMap();
+    mConfigMap = ConfigController::Inst()->GetMotors();
+    mSensMap = ConfigController::Inst()->GetSensors();
 
     for(auto it = mConfigMap->begin();it!=mConfigMap->end();++it)
     {
-        int Number = (*it).first;
-        int NumbBuffer = (*it).second.GetNumberBuffer();
-
-        mDriversMap.insert(pair<int, int>(Number,mReadBuffer->GetMotorAngle(NumbBuffer)));
+        int Number = (*it).second.GetNumber();
+        mDriversMap.insert(pair<int, int>(Number,mReadBuffer->GetMotorAngle(Number)));
     }
 
     for(auto it = mSensMap->begin();it!=mSensMap->end();++it)
     {
-        int Number = (*it).first;
+        int Number = (*it).second.GetNumber();
         int Value = (*it).second.GetValue();
         mSensorsMap.insert(pair<int, int>(Number,Value));
     }
@@ -29,14 +27,12 @@ void DeviceLogController::AddRawData()
 {
     for(auto it = mDriversMap.begin();it!=mDriversMap.end();++it)
     {
-        int NumberBuffer = mConfigMap->at((*it).first).GetNumberBuffer();
-
-        (*it).second=mReadBuffer->GetMotorAngle(NumberBuffer);
+        (*it).second = mReadBuffer->GetMotorAngle((*it).first);
     }
 
     for(auto it = mSensorsMap.begin();it!=mSensorsMap.end();++it)
     {
-        int Value = mReadBuffer->GetSensorValue(mSensMap->at((*it).first).GetNumberBuffer(),
+        int Value = mReadBuffer->GetSensorValue(mSensMap->at((*it).first).GetChannel(),
                                                 mSensMap->at((*it).first).GetParam()) ;
         (*it).second=Value;
     }
@@ -44,13 +40,6 @@ void DeviceLogController::AddRawData()
     //создаем элемент вектора с данными моторов
     LogData Data;
     Data.Time=mTime.elapsed();
-
-    //Mi=(Mi*countTimers-(Data.Time-LastTime))/++countTimers;
-    //if(dt_max<(Data.Time-LastTime)){dt_max=(Data.Time-LastTime);}
-    //if(dt_min>(Data.Time-LastTime)){dt_min=(Data.Time-LastTime);}
-    //LastTime = Data.Time;
-    //qDebug() << " DtMax=: " << QString::number(dt_max)<< " DtMin=: " << QString::number(dt_min)<< endl;
-
     Data.DriversData=mDriversMap;
     Data.SensorsData=mSensorsMap;
     //окончание создания
@@ -131,18 +120,9 @@ bool DeviceLogController::SaveData(string fileName)
 
 }
 
-void DeviceLogController::ClearLog()
-{
-    mLogVector.clear();
-}
-
 void DeviceLogController::StartWrite()
 {
     mLogVector.clear();
     mTime.start();
-    dt_min = 10000000;
-    dt_max = -10000000;
-    countTimers=0;
-    LastTime=0;
 }
 

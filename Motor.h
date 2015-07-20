@@ -20,8 +20,8 @@ public:
 public:
     Motor();
     ~Motor();
-    Motor(unsigned int Number,
-           unsigned int NumberBuffer,
+    Motor(int Number,
+           int Channel,
            std::string Name,
            int MinPos,
            int MaxPos,
