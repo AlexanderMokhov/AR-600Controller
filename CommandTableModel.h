@@ -9,6 +9,7 @@
 struct CommandFile
 {
     int Number;
+    QString File;
     QString Name;
     int RowsCount;
     double DurationMs;
@@ -40,7 +41,7 @@ public:
     bool insertRows( int position, int rows,const QModelIndex & index = QModelIndex());
     bool removeRows( int position, int rows,const QModelIndex & index = QModelIndex());
 
-    void insertRow( const QString & Number,const QString & Name, const QString & Rows,
+    void insertRow( const QString & Number, const QString & File, const QString & Name, const QString & Rows,
                     const QString & Duration);
 
 signals:

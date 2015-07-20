@@ -6,6 +6,7 @@
 #include <QItemSelectionModel>
 #include <QMenu>
 #include <QDebug>
+#include <QInputDialog>
 
 #include "ConfigController.h"
 #include "BufferController.h"
@@ -27,6 +28,7 @@ private:
     Ui::CommandFilesWidget *ui;
     CommandTableModel *mModel;
     QItemSelectionModel *mSelectionModel;
+    QInputDialog *mSetNameDialog;
 
     CommandTableModel *getModel();
     void ShowConfigData();
@@ -39,6 +41,9 @@ private slots:
     void OnRowChanged();
     void on_FilesTable_doubleClicked(const QModelIndex &index);
     void ShowContextMenu(const QPoint& pos);
+    void onDeleteAction();
+    void onSetNameAction();
+    void onDialogAccepted();
 };
 
 #endif // COMMANDFILESWIDGET_H

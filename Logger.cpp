@@ -14,7 +14,7 @@ Logger::~Logger()
 void Logger::run()
 {
     //нить потока создана
-    pointStart:
+pointStart:
     isRestart = false;
 
     mTimer = new QTimer;
