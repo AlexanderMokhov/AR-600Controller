@@ -37,7 +37,7 @@ bool ConfigController::OpenFile(string FileName)
         {
             //Читаем атрибуты
             int Number = atoi(xml_Motor->FirstChildElement("Number")->GetText());
-            int NumberBuffer = atoi(xml_Motor->FirstChildElement("NumberBuffer")->GetText());
+            int NumberBuffer = atoi(xml_Motor->FirstChildElement("Channel")->GetText());
             std::string Name = std::string(xml_Motor->FirstChildElement("Name")->GetText());
             int MinPos = atoi(xml_Motor->FirstChildElement("MinPos")->GetText());
             int MaxPos = atoi(xml_Motor->FirstChildElement("MaxPos")->GetText());
@@ -67,7 +67,7 @@ bool ConfigController::OpenFile(string FileName)
         {
             //Читаем атрибуты
             int Number = atoi(xml_Sensor->FirstChildElement("Number")->GetText());
-            int NumberBuffer = atoi(xml_Sensor->FirstChildElement("NumberBuffer")->GetText());
+            int NumberBuffer = atoi(xml_Sensor->FirstChildElement("Channel")->GetText());
             std::string Name = std::string(xml_Sensor->FirstChildElement("Name")->GetText());
             std::string NameLog = std::string(xml_Sensor->FirstChildElement("NameLog")->GetText());
             int Param = atoi(xml_Sensor->FirstChildElement("Param")->GetText());
