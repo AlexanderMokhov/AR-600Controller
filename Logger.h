@@ -30,6 +30,9 @@ public:
 
 private slots:
     void WriteRecord();
+signals:
+    void UpdateTime(long time);
+
 };
 
 #endif // LOGGER_H

@@ -16,6 +16,7 @@ void Logger::run()
     //нить потока создана
 pointStart:
     isRestart = false;
+    isRunning = true;
 
     mTimer = new QTimer;
     mTimer->setInterval(mDelay);
@@ -28,6 +29,7 @@ pointStart:
     mTimer->stop();
     SaveData();
 
+    isRunning = false;
     if(isRestart) goto pointStart;
     //нить потока удалена
 }
@@ -61,6 +63,7 @@ void Logger::SetParam(int delay, long duration)
 void Logger::WriteRecord()
 {
     DeviceLogController::Inst()->AddRawData();
+    emit UpdateTime(DeviceLogController::Inst()->mTime.elapsed());
 
     if(DeviceLogController::Inst()->mTime.elapsed()> mDuration)
     {

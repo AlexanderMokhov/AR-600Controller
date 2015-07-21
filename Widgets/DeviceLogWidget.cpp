@@ -7,6 +7,7 @@ DeviceLogWidget::DeviceLogWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     mLogger = new Logger;
+    connect(mLogger,SIGNAL(UpdateTime(long)),SLOT(OnUpdateTime(long)));
 }
 
 DeviceLogWidget::~DeviceLogWidget()
@@ -43,4 +44,9 @@ void DeviceLogWidget::StartWriteLog(int TimeRecord)
 void DeviceLogWidget::StopWriteLog()
 {
     mLogger->StopWriting();
+}
+
+void DeviceLogWidget::OnUpdateTime(long time)
+{
+    ui->lineCurrentTime->setText(QString::number(time));
 }

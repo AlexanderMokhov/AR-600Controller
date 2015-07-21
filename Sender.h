@@ -27,7 +27,7 @@ private:
     int             mSendPort;
     int             mSendDelay;
 
-    bool isRunning;
+    volatile bool isRunning;
     void PrintConnectionState();
 public:
     explicit Sender(QObject *parent = 0);

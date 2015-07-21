@@ -29,6 +29,8 @@ private slots:
     void on_ButtonStopRecord_clicked();
     void StartWriteLog(int TimeRecord);
     void StopWriteLog();
+public slots:
+    void OnUpdateTime(long time);
 };
 
 #endif // DEVICELOGWIDGET_H

@@ -91,6 +91,8 @@ AR600MainWindow::~AR600MainWindow()
 {
     mReceiver->Disconnect();
     mSender->Disconnect();
+    mReceiver->wait();
+    mSender->wait();
     delete ui;
 }
 

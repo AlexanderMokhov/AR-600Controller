@@ -17,7 +17,7 @@ private:
     ReadBuffer      *mReceiveBuffer;
     QTime           *mTime;
     void PrintConnectionState();
-    bool isRunning;
+    volatile bool isRunning;
 public:
     explicit Receiver(QObject *parent = 0);
     ~Receiver();
