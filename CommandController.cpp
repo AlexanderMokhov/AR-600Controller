@@ -11,7 +11,7 @@ CommandController::CommandController()
     mGoToPosData.clear();
 
     mMotors = ConfigController::Inst()->GetMotors();
-    for(auto it = mMotors->begin();it!=mMotors->end();++it)
+    for(auto it = mMotors->begin();it != mMotors->end();++it)
     {
         PosData item;
         item.CurrentPos = 0;
