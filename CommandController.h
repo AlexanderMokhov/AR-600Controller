@@ -20,6 +20,7 @@
 #include <QTime>
 #include <QVector>
 #include <QDebug>
+#include <mutex>
 
 struct PID
 {
@@ -45,6 +46,11 @@ struct PosData
     bool isEndPos;
 };
 
+enum States {Play, PlayStarting, PlayStopping,
+             GoToAngleStarting, GoToAngle, GoToAngleStopping,
+             GoPosStarting, GoToPos, GoPosStopping,
+             NotWork};
+
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
 class CommandController: public QObject
@@ -56,55 +62,65 @@ private:
     CommandController(CommandController const&);
 
     static CommandController* mInst;
-
+    States mState; //текущее состояние
+    std::mutex mLocker; //мьютекс
     QTime mTime;
     std::map<int,Motor> * mMotors;
-    std::map<int,PosData> mGoToPosData;
-
-    bool IsPlaySequenceState;//состояние выполнения команд из файла
-    bool IsGoToAngleState;//состояние выполнения перехода в позицию за время
-    int IsGoToPosState;
 
     //для выполнения команд из файла
     std::vector<Command> mCommands;
     int mCommandId;
     int mDuration;
     int mCountRows;
-    int mCurrentTimeForCommands;
     int mSendDelay;
 
-    //для выполнения перехода в заданный угол
-    int mTimeToGo;
-    int mDestAngle;
-    int mStartAngle;
+    //для перехода в заданный угол
+    int mTimeToGo, NewTimeToGo;
+    int mDestAngle, NewDestAngle;
+    int mStartAngle, NewStartAngle;
     double mCurrentAngle;
     double mStep;
-    int mMotorNumber;
+    int mMotorNumber, NewMotorNumber;
+
+    //для перехода в начальную позицию
+    std::map<int,PosData> mGoToPosData;
+    bool mGoPosMode;
+    int mMotorExistCount;
 public:
     static CommandController* Inst(){return mInst;}
     static void Init(){delete mInst; mInst = new CommandController;}
 
     void DoStepWork();
 
-    //для воспроизведения последовательности команд
     bool OpenFile(std::string fileName);
-    void StepPlay(long time);
-    int GetCountRows();
-    int GetDuration();
-    void SetPlaySequenceState(bool State);
-    void NextCommand();
+    int GetCountRows(){return mCountRows;}
+    int GetDuration(){return mDuration;}
+
+    void NextCommand();//--
+
+    //для воспроизведения последовательности команд
+    void StepPlay();
+    void StartPlay();
+    void StartingPlay();
+    void StopPlay();
+    void StoppingPlay();
 
     //для перехода в заданный угол (один двигатель)
-    void SetupGoToAngle(int MotorNumber, int DestPos, int Time);
-    void StartGoToAngle();
     void StepGoToAngle();
+    void StartGoToAngle(int Number, int DestAngle, int Time);
+    void StartingGoToAngle();
     void StopGoToAngle();
+    void StoppingGoToAngle();
 
     //для перехода в начальную позицию (все двигатели)
-    void StartGoToInitialPos(bool mode);
-    void SetupGoToInitialPos(long TimeToGo);
-    void StepGoToPos();
+    void StartGoPos(bool isCommand);
+    void StartingGoPos();
     void SetPosData(int Number, int DestPos, int StartPos);
+    void SetupGoPos(long TimeToGo);
+    void StepGoToPos();
+    void StopGoPos();
+    void StoppingGoPos();
+
 
 signals:
     void InitStart();

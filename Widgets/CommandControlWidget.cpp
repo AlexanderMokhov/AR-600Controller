@@ -62,13 +62,13 @@ void CommandControlWidget::on_ButtonLoadFile_clicked()
 void CommandControlWidget::on_ButtonPlayPause_clicked()
 {
     isFileCommand = true;
-    CommandController::Inst()->StartGoToInitialPos(true);
+    CommandController::Inst()->StartGoPos(true);
 }
 
 void CommandControlWidget::on_ButtonStop_clicked()
 {
     isFileCommand = false;
-    CommandController::Inst()->SetPlaySequenceState(false);
+    CommandController::Inst()->StopPlay();
 
     if(IsLog)
     {
@@ -91,20 +91,20 @@ void CommandControlWidget::on_checkBoxLog_clicked(bool checked)
 void CommandControlWidget::on_ButtonGoStartPos_clicked()
 {
     isFileCommand = false;
-    CommandController::Inst()->StartGoToInitialPos(false);
+    CommandController::Inst()->StartGoPos(false);
 }
 
 void CommandControlWidget::on_ButtonStartFile_clicked()
 {
     isFileCommand = false;
-    CommandController::Inst()->StartGoToInitialPos(true);
+    CommandController::Inst()->StartGoPos(true);
 }
 
 void CommandControlWidget::startCommand()
 {
     if(isFileCommand)
     {
-        CommandController::Inst()->SetPlaySequenceState(true);
+        CommandController::Inst()->StartPlay();
         if(IsLog)
         {
             emit StartWriteLog(CommandController::Inst()->GetDuration()/1e3);
@@ -142,7 +142,7 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if(!mode)
     {
         isFileCommand = true;
-        CommandController::Inst()->StartGoToInitialPos(true);
+        CommandController::Inst()->StartGoPos(true);
         emit PlayStart();
     }
 }

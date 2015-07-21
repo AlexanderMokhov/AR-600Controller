@@ -2,20 +2,15 @@
 
 CommandController * CommandController::mInst = 0;
 
-CommandController::CommandController():
-                        mCommandId(0),
-                        IsPlaySequenceState(false),
-                        IsGoToAngleState(false),
-                        IsGoToPosState(0)
-
+CommandController::CommandController()
 {
+    mState = States::NotWork; //ничего не делаем
+    mCommandId = 0;
     mSendDelay = ConfigController::Inst()->GetSendDelay();
-
-    //переход в состояние отправки последовательности
-    mMotors = ConfigController::Inst()->GetMotors();
 
     mGoToPosData.clear();
 
+    mMotors = ConfigController::Inst()->GetMotors();
     for(auto it = mMotors->begin();it!=mMotors->end();++it)
     {
         PosData item;
@@ -29,13 +24,15 @@ CommandController::CommandController():
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
-void CommandController::StepPlay(long time)
+void CommandController::StepPlay()
 {
-    if(mCommandId >= mCountRows){return;}
+    long time = mTime.elapsed()*1e3;
+
+    if(mCommandId >= mCountRows){goto StopPlay;}
 
     while(mCommands[mCommandId].Time <= time)
     {
-        if(mCommandId >= mCountRows){return;}
+        if(mCommandId >= mCountRows){goto StopPlay;}
 
         //записываем значение в мотор и проверяем следующую команду
         int Number = mCommands[mCommandId].Number;
@@ -50,8 +47,72 @@ void CommandController::StepPlay(long time)
         BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,Angle);
         mCommandId++;
 
-        if(mCommandId >= mCountRows){return;}
+        if(mCommandId >= mCountRows){goto StopPlay;}
     }
+
+StopPlay:
+    //если время закончилось - останавливаем, переводим индекс команды на начало списка
+    if(time > mDuration)
+    {
+        mCommandId = 0;
+        qDebug() << "Выполнена последняя строка"  << endl;
+        emit PlayEnd();
+        mState = States::NotWork;
+    }
+}
+
+void CommandController::StartPlay()
+{
+    mState = PlayStarting;
+}
+
+void CommandController::StartingPlay()
+{
+    mMotors = ConfigController::Inst()->GetMotors();
+    for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
+    {
+        int Number = (*it).second.GetNumber();
+        int Angle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
+        int Stiff = (*it).second.GetStiff();
+        int Dump = (*it).second.GetDump();
+        int Torque = (*it).second.GetTorque();
+
+        BufferController::Inst()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
+        BufferController::Inst()->GetWriteBuffer()->SetMotorDump(Number,Dump);
+        BufferController::Inst()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
+        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,Angle);
+        BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
+    }
+    mCommandId = 0;
+    mState = States::Play;
+    mTime.start();
+}
+
+void CommandController::StopPlay()
+{
+    mState = States::PlayStopping;
+}
+
+void CommandController::StoppingPlay()
+{
+    //переход в состояние после отправки последовательности
+    mMotors = ConfigController::Inst()->GetMotors();
+    for(auto it = mMotors->begin();it!=mMotors->end();++it)
+    {
+        int Number = (*it).second.GetNumber();
+        int MotorAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
+        int Stiff = (*it).second.GetStiff();
+        int Dump = (*it).second.GetDump();
+        int Torque = (*it).second.GetTorque();
+
+        BufferController::Inst()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
+        BufferController::Inst()->GetWriteBuffer()->SetMotorDump(Number,Dump);
+        BufferController::Inst()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
+        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,MotorAngle);
+        BufferController::Inst()->GetWriteBuffer()->MotorStop(Number);
+    }
+    mCommandId = 0;
+    mState = States::NotWork;
 }
 
 bool CommandController::OpenFile(std::string fileName)
@@ -194,7 +255,6 @@ bool CommandController::OpenFile(std::string fileName)
         }
         mDuration = currentTime;//в микросекундах
         mCommandId=0;
-        mCurrentTimeForCommands=0;
         qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
         qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
 
@@ -209,63 +269,6 @@ bool CommandController::OpenFile(std::string fileName)
 
 }
 
-int CommandController::GetCountRows()
-{
-    return mCountRows;
-}
-
-int CommandController::GetDuration()
-{
-    return mDuration;
-}
-
-void CommandController::SetPlaySequenceState(bool State)
-{
-    if(State)
-    {
-        //переход в состояние отправки последовательности
-        mMotors = ConfigController::Inst()->GetMotors();
-        for(auto it = mMotors->begin();it!=mMotors->end();++it)
-        {
-            int Number = (*it).second.GetNumber();
-            int MotorAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
-            int Stiff = (*it).second.GetStiff();
-            int Dump = (*it).second.GetDump();
-            int Torque = (*it).second.GetTorque();
-
-            BufferController::Inst()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
-            BufferController::Inst()->GetWriteBuffer()->SetMotorDump(Number,Dump);
-            BufferController::Inst()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
-            BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,MotorAngle);
-            BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
-        }
-        mTime.start();
-    }
-    else
-    {
-        //переход в состояние после отправки последовательности
-        mMotors=ConfigController::Inst()->GetMotors();
-        for(auto it = mMotors->begin();it!=mMotors->end();++it)
-        {
-            int Number = (*it).second.GetNumber();
-            int MotorAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
-            int Stiff = (*it).second.GetStiff();
-            int Dump = (*it).second.GetDump();
-            int Torque = (*it).second.GetTorque();
-
-            BufferController::Inst()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
-            BufferController::Inst()->GetWriteBuffer()->SetMotorDump(Number,Dump);
-            BufferController::Inst()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
-            BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,MotorAngle);
-            BufferController::Inst()->GetWriteBuffer()->MotorStop(Number);
-        }
-
-        mCurrentTimeForCommands = 0;
-        mCommandId = 0;
-    }
-    IsPlaySequenceState = State;
-}
-
 void CommandController::NextCommand()
 {
     int Number = mCommands[mCommandId].Number;
@@ -277,28 +280,54 @@ void CommandController::NextCommand()
 
 void CommandController::DoStepWork()
 {
-    if(IsPlaySequenceState)
+    switch (mState){
+    case PlayStarting: //запуск отработки
     {
-        mCurrentTimeForCommands = mTime.elapsed()*1e3;
-        StepPlay(mCurrentTimeForCommands);
-
-        //если время закончилось - останавливаем, переводим индекс команды на начало списка
-        if(mCurrentTimeForCommands > mDuration)
-        {
-            mCurrentTimeForCommands = 0;
-            mCommandId = 0;
-            qDebug() << "Выполнена последняя строка"  << endl;
-            emit PlayEnd();
-            SetPlaySequenceState(false);
-        }
+        StartingPlay();
     }
-    if(IsGoToAngleState)
+        break;
+    case Play: //отработка команд
+    {
+        StepPlay();
+    }
+        break;
+    case PlayStopping: //остановка отработки
+    {
+        StoppingPlay();
+    }
+        break;
+    case GoToAngleStarting: //запуск перехода мотора
+    {
+        StartingGoToAngle();
+    }
+        break;
+    case GoToAngle: //переход мотора в заданный угол
     {
         StepGoToAngle();
     }
-    if(IsGoToPosState > 0)
+        break;
+    case GoToAngleStopping: //остановка перехода мотора
+    {
+        StoppingGoToAngle();
+    }
+        break;
+    case GoPosStarting: //переход в начальную позицию
+    {
+        StartingGoPos();
+    }
+        break;
+    case GoToPos: //переход в начальную позицию
     {
         StepGoToPos();
+    }
+        break;
+    case GoPosStopping: //переход в начальную позицию
+    {
+        StoppingGoPos();
+    }
+        break;
+    default:
+        break;
     }
 }
 
@@ -307,6 +336,59 @@ void CommandController::SetPosData(int Number, int DestPos, int StartPos)
 {
     mGoToPosData[Number].DestPos = DestPos;
     mGoToPosData[Number].StartPos = StartPos;
+}
+
+void CommandController::StartGoPos(bool isCommand)
+{
+    mState = States::GoPosStarting;
+    mGoPosMode = isCommand;
+}
+
+void CommandController::StartingGoPos()
+{
+    emit InitStart();
+    int MaxDiff = 0;
+    int i=0;
+
+    mMotors = ConfigController::Inst()->GetMotors();
+    for(auto it = mMotors->begin();it!=mMotors->end();++it)
+    {
+        int Number = (*it).first;
+        int StartAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
+        int DestAngle = mGoPosMode == true ? mCommands[i].Angle : 0;
+        int DiffAngle = std::abs(DestAngle - StartAngle);
+        MaxDiff = (DiffAngle > MaxDiff && (*it).second.GetEnable()) ? DiffAngle : MaxDiff;
+
+        SetPosData(Number,DestAngle,StartAngle);
+
+        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number, StartAngle);
+        BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
+        i++;
+    }
+
+    long TimeMs = MaxDiff * 1000 / (ConfigController::Inst()->GetDefaultSpeed()*100);
+    SetupGoPos(TimeMs);
+    mMotorExistCount = 21;
+    mState = States::GoToPos;
+}
+
+void CommandController::SetupGoPos(long TimeToGo)
+{
+    int SendDelay = ConfigController::Inst()->GetSendDelay();
+
+    for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
+    {
+        int diffPos = (*it).second.DestPos - (*it).second.StartPos;
+
+        if(TimeToGo != 0)
+        {
+            (*it).second.Step = (double)diffPos/((double)TimeToGo/(double)SendDelay);
+        }
+        else{(*it).second.Step = diffPos;}
+
+        (*it).second.CurrentPos = (*it).second.StartPos;
+        (*it).second.isEndPos = false;
+    }
 }
 
 void CommandController::StepGoToPos()
@@ -325,10 +407,10 @@ void CommandController::StepGoToPos()
 
             if(!(*it).second.isEndPos)
             {
-                IsGoToPosState--;
+                mMotorExistCount--;
                 (*it).second.isEndPos = true;
             }
-            qDebug() << "Отправлено конечное положение " << QString::number((*it).second.DestPos) << endl;
+            qDebug() << QString::number((*it).first) << " Отправлено конечное положение " << QString::number((*it).second.DestPos) << endl;
         }
         else
         {
@@ -339,77 +421,60 @@ void CommandController::StepGoToPos()
     }
 
     //Если равно 0 то конец
-    if(IsGoToPosState == 0) emit InitEnd();
+    if(mMotorExistCount == 0)
+    {
+        qDebug() << "Достигнуто стартовое положение " << endl;
+        mState = States::NotWork;
+        emit InitEnd();
+    }
 }
 
-void CommandController::StartGoToInitialPos(bool toFirstCommand)
+void CommandController::StopGoPos()
 {
-    emit InitStart();
-    IsGoToPosState = 0;
-    int MaxDiff = 0;
-    int i=0;
+    mState = States::GoPosStopping;
+}
 
-    mMotors = ConfigController::Inst()->GetMotors();
+void CommandController::StoppingGoPos()
+{
     for(auto it = mMotors->begin();it!=mMotors->end();++it)
     {
-        int Number = (*it).first;
-        int StartAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
-        int DestAngle = toFirstCommand == true ? mCommands[i].Angle : 0;
-        int DiffAngle = std::abs(DestAngle - StartAngle);
-        MaxDiff = (DiffAngle > MaxDiff && (*it).second.GetEnable()) ? DiffAngle : MaxDiff;
+        int Angle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle((*it).first);
 
-        SetPosData(Number,DestAngle,StartAngle);
-
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number, StartAngle);
-        BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
-        i++;
+        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle((*it).first, Angle);
+        BufferController::Inst()->GetWriteBuffer()->MotorStopBrake((*it).first);
     }
 
-    long TimeMs = MaxDiff * 1000 / (ConfigController::Inst()->GetDefaultSpeed()*100);
-    SetupGoToInitialPos(TimeMs);
-    IsGoToPosState = 21;
+    mState = States::NotWork;
 }
 
-void CommandController::SetupGoToInitialPos(long TimeToGo)
-{
-    int SendDelay = ConfigController::Inst()->GetSendDelay();
-
-    for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
-    {
-        int diffPos = (*it).second.DestPos - (*it).second.StartPos;
-
-        if(TimeToGo != 0)
-        {
-            (*it).second.Step = (double)diffPos/((double)TimeToGo/(double)SendDelay);
-        }
-        else{(*it).second.Step = diffPos;}
-
-        (*it).second.CurrentPos = (*it).second.StartPos;
-        (*it).second.isEndPos = false;
-    }
-}
 //Конец команд для перехода в исходную позицию
 
 //Команды для перехода в заданный угол (один двигатель)
-void CommandController::SetupGoToAngle(int MotorNumber, int DestPos, int Time)
+void CommandController::StartGoToAngle(int Number, int DestAngle, int Time)
 {
-    mMotorNumber = MotorNumber;
-    mStartAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(mMotorNumber);
-    mDestAngle = DestPos;
-    mTimeToGo = Time;
+    NewMotorNumber = Number;
+    NewTimeToGo = Time;
+    NewDestAngle = DestAngle;
+    mState = States::GoToAngleStarting;
 }
 
-void CommandController::StartGoToAngle()
+void CommandController::StartingGoToAngle()
 {
+    mMotorNumber = NewMotorNumber;
+    mTimeToGo = NewTimeToGo;
+    mDestAngle = NewDestAngle;
+    mStartAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(mMotorNumber);
+
     int SendDelay = ConfigController::Inst()->GetSendDelay();
-    int diffAngle = mDestAngle-mStartAngle;//разница в градус*100
+    int diffAngle = mDestAngle - mStartAngle;//разница в градус*100
     mStep = (double)diffAngle/((double)mTimeToGo/(double)SendDelay);//шаг в градус*100
     mCurrentAngle = mStartAngle;
 
     //включаем мотор
     BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(mMotorNumber, mStartAngle);
     BufferController::Inst()->GetWriteBuffer()->MotorTrace(mMotorNumber);
-    IsGoToAngleState = true;
+
+    mState = States::GoToAngle;
 }
 
 void CommandController::StepGoToAngle()
@@ -421,8 +486,8 @@ void CommandController::StepGoToAngle()
     {
         BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(mMotorNumber,mDestAngle);
         BufferController::Inst()->GetWriteBuffer()->MotorStopBrake(mMotorNumber);
-        IsGoToAngleState = false;
         qDebug() << "Отправлено конечное положение " << QString::number(mDestAngle) << endl;
+        mState = States::NotWork;
         return;
     }
     else
@@ -435,8 +500,12 @@ void CommandController::StepGoToAngle()
 
 void CommandController::StopGoToAngle()
 {
-    IsGoToAngleState = false;
-    BufferController::Inst()->GetWriteBuffer()->MotorStop(mMotorNumber);
+    mState = States::GoToAngleStopping;
+}
 
+void CommandController::StoppingGoToAngle()
+{
+    BufferController::Inst()->GetWriteBuffer()->MotorStop(mMotorNumber);
+    mState = States::NotWork;
 }
 //Конец команд для перехода в заданный угол (один двигатель)

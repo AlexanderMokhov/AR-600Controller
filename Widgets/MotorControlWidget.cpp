@@ -234,10 +234,9 @@ void MotorControlWidget::on_ButtonDumpWrite_clicked()
 
 void MotorControlWidget::on_ButtonGoToPos_clicked()
 {
-    CommandController::Inst()->SetupGoToAngle(CurrentNumber,
+    CommandController::Inst()->StartGoToAngle(CurrentNumber,
                                               ui->spinPosToGo->value(),
                                               ui->spinTimeToGo->value());
-    CommandController::Inst()->StartGoToAngle();
 }
 
 void MotorControlWidget::on_ButtonStopGoToPos_clicked()
