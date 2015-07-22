@@ -17,9 +17,9 @@ ConnectConfigDialog::~ConnectConfigDialog()
 
 void ConnectConfigDialog::Update()
 {
-    mHost=QString::fromStdString(ConfigController::Inst()->GetHost());
-    mSendPort=ConfigController::Inst()->GetSendPort();
-    mReceivePort=ConfigController::Inst()->GetReceivePort();
+    mHost = QString::fromStdString(ConfigController::Inst()->GetHost());
+    mSendPort = ConfigController::Inst()->GetSendPort();
+    mReceivePort = ConfigController::Inst()->GetReceivePort();
 
     ui->lineEditHost->setText(mHost);
     ui->lineEditSendPort->setText(QString::number(mSendPort));

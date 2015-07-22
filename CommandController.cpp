@@ -57,7 +57,7 @@ StopPlay:
         mCommandId = 0;
         qDebug() << "Выполнена последняя строка"  << endl;
         emit PlayEnd();
-        mState = States::NotWork;
+        mState = States::PlayStopping;
     }
 }
 

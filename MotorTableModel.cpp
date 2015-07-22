@@ -10,9 +10,9 @@ MotorTableModel::MotorTableModel(QObject *parent) : QAbstractTableModel(parent)
                 << QString::fromUtf8(" МинПоз ")
                 << QString::fromUtf8(" МаксПоз ")
                 << QString::fromUtf8(" Реверс ")
-                << QString::fromUtf8(" KP ")
-                << QString::fromUtf8(" KI ")
-                << QString::fromUtf8(" KD ")
+                << QString::fromUtf8(" K_P ")
+                << QString::fromUtf8(" K_I ")
+                << QString::fromUtf8(" K_D ")
                 << QString::fromUtf8(" КалибПол ")
                 << QString::fromUtf8(" Enable ");
 
@@ -73,6 +73,11 @@ QVariant MotorTableModel::data(const QModelIndex &index, int role) const
             return QString::number(mDataList.at(index.row())->mCalibration);
         if (index.column() == 11 )
             return QString::number(mDataList.at(index.row())->mEnable);
+    }
+    //Роль - выравнивание
+    if (role == Qt::TextAlignmentRole)
+    {
+       return Qt::AlignCenter ;
     }
     return QVariant();
 }

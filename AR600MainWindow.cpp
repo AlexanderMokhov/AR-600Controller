@@ -10,20 +10,13 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     //инициализация контроллеров
     ConfigController::Inst()->Init();
     BufferController::Inst()->Init();
-    //конец инициализации контроллеров
-
-    mSendBuffer = BufferController::Inst()->GetWriteBuffer();
-    mReceiveBuffer = BufferController::Inst()->GetReadBuffer();
 
     //чтение настроек их XML файла
     bool isOk = ConfigController::Inst()->OpenFile("config.xml");
+
     if(isOk)
     {
-        mHost=ConfigController::Inst()->GetHost();
-        mSendPort=ConfigController::Inst()->GetSendPort();
-        mSendDelay=ConfigController::Inst()->GetSendDelay();
-        mReceivePort=ConfigController::Inst()->GetReceivePort();
-        mReceiveDelay=ConfigController::Inst()->GetReceiveDelay();
+        mUpdateDelay = ConfigController::Inst()->GetReceiveDelay();
 
         BufferController::Inst()->InitBuffers();
         CommandController::Inst()->Init();
@@ -47,7 +40,6 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     WidgetsInit();
 
     mConnectDialog = new ConnectConfigDialog();
-
     mMotorControlWidget->setModel(mMotorTableWidget->getModel());
     connect(mMotorTableWidget,SIGNAL(RowChanged(int)),mMotorControlWidget,SLOT(RowChanged(int)));
     //конец настройки виджетов
@@ -76,15 +68,12 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
     mSensorTableWidget->ShowConfigData();
 
     mTimerUpdate = new QTimer();
-    //mTimerUpdate->setTimerType(Qt::PreciseTimer);
-    mTimerUpdate->setInterval(mReceiveDelay);
+    mTimerUpdate->setInterval(mUpdateDelay);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
-    //создание и запуск потоков на отправку и прием буфера
+    //создание потоков на отправку и прием буфера
 
     mSender = new Sender;
     mReceiver = new Receiver;
-    connect(mReceiver,SIGNAL(ReadyData()),this,SLOT(ProcessTheDatagram()));
-
 }
 
 AR600MainWindow::~AR600MainWindow()
@@ -234,11 +223,11 @@ void AR600MainWindow::Connect()
 void AR600MainWindow::Disconnect()
 {
     //выключаем напряжения
-    mSendBuffer->PowerOff61();
-    mSendBuffer->PowerOff62();
-    mSendBuffer->PowerOff81();
-    mSendBuffer->PowerOff82();
-    mSendBuffer->PowerOff48();
+    BufferController::Inst()->GetWriteBuffer()->PowerOff61();
+    BufferController::Inst()->GetWriteBuffer()->PowerOff62();
+    BufferController::Inst()->GetWriteBuffer()->PowerOff81();
+    BufferController::Inst()->GetWriteBuffer()->PowerOff82();
+    BufferController::Inst()->GetWriteBuffer()->PowerOff48();
 
     mReceiver->Disconnect();
     mSender->Disconnect();

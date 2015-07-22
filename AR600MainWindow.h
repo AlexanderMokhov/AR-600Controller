@@ -43,20 +43,12 @@ public:
 private:
     Ui::AR600MainWindow *ui;
 
-    QTimer*             mTimerUpdate;
-
-    WriteBuffer             *mSendBuffer;
-    ReadBuffer              *mReceiveBuffer;
-
-    std::string         mHost;
-    unsigned int        mSendPort;
-    int                 mSendDelay;
-    unsigned int        mReceivePort;
-    int                 mReceiveDelay;
+    QTimer*                 mTimerUpdate;
+    int                     mUpdateDelay;
 
     //виджеты
-    MotorControlWidget   *mMotorControlWidget;
-    CommandControlWidget *mCommandControlWidget;
+    MotorControlWidget      *mMotorControlWidget;
+    CommandControlWidget    *mCommandControlWidget;
     MotorTableWidget        *mMotorTableWidget;
     DeviceLogWidget         *mDeviceLogWidget;
     PowerControlWidget      *mPowerControlWidget;
