@@ -32,7 +32,7 @@ private slots:
 
     void on_ButtonSaveZero_clicked();
 
-    void on_SliderPosition_sliderMoved(int position);
+    void on_SliderAngle_sliderMoved(int position);
 
     void on_checkBoxTrace_clicked(bool checked);
 

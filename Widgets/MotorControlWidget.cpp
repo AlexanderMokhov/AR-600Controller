@@ -56,17 +56,17 @@ void MotorControlWidget::UpdateData()
     int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
     if(Reverce && Calibration)
     {
-        ui->lineCurrentPos->setText(QString::number(-1*CurrentPos));
+        ui->lineCurrentAngle->setText(QString::number(-1*CurrentPos));
     }
     else
     {
-        ui->lineCurrentPos->setText(QString::number(CurrentPos));
+        ui->lineCurrentAngle->setText(QString::number(CurrentPos));
     }
 
     //если слайдер не управляет обновляем и на нем
     if(!TRACE)
     {
-        ui->SliderPosition->setValue(CurrentPos);
+        ui->SliderAngle->setValue(CurrentPos);
     }
 
     //обновляем информацию о токе и напряжении на моторах
@@ -160,7 +160,7 @@ void MotorControlWidget::on_ButtonSaveZero_clicked()
 }
 
 //происходит при изменении позиции слайдером
-void MotorControlWidget::on_SliderPosition_sliderMoved(int position)
+void MotorControlWidget::on_SliderAngle_sliderMoved(int position)
 {
     if(TRACE)
     {
@@ -196,9 +196,12 @@ void MotorControlWidget::SliderInit()
 {
     int MinPos = mReadBuffer->GetMotorMinAngle(CurrentNumber);
     int MaxPos = mReadBuffer->GetMotorMaxAngle(CurrentNumber);
-    int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
-    ui->SliderPosition->setMinimum(MinPos);
-    ui->SliderPosition->setMaximum(MaxPos);
+    int cAngle = mReadBuffer->GetMotorAngle(CurrentNumber);
+    ui->SliderAngle->setMinimum(MinPos);
+    ui->SliderAngle->setMaximum(MaxPos);
+
+    ui->lineMinAngle->setText(QString::number(MinPos));
+    ui->lineMaxAngle->setText(QString::number(MaxPos));
 
     ui->spinDump->setValue(mReadBuffer->GetMotorDamp(CurrentNumber));
     ui->spinStiff->setValue(mReadBuffer->GetMotorStiff(CurrentNumber));
@@ -206,8 +209,8 @@ void MotorControlWidget::SliderInit()
     ui->spinPosToGo->setMinimum(MinPos);
     ui->spinPosToGo->setMaximum(MaxPos);
 
-    ui->SliderPosition->setValue(CurrentPos);
-    mWriteBuffer->SetMotorAngle(CurrentNumber, CurrentPos);
+    ui->SliderAngle->setValue(cAngle);
+    mWriteBuffer->SetMotorAngle(CurrentNumber, cAngle);
 
 }
 

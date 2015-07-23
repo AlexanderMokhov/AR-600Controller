@@ -488,7 +488,6 @@ void CommandController::StepGoToAngle()
         BufferController::Inst()->GetWriteBuffer()->MotorStopBrake(mMotorNumber);
         qDebug() << "Отправлено конечное положение " << QString::number(mDestAngle) << endl;
         mState = States::NotWork;
-        return;
     }
     else
     {
