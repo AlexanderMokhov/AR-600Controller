@@ -48,7 +48,7 @@ struct PosData
 
 enum States {Play, PlayStarting, PlayStopping,
              GoToAngleStarting, GoToAngle, GoToAngleStopping,
-             GoPosStarting, GoToPos, GoPosStopping,
+             GoPosStarting, GoToPos, GoToPosEnding, GoPosStopping,
              NotWork};
 
 // управление конмандами,

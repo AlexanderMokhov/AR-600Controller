@@ -254,7 +254,7 @@ bool CommandController::OpenFile(std::string fileName)
             currentTime=Time;
         }
         mDuration = currentTime;//в микросекундах
-        mCommandId=0;
+        mCommandId = 0;
         qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
         qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
 
@@ -367,6 +367,7 @@ void CommandController::StartingGoPos()
     }
 
     long TimeMs = MaxDiff * 1000 / (ConfigController::Inst()->GetDefaultSpeed()*100);
+    TimeMs = TimeMs < 1000 ? 1000 : TimeMs;
     SetupGoPos(TimeMs);
     mMotorExistCount = 21;
     mState = States::GoToPos;
