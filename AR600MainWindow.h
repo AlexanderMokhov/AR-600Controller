@@ -15,7 +15,7 @@
 #include "Widgets/DeviceLogWidget.h"
 #include "Widgets/PowerControlWidget.h"
 #include "BufferController.h"
-#include "CommandController.h"
+#include "MotionController.h"
 #include <QMessageBox>
 #include <qfiledialog.h>
 #include "DeviceLogController.h"

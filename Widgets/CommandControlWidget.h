@@ -10,7 +10,7 @@
 #include <QState>
 #include <QPropertyAnimation>
 #include <QSignalTransition>
-#include "CommandController.h"
+#include "MotionController.h"
 
 namespace Ui {
 class CommandControlWidget;

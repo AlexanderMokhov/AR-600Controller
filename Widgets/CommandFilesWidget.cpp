@@ -52,7 +52,11 @@ void CommandFilesWidget::AddFile(QString fileName,int RowsCount, int Duration, b
     if(mode)
     {
         double DurationSec = (double)Duration/1e6;
-        mModel->insertRow(QString::number(mModel->rowCount()+1),fileName,fileName,QString::number(RowsCount),QString::number(DurationSec));
+        mModel->insertRow(QString::number(mModel->rowCount()+1),
+                          fileName,
+                          fileName,
+                          QString::number(RowsCount),
+                          QString::number(DurationSec));
     }
 }
 
@@ -82,14 +86,6 @@ void CommandFilesWidget::ShowContextMenu(const QPoint &pos)
     myMenu.addAction(DeleteAction);
 
     QAction* selectedItem = myMenu.exec(globalPos);
-    if (selectedItem)
-    {
-        // something was chosen, do stuff
-    }
-    else
-    {
-        qDebug() << "nothing was chosen";
-    }
 }
 
 void CommandFilesWidget::onDeleteAction()

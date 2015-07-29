@@ -1,8 +1,8 @@
-#include "CommandController.h"
+#include "MotionController.h"
 
-CommandController * CommandController::mInst = 0;
+MotionController * MotionController::mInst = 0;
 
-CommandController::CommandController()
+MotionController::MotionController()
 {
     mState = States::NotWork; //ничего не делаем
     mCommandId = 0;
@@ -24,7 +24,7 @@ CommandController::CommandController()
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
-void CommandController::StepPlay()
+void MotionController::StepPlay()
 {
     long time = mTime.elapsed()*1e3;
 
@@ -61,12 +61,12 @@ StopPlay:
     }
 }
 
-void CommandController::StartPlay()
+void MotionController::StartPlay()
 {
     mState = PlayStarting;
 }
 
-void CommandController::StartingPlay()
+void MotionController::StartingPlay()
 {
     mMotors = ConfigController::Inst()->GetMotors();
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
@@ -88,12 +88,12 @@ void CommandController::StartingPlay()
     mTime.start();
 }
 
-void CommandController::StopPlay()
+void MotionController::StopPlay()
 {
     mState = States::PlayStopping;
 }
 
-void CommandController::StoppingPlay()
+void MotionController::StoppingPlay()
 {
     //переход в состояние после отправки последовательности
     mMotors = ConfigController::Inst()->GetMotors();
@@ -115,7 +115,7 @@ void CommandController::StoppingPlay()
     mState = States::NotWork;
 }
 
-bool CommandController::OpenFile(std::string fileName)
+bool MotionController::OpenFile(std::string fileName)
 {
     std::ifstream file(fileName.c_str());
 
@@ -269,7 +269,7 @@ bool CommandController::OpenFile(std::string fileName)
 
 }
 
-void CommandController::NextCommand()
+void MotionController::NextCommand()
 {
     int Number = mCommands[mCommandId].Number;
     int Angle = mCommands[mCommandId].Angle;
@@ -278,7 +278,7 @@ void CommandController::NextCommand()
     mCommandId++;
 }
 
-void CommandController::DoStepWork()
+void MotionController::DoStepWork()
 {
     switch (mState){
     case PlayStarting: //запуск отработки
@@ -332,19 +332,19 @@ void CommandController::DoStepWork()
 }
 
 //Команды для перехода в исходную позицию
-void CommandController::SetPosData(int Number, int DestPos, int StartPos)
+void MotionController::SetPosData(int Number, int DestPos, int StartPos)
 {
     mGoToPosData[Number].DestPos = DestPos;
     mGoToPosData[Number].StartPos = StartPos;
 }
 
-void CommandController::StartGoPos(bool isCommand)
+void MotionController::StartGoPos(bool isCommand)
 {
     mState = States::GoPosStarting;
     mGoPosMode = isCommand;
 }
 
-void CommandController::StartingGoPos()
+void MotionController::StartingGoPos()
 {
     emit InitStart();
     int MaxDiff = 0;
@@ -373,7 +373,7 @@ void CommandController::StartingGoPos()
     mState = States::GoToPos;
 }
 
-void CommandController::SetupGoPos(long TimeToGo)
+void MotionController::SetupGoPos(long TimeToGo)
 {
     int SendDelay = ConfigController::Inst()->GetSendDelay();
 
@@ -392,7 +392,7 @@ void CommandController::SetupGoPos(long TimeToGo)
     }
 }
 
-void CommandController::StepGoToPos()
+void MotionController::StepGoToPos()
 {
     for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
     {
@@ -430,12 +430,12 @@ void CommandController::StepGoToPos()
     }
 }
 
-void CommandController::StopGoPos()
+void MotionController::StopGoPos()
 {
     mState = States::GoPosStopping;
 }
 
-void CommandController::StoppingGoPos()
+void MotionController::StoppingGoPos()
 {
     for(auto it = mMotors->begin();it!=mMotors->end();++it)
     {
@@ -451,7 +451,7 @@ void CommandController::StoppingGoPos()
 //Конец команд для перехода в исходную позицию
 
 //Команды для перехода в заданный угол (один двигатель)
-void CommandController::StartGoToAngle(int Number, int DestAngle, int Time)
+void MotionController::StartGoToAngle(int Number, int DestAngle, int Time)
 {
     NewMotorNumber = Number;
     NewTimeToGo = Time;
@@ -459,7 +459,7 @@ void CommandController::StartGoToAngle(int Number, int DestAngle, int Time)
     mState = States::GoToAngleStarting;
 }
 
-void CommandController::StartingGoToAngle()
+void MotionController::StartingGoToAngle()
 {
     mMotorNumber = NewMotorNumber;
     mTimeToGo = NewTimeToGo;
@@ -478,7 +478,7 @@ void CommandController::StartingGoToAngle()
     mState = States::GoToAngle;
 }
 
-void CommandController::StepGoToAngle()
+void MotionController::StepGoToAngle()
 {
     bool IsFirst = mDestAngle <= mCurrentAngle && mDestAngle >= mStartAngle;
     bool IsSecond = mDestAngle >= mCurrentAngle && mDestAngle <= mStartAngle;
@@ -498,12 +498,12 @@ void CommandController::StepGoToAngle()
     }
 }
 
-void CommandController::StopGoToAngle()
+void MotionController::StopGoToAngle()
 {
     mState = States::GoToAngleStopping;
 }
 
-void CommandController::StoppingGoToAngle()
+void MotionController::StoppingGoToAngle()
 {
     BufferController::Inst()->GetWriteBuffer()->MotorStop(mMotorNumber);
     mState = States::NotWork;

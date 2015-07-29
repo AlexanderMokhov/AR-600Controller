@@ -6,7 +6,7 @@
 #include <QUdpSocket>
 #include "BufferController.h"
 #include "ConfigController.h"
-#include "CommandController.h"
+#include "MotionController.h"
 #include <QDebug>
 #include <QTimer>
 #include <mutex>

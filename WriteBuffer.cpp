@@ -10,7 +10,7 @@ WriteBuffer::WriteBuffer(void)
     {
         mRAW[i]=0;
     }
-	PowerOn12();
+    PowerOn12();
 }
 
 

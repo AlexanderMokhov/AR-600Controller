@@ -5,7 +5,7 @@
 #include "ConfigController.h"
 #include "BufferController.h"
 #include "MotorTableModel.h"
-#include "CommandController.h"
+#include "MotionController.h"
 
 namespace Ui {
 class MotorControlWidget;

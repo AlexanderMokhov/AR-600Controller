@@ -72,7 +72,7 @@ void Sender::SendDatagram()
     mUdpSocketSender->writeDatagram(mSendBuffer->GetRAW(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
     mUdpSocketSender->waitForBytesWritten();
     mLocker->unlock();
-    CommandController::Inst()->DoStepWork();
+    MotionController::Inst()->DoStepWork();
 }
 
 void Sender::PrintConnectionState()

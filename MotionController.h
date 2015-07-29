@@ -1,5 +1,5 @@
-#ifndef COMMANDCONTROLLER_H
-#define COMMANDCONTROLLER_H
+#ifndef MOTIONCONTROLLER_H
+#define MOTIONCONTROLLER_H
 
 #define _USE_MATH_DEFINES
 
@@ -53,15 +53,15 @@ enum States {Play, PlayStarting, PlayStopping,
 
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
-class CommandController: public QObject
+class MotionController: public QObject
 {
     Q_OBJECT
 private:
-    CommandController();
-    ~CommandController(){}
-    CommandController(CommandController const&);
+    MotionController();
+    ~MotionController(){}
+    MotionController(MotionController const&);
 
-    static CommandController* mInst;
+    static MotionController* mInst;
     States mState; //текущее состояние
     std::mutex mLocker; //мьютекс
     QTime mTime;
@@ -87,8 +87,8 @@ private:
     bool mGoPosMode;
     int mMotorExistCount;
 public:
-    static CommandController* Inst(){return mInst;}
-    static void Init(){delete mInst; mInst = new CommandController;}
+    static MotionController* Inst(){return mInst;}
+    static void Init(){delete mInst; mInst = new MotionController;}
 
     void DoStepWork();
 
@@ -131,4 +131,4 @@ signals:
 
 
 
-#endif // COMMANDCONTROLLER_H
+#endif // MOTIONCONTROLLER_H

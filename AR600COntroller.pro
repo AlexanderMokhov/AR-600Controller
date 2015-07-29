@@ -17,7 +17,6 @@ CONFIG += qt c++11 thread debug
 
 
 SOURCES += main.cpp\
-    CommandController.cpp \
     TinyXML/tinystr.cpp \
     TinyXML/tinyxml.cpp \
     TinyXML/tinyxmlerror.cpp \
@@ -44,10 +43,10 @@ SOURCES += main.cpp\
     CommandTableModel.cpp \
     Receiver.cpp \
     Sender.cpp \
-    Logger.cpp
+    Logger.cpp \
+    MotionController.cpp
 
 HEADERS  += \
-    CommandController.h \
     TinyXML/tinystr.h \
     TinyXML/tinyxml.h \
     BufferController.h \
@@ -73,7 +72,8 @@ HEADERS  += \
     CommandTableModel.h \
     Receiver.h \
     Sender.h \
-    Logger.h
+    Logger.h \
+    MotionController.h
 
 FORMS    += \
     AR600MainWindow.ui \
