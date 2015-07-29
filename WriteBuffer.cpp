@@ -6,10 +6,11 @@
 
 WriteBuffer::WriteBuffer(void)
 {
-    for(int i=0;i<1470;i++)
+    for(int i=0;i<1472;i++)
     {
         mRAW[i]=0;
     }
+	PowerOn12();
 }
 
 
@@ -22,7 +23,7 @@ WriteBuffer::~WriteBuffer(void)
 void WriteBuffer::Init(unsigned char RAW_other[])
 {
     mLocker.lock();
-    for(int i=0;i<1470;i++)
+    for(int i=0;i<1472;i++)
 	{
         mRAW[i]=RAW_other[i];
 	}
@@ -33,7 +34,7 @@ void WriteBuffer::Init(unsigned char RAW_other[])
 void WriteBuffer::Init(void)
 {
     mLocker.lock();
-    for(int i=0;i<1470;i++)
+    for(int i=0;i<1472;i++)
 	{
         mRAW[i]=0;
 	}
