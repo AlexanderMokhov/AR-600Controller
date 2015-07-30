@@ -39,7 +39,7 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
     statePlay->assignProperty(ui->ButtonNext,"enabled",true);
 
     statePlay->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
-    statePlay->addTransition(MotionController::Inst(), SIGNAL(PlayEnd()), stateStop);
+    statePlay->addTransition(MoveController::Inst(), SIGNAL(PlayEnd()), stateStop);
 
     machine->setInitialState(stateNotOpenFile);
     machine->start();
@@ -62,13 +62,13 @@ void CommandControlWidget::on_ButtonLoadFile_clicked()
 void CommandControlWidget::on_ButtonPlayPause_clicked()
 {
     isFileCommand = true;
-    MotionController::Inst()->StartGoPos(true);
+    MoveController::Inst()->StartGoPos(true);
 }
 
 void CommandControlWidget::on_ButtonStop_clicked()
 {
     isFileCommand = false;
-    MotionController::Inst()->StopPlay();
+    MoveController::Inst()->StopPlay();
 
     if(IsLog)
     {
@@ -80,7 +80,7 @@ void CommandControlWidget::on_ButtonStop_clicked()
 
 void CommandControlWidget::on_ButtonNext_clicked()
 {
-    MotionController::Inst()->NextCommand();
+    MoveController::Inst()->NextCommand();
 }
 
 void CommandControlWidget::on_checkBoxLog_clicked(bool checked)
@@ -91,23 +91,23 @@ void CommandControlWidget::on_checkBoxLog_clicked(bool checked)
 void CommandControlWidget::on_ButtonGoStartPos_clicked()
 {
     isFileCommand = false;
-    MotionController::Inst()->StartGoPos(false);
+    MoveController::Inst()->StartGoPos(false);
 }
 
 void CommandControlWidget::on_ButtonStartFile_clicked()
 {
     isFileCommand = false;
-    MotionController::Inst()->StartGoPos(true);
+    MoveController::Inst()->StartGoPos(true);
 }
 
 void CommandControlWidget::startCommand()
 {
     if(isFileCommand)
     {
-        MotionController::Inst()->StartPlay();
+        MoveController::Inst()->StartPlay();
         if(IsLog)
         {
-            emit StartWriteLog(MotionController::Inst()->GetDuration()/1e3);
+            emit StartWriteLog(MoveController::Inst()->GetDuration()/1e3);
 
         }
         emit PlayStart();
@@ -119,13 +119,13 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if (!fileName.isEmpty())
     {
         ui->FilePathTextBox->setText(fileName);
-        bool isOk = MotionController::Inst()->OpenFile(fileName.toStdString());
+        bool isOk = MoveController::Inst()->OpenFile(fileName.toStdString());
         if(isOk)
         {
             qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
             qDebug() << "Команды успешно прочитаны" <<endl;
-            int CountRows = MotionController::Inst()->GetCountRows();
-            int Duration = MotionController::Inst()->GetDuration();
+            int CountRows = MoveController::Inst()->GetCountRows();
+            int Duration = MoveController::Inst()->GetDuration();
             ui->MessageTextBox->clear();
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
@@ -142,7 +142,7 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if(!mode)
     {
         isFileCommand = true;
-        MotionController::Inst()->StartGoPos(true);
+        MoveController::Inst()->StartGoPos(true);
         emit PlayStart();
     }
 }

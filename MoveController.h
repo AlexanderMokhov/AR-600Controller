@@ -1,5 +1,5 @@
-#ifndef MOTIONCONTROLLER_H
-#define MOTIONCONTROLLER_H
+#ifndef MOVECONTROLLER_H
+#define MOVECONTROLLER_H
 
 #define _USE_MATH_DEFINES
 
@@ -46,22 +46,22 @@ struct PosData
     bool isEndPos;
 };
 
-enum States {Play, PlayStarting, PlayStopping,
+enum States {MovePlay, MoveStarting, MoveStopping,
              GoToAngleStarting, GoToAngle, GoToAngleStopping,
              GoPosStarting, GoToPos, GoToPosEnding, GoPosStopping,
              NotWork};
 
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
-class MotionController: public QObject
+class MoveController: public QObject
 {
     Q_OBJECT
 private:
-    MotionController();
-    ~MotionController(){}
-    MotionController(MotionController const&);
+    MoveController();
+    ~MoveController(){}
+    MoveController(MoveController const&);
 
-    static MotionController* mInst;
+    static MoveController* mInst;
     States mState; //текущее состояние
     std::mutex mLocker; //мьютекс
     QTime mTime;
@@ -87,8 +87,8 @@ private:
     bool mGoPosMode;
     int mMotorExistCount;
 public:
-    static MotionController* Inst(){return mInst;}
-    static void Init(){delete mInst; mInst = new MotionController;}
+    static MoveController* Inst(){return mInst;}
+    static void Init(){delete mInst; mInst = new MoveController;}
 
     void DoStepWork();
 
@@ -131,4 +131,4 @@ signals:
 
 
 
-#endif // MOTIONCONTROLLER_H
+#endif // MOVECONTROLLER_H

@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     Receiver.cpp \
     Sender.cpp \
     Logger.cpp \
-    MotionController.cpp
+    Mover.cpp \
+    MoveController.cpp
 
 HEADERS  += \
     TinyXML/tinystr.h \
@@ -73,7 +74,8 @@ HEADERS  += \
     Receiver.h \
     Sender.h \
     Logger.h \
-    MotionController.h
+    Mover.h \
+    MoveController.h
 
 FORMS    += \
     AR600MainWindow.ui \

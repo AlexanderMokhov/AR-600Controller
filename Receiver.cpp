@@ -9,13 +9,13 @@ Receiver::Receiver(QObject *parent) : QThread(parent)
 
 void Receiver::PrintConnectionState()
 {
-    if (mUdpSocketResiver->state() == QUdpSocket::ConnectedState)
+    if (mUdpSocketResiver->state() == QUdpSocket::BoundState)
     {
-        qDebug() << "Receiver - connected";
+        qDebug() << "Receiver - bounded";
     }
     else
     {
-        qDebug() << "Receiver - disconnected";
+        qDebug() << "Receiver - unbounded";
     }
 }
 
@@ -31,7 +31,7 @@ void Receiver::run()
 
     connect(mUdpSocketResiver, SIGNAL(readyRead()), SLOT(ProcessPendingDatagrams()),Qt::DirectConnection);
 
-    qDebug() << "Receiver - connecting..." << endl;
+    qDebug() << "Receiver - binding..." << endl;
 
     int ReceivePort = ConfigController::Inst()->GetReceivePort();
 
@@ -46,7 +46,7 @@ void Receiver::run()
     exec();
     //Завершился цикл обработки событий
 
-    qDebug() << "Receiver - disconnecting..." << endl;
+    qDebug() << "Receiver - unbinding..." << endl;
 
     disconnect(mUdpSocketResiver, SIGNAL(readyRead()));
     mUdpSocketResiver->close();

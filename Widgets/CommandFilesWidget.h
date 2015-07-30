@@ -10,7 +10,7 @@
 
 #include "ConfigController.h"
 #include "BufferController.h"
-#include "MotionController.h"
+#include "MoveController.h"
 
 namespace Ui {
 class CommandFilesWidget;

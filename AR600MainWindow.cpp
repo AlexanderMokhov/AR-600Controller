@@ -19,12 +19,12 @@ AR600MainWindow::AR600MainWindow(QWidget *parent) :
         mUpdateDelay = ConfigController::Inst()->GetReceiveDelay();
 
         BufferController::Inst()->InitBuffers();
-        MotionController::Inst()->Init();
+        MoveController::Inst()->Init();
         DeviceLogController::Inst()->Init();
 
         mCommandControlWidget = new CommandControlWidget();
         ui->CommandControlLayout->addWidget(mCommandControlWidget);
-        connect(MotionController::Inst(),SIGNAL(InitEnd()),mCommandControlWidget,SLOT(startCommand()));
+        connect(MoveController::Inst(),SIGNAL(InitEnd()),mCommandControlWidget,SLOT(startCommand()));
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -178,9 +178,9 @@ void AR600MainWindow::ConnectionsInit()
 
     connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
     connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    connect(MotionController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(DisActivate()));
-    connect(MotionController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
-    connect(MotionController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
+    connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(MoveController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
+    connect(MoveController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
     connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mCommandControlWidget,SLOT(openFile(QString,bool)));
