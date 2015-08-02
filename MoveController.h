@@ -3,7 +3,7 @@
 
 #define _USE_MATH_DEFINES
 
-#include "WriteBuffer.h"
+#include "BufferSend.h"
 #include <iostream>
 #include <fstream>
 #include <string>

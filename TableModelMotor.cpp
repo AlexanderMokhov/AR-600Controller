@@ -1,6 +1,6 @@
-#include "MotorTableModel.h"
+#include "TableModelMotor.h"
 
-MotorTableModel::MotorTableModel(QObject *parent) : QAbstractTableModel(parent)
+TableModelMotor::TableModelMotor(QObject *parent) : QAbstractTableModel(parent)
 {
     //тут записываем названия столбцов
     mHeaderData << QString::fromUtf8(" № ")
@@ -24,22 +24,22 @@ MotorTableModel::MotorTableModel(QObject *parent) : QAbstractTableModel(parent)
 
 }
 
-MotorTableModel::~MotorTableModel()
+TableModelMotor::~TableModelMotor()
 {
 
 }
 
-int MotorTableModel::rowCount(const QModelIndex &parent) const
+int TableModelMotor::rowCount(const QModelIndex &parent) const
 {
     return mDataList.size(); // размер списка - это количество строк
 }
 
-int MotorTableModel::columnCount(const QModelIndex &parent) const
+int TableModelMotor::columnCount(const QModelIndex &parent) const
 {
     return 12; // 12 столбцов
 }
 
-QVariant MotorTableModel::data(const QModelIndex &index, int role) const
+QVariant TableModelMotor::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -82,7 +82,7 @@ QVariant MotorTableModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-bool MotorTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool TableModelMotor::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (index.isValid() && role == Qt::EditRole)
     {
@@ -130,7 +130,7 @@ bool MotorTableModel::setData(const QModelIndex &index, const QVariant &value, i
     return false;
 }
 
-QVariant MotorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant TableModelMotor::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(role != Qt::DisplayRole)
         return QVariant();
@@ -145,14 +145,14 @@ QVariant MotorTableModel::headerData(int section, Qt::Orientation orientation, i
 
 }
 
-Qt::ItemFlags MotorTableModel::flags(const QModelIndex &index) const
+Qt::ItemFlags TableModelMotor::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
         return Qt::ItemIsEnabled;
     return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool MotorTableModel::insertRows(int position, int rows, const QModelIndex &index)
+bool TableModelMotor::insertRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED( index );
 
@@ -169,7 +169,7 @@ bool MotorTableModel::insertRows(int position, int rows, const QModelIndex &inde
     return true;
 }
 
-bool MotorTableModel::removeRows(int position, int rows, const QModelIndex &index)
+bool TableModelMotor::removeRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED( index );
 
@@ -186,7 +186,7 @@ bool MotorTableModel::removeRows(int position, int rows, const QModelIndex &inde
 
 }
 
-void MotorTableModel::insertRow(const QString &Number, const QString &Name,
+void TableModelMotor::insertRow(const QString &Number, const QString &Name,
                                   const QString &Status, const QString &Pos,
                                   const QString &MinPos, const QString &MaxPos,
                                   const QString &Reverce, const QString &Stiff,

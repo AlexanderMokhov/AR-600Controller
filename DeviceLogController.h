@@ -1,5 +1,6 @@
 #ifndef DEVICELOGCONTROLLER_H
 #define DEVICELOGCONTROLLER_H
+
 #include "BufferController.h"
 #include "ConfigController.h"
 
@@ -34,7 +35,7 @@ private:
     DeviceLogController(DeviceLogController const&);
     static DeviceLogController* mInst;
 public:
-    ReadBuffer *mReadBuffer;
+    BufferReceive *mReadBuffer;
     std::map<int,int> mDriversMap;
     std::map<int,int> mSensorsMap;
     std::vector<LogData> mLogVector;

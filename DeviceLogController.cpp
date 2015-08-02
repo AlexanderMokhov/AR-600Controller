@@ -4,7 +4,7 @@ DeviceLogController * DeviceLogController::mInst = 0;
 
 DeviceLogController::DeviceLogController()
 {
-    mReadBuffer = BufferController::Inst()->GetReadBuffer();
+    mReadBuffer = BufferController::Inst()->GetBufferR();
     mConfigMap = ConfigController::Inst()->GetMotors();
     mSensMap = ConfigController::Inst()->GetSensors();
 
@@ -25,12 +25,12 @@ DeviceLogController::DeviceLogController()
 
 void DeviceLogController::AddRawData()
 {
-    for(auto it = mDriversMap.begin();it!=mDriversMap.end();++it)
+    for(auto it = mDriversMap.begin(); it != mDriversMap.end(); ++it)
     {
         (*it).second = mReadBuffer->GetMotorAngle((*it).first);
     }
 
-    for(auto it = mSensorsMap.begin();it!=mSensorsMap.end();++it)
+    for(auto it = mSensorsMap.begin(); it != mSensorsMap.end(); ++it)
     {
         int Value = mReadBuffer->GetSensorValue(mSensMap->at((*it).first).GetChannel(),
                                                 mSensMap->at((*it).first).GetParam()) ;
@@ -39,9 +39,9 @@ void DeviceLogController::AddRawData()
 
     //создаем элемент вектора с данными моторов
     LogData Data;
-    Data.Time=mTime.elapsed();
-    Data.DriversData=mDriversMap;
-    Data.SensorsData=mSensorsMap;
+    Data.Time = mTime.elapsed();
+    Data.DriversData = mDriversMap;
+    Data.SensorsData = mSensorsMap;
     //окончание создания
 
     mLogVector.push_back(Data);

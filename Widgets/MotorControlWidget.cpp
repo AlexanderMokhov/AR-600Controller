@@ -6,8 +6,8 @@ MotorControlWidget::MotorControlWidget(QWidget *parent) :
     ui(new Ui::MotorControlWidget)
 {
     ui->setupUi(this);
-    mReadBuffer = BufferController::Inst()->GetReadBuffer();
-    mWriteBuffer = BufferController::Inst()->GetWriteBuffer();
+    mReadBuffer = BufferController::Inst()->GetBufferR();
+    mWriteBuffer = BufferController::Inst()->GetBufferS();
     Calibration = false;
     TRACE = false;
 }
@@ -17,7 +17,7 @@ MotorControlWidget::~MotorControlWidget()
     delete ui;
 }
 
-void MotorControlWidget::setModel(MotorTableModel *model)
+void MotorControlWidget::setModel(TableModelMotor *model)
 {
     mModel=model;
 }

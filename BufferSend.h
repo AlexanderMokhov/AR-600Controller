@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include <ADefinition.h>
 
-class WriteBuffer
+class BufferSend
 {
 private:
     char mRAW [1472];//массив сырых данных
     std::mutex mLocker;//мьютекс
     DeviceData mMotorData[71];
 public:
-    WriteBuffer(void);
-    ~WriteBuffer(void);
+    BufferSend(void);
+    ~BufferSend(void);
 
     //инициализация
     void Init(unsigned char RAW_other[]);

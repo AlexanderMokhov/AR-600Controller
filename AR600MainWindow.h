@@ -8,7 +8,7 @@
 #include <QItemSelectionModel>
 #include "TinyXML/tinyxml.h"
 #include "ConfigController.h"
-#include "MotorTableModel.h"
+#include "TableModelMotor.h"
 #include "Widgets/MotorControlWidget.h"
 #include "Widgets/CommandControlWidget.h"
 #include "Widgets/MotorTableWidget.h"

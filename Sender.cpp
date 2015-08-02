@@ -3,7 +3,7 @@
 Sender::Sender(QObject *parent) : QThread(parent)
 {
     mTime = new QTime;
-    mSendBuffer = BufferController::Inst()->GetWriteBuffer();
+    mSendBuffer = BufferController::Inst()->GetBufferS();
     mLocker = mSendBuffer->GetLocker();
     isRunning = false;
 }

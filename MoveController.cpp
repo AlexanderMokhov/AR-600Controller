@@ -41,10 +41,10 @@ void MoveController::StepPlay()
         int Dump = mCommands[mCommandId].PIDs.Dump;
         int Torque = mCommands[mCommandId].PIDs.Torque;
 
-        BufferController::Inst()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorDump(Number,Dump);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,Angle);
+        BufferController::Inst()->GetBufferS()->SetMotorStiff(Number,Stiff);
+        BufferController::Inst()->GetBufferS()->SetMotorDump(Number,Dump);
+        BufferController::Inst()->GetBufferS()->SetMotorTorque(Number,Torque);
+        BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
         mCommandId++;
 
         if(mCommandId >= mCountRows){goto StopPlay;}
@@ -72,16 +72,16 @@ void MoveController::StartingPlay()
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
-        int Angle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
+        int Angle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
         int Stiff = (*it).second.GetStiff();
         int Dump = (*it).second.GetDump();
         int Torque = (*it).second.GetTorque();
 
-        BufferController::Inst()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorDump(Number,Dump);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,Angle);
-        BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
+        BufferController::Inst()->GetBufferS()->SetMotorStiff(Number,Stiff);
+        BufferController::Inst()->GetBufferS()->SetMotorDump(Number,Dump);
+        BufferController::Inst()->GetBufferS()->SetMotorTorque(Number,Torque);
+        BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
+        BufferController::Inst()->GetBufferS()->MotorTrace(Number);
     }
     mCommandId = 0;
     mState = States::MovePlay;
@@ -100,16 +100,16 @@ void MoveController::StoppingPlay()
     for(auto it = mMotors->begin();it!=mMotors->end();++it)
     {
         int Number = (*it).second.GetNumber();
-        int MotorAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
+        int MotorAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
         int Stiff = (*it).second.GetStiff();
         int Dump = (*it).second.GetDump();
         int Torque = (*it).second.GetTorque();
 
-        BufferController::Inst()->GetWriteBuffer()->SetMotorStiff(Number,Stiff);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorDump(Number,Dump);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorTorque(Number,Torque);
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,MotorAngle);
-        BufferController::Inst()->GetWriteBuffer()->MotorStop(Number);
+        BufferController::Inst()->GetBufferS()->SetMotorStiff(Number,Stiff);
+        BufferController::Inst()->GetBufferS()->SetMotorDump(Number,Dump);
+        BufferController::Inst()->GetBufferS()->SetMotorTorque(Number,Torque);
+        BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,MotorAngle);
+        BufferController::Inst()->GetBufferS()->MotorStop(Number);
     }
     mCommandId = 0;
     mState = States::NotWork;
@@ -273,8 +273,8 @@ void MoveController::NextCommand()
 {
     int Number = mCommands[mCommandId].Number;
     int Angle = mCommands[mCommandId].Angle;
-    BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number,Angle);
-    BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
+    BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
+    BufferController::Inst()->GetBufferS()->MotorTrace(Number);
     mCommandId++;
 }
 
@@ -354,15 +354,15 @@ void MoveController::StartingGoPos()
     for(auto it = mMotors->begin();it!=mMotors->end();++it)
     {
         int Number = (*it).first;
-        int StartAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number);
+        int StartAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
         int DestAngle = mGoPosMode == true ? mCommands[i].Angle : 0;
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.GetEnable()) ? DiffAngle : MaxDiff;
 
         SetPosData(Number,DestAngle,StartAngle);
 
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(Number, StartAngle);
-        BufferController::Inst()->GetWriteBuffer()->MotorTrace(Number);
+        BufferController::Inst()->GetBufferS()->SetMotorAngle(Number, StartAngle);
+        BufferController::Inst()->GetBufferS()->MotorTrace(Number);
         i++;
     }
 
@@ -403,8 +403,8 @@ void MoveController::StepGoToPos()
 
         if(IsFirst || IsSecond)
         {
-            BufferController::Inst()->GetWriteBuffer()->SetMotorAngle((*it).first,(short)(*it).second.DestPos);
-            BufferController::Inst()->GetWriteBuffer()->MotorStopBrake((*it).first);
+            BufferController::Inst()->GetBufferS()->SetMotorAngle((*it).first,(short)(*it).second.DestPos);
+            BufferController::Inst()->GetBufferS()->MotorStopBrake((*it).first);
 
             if(!(*it).second.isEndPos)
             {
@@ -415,7 +415,7 @@ void MoveController::StepGoToPos()
         }
         else
         {
-            BufferController::Inst()->GetWriteBuffer()->SetMotorAngle((*it).first,(short)(*it).second.CurrentPos);
+            BufferController::Inst()->GetBufferS()->SetMotorAngle((*it).first,(short)(*it).second.CurrentPos);
             qDebug() << "Отправлено положение " << QString::number((*it).second.CurrentPos) << endl;
             (*it).second.CurrentPos += (*it).second.Step;
         }
@@ -439,10 +439,10 @@ void MoveController::StoppingGoPos()
 {
     for(auto it = mMotors->begin();it!=mMotors->end();++it)
     {
-        int Angle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle((*it).first);
+        int Angle = BufferController::Inst()->GetBufferR()->GetMotorAngle((*it).first);
 
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle((*it).first, Angle);
-        BufferController::Inst()->GetWriteBuffer()->MotorStopBrake((*it).first);
+        BufferController::Inst()->GetBufferS()->SetMotorAngle((*it).first, Angle);
+        BufferController::Inst()->GetBufferS()->MotorStopBrake((*it).first);
     }
 
     mState = States::NotWork;
@@ -464,7 +464,7 @@ void MoveController::StartingGoToAngle()
     mMotorNumber = NewMotorNumber;
     mTimeToGo = NewTimeToGo;
     mDestAngle = NewDestAngle;
-    mStartAngle = BufferController::Inst()->GetReadBuffer()->GetMotorAngle(mMotorNumber);
+    mStartAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(mMotorNumber);
 
     int SendDelay = ConfigController::Inst()->GetSendDelay();
     int diffAngle = mDestAngle - mStartAngle;//разница в градус*100
@@ -472,8 +472,8 @@ void MoveController::StartingGoToAngle()
     mCurrentAngle = mStartAngle;
 
     //включаем мотор
-    BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(mMotorNumber, mStartAngle);
-    BufferController::Inst()->GetWriteBuffer()->MotorTrace(mMotorNumber);
+    BufferController::Inst()->GetBufferS()->SetMotorAngle(mMotorNumber, mStartAngle);
+    BufferController::Inst()->GetBufferS()->MotorTrace(mMotorNumber);
 
     mState = States::GoToAngle;
 }
@@ -485,14 +485,14 @@ void MoveController::StepGoToAngle()
 
     if(IsFirst || IsSecond)
     {
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(mMotorNumber,mDestAngle);
-        BufferController::Inst()->GetWriteBuffer()->MotorStopBrake(mMotorNumber);
+        BufferController::Inst()->GetBufferS()->SetMotorAngle(mMotorNumber,mDestAngle);
+        BufferController::Inst()->GetBufferS()->MotorStopBrake(mMotorNumber);
         qDebug() << "Отправлено конечное положение " << QString::number(mDestAngle) << endl;
         mState = States::NotWork;
     }
     else
     {
-        BufferController::Inst()->GetWriteBuffer()->SetMotorAngle(mMotorNumber,(short)mCurrentAngle);
+        BufferController::Inst()->GetBufferS()->SetMotorAngle(mMotorNumber,(short)mCurrentAngle);
         qDebug() << "Отправлено положение " << QString::number(mCurrentAngle) << endl;
         mCurrentAngle += mStep;
     }
@@ -505,7 +505,7 @@ void MoveController::StopGoToAngle()
 
 void MoveController::StoppingGoToAngle()
 {
-    BufferController::Inst()->GetWriteBuffer()->MotorStop(mMotorNumber);
+    BufferController::Inst()->GetBufferS()->MotorStop(mMotorNumber);
     mState = States::NotWork;
 }
 //Конец команд для перехода в заданный угол (один двигатель)

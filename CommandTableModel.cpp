@@ -10,15 +10,15 @@ CommandTableModel::CommandTableModel(QObject *parent) : QAbstractTableModel(pare
                 << QString::fromUtf8(" Время ");
 
     //заполняем пустыми ячейками/*
-        for(int i = 0; i < 20; i++){
-            CommandFile* it = new CommandFile;
-            it->Number = i+1;
-            it->File = "NewFile";
-            it->Name = "HelloCommand";
-            it->RowsCount = 20;
-            it->DurationMs = 3000;
-            mDataList.append(it);
-        }
+    for(int i = 0; i < 20; i++){
+        Move_File* it = new Move_File;
+        it->Number = i+1;
+        it->FileName = "NewFile";
+        it->Description = "HelloCommand";
+        it->RowsCount = 20;
+        it->Duration = 15;
+        mDataList.append(it);
+    }
 }
 
 CommandTableModel::~CommandTableModel()
@@ -49,13 +49,13 @@ QVariant CommandTableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 0 )
             return QString::number(mDataList.at(index.row())->Number);
         if (index.column() == 1 )
-            return mDataList.at(index.row())->File;
+            return mDataList.at(index.row())->FileName;
         if (index.column() == 2 )
-            return mDataList.at(index.row())->Name;
+            return mDataList.at(index.row())->Description;
         if (index.column() == 3 )
             return QString::number(mDataList.at(index.row())->RowsCount);
         if (index.column() == 4 )
-            return QString::number(mDataList.at(index.row())->DurationMs);
+            return QString::number(mDataList.at(index.row())->Duration);
     }
     return QVariant();
 }
@@ -69,16 +69,16 @@ bool CommandTableModel::setData(const QModelIndex &index, const QVariant &value,
             mDataList.at(index.row())->Number = value.toString().toInt();
         }
         if(index.column()==1){
-            mDataList.at(index.row())->File = value.toString();
+            mDataList.at(index.row())->FileName = value.toString();
         }
         if(index.column()==2){
-            mDataList.at(index.row())->Name = value.toString();
+            mDataList.at(index.row())->Description = value.toString();
         }
         if(index.column()==3){
             mDataList.at(index.row())->RowsCount = value.toString().toInt();
         }
         if(index.column()==4){
-            mDataList.at(index.row())->DurationMs = value.toString().toDouble();
+            mDataList.at(index.row())->Duration = value.toString().toDouble();
         }
         emit dataChanged(index, index);
         return true;
@@ -116,7 +116,7 @@ bool CommandTableModel::insertRows(int position, int rows, const QModelIndex &in
 
     for (int row = 0; row < rows; ++row )
     {
-        CommandFile* it = new CommandFile;
+        Move_File* it = new Move_File;
         mDataList.insert(position,it);
     }
 
@@ -141,14 +141,14 @@ bool CommandTableModel::removeRows(int position, int rows, const QModelIndex &in
     return true;
 }
 
-void CommandTableModel::insertRow(const QString &Number, const QString &File, const QString &Name, const QString &Rows, const QString &Duration)
+void CommandTableModel::insertRow(const QString &Number, const QString &FileName, const QString &Description, const QString &RowsCount, const QString &Duration)
 {
     insertRows( mDataList.size(), 1 );
 
     setData( index( mDataList.size()-1, 0 ), Number );
-    setData( index( mDataList.size()-1, 1 ), File );
-    setData( index( mDataList.size()-1, 2 ), Name );
-    setData( index( mDataList.size()-1, 3 ), Rows );
+    setData( index( mDataList.size()-1, 1 ), FileName );
+    setData( index( mDataList.size()-1, 2 ), Description );
+    setData( index( mDataList.size()-1, 3 ), RowsCount );
     setData( index( mDataList.size()-1, 4 ), Duration );
 }
 

@@ -8,7 +8,7 @@ MotorTableWidget::MotorTableWidget(QWidget *parent) :
     ui->setupUi(this);
 
     //заполнение таблицы приводов
-    mModel = new MotorTableModel();
+    mModel = new TableModelMotor();
     ui->MotorTableView->setModel(mModel);
 
     mSelectionModel = ui->MotorTableView->selectionModel();
@@ -61,7 +61,7 @@ void MotorTableWidget::OnRowChanged()
     emit RowChanged(cRow);
 }
 
-MotorTableModel *MotorTableWidget::getModel()
+TableModelMotor *MotorTableWidget::getModel()
 {
     return mModel;
 }
@@ -73,11 +73,11 @@ void MotorTableWidget::UpdatePos()
     for(auto it = mMap->begin();it!=mMap->end();++it)
     {
         int Number = (*it).second.GetNumber();
-        QString cPos = QString::number(BufferController::Inst()->GetReadBuffer()->GetMotorAngle(Number));
+        QString cPos = QString::number(BufferController::Inst()->GetBufferR()->GetMotorAngle(Number));
         mModel->setData(mModel->index(i,3),cPos,Qt::EditRole);
 
         //начало чтения статуса
-        unsigned char status = BufferController::Inst()->GetReadBuffer()->GetMotorStatus(Number);
+        unsigned char status = BufferController::Inst()->GetBufferR()->GetMotorStatus(Number);
         QString statusString;
 
         if((unsigned char)(status & 0) == 0)
@@ -99,7 +99,7 @@ void MotorTableWidget::Activate()
     ui->MotorTableView->setEnabled(true);
 }
 
-void MotorTableWidget::DisActivate()
+void MotorTableWidget::Disactivate()
 {
     ui->MotorTableView->setEnabled(false);
 }

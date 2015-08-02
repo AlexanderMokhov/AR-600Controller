@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "ConfigController.h"
 #include "BufferController.h"
-#include "MotorTableModel.h"
+#include "TableModelMotor.h"
 #include <QFileDialog>
 #include <QStateMachine>
 #include <QState>
@@ -48,7 +48,7 @@ private:
     QState        *statePlay;
     QState        *stateStop;
     QState        *stateNotOpenFile;
-    bool            isFileCommand;
+    bool          isFileCommand;
 
 signals:
     StartWriteLog(int LogTime);

@@ -8,12 +8,11 @@ PowerControlWidget::PowerControlWidget(QWidget *parent) :
     ui->setupUi(this);
     mTimer = new QTimer(this);
     mInterval = 500;
-    mTimer->setInterval(mInterval);//интервал 2 секунды
-    mCurrentTime = 0;
+    mTimer->setInterval(mInterval);//интервал 0.5 секунды
+    mTime = 0;
     isOn = true;
 
     connect(mTimer,SIGNAL(timeout()),this,SLOT(OnTimerTick()));
-    mReadBuffer = BufferController::Inst()->GetReadBuffer();
 }
 
 PowerControlWidget::~PowerControlWidget()
@@ -23,20 +22,20 @@ PowerControlWidget::~PowerControlWidget()
 
 void PowerControlWidget::UpdatePowerLabel()
 {
-    ui->line48_U->setText(QString::number(mReadBuffer->GetPowerU48()));
-    ui->line48_I->setText(QString::number(mReadBuffer->GetPowerI48()));
+    ui->line48_U->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerU48()));
+    ui->line48_I->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerI48()));
 
-    ui->line81_U->setText(QString::number(mReadBuffer->GetPowerU81()));
-    ui->line81_I->setText(QString::number(mReadBuffer->GetPowerI81()));
+    ui->line81_U->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerU81()));
+    ui->line81_I->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerI81()));
 
-    ui->line82_U->setText(QString::number(mReadBuffer->GetPowerU82()));
-    ui->line82_I->setText(QString::number(mReadBuffer->GetPowerI82()));
+    ui->line82_U->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerU82()));
+    ui->line82_I->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerI82()));
 
-    ui->line61_U->setText(QString::number(mReadBuffer->GetPowerU61()));
-    ui->line61_I->setText(QString::number(mReadBuffer->GetPowerI61()));
+    ui->line61_U->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerU61()));
+    ui->line61_I->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerI61()));
 
-    ui->line62_U->setText(QString::number(mReadBuffer->GetPowerU62()));
-    ui->line62_I->setText(QString::number(mReadBuffer->GetPowerI62()));
+    ui->line62_U->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerU62()));
+    ui->line62_I->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerI62()));
 
 }
 
@@ -66,35 +65,35 @@ void PowerControlWidget::OnTimerTick()
     if(isOn)
     {
         //включаем очередное напряжение
-        switch (mCurrentTime)
+        switch (mTime)
         {
         case 0:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOn48();
+            BufferController::Inst()->GetBufferS()->PowerOn48();
             ui->checkBox48V->setChecked(true);
         }
             break;
         case 500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOn82();
+            BufferController::Inst()->GetBufferS()->PowerOn82();
             ui->checkBox8V2->setChecked(true);
         }
             break;
         case 2*500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOn81();
+            BufferController::Inst()->GetBufferS()->PowerOn81();
             ui->checkBox8V1->setChecked(true);
         }
             break;
         case 3*500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOn62();
+            BufferController::Inst()->GetBufferS()->PowerOn62();
             ui->checkBox6V2->setChecked(true);
         }
             break;
         case 4*500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOn61();
+            BufferController::Inst()->GetBufferS()->PowerOn61();
             ui->checkBox6V1->setChecked(true);
             ChechBoxSetEnable(true);
             mTimer->stop();
@@ -103,16 +102,16 @@ void PowerControlWidget::OnTimerTick()
             break;
         }
 
-        mCurrentTime+=mInterval;
+        mTime+=mInterval;
     }
     else
     {
         //выключаем очередное напряжение
-        switch (mCurrentTime)
+        switch (mTime)
         {
         case 0:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOff48();
+            BufferController::Inst()->GetBufferS()->PowerOff48();
             ui->checkBox48V->setChecked(false);
             ChechBoxSetEnable(true);
             mTimer->stop();
@@ -122,30 +121,30 @@ void PowerControlWidget::OnTimerTick()
 
         case 500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOff82();
+            BufferController::Inst()->GetBufferS()->PowerOff82();
             ui->checkBox8V2->setChecked(false);
         }
             break;
         case 2*500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOff81();
+            BufferController::Inst()->GetBufferS()->PowerOff81();
             ui->checkBox8V1->setChecked(false);
         }
             break;
         case 3*500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOff62();
+            BufferController::Inst()->GetBufferS()->PowerOff62();
             ui->checkBox6V2->setChecked(false);
         }
             break;
         case 4*500:
         {
-            BufferController::Inst()->GetWriteBuffer()->PowerOff61();
+            BufferController::Inst()->GetBufferS()->PowerOff61();
             ui->checkBox6V1->setChecked(false);
         }
             break;
         }
-        mCurrentTime-=mInterval;
+        mTime-=mInterval;
     }
 
 }
@@ -163,13 +162,13 @@ void PowerControlWidget::on_checkBox48V_clicked(bool checked)
 {
     if(checked)
     {
-        BufferController::Inst()->GetWriteBuffer()->PowerOn48();
-        mCurrentTime=1*500;
+        BufferController::Inst()->GetBufferS()->PowerOn48();
+        mTime=1*500;
     }
     else
     {
-       BufferController::Inst()->GetWriteBuffer()->PowerOff48();
-       mCurrentTime=0*500;
+       BufferController::Inst()->GetBufferS()->PowerOff48();
+       mTime=0*500;
     }
 }
 
@@ -177,13 +176,13 @@ void PowerControlWidget::on_checkBox8V2_clicked(bool checked)
 {
     if(checked)
     {
-        BufferController::Inst()->GetWriteBuffer()->PowerOn82();
-        mCurrentTime=2*500;
+        BufferController::Inst()->GetBufferS()->PowerOn82();
+        mTime=2*500;
     }
     else
     {
-       BufferController::Inst()->GetWriteBuffer()->PowerOff82();
-       mCurrentTime=1*500;
+       BufferController::Inst()->GetBufferS()->PowerOff82();
+       mTime=1*500;
     }
 }
 
@@ -191,13 +190,13 @@ void PowerControlWidget::on_checkBox8V1_clicked(bool checked)
 {
     if(checked)
     {
-        BufferController::Inst()->GetWriteBuffer()->PowerOn81();
-        mCurrentTime=3*500;
+        BufferController::Inst()->GetBufferS()->PowerOn81();
+        mTime=3*500;
     }
     else
     {
-       BufferController::Inst()->GetWriteBuffer()->PowerOff81();
-       mCurrentTime=2*500;
+       BufferController::Inst()->GetBufferS()->PowerOff81();
+       mTime=2*500;
     }
 }
 
@@ -205,13 +204,13 @@ void PowerControlWidget::on_checkBox6V2_clicked(bool checked)
 {
     if(checked)
     {
-        BufferController::Inst()->GetWriteBuffer()->PowerOn62();
-        mCurrentTime=4*500;
+        BufferController::Inst()->GetBufferS()->PowerOn62();
+        mTime=4*500;
     }
     else
     {
-       BufferController::Inst()->GetWriteBuffer()->PowerOff62();
-       mCurrentTime=3*500;
+       BufferController::Inst()->GetBufferS()->PowerOff62();
+       mTime=3*500;
     }
 }
 
@@ -219,12 +218,12 @@ void PowerControlWidget::on_checkBox6V1_clicked(bool checked)
 {
     if(checked)
     {
-        BufferController::Inst()->GetWriteBuffer()->PowerOn61();
-        mCurrentTime=5*500;
+        BufferController::Inst()->GetBufferS()->PowerOn61();
+        mTime=5*500;
     }
     else
     {
-       BufferController::Inst()->GetWriteBuffer()->PowerOff61();
-       mCurrentTime=4*500;
+       BufferController::Inst()->GetBufferS()->PowerOff61();
+       mTime=4*500;
     }
 }

@@ -1,19 +1,19 @@
-﻿#include "ReadBuffer.h"
+﻿#include "BufferReceive.h"
 
 
-ReadBuffer::ReadBuffer(void)
+BufferReceive::BufferReceive(void)
 {
 
 }
 
 
-ReadBuffer::~ReadBuffer(void)
+BufferReceive::~BufferReceive(void)
 {
 
 }
 
 //инициализируем (читаем)
-void ReadBuffer::Init(const char RAW_other[])
+void BufferReceive::Init(const char RAW_other[])
 {
     mLocker.lock();
     for(int i=0;i<1472;i++)
@@ -23,18 +23,18 @@ void ReadBuffer::Init(const char RAW_other[])
     mLocker.unlock();
 }
 
-void ReadBuffer::SetDeviceChannel(short NumberDevice, short NumberChannel)
+void BufferReceive::SetDeviceChannel(short NumberDevice, short NumberChannel)
 {
     mMotorData[NumberDevice].Channel = NumberChannel;
 }
 
-void ReadBuffer::SetMotorReverce(short Number, bool value)
+void BufferReceive::SetMotorReverce(short Number, bool value)
 {
     mMotorData[Number].isReverce = value;
 
 }
 
-short ReadBuffer::GetSensorYaw(short Number)
+short BufferReceive::GetSensorYaw(short Number)
 {
     mLocker.lock();
     short sensor_yaw =(mRAW[mMotorData[Number].Channel*16+3] << 8) +
@@ -43,7 +43,7 @@ short ReadBuffer::GetSensorYaw(short Number)
     return sensor_yaw;
 }
 
-short ReadBuffer::GetSensorPitch(short Number)
+short BufferReceive::GetSensorPitch(short Number)
 {
     mLocker.lock();
     short sensor_pitch = (mRAW[mMotorData[Number].Channel*16+5] << 8) +
@@ -52,7 +52,7 @@ short ReadBuffer::GetSensorPitch(short Number)
     return sensor_pitch;
 }
 
-short ReadBuffer::GetSensorRoll(short Number)
+short BufferReceive::GetSensorRoll(short Number)
 {
     mLocker.lock();
     short sensor_roll=(mRAW[mMotorData[Number].Channel*16+7] << 8) +
@@ -61,7 +61,7 @@ short ReadBuffer::GetSensorRoll(short Number)
     return sensor_roll;
 }
 
-short ReadBuffer::GetSensorUCH0(short Number)
+short BufferReceive::GetSensorUCH0(short Number)
 {
     mLocker.lock();
     short sensor_uch0=(mRAW[mMotorData[Number].Channel*16+9] << 8) +
@@ -70,7 +70,7 @@ short ReadBuffer::GetSensorUCH0(short Number)
     return sensor_uch0;
 }
 
-short ReadBuffer::GetSensorUCH1(short Number)
+short BufferReceive::GetSensorUCH1(short Number)
 {
     mLocker.lock();
     short sensor_uch1=(mRAW[mMotorData[Number].Channel*16+11] << 8) +
@@ -79,7 +79,7 @@ short ReadBuffer::GetSensorUCH1(short Number)
     return sensor_uch1;
 }
 
-short ReadBuffer::GetSensorUCH2(short Number)
+short BufferReceive::GetSensorUCH2(short Number)
 {
     mLocker.lock();
     short sensor_uch2=(mRAW[mMotorData[Number].Channel*16+13] << 8) +
@@ -88,7 +88,7 @@ short ReadBuffer::GetSensorUCH2(short Number)
     return sensor_uch2;
 }
 
-short ReadBuffer::GetSensorUCH3(short Number)
+short BufferReceive::GetSensorUCH3(short Number)
 {
     mLocker.lock();
     short sensor_uch3=(mRAW[mMotorData[Number].Channel*16+15] << 8) +
@@ -97,7 +97,7 @@ short ReadBuffer::GetSensorUCH3(short Number)
     return sensor_uch3;
 }
 
-short ReadBuffer::GetSensorTX(short Number)
+short BufferReceive::GetSensorTX(short Number)
 {
     mLocker.lock();
     short sensor_tx=(mRAW[mMotorData[Number].Channel*16+3] << 8) +
@@ -106,7 +106,7 @@ short ReadBuffer::GetSensorTX(short Number)
     return sensor_tx;
 }
 
-short ReadBuffer::GetSensorTY(short Number)
+short BufferReceive::GetSensorTY(short Number)
 {
     mLocker.lock();
     short sensor_ty=(mRAW[mMotorData[Number].Channel*16+5] << 8) +
@@ -115,7 +115,7 @@ short ReadBuffer::GetSensorTY(short Number)
     return sensor_ty;
 }
 
-short ReadBuffer::GetSensorFZ(short Number)
+short BufferReceive::GetSensorFZ(short Number)
 {
     mLocker.lock();
     short sensor_fz=(mRAW[mMotorData[Number].Channel*16+7] << 8) +
@@ -124,7 +124,7 @@ short ReadBuffer::GetSensorFZ(short Number)
     return sensor_fz;
 }
 
-short ReadBuffer::GetSensorValue(short Number, int Param)
+short BufferReceive::GetSensorValue(short Number, int Param)
 {
     switch(Number)
     {
@@ -191,7 +191,7 @@ short ReadBuffer::GetSensorValue(short Number, int Param)
     }
 }
 
-short ReadBuffer::GetMotorU(short Number)
+short BufferReceive::GetMotorU(short Number)
 {
     mLocker.lock();
     short motor_ubatt=(mRAW[mMotorData[Number].Channel*16+5] << 8) +
@@ -200,7 +200,7 @@ short ReadBuffer::GetMotorU(short Number)
     return motor_ubatt;
 }
 
-short ReadBuffer::GetMotorI(short Number)
+short BufferReceive::GetMotorI(short Number)
 {
     mLocker.lock();
     short motor_imot=(mRAW[mMotorData[Number].Channel*16+7] << 8) +
@@ -209,7 +209,7 @@ short ReadBuffer::GetMotorI(short Number)
     return motor_imot;
 }
 
-short ReadBuffer::GetMotorAngle(short Number)
+short BufferReceive::GetMotorAngle(short Number)
 {
     mLocker.lock();
     short cpos = (mRAW[mMotorData[Number].Channel*16+3] << 8) +
@@ -222,7 +222,7 @@ short ReadBuffer::GetMotorAngle(short Number)
     return cpos;
 }
 
-short ReadBuffer::GetMotorStiff(short Number)
+short BufferReceive::GetMotorStiff(short Number)
 {
     mLocker.lock();
     short motor_stiff=(mRAW[mMotorData[Number].Channel*16+9] << 8) +
@@ -231,7 +231,7 @@ short ReadBuffer::GetMotorStiff(short Number)
     return motor_stiff;
 }
 
-short ReadBuffer::GetMotorDamp(short Number)
+short BufferReceive::GetMotorDamp(short Number)
 {
     mLocker.lock();
     short motor_damp=(mRAW[mMotorData[Number].Channel*16+11] << 8) +
@@ -240,7 +240,7 @@ short ReadBuffer::GetMotorDamp(short Number)
     return motor_damp;
 }
 
-short ReadBuffer::GetMotorStatus(short Number)
+short BufferReceive::GetMotorStatus(short Number)
 {
     mLocker.lock();
     short motor_stat=(BYTE)mRAW[mMotorData[Number].Channel*16+1];
@@ -249,7 +249,7 @@ short ReadBuffer::GetMotorStatus(short Number)
 
 }
 
-short ReadBuffer::GetMotorMinAngle(short Number)
+short BufferReceive::GetMotorMinAngle(short Number)
 {
     short minpos;
     mLocker.lock();
@@ -267,7 +267,7 @@ short ReadBuffer::GetMotorMinAngle(short Number)
     return minpos;
 }
 
-short ReadBuffer::GetMotorMaxAngle(short Number)
+short BufferReceive::GetMotorMaxAngle(short Number)
 {
     short maxpos;
     mLocker.lock();
@@ -285,7 +285,7 @@ short ReadBuffer::GetMotorMaxAngle(short Number)
     return maxpos;
 }
 
-float ReadBuffer::GetPowerU61()
+float BufferReceive::GetPowerU61()
 {
     mLocker.lock();
     float u61=(float)((mRAW[0 * 2 + 1409] << 8) + (BYTE)mRAW[0 * 2 + 1408])/1000;
@@ -294,7 +294,7 @@ float ReadBuffer::GetPowerU61()
 
 }
 
-float ReadBuffer::GetPowerU62()
+float BufferReceive::GetPowerU62()
 {
     mLocker.lock();
     float u62=(float)((mRAW[1 * 2 + 1409] << 8) + (BYTE)mRAW[1 * 2 + 1408])/1000;
@@ -303,7 +303,7 @@ float ReadBuffer::GetPowerU62()
 
 }
 
-float ReadBuffer::GetPowerU81()
+float BufferReceive::GetPowerU81()
 {
     mLocker.lock();
     float u81=(float)((mRAW[2 * 2 + 1409] << 8) + (BYTE)mRAW[2 * 2 + 1408])/1000;
@@ -312,7 +312,7 @@ float ReadBuffer::GetPowerU81()
 
 }
 
-float ReadBuffer::GetPowerU82()
+float BufferReceive::GetPowerU82()
 {
     mLocker.lock();
     float u82=(float)((mRAW[3 * 2 + 1409] << 8) + (BYTE)mRAW[3 * 2 + 1408])/1000;
@@ -321,7 +321,7 @@ float ReadBuffer::GetPowerU82()
 
 }
 
-float ReadBuffer::GetPowerU12()
+float BufferReceive::GetPowerU12()
 {
     mLocker.lock();
     float u12=(float)((mRAW[4 * 2 + 1409] << 8) + (BYTE)mRAW[1 * 2 + 1408])/1000;
@@ -330,7 +330,7 @@ float ReadBuffer::GetPowerU12()
 
 }
 
-float ReadBuffer::GetPowerU48()
+float BufferReceive::GetPowerU48()
 {
     mLocker.lock();
     float u48=(float)((mRAW[5 * 2 + 1409] << 8) + (BYTE)mRAW[1 * 2 + 1408])/100;
@@ -339,7 +339,7 @@ float ReadBuffer::GetPowerU48()
 
 }
 
-float ReadBuffer::GetPowerI61()
+float BufferReceive::GetPowerI61()
 {
     mLocker.lock();
     float i61=(float)((mRAW[0 * 2 + 12 + 1409] << 8) + (BYTE)mRAW[0 * 2 + 12 + 1408])/1000;
@@ -348,7 +348,7 @@ float ReadBuffer::GetPowerI61()
 
 }
 
-float ReadBuffer::GetPowerI62()
+float BufferReceive::GetPowerI62()
 {
     mLocker.lock();
     float i62=(float)((mRAW[1 * 2 + 12 + 1409] << 8) + (BYTE)mRAW[1 * 2 + 12 + 1408])/1000;
@@ -356,7 +356,7 @@ float ReadBuffer::GetPowerI62()
     return i62;
 }
 
-float ReadBuffer::GetPowerI81()
+float BufferReceive::GetPowerI81()
 {
     mLocker.lock();
     float i81=(float)((mRAW[2 * 2 + 12 + 1409] << 8) + (BYTE)mRAW[2 * 2 + 12 + 1408])/1000;
@@ -365,7 +365,7 @@ float ReadBuffer::GetPowerI81()
 
 }
 
-float ReadBuffer::GetPowerI82()
+float BufferReceive::GetPowerI82()
 {
     mLocker.lock();
     float i82=(float)((mRAW[3 * 2 + 12 + 1409] << 8) + (BYTE)mRAW[3 * 2 + 12 + 1408])/1000;
@@ -374,7 +374,7 @@ float ReadBuffer::GetPowerI82()
 
 }
 
-float ReadBuffer::GetPowerI48()
+float BufferReceive::GetPowerI48()
 {
     mLocker.lock();
     float i48=(float)((mRAW[5 * 2 + 12 + 1409] << 8) + (BYTE)mRAW[5 * 2 + 12 + 1408])/100;
@@ -383,7 +383,7 @@ float ReadBuffer::GetPowerI48()
 
 }
 
-float ReadBuffer::GetPowerI12()
+float BufferReceive::GetPowerI12()
 {
     mLocker.lock();
     float i12=(float)((mRAW[4 * 2 + 12 + 1409] << 8) + (BYTE)mRAW[4 * 2 + 12 + 1408])/1000;
@@ -392,12 +392,12 @@ float ReadBuffer::GetPowerI12()
 
 }
 
-const char *ReadBuffer::GetRAW()
+const char *BufferReceive::GetRAW()
 {
     return mRAW;
 }
 
-std::mutex *ReadBuffer::GetLocker()
+std::mutex *BufferReceive::GetLocker()
 {
     return &mLocker;
 }

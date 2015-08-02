@@ -1,10 +1,10 @@
-﻿#include "WriteBuffer.h"
+﻿#include "BufferSend.h"
 
 #include <stdio.h>
 #include <QDebug>
 
 
-WriteBuffer::WriteBuffer(void)
+BufferSend::BufferSend(void)
 {
     for(int i=0;i<1472;i++)
     {
@@ -14,13 +14,13 @@ WriteBuffer::WriteBuffer(void)
 }
 
 
-WriteBuffer::~WriteBuffer(void)
+BufferSend::~BufferSend(void)
 {
 
 }
 
 //инициализируем (читаем)
-void WriteBuffer::Init(unsigned char RAW_other[])
+void BufferSend::Init(unsigned char RAW_other[])
 {
     mLocker.lock();
     for(int i=0;i<1472;i++)
@@ -31,7 +31,7 @@ void WriteBuffer::Init(unsigned char RAW_other[])
 }
 
 //инициализируем (установка 12 В)
-void WriteBuffer::Init(void)
+void BufferSend::Init(void)
 {
     mLocker.lock();
     for(int i=0;i<1472;i++)
@@ -42,7 +42,7 @@ void WriteBuffer::Init(void)
     mLocker.unlock();
 }
 
-const char *WriteBuffer::GetRAW()
+const char *BufferSend::GetRAW()
 {
     return mRAW;
 }
@@ -50,7 +50,7 @@ const char *WriteBuffer::GetRAW()
 //установка питания
 
 //включить 6 В (1)
-void WriteBuffer::PowerOn61(void)
+void BufferSend::PowerOn61(void)
 {
     mLocker.lock();
     mRAW[1409] |= 1;
@@ -58,7 +58,7 @@ void WriteBuffer::PowerOn61(void)
 }
 
 //включить 6 В (2)
-void WriteBuffer::PowerOn62(void)
+void BufferSend::PowerOn62(void)
 {
     mLocker.lock();
     mRAW[1409] |= 2;
@@ -66,7 +66,7 @@ void WriteBuffer::PowerOn62(void)
 }
 
 //включить 8 В (1)
-void WriteBuffer::PowerOn81(void)
+void BufferSend::PowerOn81(void)
 {
     mLocker.lock();
     mRAW[1409] |= 4;
@@ -74,7 +74,7 @@ void WriteBuffer::PowerOn81(void)
 }
 
 //включить 8 В (2)
-void WriteBuffer::PowerOn82(void)
+void BufferSend::PowerOn82(void)
 {
     mLocker.lock();
     mRAW[1409] |= 8;
@@ -82,7 +82,7 @@ void WriteBuffer::PowerOn82(void)
 }
 
 //включить 12 В
-void WriteBuffer::PowerOn12(void)
+void BufferSend::PowerOn12(void)
 {
     mLocker.lock();
     mRAW[1409] |= 16;
@@ -90,7 +90,7 @@ void WriteBuffer::PowerOn12(void)
 }
 
 //включить 48 В
-void WriteBuffer::PowerOn48(void)
+void BufferSend::PowerOn48(void)
 {
     mLocker.lock();
     mRAW[1409] |= 32;
@@ -98,7 +98,7 @@ void WriteBuffer::PowerOn48(void)
 }
 
 //выключить 6 В (1)
-void WriteBuffer::PowerOff61(void)
+void BufferSend::PowerOff61(void)
 {
     mLocker.lock();
     mRAW[1409] &= (255-1);
@@ -106,7 +106,7 @@ void WriteBuffer::PowerOff61(void)
 }
 
 //выключить 6 В (2)
-void WriteBuffer::PowerOff62(void)
+void BufferSend::PowerOff62(void)
 {
     mLocker.lock();
     mRAW[1409] &= (255-2);
@@ -114,7 +114,7 @@ void WriteBuffer::PowerOff62(void)
 }
 
 //выключить 8 В (1)
-void WriteBuffer::PowerOff81(void)
+void BufferSend::PowerOff81(void)
 {
     mLocker.lock();
     mRAW[1409] &= (255-4);
@@ -122,7 +122,7 @@ void WriteBuffer::PowerOff81(void)
 }
 
 //выключить 8 В (2)
-void WriteBuffer::PowerOff82(void)
+void BufferSend::PowerOff82(void)
 {
     mLocker.lock();
     mRAW[1409] &= (255-8);
@@ -130,7 +130,7 @@ void WriteBuffer::PowerOff82(void)
 }
 
 //выключить 12 В
-void WriteBuffer::PowerOff12(void)
+void BufferSend::PowerOff12(void)
 {
     mLocker.lock();
     mRAW[1409] &= (255-16);
@@ -138,7 +138,7 @@ void WriteBuffer::PowerOff12(void)
 }
 
 //выключить 48 В
-void WriteBuffer::PowerOff48(void)
+void BufferSend::PowerOff48(void)
 {
     mLocker.lock();
     mRAW[1409] &= (255-32);
@@ -146,7 +146,7 @@ void WriteBuffer::PowerOff48(void)
 }
 
 //включить беззвучный режим
-void WriteBuffer::MuteOn(void)
+void BufferSend::MuteOn(void)
 {
     mLocker.lock();
     mRAW[1409] |= 128;
@@ -154,14 +154,14 @@ void WriteBuffer::MuteOn(void)
 }
 
 //выключить беззвучный режим
-void WriteBuffer::MuteOff(void)
+void BufferSend::MuteOff(void)
 {
     mLocker.lock();
     mRAW[1409] &= (255-128);
     mLocker.unlock();
 }
 
-void WriteBuffer::SetDeviceChannel(short NumberDevice, short NumberChannel)
+void BufferSend::SetDeviceChannel(short NumberDevice, short NumberChannel)
 {
     mMotorData[NumberDevice].Channel = NumberChannel;
     mLocker.lock();
@@ -169,14 +169,14 @@ void WriteBuffer::SetDeviceChannel(short NumberDevice, short NumberChannel)
     mLocker.unlock();
 }
 
-std::mutex *WriteBuffer::GetLocker()
+std::mutex *BufferSend::GetLocker()
 {
     return &mLocker;
 }
 
 //установка значений сенсоров
 
-void WriteBuffer::SetSensorUCH0(short Number, short value)
+void BufferSend::SetSensorUCH0(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 8] = (value>>8);
@@ -184,7 +184,7 @@ void WriteBuffer::SetSensorUCH0(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetSensorUCH1(short Number, short value)
+void BufferSend::SetSensorUCH1(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 10] = (value>>8);
@@ -192,7 +192,7 @@ void WriteBuffer::SetSensorUCH1(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetSensorUCH2(short Number, short value)
+void BufferSend::SetSensorUCH2(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 12] = (value>>8);
@@ -200,7 +200,7 @@ void WriteBuffer::SetSensorUCH2(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetSensorUCH3(short Number, short value)
+void BufferSend::SetSensorUCH3(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 14] = (value>>8);
@@ -210,7 +210,7 @@ void WriteBuffer::SetSensorUCH3(short Number, short value)
 //установка значений моторов
 
 //повернуть мотор на угол
-void WriteBuffer::SetMotorAngle(short Number, short value)
+void BufferSend::SetMotorAngle(short Number, short value)
 {
     short MinPos = mMotorData[Number].MinAngle;
     short MaxPos = mMotorData[Number].MaxAngle;
@@ -238,7 +238,7 @@ void WriteBuffer::SetMotorAngle(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetMotorCalibration(short Number, short value)
+void BufferSend::SetMotorCalibration(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 7] = (value>>8);
@@ -246,7 +246,7 @@ void WriteBuffer::SetMotorCalibration(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetMotorStiff(short Number, short value)
+void BufferSend::SetMotorStiff(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 9] = (value>>8);
@@ -254,7 +254,7 @@ void WriteBuffer::SetMotorStiff(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetMotorDump(short Number, short value)
+void BufferSend::SetMotorDump(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 11] = (value>>8);
@@ -262,7 +262,7 @@ void WriteBuffer::SetMotorDump(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetMotorTorque(short Number, short value)
+void BufferSend::SetMotorTorque(short Number, short value)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 5] = (value>>8);
@@ -270,7 +270,7 @@ void WriteBuffer::SetMotorTorque(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetMotorMinAngle(short Number, short value)
+void BufferSend::SetMotorMinAngle(short Number, short value)
 {
     mMotorData[Number].MinAngle = value;//запоминаем отображаемое значение
     mLocker.lock();
@@ -287,7 +287,7 @@ void WriteBuffer::SetMotorMinAngle(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetMotorMaxAngle(short Number, short value)
+void BufferSend::SetMotorMaxAngle(short Number, short value)
 {
     mMotorData[Number].MaxAngle = value;//запоминаем отображаемое значение
     mLocker.lock();
@@ -304,18 +304,18 @@ void WriteBuffer::SetMotorMaxAngle(short Number, short value)
     mLocker.unlock();
 }
 
-void WriteBuffer::SetMotorEnable(short Number, bool value)
+void BufferSend::SetMotorEnable(short Number, bool value)
 {
     mMotorData[Number].isEnable = value;
 }
 
-void WriteBuffer::SetMotorReverce(short Number, bool value)
+void BufferSend::SetMotorReverce(short Number, bool value)
 {
     mMotorData[Number].isReverce = value;
 }
 
 //остановить мотор
-void WriteBuffer::MotorStop(short Number)
+void BufferSend::MotorStop(short Number)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 1] &= (255 - 3);
@@ -324,7 +324,7 @@ void WriteBuffer::MotorStop(short Number)
 }
 
 //зафиксировать мотор
-void WriteBuffer::MotorTrace(short Number)
+void BufferSend::MotorTrace(short Number)
 {
     mLocker.lock();
     if(mMotorData[Number].isEnable)
@@ -335,7 +335,7 @@ void WriteBuffer::MotorTrace(short Number)
 }
 
 //ослабить мотор
-void WriteBuffer::MotorRelax(short Number)
+void BufferSend::MotorRelax(short Number)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 1] &= (255 - 3);
@@ -344,14 +344,14 @@ void WriteBuffer::MotorRelax(short Number)
 }
 
 //отменить остановку мотора
-void WriteBuffer::MotorStopBrake(short Number)
+void BufferSend::MotorStopBrake(short Number)
 {
     mLocker.lock();
     mRAW[mMotorData[Number].Channel * 16 + 1] &= (255 - 3);
     mLocker.unlock();
 }
 
-short WriteBuffer::GetMotorTorque(short Number)
+short BufferSend::GetMotorTorque(short Number)
 {
     mLocker.lock();
     short motor_torque=(mRAW[mMotorData[Number].Channel*16+5] << 8) +

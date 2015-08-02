@@ -11,30 +11,30 @@ void BufferController::InitBuffers()
         int PosMin = (*it).second.GetMinPos();
         int PosMax = (*it).second.GetMaxPos();
 
-        mWriteBuffer.SetDeviceChannel((*it).first,Channel);
-        mReadBuffer.SetDeviceChannel((*it).first,Channel);
+        mBufferSend.SetDeviceChannel((*it).first,Channel);
+        mBufferReceive.SetDeviceChannel((*it).first,Channel);
 
-        mWriteBuffer.SetMotorStiff((*it).first,(*it).second.GetStiff());
-        mWriteBuffer.SetMotorDump((*it).first,(*it).second.GetDump());
-        mWriteBuffer.SetMotorTorque((*it).first,(*it).second.GetTorque());
-        mWriteBuffer.SetMotorCalibration((*it).first,(*it).second.GetCalibration());
+        mBufferSend.SetMotorStiff((*it).first,(*it).second.GetStiff());
+        mBufferSend.SetMotorDump((*it).first,(*it).second.GetDump());
+        mBufferSend.SetMotorTorque((*it).first,(*it).second.GetTorque());
+        mBufferSend.SetMotorCalibration((*it).first,(*it).second.GetCalibration());
 
-        mWriteBuffer.SetMotorReverce((*it).first,(*it).second.GetReverce());
-        mReadBuffer.SetMotorReverce((*it).first,(*it).second.GetReverce());
+        mBufferSend.SetMotorReverce((*it).first,(*it).second.GetReverce());
+        mBufferReceive.SetMotorReverce((*it).first,(*it).second.GetReverce());
 
-        mWriteBuffer.SetMotorEnable((*it).first,(*it).second.GetEnable());
-        mWriteBuffer.SetMotorMinAngle((*it).first,PosMin);
-        mWriteBuffer.SetMotorMaxAngle((*it).first,PosMax);
-        mWriteBuffer.MotorStop((*it).first);
+        mBufferSend.SetMotorEnable((*it).first,(*it).second.GetEnable());
+        mBufferSend.SetMotorMinAngle((*it).first,PosMin);
+        mBufferSend.SetMotorMaxAngle((*it).first,PosMax);
+        mBufferSend.MotorStop((*it).first);
     }
 
     for(auto it = ConfigController::Inst()->GetSensors()->begin();
         it != ConfigController::Inst()->GetSensors()->end();++it)
     {
         int Channel = (*it).second.GetChannel();
-        mWriteBuffer.SetDeviceChannel(Channel,Channel);
-        mReadBuffer.SetDeviceChannel(Channel,Channel);
+        mBufferSend.SetDeviceChannel(Channel,Channel);
+        mBufferReceive.SetDeviceChannel(Channel,Channel);
     }
-    mReadBuffer.Init(mWriteBuffer.GetRAW());
+    mBufferReceive.Init(mBufferSend.GetRAW());
 }
 

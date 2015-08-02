@@ -176,9 +176,9 @@ void AR600MainWindow::ConnectionsInit()
     connect(mCommandControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
     connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
 
-    connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(Disactivate()));
     connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(DisActivate()));
+    connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(Disactivate()));
     connect(MoveController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(MoveController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
@@ -223,11 +223,11 @@ void AR600MainWindow::Connect()
 void AR600MainWindow::Disconnect()
 {
     //выключаем напряжения
-    BufferController::Inst()->GetWriteBuffer()->PowerOff61();
-    BufferController::Inst()->GetWriteBuffer()->PowerOff62();
-    BufferController::Inst()->GetWriteBuffer()->PowerOff81();
-    BufferController::Inst()->GetWriteBuffer()->PowerOff82();
-    BufferController::Inst()->GetWriteBuffer()->PowerOff48();
+    BufferController::Inst()->GetBufferS()->PowerOff61();
+    BufferController::Inst()->GetBufferS()->PowerOff62();
+    BufferController::Inst()->GetBufferS()->PowerOff81();
+    BufferController::Inst()->GetBufferS()->PowerOff82();
+    BufferController::Inst()->GetBufferS()->PowerOff48();
 
     mReceiver->Disconnect();
     mSender->Disconnect();

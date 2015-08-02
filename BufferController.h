@@ -2,8 +2,8 @@
 #define BUFFERCONTROLLER_H
 
 #include "ConfigController.h"
-#include "WriteBuffer.h"
-#include "ReadBuffer.h"
+#include "BufferSend.h"
+#include "BufferReceive.h"
 #include <iostream>
 #include "stdlib.h"
 
@@ -17,14 +17,14 @@ private:
 
     static BufferController* mInst;
 
-    ReadBuffer mReadBuffer;
-    WriteBuffer mWriteBuffer;
+    BufferReceive mBufferReceive;
+    BufferSend mBufferSend;
 public:
     static BufferController* Inst() {return mInst;}
     static void Init(){delete mInst; mInst = new BufferController;}
 
-    ReadBuffer *GetReadBuffer(){return &mReadBuffer;}
-    WriteBuffer *GetWriteBuffer(){return &mWriteBuffer;}
+    BufferReceive *GetBufferR(){return &mBufferReceive;}
+    BufferSend *GetBufferS(){return &mBufferSend;}
     void InitBuffers();
 };
 

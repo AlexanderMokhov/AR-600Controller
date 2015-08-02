@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include <ADefinition.h>
 
-class ReadBuffer
+class BufferReceive
 {
 private:
     char mRAW [1472];
     std::mutex mLocker;
     DeviceData mMotorData[71];
 public:
-    ReadBuffer(void);
-    ~ReadBuffer(void);
+    BufferReceive(void);
+    ~BufferReceive(void);
 
     void Init(const char RAW_other[]);
     //добавить номер номер устройства в отправляемый буфер

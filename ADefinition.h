@@ -8,7 +8,7 @@ struct DeviceData
     bool isReverce; //Реверс
     short MinAngle; //Минимальный угол
     short MaxAngle; //Максимальный угол
-    bool isEnable;  //Доступность
+    bool isEnable;  //Используется
     short Channel;  //Номер канала
 };
 

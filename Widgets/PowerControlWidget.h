@@ -14,11 +14,11 @@ class PowerControlWidget : public QWidget
     Q_OBJECT
 private:
     Ui::PowerControlWidget *ui;
-    QTimer *mTimer;//для задержек включения/откулючения напряжений
-    int mCurrentTime;
+
+    QTimer *mTimer;
+    int mTime;
     int mInterval;
     bool isOn;
-    ReadBuffer              *mReadBuffer;
 public:
     explicit PowerControlWidget(QWidget *parent = 0);
     ~PowerControlWidget();
@@ -30,21 +30,14 @@ private slots:
 
     void OnTimerTick();
 
-
     void on_checkBox48V_clicked(bool checked);
-
     void on_checkBox8V2_clicked(bool checked);
-
     void on_checkBox8V1_clicked(bool checked);
-
     void on_checkBox6V2_clicked(bool checked);
-
     void on_checkBox6V1_clicked(bool checked);
 
 private:
     void ChechBoxSetEnable(bool enable);
-
-
 };
 
 #endif // POWERCONTROLWIDGET_H

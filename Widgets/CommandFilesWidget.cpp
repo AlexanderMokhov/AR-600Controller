@@ -68,7 +68,7 @@ void CommandFilesWidget::OnRowChanged()
 void CommandFilesWidget::on_FilesTable_doubleClicked(const QModelIndex &index)
 {
     if(mModel->rowCount() == 0)     return;
-    emit fileChosen(mModel->mDataList.at(mSelectionModel->currentIndex().row())->File, false);
+    emit fileChosen(mModel->mDataList.at(mSelectionModel->currentIndex().row())->FileName, false);
 
 }
 
@@ -95,7 +95,7 @@ void CommandFilesWidget::onDeleteAction()
 
 void CommandFilesWidget::onSetNameAction()
 {
-    QString name = mModel->mDataList.at(mSelectionModel->currentIndex().row())->Name;
+    QString name = mModel->mDataList.at(mSelectionModel->currentIndex().row())->Description;
     mSetNameDialog->setTextValue(name);
     mSetNameDialog->show();
 }
@@ -104,6 +104,6 @@ void CommandFilesWidget::onDialogAccepted()
 {
     if(!mSetNameDialog->textValue().isEmpty())
     {
-        mModel->mDataList.at(mSelectionModel->currentIndex().row())->Name = mSetNameDialog->textValue();
+        mModel->mDataList.at(mSelectionModel->currentIndex().row())->Description = mSetNameDialog->textValue();
     }
 }

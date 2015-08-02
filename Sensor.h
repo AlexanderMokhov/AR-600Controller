@@ -11,18 +11,20 @@ private:
     int             mValue;
 public:
     Sensor();
-    ~Sensor();
+    ~Sensor(){;}
     Sensor(int Number,
            int Channel,
            std::string Name,
            std::string NameLog,
            int param);
-    int GetValue();
-    void SetValue(int value);
-    std::string GetNameLog();
-    void SetNameLog(std::string NameLog);
-    int GetParam();
-    void SetParam(int Param);
+
+    int GetValue(){return mValue;}
+    std::string GetNameLog(){return mNameLog;}
+    int GetParam(){return mParam;}
+
+    void SetValue(int value){mValue = value;}
+    void SetNameLog(std::string NameLog){mNameLog = NameLog;}
+    void SetParam(int Param){mParam = Param;}
 };
 
 #endif // SENSOR_H

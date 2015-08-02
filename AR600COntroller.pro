@@ -27,12 +27,8 @@ SOURCES += main.cpp\
     Widgets/ConnectConfigDialog.cpp \
     Device.cpp \
     Sensor.cpp \
-    SensorTableModel.cpp \
-    ReadBuffer.cpp \
-    WriteBuffer.cpp \
     Motor.cpp \
     Widgets/DeviceLogWidget.cpp \
-    MotorTableModel.cpp \
     Widgets/MotorTableWidget.cpp \
     Widgets/SensorTableWidget.cpp \
     Widgets/MotorControlWidget.cpp \
@@ -45,7 +41,11 @@ SOURCES += main.cpp\
     Sender.cpp \
     Logger.cpp \
     Mover.cpp \
-    MoveController.cpp
+    MoveController.cpp \
+    BufferSend.cpp \
+    BufferReceive.cpp \
+    TableModelMotor.cpp \
+    TableModelSensor.cpp
 
 HEADERS  += \
     TinyXML/tinystr.h \
@@ -56,13 +56,9 @@ HEADERS  += \
     Widgets/ConnectConfigDialog.h \
     Device.h \
     Sensor.h \
-    SensorTableModel.h \
-    ReadBuffer.h \
-    WriteBuffer.h \
     ADefinition.h \
     Motor.h \
     Widgets/DeviceLogWidget.h \
-    MotorTableModel.h \
     Widgets/MotorTableWidget.h \
     Widgets/SensorTableWidget.h \
     Widgets/MotorControlWidget.h \
@@ -75,7 +71,11 @@ HEADERS  += \
     Sender.h \
     Logger.h \
     Mover.h \
-    MoveController.h
+    MoveController.h \
+    BufferSend.h \
+    BufferReceive.h \
+    TableModelMotor.h \
+    TableModelSensor.h
 
 FORMS    += \
     AR600MainWindow.ui \

@@ -1,30 +1,20 @@
-#ifndef COMMANDTABLEMODEL_H
-#define COMMANDTABLEMODEL_H
+#ifndef SENSORTABLEMODEL_H
+#define SENSORTABLEMODEL_H
 
-#include <QObject>
 #include <QAbstractTableModel>
 #include <QString>
 #include <QList>
 #include <QStringList>
+#include "Sensor.h"
 
-struct Move_File
+class TableModelSensor : public QAbstractTableModel
 {
-    int Number;
-    QString FileName;
-    QString Description;
-    int RowsCount;
-    double Duration;
-};
-
-class CommandTableModel : public QAbstractTableModel
-{
-
     Q_OBJECT
 public:
-    explicit CommandTableModel(QObject *parent = 0);
-    ~CommandTableModel();
+    explicit TableModelSensor(QObject *parent = 0);
+    ~TableModelSensor();
 
-    QList<Move_File*> mDataList; // список, в котором хранятся все данные
+    QList<Sensor*> mDataList; // список, в котором хранятся все данные
     QStringList mHeaderData; // список заголовков столбцов
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const; //количество строк
@@ -36,23 +26,16 @@ public:
 
     //отображение заголовков столбцов
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const; // возвращает установленные флаги
+    Qt::ItemFlags flags(const QModelIndex &index) const; //установленные флаги
 
     //вставляет пустые строки перед текущей позицией
     bool insertRows( int position, int rows,const QModelIndex & index = QModelIndex());
     bool removeRows( int position, int rows,const QModelIndex & index = QModelIndex());
 
-    void insertRow( const QString & Number,
-                    const QString & FileName,
-                    const QString & Description,
-                    const QString & RowsCount,
-                    const QString & Duration);
+    void insertRow( const QString & Number,const QString & Name, const QString & Value);
 
 signals:
     void editCompleted(const QString &);
-public slots:
-
-private:
 };
 
-#endif // COMMANDTABLEMODEL_H
+#endif // SENSORTABLEMODEL_H

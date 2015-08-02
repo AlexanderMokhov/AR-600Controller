@@ -1,13 +1,14 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#include "DeviceLogController.h"
 #include <QObject>
 #include <QThread>
 #include <QDebug>
 #include <QTimer>
 #include <stdlib.h>
 #include <QTime>
-#include "DeviceLogController.h"
+
 
 class Logger : public QThread
 {

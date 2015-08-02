@@ -8,7 +8,7 @@ SensorTableWidget::SensorTableWidget(QWidget *parent) :
     ui->setupUi(this);
 
     //заполнение таблицы приводов
-    mModel = new SensorTableModel();
+    mModel = new TableModelSensor();
     ui->SensorTableView->setModel(mModel);
 
     mSelectionModel = ui->SensorTableView->selectionModel();
@@ -33,7 +33,7 @@ void SensorTableWidget::ShowConfigData()
     std::map<int,Sensor> * mMap = ConfigController::Inst()->GetSensors();
     mModel->removeRows(0,mModel->rowCount());
 
-    for(auto it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
         QString Number = QString::number((*it).first);
         QString Name = QString::fromLocal8Bit((*it).second.GetName().c_str());
@@ -44,7 +44,7 @@ void SensorTableWidget::ShowConfigData()
     emit RowChanged(0);
 }
 
-SensorTableModel *SensorTableWidget::getModel()
+TableModelSensor *SensorTableWidget::getModel()
 {
     return mModel;
 }
@@ -53,11 +53,11 @@ void SensorTableWidget::UpdatePos()
 {
     std::map<int,Sensor> * mMap = ConfigController::Inst()->GetSensors();
     int i=0;
-    for(auto it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
         int Number = (*it).second.GetChannel();//в виде исключения
         int Param = (*it).second.GetParam();
-        QString cValue = QString::number(BufferController::Inst()->GetReadBuffer()->GetSensorValue(Number,Param));
+        QString cValue = QString::number(BufferController::Inst()->GetBufferR()->GetSensorValue(Number,Param));
         mModel->setData(mModel->index(i,2),cValue,Qt::EditRole);
         i++;
     }

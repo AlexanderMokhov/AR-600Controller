@@ -1,6 +1,6 @@
-#include "SensorTableModel.h"
+#include "TableModelSensor.h"
 
-SensorTableModel::SensorTableModel(QObject *parent) : QAbstractTableModel(parent)
+TableModelSensor::TableModelSensor(QObject *parent) : QAbstractTableModel(parent)
 {
     //тут записываем названия столбцов
     mHeaderData << QString::fromUtf8(" № ")
@@ -14,22 +14,22 @@ SensorTableModel::SensorTableModel(QObject *parent) : QAbstractTableModel(parent
         }
 }
 
-SensorTableModel::~SensorTableModel()
+TableModelSensor::~TableModelSensor()
 {
 
 }
 
-int SensorTableModel::rowCount(const QModelIndex &parent) const
+int TableModelSensor::rowCount(const QModelIndex &parent) const
 {
     return mDataList.size(); // размер списка - это количество строк
 }
 
-int SensorTableModel::columnCount(const QModelIndex &parent) const
+int TableModelSensor::columnCount(const QModelIndex &parent) const
 {
     return 3; // 3 столбца
 }
 
-QVariant SensorTableModel::data(const QModelIndex &index, int role) const
+QVariant TableModelSensor::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -49,7 +49,7 @@ QVariant SensorTableModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-bool SensorTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool TableModelSensor::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (index.isValid() && role == Qt::EditRole)
     {
@@ -70,7 +70,7 @@ bool SensorTableModel::setData(const QModelIndex &index, const QVariant &value, 
     return false;
 }
 
-QVariant SensorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant TableModelSensor::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(role != Qt::DisplayRole)
         return QVariant();
@@ -84,14 +84,14 @@ QVariant SensorTableModel::headerData(int section, Qt::Orientation orientation, 
     }
 }
 
-Qt::ItemFlags SensorTableModel::flags(const QModelIndex &index) const
+Qt::ItemFlags TableModelSensor::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
         return Qt::ItemIsEnabled;
     return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool SensorTableModel::insertRows(int position, int rows, const QModelIndex &index)
+bool TableModelSensor::insertRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED( index );
 
@@ -108,7 +108,7 @@ bool SensorTableModel::insertRows(int position, int rows, const QModelIndex &ind
     return true;
 }
 
-bool SensorTableModel::removeRows(int position, int rows, const QModelIndex &index)
+bool TableModelSensor::removeRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED( index );
 
@@ -124,7 +124,7 @@ bool SensorTableModel::removeRows(int position, int rows, const QModelIndex &ind
     return true;
 }
 
-void SensorTableModel::insertRow(const QString &Number, const QString &Name, const QString &Value)
+void TableModelSensor::insertRow(const QString &Number, const QString &Name, const QString &Value)
 {
     insertRows( mDataList.size(), 1 );
 

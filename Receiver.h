@@ -14,7 +14,7 @@ class Receiver : public QThread
     Q_OBJECT
 private:
     QUdpSocket      *mUdpSocketResiver;
-    ReadBuffer      *mReceiveBuffer;
+    BufferReceive      *mReceiveBuffer;
     QTime           *mTime;
     void PrintConnectionState();
     volatile bool isRunning;

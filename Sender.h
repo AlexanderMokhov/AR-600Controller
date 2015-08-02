@@ -18,7 +18,7 @@ class Sender : public QThread
     Q_OBJECT
 private:
     QUdpSocket      *mUdpSocketSender;
-    WriteBuffer     *mSendBuffer;
+    BufferSend     *mSendBuffer;
     QTimer          *mTimerSend;
     std::mutex      *mLocker;
     QTime           *mTime;

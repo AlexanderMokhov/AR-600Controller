@@ -3,7 +3,7 @@
 Receiver::Receiver(QObject *parent) : QThread(parent)
 {
     mTime = new QTime;
-    mReceiveBuffer = BufferController::Inst()->GetReadBuffer();
+    mReceiveBuffer = BufferController::Inst()->GetBufferR();
     isRunning = false;
 }
 
@@ -79,10 +79,10 @@ void Receiver::ProcessPendingDatagrams()
     {
         QByteArray datagram;
         datagram.resize(mUdpSocketResiver->pendingDatagramSize());
-        QHostAddress sender;
-        quint16 senderPort;
+        QHostAddress Host;
+        quint16 Port;
 
-        mUdpSocketResiver->readDatagram(datagram.data(), datagram.size(),&sender, &senderPort);
+        mUdpSocketResiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
         mReceiveBuffer->Init(datagram.data());
         //Отправляем пакет на обработку
         emit ReadyData();
