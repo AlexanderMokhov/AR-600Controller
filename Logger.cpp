@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include <QApplication>
 
 Logger::Logger(QObject *parent) : QThread(parent)
 {

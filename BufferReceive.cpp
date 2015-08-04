@@ -100,8 +100,8 @@ short BufferReceive::GetSensorUCH3(short Number)
 short BufferReceive::GetSensorTX(short Number)
 {
     mLocker.lock();
-    short sensor_tx=(mRAW[mMotorData[Number].Channel*16+3] << 8) +
-            (BYTE)mRAW[mMotorData[Number].Channel*16+2];
+    short sensor_tx=(mRAW[mMotorData[Number].Channel*16+9] << 8) +
+            (BYTE)mRAW[mMotorData[Number].Channel*16+8];
     mLocker.unlock();
     return sensor_tx;
 }
@@ -109,8 +109,8 @@ short BufferReceive::GetSensorTX(short Number)
 short BufferReceive::GetSensorTY(short Number)
 {
     mLocker.lock();
-    short sensor_ty=(mRAW[mMotorData[Number].Channel*16+5] << 8) +
-            (BYTE)mRAW[mMotorData[Number].Channel*16+4];
+    short sensor_ty=(mRAW[mMotorData[Number].Channel*16+11] << 8) +
+            (BYTE)mRAW[mMotorData[Number].Channel*16+10];
     mLocker.unlock();
     return sensor_ty;
 }
@@ -118,8 +118,8 @@ short BufferReceive::GetSensorTY(short Number)
 short BufferReceive::GetSensorFZ(short Number)
 {
     mLocker.lock();
-    short sensor_fz=(mRAW[mMotorData[Number].Channel*16+7] << 8) +
-            (BYTE)mRAW[mMotorData[Number].Channel*16+6];
+    short sensor_fz=(mRAW[mMotorData[Number].Channel*16+13] << 8) +
+            (BYTE)mRAW[mMotorData[Number].Channel*16+12];
     mLocker.unlock();
     return sensor_fz;
 }

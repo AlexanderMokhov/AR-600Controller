@@ -13,7 +13,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = AR600COntroller
 TEMPLATE = app
-CONFIG += qt c++11 thread debug
+CONFIG += qt c++11 thread
 
 
 SOURCES += main.cpp\
@@ -92,3 +92,6 @@ win32 {
     RC_FILE += resource.rc
     OTHER_FILES += resource.rc
 }
+
+RESOURCES += \
+    MyResources.qrc

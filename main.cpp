@@ -5,6 +5,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    Q_INIT_RESOURCE(MyResources);
     AR600MainWindow w;
 	w.show();
 	
