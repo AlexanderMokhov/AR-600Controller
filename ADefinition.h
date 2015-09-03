@@ -6,8 +6,8 @@ typedef unsigned char BYTE;
 struct DeviceData
 {
     bool isReverce; //Реверс
-    short MinAngle; //Минимальный угол
-    short MaxAngle; //Максимальный угол
+    short MinAngle; //Мин. угол
+    short MaxAngle; //Макс. угол
     bool isEnable;  //Используется
     short Channel;  //Номер канала
 };
