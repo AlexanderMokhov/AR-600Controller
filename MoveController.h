@@ -27,9 +27,9 @@ struct PID
     int Stiff = 0;
     int Dump = 0;
     int Torque = 0;
-    double StiffProp = 0;
-    double DumpProp = 0;
-    double TorqueProp = 0;
+    double StiffFactor = 0;
+    double DumpFactor = 0;
+    double TorqueFactor = 0;
 };
 
 struct Command

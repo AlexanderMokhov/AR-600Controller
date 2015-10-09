@@ -96,6 +96,14 @@ bool ConfigController::OpenFile(string FileName)
         mDefaultStiff = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultStiff")->GetText());
         mDefaultDump = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultDump")->GetText());
         mDefaultTorque = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultTorque")->GetText());
+
+        mDefaultStiffFactor = (double)atoi(xml_CommandControllerSettings->FirstChildElement("DefaultStiffFactor")->GetText());
+        mDefaultStiffFactor /= 100.0;
+        mDefaultDumpFactor = (double)atoi(xml_CommandControllerSettings->FirstChildElement("DefaultDumpFactor")->GetText());
+        mDefaultDumpFactor /= 100.0;
+        mDefaultTorqueFactor = (double)atoi(xml_CommandControllerSettings->FirstChildElement("DefaultTorqueFactor")->GetText());
+        mDefaultTorqueFactor /= 100.0;
+
         mDefaultSpeed = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultSpeed")->GetText());
 
         return true;
@@ -267,6 +275,23 @@ bool ConfigController::SaveFile(string FileName)
     xml_CommandControllerSettings->LinkEndChild(xml_DefaultTorque);
     WriteValue=new TiXmlText(itoa(mDefaultTorque,buffer,10));
     xml_DefaultTorque->LinkEndChild(WriteValue);
+
+
+    TiXmlElement * xml_DefaultStiffFactor = new TiXmlElement("DefaultStiffFactor");
+    xml_CommandControllerSettings->LinkEndChild(xml_DefaultStiffFactor);
+    WriteValue=new TiXmlText(itoa((int)mDefaultStiffFactor*100,buffer,10));
+    xml_DefaultStiffFactor->LinkEndChild(WriteValue);
+
+    TiXmlElement * xml_DefaultDumpFactor = new TiXmlElement("DefaultDumpFactor");
+    xml_CommandControllerSettings->LinkEndChild(xml_DefaultDumpFactor);
+    WriteValue=new TiXmlText(itoa((int)mDefaultDumpFactor*100,buffer,10));
+    xml_DefaultDumpFactor->LinkEndChild(WriteValue);
+
+    TiXmlElement * xml_DefaultTorqueFactor = new TiXmlElement("DefaultTorqueFactor");
+    xml_CommandControllerSettings->LinkEndChild(xml_DefaultTorqueFactor);
+    WriteValue=new TiXmlText(itoa((int)mDefaultTorqueFactor*100,buffer,10));
+    xml_DefaultTorqueFactor->LinkEndChild(WriteValue);
+
 
     TiXmlElement * xml_DefaultSpeed = new TiXmlElement("DefaultSpeed");
     xml_CommandControllerSettings->LinkEndChild(xml_DefaultSpeed);

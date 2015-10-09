@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>257</width>
-    <height>490</height>
+    <height>493</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -356,8 +356,11 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="minimum">
+        <number>-1000</number>
+       </property>
        <property name="maximum">
-        <number>1000</number>
+        <number>2000</number>
        </property>
       </widget>
      </item>

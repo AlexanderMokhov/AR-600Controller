@@ -11,7 +11,7 @@ MoveController::MoveController()
     mGoToPosData.clear();
 
     mMotors = ConfigController::Inst()->GetMotors();
-    for(auto it = mMotors->begin();it != mMotors->end();++it)
+    for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
         PosData item;
         item.CurrentPos = 0;
@@ -37,14 +37,20 @@ void MoveController::StepPlay()
         //записываем значение в мотор и проверяем следующую команду
         int Number = mCommands[mCommandId].Number;
         int Angle = mCommands[mCommandId].Angle;
+
         int Stiff = mCommands[mCommandId].PIDs.Stiff;
         int Dump = mCommands[mCommandId].PIDs.Dump;
         int Torque = mCommands[mCommandId].PIDs.Torque;
 
-        BufferController::Inst()->GetBufferS()->SetMotorStiff(Number,Stiff);
-        BufferController::Inst()->GetBufferS()->SetMotorDump(Number,Dump);
-        BufferController::Inst()->GetBufferS()->SetMotorTorque(Number,Torque);
-        BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
+        int StiffFactor = mCommands[mCommandId].PIDs.StiffFactor;
+        int DumpFactor = mCommands[mCommandId].PIDs.DumpFactor;
+        int TorqueFactor = mCommands[mCommandId].PIDs.TorqueFactor;
+
+        BufferController::Inst()->GetBufferS()->SetMotorStiff( Number,(int)Stiff*StiffFactor );
+        BufferController::Inst()->GetBufferS()->SetMotorDump( Number,(int)Dump*DumpFactor );
+        BufferController::Inst()->GetBufferS()->SetMotorTorque( Number,(int)Torque*TorqueFactor );
+
+        BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle );
         mCommandId++;
 
         if(mCommandId >= mCountRows){goto StopPlay;}
@@ -72,16 +78,16 @@ void MoveController::StartingPlay()
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
-        int Angle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
+        int Angle = BufferController::Inst()->GetBufferR()->GetMotorAngle( Number );
         int Stiff = (*it).second.GetStiff();
         int Dump = (*it).second.GetDump();
         int Torque = (*it).second.GetTorque();
 
-        BufferController::Inst()->GetBufferS()->SetMotorStiff(Number,Stiff);
-        BufferController::Inst()->GetBufferS()->SetMotorDump(Number,Dump);
-        BufferController::Inst()->GetBufferS()->SetMotorTorque(Number,Torque);
-        BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
-        BufferController::Inst()->GetBufferS()->MotorTrace(Number);
+        BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
+        BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
+        BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
+        BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle );
+        BufferController::Inst()->GetBufferS()->MotorTrace( Number );
     }
     mCommandId = 0;
     mState = States::MovePlay;
@@ -97,19 +103,19 @@ void MoveController::StoppingPlay()
 {
     //переход в состояние после отправки последовательности
     mMotors = ConfigController::Inst()->GetMotors();
-    for(auto it = mMotors->begin();it != mMotors->end(); ++it)
+    for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
-        int MotorAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
+        int MotorAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle( Number );
         int Stiff = (*it).second.GetStiff();
         int Dump = (*it).second.GetDump();
         int Torque = (*it).second.GetTorque();
 
-        BufferController::Inst()->GetBufferS()->SetMotorStiff(Number,Stiff);
-        BufferController::Inst()->GetBufferS()->SetMotorDump(Number,Dump);
-        BufferController::Inst()->GetBufferS()->SetMotorTorque(Number,Torque);
-        BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,MotorAngle);
-        BufferController::Inst()->GetBufferS()->MotorStopBrake(Number);
+        BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
+        BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
+        BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
+        BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, MotorAngle );
+        BufferController::Inst()->GetBufferS()->MotorStopBrake( Number);
     }
     mCommandId = 0;
     mState = States::NotWork;
@@ -119,7 +125,7 @@ bool MoveController::OpenFile(std::string fileName)
 {
     std::ifstream file(fileName.c_str());
 
-    if(file.is_open())
+    if( file.is_open() )
     {
         //очищаем список команд
         mCommands.clear();
@@ -136,7 +142,11 @@ bool MoveController::OpenFile(std::string fileName)
         mPID.Dump = ConfigController::Inst()->GetDefaultDump();
         mPID.Torque = ConfigController::Inst()->GetDefaultTorque();
 
-        while(std::getline(file, str))
+        mPID.StiffFactor = ConfigController::Inst()->GetDefaultStiffFactor();
+        mPID.DumpFactor = ConfigController::Inst()->GetDefaultDumpFactor();
+        mPID.TorqueFactor = ConfigController::Inst()->GetDefaultTorqueFactor();
+
+        while( std::getline(file, str) )
         {
 
             std::locale loc;
@@ -144,44 +154,44 @@ bool MoveController::OpenFile(std::string fileName)
 
             //читаем номер привода
             unsigned int i=0;
-            while(std::isspace(str[i],loc))
+            while( std::isspace(str[i],loc) )
                 i++;
             std::string temp;
-            while(!std::isspace(str[i],loc))
+            while( !std::isspace(str[i],loc) )
             {
-                temp+=str.at(i);
+                temp += str.at(i);
                 i++;
             }
             //прочитали номер привода
 
             //записываем номер привода
-            int Number = atoi(temp.c_str());
+            int Number = atoi( temp.c_str() );
             temp.clear();
 
             //читаем время(как целое число)
-            while(std::isspace(str[i],loc))
+            while( std::isspace(str[i],loc) )
                 i++;
-            while(str[i]!='.')
+            while( str[i] != '.' )
             {
-                temp+=str.at(i);
+                temp += str.at(i);
                 i++;
             }
             i++;
-            while(!std::isspace(str[i],loc))
+            while( !std::isspace(str[i],loc) )
             {
-                temp+=str.at(i);
+                temp += str.at(i);
                 i++;
             }
             //прочитали время
 
             //записываем время
-            int Time = atoi(temp.c_str());
+            int Time = atoi( temp.c_str() );
             temp.clear();
 
             //читаем позицию
-            while(std::isspace(str[i],loc))
+            while( std::isspace(str[i],loc) )
                 i++;
-            while(!std::isspace(str[i],loc) && i<str.length())
+            while( !std::isspace(str[i],loc) && i < str.length() )
             {
                 temp+=str.at(i);
                 i++;
@@ -241,6 +251,9 @@ bool MoveController::OpenFile(std::string fileName)
                 mPID.Dump = KI;
                 mPID.Torque = KD;
 
+                while(std::isspace(str[i],loc))
+                    i++;
+
                 if(str[i]!='\0')
                 {
                     //значит здесь записаны коэффициенты пропорциональности PID
@@ -251,7 +264,7 @@ bool MoveController::OpenFile(std::string fileName)
                         i++;
                     }
                     //прочитали KP
-                    double KPProp = atof(temp.c_str());
+                    double KPFactor = atof(temp.c_str());
                     temp.clear();
 
                     //читаем KI
@@ -263,7 +276,7 @@ bool MoveController::OpenFile(std::string fileName)
                         i++;
                     }
                     //прочитали KI
-                    double KIProp = atof(temp.c_str());
+                    double KIFactor = atof(temp.c_str());
                     temp.clear();
 
                     //читаем KD
@@ -275,13 +288,13 @@ bool MoveController::OpenFile(std::string fileName)
                         i++;
                     }
                     //прочитали KD
-                    double KDProp = atof(temp.c_str());
+                    double KDFactor = atof(temp.c_str());
                     temp.clear();
 
                     //заполняем коэффициенты пропорциональности PID
-                    mPID.StiffProp = KPProp;
-                    mPID.DumpProp = KIProp;
-                    mPID.TorqueProp = KDProp;
+                    mPID.StiffFactor = KPFactor;
+                    mPID.DumpFactor = KIFactor;
+                    mPID.TorqueFactor = KDFactor;
                 }
             }
 
