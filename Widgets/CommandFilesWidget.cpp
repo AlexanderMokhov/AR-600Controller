@@ -90,7 +90,7 @@ void CommandFilesWidget::ShowContextMenu(const QPoint &pos)
 
 void CommandFilesWidget::onDeleteAction()
 {
-    mModel->removeRow(mSelectionModel->currentIndex().row(),mSelectionModel->currentIndex());
+    mModel->removeRow(mSelectionModel->currentIndex().row(), mSelectionModel->currentIndex());
 }
 
 void CommandFilesWidget::onSetNameAction()

@@ -97,7 +97,7 @@ void MoveController::StoppingPlay()
 {
     //переход в состояние после отправки последовательности
     mMotors = ConfigController::Inst()->GetMotors();
-    for(auto it = mMotors->begin();it!=mMotors->end();++it)
+    for(auto it = mMotors->begin();it != mMotors->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
         int MotorAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
@@ -109,7 +109,7 @@ void MoveController::StoppingPlay()
         BufferController::Inst()->GetBufferS()->SetMotorDump(Number,Dump);
         BufferController::Inst()->GetBufferS()->SetMotorTorque(Number,Torque);
         BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,MotorAngle);
-        BufferController::Inst()->GetBufferS()->MotorStop(Number);
+        BufferController::Inst()->GetBufferS()->MotorStopBrake(Number);
     }
     mCommandId = 0;
     mState = States::NotWork;
@@ -240,6 +240,49 @@ bool MoveController::OpenFile(std::string fileName)
                 mPID.Stiff = KP;
                 mPID.Dump = KI;
                 mPID.Torque = KD;
+
+                if(str[i]!='\0')
+                {
+                    //значит здесь записаны коэффициенты пропорциональности PID
+                    //читаем KP
+                    while(!std::isspace(str[i], loc) && i < str.length())
+                    {
+                        temp += str.at(i);
+                        i++;
+                    }
+                    //прочитали KP
+                    double KPProp = atof(temp.c_str());
+                    temp.clear();
+
+                    //читаем KI
+                    while(std::isspace(str[i], loc))
+                        i++;
+                    while(!std::isspace(str[i], loc) && i < str.length())
+                    {
+                        temp += str.at(i);
+                        i++;
+                    }
+                    //прочитали KI
+                    double KIProp = atof(temp.c_str());
+                    temp.clear();
+
+                    //читаем KD
+                    while(std::isspace(str[i], loc))
+                        i++;
+                    while(!std::isspace(str[i], loc) && i < str.length())
+                    {
+                        temp += str.at(i);
+                        i++;
+                    }
+                    //прочитали KD
+                    double KDProp = atof(temp.c_str());
+                    temp.clear();
+
+                    //заполняем коэффициенты пропорциональности PID
+                    mPID.StiffProp = KPProp;
+                    mPID.DumpProp = KIProp;
+                    mPID.TorqueProp = KDProp;
+                }
             }
 
             //заполняем команду
