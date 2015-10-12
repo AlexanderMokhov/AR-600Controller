@@ -74,18 +74,21 @@ void CommandFilesWidget::on_FilesTable_doubleClicked(const QModelIndex &index)
 
 void CommandFilesWidget::ShowContextMenu(const QPoint &pos)
 {
-    if(mModel->rowCount() == 0)     return;
+    if( mModel->rowCount() == 0 ) return;
+
     QPoint globalPos = ui->FilesTable->mapToGlobal(pos);
 
     QMenu myMenu;
     QAction *SetNameAction = new QAction(tr("Задать название"), this);
     QAction *DeleteAction = new QAction(tr("Удалить"), this);
+
     connect(DeleteAction,SIGNAL(triggered()),SLOT(onDeleteAction()));
     connect(SetNameAction,SIGNAL(triggered()),SLOT(onSetNameAction()));
+
     myMenu.addAction(SetNameAction);
     myMenu.addAction(DeleteAction);
 
-    QAction* selectedItem = myMenu.exec(globalPos);
+    myMenu.exec(globalPos);
 }
 
 void CommandFilesWidget::onDeleteAction()

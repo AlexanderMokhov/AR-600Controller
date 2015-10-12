@@ -8,7 +8,7 @@ SensorTableWidget::SensorTableWidget(QWidget *parent) :
     ui->setupUi(this);
 
     //заполнение таблицы приводов
-    mModel = new TableModelSensor();
+    mModel = new SensorTableModel();
     ui->SensorTableView->setModel(mModel);
 
     mSelectionModel = ui->SensorTableView->selectionModel();
@@ -44,7 +44,7 @@ void SensorTableWidget::ShowConfigData()
     emit RowChanged(0);
 }
 
-TableModelSensor *SensorTableWidget::getModel()
+SensorTableModel *SensorTableWidget::getModel()
 {
     return mModel;
 }

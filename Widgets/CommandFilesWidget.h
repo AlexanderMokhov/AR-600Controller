@@ -2,7 +2,7 @@
 #define COMMANDFILESWIDGET_H
 
 #include <QWidget>
-#include <CommandTableModel.h>
+#include <Models/CommandTableModel.h>
 #include <QItemSelectionModel>
 #include <QMenu>
 #include <QDebug>

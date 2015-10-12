@@ -8,7 +8,7 @@ MotorTableWidget::MotorTableWidget(QWidget *parent) :
     ui->setupUi(this);
 
     //заполнение таблицы приводов
-    mModel = new TableModelMotor();
+    mModel = new MotorTableModel();
     ui->MotorTableView->setModel(mModel);
 
     mSelectionModel = ui->MotorTableView->selectionModel();
@@ -61,7 +61,7 @@ void MotorTableWidget::OnRowChanged()
     emit RowChanged(cRow);
 }
 
-TableModelMotor *MotorTableWidget::getModel()
+MotorTableModel *MotorTableWidget::getModel()
 {
     return mModel;
 }
@@ -70,7 +70,7 @@ void MotorTableWidget::UpdatePos()
 {
     std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotors();
     int i=0;
-    for(auto it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
         QString cPos = QString::number(BufferController::Inst()->GetBufferR()->GetMotorAngle(Number));

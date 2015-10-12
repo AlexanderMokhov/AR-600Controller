@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "ConfigController.h"
 #include "BufferController.h"
-#include "TableModelMotor.h"
+#include "Models/MotorTableModel.h"
 #include <QFileDialog>
 #include <QStateMachine>
 #include <QState>

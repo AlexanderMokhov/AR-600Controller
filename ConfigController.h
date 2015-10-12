@@ -35,6 +35,7 @@ private:
     int mDefaultStiff;              //Пропорциональный коэффициент по умолчанию
     int mDefaultDump;               //Интегральный коэффициент по умолчанию
     int mDefaultTorque;             //Диффиренциальный коэффициент по умолчанию
+
     double mDefaultStiffFactor;     //Пропорциональный коэффициент по умолчанию (доля)
     double mDefaultDumpFactor;      //Интегральный коэффициент по умолчанию (доля)
     double mDefaultTorqueFactor;    //Диффиренциальный коэффициент по умолчанию (доля)
@@ -62,9 +63,9 @@ public:
     int GetDefaultStiff(){return mDefaultStiff;}
     int GetDefaultDump(){return mDefaultDump;}
     int GetDefaultTorque(){return mDefaultTorque;}
-    double GetDefaultStiffFactor(){return mDefaultStiff;}
-    double GetDefaultDumpFactor(){return mDefaultDump;}
-    double GetDefaultTorqueFactor(){return mDefaultTorque;}
+    double GetDefaultStiffFactor(){return mDefaultStiffFactor;}
+    double GetDefaultDumpFactor(){return mDefaultDumpFactor;}
+    double GetDefaultTorqueFactor(){return mDefaultTorqueFactor;}
     int GetDefaultSpeed(){return mDefaultSpeed;}
 };
 

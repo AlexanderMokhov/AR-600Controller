@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "ConfigController.h"
-#include "TableModelSensor.h"
+#include "Models/SensorTableModel.h"
 #include <QItemSelectionModel>
 #include "BufferController.h"
 
@@ -19,11 +19,11 @@ public:
     explicit SensorTableWidget(QWidget *parent = 0);
     ~SensorTableWidget();
     void ShowConfigData();
-    TableModelSensor *getModel();
+    SensorTableModel *getModel();
     void UpdatePos();
 private:
     Ui::SensorTableWidget *ui;
-    TableModelSensor *mModel;
+    SensorTableModel *mModel;
     QItemSelectionModel *mSelectionModel;
 signals:
     void RowChanged(int cRow);

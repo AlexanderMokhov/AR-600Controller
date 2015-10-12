@@ -89,6 +89,9 @@ private:
     std::map<int,PosData> mGoToPosData;
     bool mGoPosMode;
     int mMotorExistCount;
+    void SkipSpace(std::locale loc, std::string str, unsigned int *i);
+    void ReadValue(std::string *temp, std::locale loc, unsigned int *i, std::string str);
+
 public:
     static MoveController* Inst(){return mInst;}
     static void Init(){delete mInst; mInst = new MoveController;}
@@ -123,6 +126,8 @@ public:
     void StepGoToPos();
     void StopGoPos();
     void StoppingGoPos();
+
+
 
 
 signals:

@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "ConfigController.h"
 #include "BufferController.h"
-#include "TableModelMotor.h"
+#include "Models/MotorTableModel.h"
 #include "MoveController.h"
 
 namespace Ui {
@@ -18,7 +18,7 @@ class MotorControlWidget : public QWidget
 public:
     explicit MotorControlWidget(QWidget *parent = 0);
     ~MotorControlWidget();
-    void setModel(TableModelMotor *model);
+    void setModel(MotorTableModel *model);
     void UpdateData();
 
 private slots:
@@ -52,7 +52,7 @@ private slots:
 
 private:
     Ui::MotorControlWidget *ui;
-    TableModelMotor * mModel;
+    MotorTableModel * mModel;
     BufferReceive *mReadBuffer;
     BufferSend *mWriteBuffer;
     int currentRow;

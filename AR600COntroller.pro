@@ -36,7 +36,6 @@ SOURCES += main.cpp\
     DeviceLogController.cpp \
     Widgets/PowerControlWidget.cpp \
     Widgets/CommandFilesWidget.cpp \
-    CommandTableModel.cpp \
     Receiver.cpp \
     Sender.cpp \
     Logger.cpp \
@@ -44,8 +43,9 @@ SOURCES += main.cpp\
     MoveController.cpp \
     BufferSend.cpp \
     BufferReceive.cpp \
-    TableModelMotor.cpp \
-    TableModelSensor.cpp
+    Models/CommandTableModel.cpp \
+    Models/MotorTableModel.cpp \
+    Models/SensorTableModel.cpp
 
 HEADERS  += \
     TinyXML/tinystr.h \
@@ -66,7 +66,6 @@ HEADERS  += \
     DeviceLogController.h \
     Widgets/PowerControlWidget.h \
     Widgets/CommandFilesWidget.h \
-    CommandTableModel.h \
     Receiver.h \
     Sender.h \
     Logger.h \
@@ -74,8 +73,9 @@ HEADERS  += \
     MoveController.h \
     BufferSend.h \
     BufferReceive.h \
-    TableModelMotor.h \
-    TableModelSensor.h
+    Models/CommandTableModel.h \
+    Models/MotorTableModel.h \
+    Models/SensorTableModel.h
 
 FORMS    += \
     AR600MainWindow.ui \

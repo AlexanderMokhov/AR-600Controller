@@ -7,12 +7,12 @@
 #include <QStringList>
 #include "Sensor.h"
 
-class TableModelSensor : public QAbstractTableModel
+class SensorTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit TableModelSensor(QObject *parent = 0);
-    ~TableModelSensor();
+    explicit SensorTableModel(QObject *parent = 0);
+    ~SensorTableModel();
 
     QList<Sensor*> mDataList; // список, в котором хранятся все данные
     QStringList mHeaderData; // список заголовков столбцов

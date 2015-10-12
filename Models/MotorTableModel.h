@@ -7,13 +7,13 @@
 #include <QStringList>
 #include "Motor.h"
 
-class TableModelMotor : public QAbstractTableModel
+class MotorTableModel : public QAbstractTableModel
 {
 
     Q_OBJECT
 public:
-    explicit TableModelMotor(QObject *parent = 0);
-    ~TableModelMotor();
+    explicit MotorTableModel(QObject *parent = 0);
+    ~MotorTableModel();
 
     QList<Motor*> mDataList; // список, в котором хранятся все данные
     QStringList mHeaderData; // список заголовков столбцов

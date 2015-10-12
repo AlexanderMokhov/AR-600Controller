@@ -17,7 +17,7 @@ MotorControlWidget::~MotorControlWidget()
     delete ui;
 }
 
-void MotorControlWidget::setModel(TableModelMotor *model)
+void MotorControlWidget::setModel(MotorTableModel *model)
 {
     mModel=model;
 }

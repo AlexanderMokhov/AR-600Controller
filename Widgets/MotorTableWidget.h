@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "ConfigController.h"
-#include "TableModelMotor.h"
+#include "Models/MotorTableModel.h"
 #include <QItemSelectionModel>
 #include "BufferController.h"
 
@@ -20,11 +20,11 @@ public:
     ~MotorTableWidget();
 
     void ShowConfigData();
-    TableModelMotor *getModel();
+    MotorTableModel *getModel();
     void UpdatePos();
 private:
     Ui::MotorTableWidget *ui;
-    TableModelMotor *mModel;
+    MotorTableModel *mModel;
     QItemSelectionModel *mSelectionModel;
 public slots:
     void Activate();

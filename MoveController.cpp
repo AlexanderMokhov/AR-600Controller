@@ -42,13 +42,13 @@ void MoveController::StepPlay()
         int Dump = mCommands[mCommandId].PIDs.Dump;
         int Torque = mCommands[mCommandId].PIDs.Torque;
 
-        int StiffFactor = mCommands[mCommandId].PIDs.StiffFactor;
-        int DumpFactor = mCommands[mCommandId].PIDs.DumpFactor;
-        int TorqueFactor = mCommands[mCommandId].PIDs.TorqueFactor;
+        //int StiffFactor = mCommands[mCommandId].PIDs.StiffFactor;
+        //int DumpFactor = mCommands[mCommandId].PIDs.DumpFactor;
+        //int TorqueFactor = mCommands[mCommandId].PIDs.TorqueFactor;
 
-        BufferController::Inst()->GetBufferS()->SetMotorStiff( Number,(int)Stiff*StiffFactor );
-        BufferController::Inst()->GetBufferS()->SetMotorDump( Number,(int)Dump*DumpFactor );
-        BufferController::Inst()->GetBufferS()->SetMotorTorque( Number,(int)Torque*TorqueFactor );
+        BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
+        BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
+        BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
 
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle );
         mCommandId++;
@@ -121,6 +121,21 @@ void MoveController::StoppingPlay()
     mState = States::NotWork;
 }
 
+void MoveController::SkipSpace(std::locale loc, std::string str, unsigned int *i)
+{
+    while( std::isspace(str[(*i)], loc) )
+        (*i)++;
+}
+
+void MoveController::ReadValue(std::string *temp, std::locale loc, unsigned int *i, std::string str)
+{
+    while( !std::isspace(str[*i], loc) && *i < str.length() )
+    {
+        *temp += str.at(*i);
+        (*i)++;
+    }
+}
+
 bool MoveController::OpenFile(std::string fileName)
 {
     std::ifstream file(fileName.c_str());
@@ -148,102 +163,62 @@ bool MoveController::OpenFile(std::string fileName)
 
         while( std::getline(file, str) )
         {
-
-            std::locale loc;
             //читаем очередную строку из файла
+            std::locale loc;
+            std::string temp;
+            unsigned int i = 0;
 
             //читаем номер привода
-            unsigned int i=0;
-            while( std::isspace(str[i],loc) )
-                i++;
-            std::string temp;
-            while( !std::isspace(str[i],loc) )
-            {
-                temp += str.at(i);
-                i++;
-            }
-            //прочитали номер привода
+            SkipSpace(loc, str, &i);
+            ReadValue(&temp, loc, &i, str);
 
             //записываем номер привода
             int Number = atoi( temp.c_str() );
             temp.clear();
 
-            //читаем время(как целое число)
-            while( std::isspace(str[i],loc) )
-                i++;
-            while( str[i] != '.' )
-            {
-                temp += str.at(i);
-                i++;
-            }
-            i++;
-            while( !std::isspace(str[i],loc) )
-            {
-                temp += str.at(i);
-                i++;
-            }
-            //прочитали время
+            //читаем время (как целое число)
+            SkipSpace(loc, str, &i);
+            while( str[i] != '.' ){ temp += str.at(i); i++; } i++;
+            ReadValue(&temp, loc, &i, str);
 
             //записываем время
             int Time = atoi( temp.c_str() );
             temp.clear();
 
-            //читаем позицию
-            while( std::isspace(str[i],loc) )
-                i++;
-            while( !std::isspace(str[i],loc) && i < str.length() )
-            {
-                temp+=str.at(i);
-                i++;
-            }
-            //прочитали угол
+            //читаем угол
+            SkipSpace(loc, str, &i);
+            ReadValue(&temp, loc, &i, str);
 
             //записываем угол
-            double Angle = atof(temp.c_str());
+            double Angle = atof( temp.c_str() );
             temp.clear();
 
             //Переводим угол в градусы*100
-            Angle=(180.0/M_PI)*Angle*100.0;
+            Angle=(180.0 / M_PI)*Angle*100.0;
 
-            //проверяем есть ли коэффициэнты PID
-            while(std::isspace(str[i],loc))
-                i++;
+            SkipSpace(loc, str, &i);
 
-            if(str[i]!='\0')
+            if(str[i] != '\0') //проверяем есть ли коэффициэнты PID
             {
                 //значит здесь записаны коэффициенты PID
                 //читаем KP
-                while(!std::isspace(str[i],loc) && i<str.length())
-                {
-                    temp+=str.at(i);
-                    i++;
-                }
-                //прочитали KP
-                double KP = atof(temp.c_str());
+                ReadValue(&temp, loc, &i, str);
+
+                double KP = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KI
-                while(std::isspace(str[i],loc))
-                    i++;
-                while(!std::isspace(str[i],loc) && i<str.length())
-                {
-                    temp+=str.at(i);
-                    i++;
-                }
-                //прочитали KI
-                double KI = atof(temp.c_str());
+                SkipSpace(loc, str, &i);
+                ReadValue(&temp, loc, &i, str);
+
+                double KI = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KD
-                while(std::isspace(str[i],loc))
-                    i++;
-                while(!std::isspace(str[i],loc) && i<str.length())
-                {
-                    temp+=str.at(i);
-                    i++;
-                }
-                //прочитали KD
-                double KD = atof(temp.c_str());
+                SkipSpace(loc, str, &i);
+                ReadValue(&temp, loc, &i, str);
+
+                double KD = atof( temp.c_str() );
                 temp.clear();
 
                 //заполняем PID
@@ -251,50 +226,39 @@ bool MoveController::OpenFile(std::string fileName)
                 mPID.Dump = KI;
                 mPID.Torque = KD;
 
-                while(std::isspace(str[i],loc))
-                    i++;
+                SkipSpace(loc, str, &i);
 
-                if(str[i]!='\0')
+                if(str[i] != '\0') //проверяем есть ли коэффициэнты проп. PID
                 {
-                    //значит здесь записаны коэффициенты пропорциональности PID
+                    //значит здесь записаны коэффициенты проп. PID
                     //читаем KP
-                    while(!std::isspace(str[i], loc) && i < str.length())
-                    {
-                        temp += str.at(i);
-                        i++;
-                    }
-                    //прочитали KP
-                    double KPFactor = atof(temp.c_str());
+                    ReadValue(&temp, loc, &i, str);
+
+                    double KPFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KI
-                    while(std::isspace(str[i], loc))
-                        i++;
-                    while(!std::isspace(str[i], loc) && i < str.length())
-                    {
-                        temp += str.at(i);
-                        i++;
-                    }
-                    //прочитали KI
-                    double KIFactor = atof(temp.c_str());
+                    SkipSpace(loc, str, &i);
+                    ReadValue(&temp, loc, &i, str);
+
+                    double KIFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KD
-                    while(std::isspace(str[i], loc))
-                        i++;
-                    while(!std::isspace(str[i], loc) && i < str.length())
-                    {
-                        temp += str.at(i);
-                        i++;
-                    }
-                    //прочитали KD
-                    double KDFactor = atof(temp.c_str());
+                    SkipSpace(loc, str, &i);
+                    ReadValue(&temp, loc, &i, str);
+
+                    double KDFactor = atof( temp.c_str() );
                     temp.clear();
 
-                    //заполняем коэффициенты пропорциональности PID
+                    //заполняем коэффициенты проп. PID
                     mPID.StiffFactor = KPFactor;
                     mPID.DumpFactor = KIFactor;
                     mPID.TorqueFactor = KDFactor;
+
+                    mPID.Stiff *= mPID.StiffFactor;
+                    mPID.Dump *= mPID.DumpFactor;
+                    mPID.Torque *= mPID.TorqueFactor;
                 }
             }
 
@@ -309,6 +273,7 @@ bool MoveController::OpenFile(std::string fileName)
             mCountRows++;
             currentTime=Time;
         }
+
         mDuration = currentTime;//в микросекундах
         mCommandId = 0;
         qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
