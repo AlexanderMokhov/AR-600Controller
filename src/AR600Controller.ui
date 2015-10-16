@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Widget</class>
+ <widget class="QWidget" name="Widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>741</width>
+    <height>528</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AR-600E Controller</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,10,0" columnstretch="0,0,10,0">
+   <item row="0" column="0" colspan="2">
+    <layout class="QGridLayout" name="gridLayout" rowstretch="0,10" rowminimumheight="0,0">
+     <item row="0" column="0" colspan="2">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Адрес:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Порт:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLineEdit" name="hostLineEdit">
+         <property name="text">
+          <string>192.169.1.10</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="portLineEdit">
+         <property name="text">
+          <string>10001</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QToolButton" name="connectToolButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Подключиться</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QToolButton" name="disconectToolButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Отключиться</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <layout class="QVBoxLayout" name="PowerLayout"/>
+     </item>
+     <item row="1" column="1">
+      <layout class="QVBoxLayout" name="DriverLogWidgetLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>244</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="3" rowspan="3">
+    <layout class="QGridLayout" name="gridLayout_5" rowstretch="2,8">
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="CommandControlLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <layout class="QHBoxLayout" name="DriverControlLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <layout class="QVBoxLayout" name="ChannelTableLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Файл настроек:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pButtonOpenXML">
+       <property name="text">
+        <string>Открыть XML</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pButtonSaveXML">
+       <property name="text">
+        <string>Сохранить XML</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <spacer name="horizontalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>386</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+  <zorder></zorder>
+  <zorder>horizontalSpacer_3</zorder>
+  <zorder>verticalLayoutWidget</zorder>
+  <zorder>horizontalSpacer</zorder>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>connectToolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Widget</receiver>
+   <slot>Connect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>39</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>disconectToolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Widget</receiver>
+   <slot>Disconnect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>396</x>
+     <y>39</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>Connect()</slot>
+  <slot>Disconnect()</slot>
+  <slot>StartSending()</slot>
+  <slot>On48Slot(bool)</slot>
+  <slot>On8V1Slot(bool)</slot>
+  <slot>On8V2Slot(bool)</slot>
+  <slot>On6V1Slot(bool)</slot>
+  <slot>On6V2Slot(bool)</slot>
+  <slot>AddRow()</slot>
+  <slot>SetLenght(double)</slot>
+ </slots>
+</ui>
