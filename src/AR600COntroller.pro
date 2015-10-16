@@ -61,7 +61,6 @@ HEADERS  += \
     Buffers/BufferController.h \
     Buffers/BufferReceive.h \
     Buffers/BufferSend.h \
-    Buffers/ADefinition.h \
     Connection/Receiver.h \
     Connection/Sender.h \
     Devices/Device.h \
@@ -74,7 +73,8 @@ HEADERS  += \
     Management/Logger.h \
     Management/MoveController.h \
     Management/Mover.h \
-    MainWindow.h
+    MainWindow.h \
+    Buffers/BufferDefinition.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

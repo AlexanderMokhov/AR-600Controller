@@ -19,6 +19,7 @@
 #include <math.h>
 #include <cmath>
 #include <mutex>
+#include <regex>
 
 #include "Buffers/BufferController.h"
 #include "ConfigController.h"

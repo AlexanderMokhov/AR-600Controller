@@ -5,7 +5,7 @@
 #include <mutex>
 #include <stdlib.h>
 
-#include "ADefinition.h"
+#include "BufferDefinition.h"
 
 class BufferReceive
 {
