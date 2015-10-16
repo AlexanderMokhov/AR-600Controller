@@ -146,14 +146,3 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
         emit PlayStart();
     }
 }
-
-void CommandControllerWidget::onRowChanged(int Row)
-{
-    CommandController::Instance()->SetCurrentSequence(Row);
-    int mCountRows = CommandController::Instance()->GetCountRows();
-    int mTimeRecord = CommandController::Instance()->GetTimeRecord();
-    ui->MessageTextBox->clear();
-    ui->MessageTextBox->append( "Прочитано " + QString::number(mCountRows) + " строк" + "\n");
-    ui->MessageTextBox->append( "Время записи " + QString::number((double)mTimeRecord/1e6) + " секунд" + "\n");
-
-}
