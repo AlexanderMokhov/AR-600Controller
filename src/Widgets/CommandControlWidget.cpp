@@ -55,7 +55,7 @@ CommandControlWidget::~CommandControlWidget()
 
 void CommandControlWidget::on_ButtonLoadFile_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(0,"Открытие файла движений","","*.txt");
+    QString fileName = QFileDialog::getOpenFileName(0,"Open Commands List Dialog","","*.txt");
     openFile(fileName, true);
 }
 
@@ -119,37 +119,23 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
     if (!fileName.isEmpty())
     {
         ui->FilePathTextBox->setText(fileName);
-        OFStates isOk = MoveController::Inst()->OpenFile(fileName.toStdString());
-
-        switch(isOk)
+        bool isOk = MoveController::Inst()->OpenFile(fileName.toStdString());
+        if(isOk)
         {
-            case OFStates::Succes:
-            {
-                qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
-                qDebug() << "Команды успешно прочитаны" <<endl;
-                int CountRows = MoveController::Inst()->GetCountRows();
-                int Duration = MoveController::Inst()->GetDuration();
-                ui->MessageTextBox->clear();
-                ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
-                ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
+            qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
+            qDebug() << "Команды успешно прочитаны" <<endl;
+            int CountRows = MoveController::Inst()->GetCountRows();
+            int Duration = MoveController::Inst()->GetDuration();
+            ui->MessageTextBox->clear();
+            ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
+            ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
 
-                emit FileLoaded(fileName,CountRows,Duration, mode);
-                break;
-            }
-
-            case OFStates::Empty:
-            {
-                qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
-                qDebug() << "Имя файла задано неверно или файл пустой" << endl;
-                break;
-            }
-
-            case OFStates::InvalidFormat:
-            {
-                qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
-                qDebug() << "Неверный формат файла" << endl;
-                break;
-            }
+            emit FileLoaded(fileName,CountRows,Duration, mode);
+        }
+        else
+        {
+            qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
+            qDebug() << "Возможно имя, или формат файл()а заданы неверно" <<endl;
         }
     }
 

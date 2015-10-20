@@ -56,8 +56,6 @@ enum States {MovePlay, MoveStarting, MoveStopping,
              GoPosStarting, GoToPos, GoToPosEnding, GoPosStopping,
              NotWork};
 
-enum OFStates {Succes, Empty, InvalidFormat};
-
 // управление конмандами,
 //содержит список команд и по заданному времени обновляет буфер
 class MoveController: public QObject
@@ -96,15 +94,16 @@ private:
     void SkipSpace(std::locale loc, std::string str, unsigned int *i);
     void ReadValue(std::string *temp, std::locale loc, unsigned int *i, std::string str);
 
-
 public:
     static MoveController* Inst(){return mInst;}
     static void Init(){delete mInst; mInst = new MoveController;}
-    OFStates OpenFile(std::string fileName);
+
+    void DoStepWork();
+
+    bool OpenFile(std::string fileName);
     int GetCountRows(){return mCountRows;}
     int GetDuration(){return mDuration;}
 
-    void DoStepWork();
     void NextCommand();//--
 
     //для воспроизведения последовательности команд
@@ -130,9 +129,13 @@ public:
     void StopGoPos();
     void StoppingGoPos();
 
+
+
+
 signals:
     void InitStart();
     void InitEnd();
+
     void PlayEnd();
 };
 

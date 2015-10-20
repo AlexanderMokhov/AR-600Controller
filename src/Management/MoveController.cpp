@@ -136,7 +136,7 @@ void MoveController::ReadValue(std::string *temp, std::locale loc, unsigned int 
     }
 }
 
-OFStates MoveController::OpenFile(std::string fileName)
+bool MoveController::OpenFile(std::string fileName)
 {
     std::ifstream file(fileName.c_str());
 
@@ -144,12 +144,13 @@ OFStates MoveController::OpenFile(std::string fileName)
     {
         //очищаем список команд
         mCommands.clear();
-        Command nextCommand;
-        PID mPID;
+        std::string str;
 
-        std::string line;
-        int currentTime = 0;
-        mCountRows = 0;
+        int currentTime=0;
+        Command nextCommand;
+        mCountRows=0;
+
+        PID mPID;
 
         //по умолчанию заполняем значениями из файла настроек
         mPID.Stiff = ConfigController::Inst()->GetDefaultStiff();
@@ -160,68 +161,117 @@ OFStates MoveController::OpenFile(std::string fileName)
         mPID.DumpFactor = ConfigController::Inst()->GetDefaultDumpFactor();
         mPID.TorqueFactor = ConfigController::Inst()->GetDefaultTorqueFactor();
 
-        //регулярное выражение формата строки файла
-        const std::regex mRegExp( "\\s*"
-                                  "((\\d+)\\s+(\\d*\\.\\d+)\\s+(\\-*\\d*\\.\\d+))"
-                                  "(\\s+(\\-?\\d*\\.\\d+)\\s+(\\-?\\d*\\.\\d+)\\s+(\\-?\\d*\\.\\d+))?"
-                                  "(\\s+(\\d*\\.\\d+)\\s+(\\d*\\.\\d+)\\s+(\\d*\\.\\d+))?"
-                                  "\\s*" );
-
-        while( std::getline(file, line) )
+        while( std::getline(file, str) )
         {
-            //читаем очередную строку
-            std::smatch match;
+            //читаем очередную строку из файла
+            std::locale loc;
+            std::string temp;
+            unsigned int i = 0;
 
-            if( std::regex_search(line, match, mRegExp) )
+            //читаем номер привода
+            SkipSpace(loc, str, &i);
+            ReadValue(&temp, loc, &i, str);
+
+            //записываем номер привода
+            int Number = atoi( temp.c_str() );
+            temp.clear();
+
+            //читаем время (как целое число)
+            SkipSpace(loc, str, &i);
+            while( str[i] != '.' ){ temp += str.at(i); i++; } i++;
+            ReadValue(&temp, loc, &i, str);
+
+            //записываем время
+            int Time = atoi( temp.c_str() );
+            temp.clear();
+
+            //читаем угол
+            SkipSpace(loc, str, &i);
+            ReadValue(&temp, loc, &i, str);
+
+            //записываем угол
+            double Angle = atof( temp.c_str() );
+            temp.clear();
+
+            //Переводим угол в градусы*100
+            Angle=(180.0 / M_PI)*Angle*100.0;
+
+            SkipSpace(loc, str, &i);
+
+            if(str[i] != '\0') //проверяем есть ли коэффициэнты PID
             {
-                //строка соответствует формату
-                int Number = atol( match[2].str().c_str() );
+                //значит здесь записаны коэффициенты PID
+                //читаем KP
+                ReadValue(&temp, loc, &i, str);
 
-                string sTime = match[3].str();
-                sTime.erase( sTime.begin() + sTime.find('.') );
-                int Time = atoi( sTime.c_str() );
+                double KP = atof( temp.c_str() );
+                temp.clear();
 
-                double Angle = atof( match[4].str().c_str() );
-                //Переводим угол в градусы * 100
-                Angle = (180.0 / M_PI) * Angle * 100.0;
+                //читаем KI
+                SkipSpace(loc, str, &i);
+                ReadValue(&temp, loc, &i, str);
 
-                if( !match[5].str().empty() )
+                double KI = atof( temp.c_str() );
+                temp.clear();
+
+                //читаем KD
+                SkipSpace(loc, str, &i);
+                ReadValue(&temp, loc, &i, str);
+
+                double KD = atof( temp.c_str() );
+                temp.clear();
+
+                //заполняем PID
+                mPID.Stiff = KP;
+                mPID.Dump = KI;
+                mPID.Torque = KD;
+
+                SkipSpace(loc, str, &i);
+
+                if(str[i] != '\0') //проверяем есть ли коэффициэнты проп. PID
                 {
-                    //значит здесь записаны коэффициенты PID
-                    mPID.Stiff = atof( match[6].str().c_str() );
-                    mPID.Dump = atof( match[7].str().c_str() );
-                    mPID.Torque = atof( match[8].str().c_str() );
+                    //значит здесь записаны коэффициенты проп. PID
+                    //читаем KP
+                    ReadValue(&temp, loc, &i, str);
 
-                    if( !match[9].str().empty() )
-                    {
-                        //значит здесь записаны коэффициенты проп. PID
-                        mPID.StiffFactor = atof( match[10].str().c_str() );
-                        mPID.DumpFactor = atof( match[11].str().c_str() );
-                        mPID.TorqueFactor = atof( match[12].str().c_str() );
+                    double KPFactor = atof( temp.c_str() );
+                    temp.clear();
 
-                        mPID.Stiff *= mPID.StiffFactor;
-                        mPID.Dump *= mPID.DumpFactor;
-                        mPID.Torque *= mPID.TorqueFactor;
-                    }
+                    //читаем KI
+                    SkipSpace(loc, str, &i);
+                    ReadValue(&temp, loc, &i, str);
+
+                    double KIFactor = atof( temp.c_str() );
+                    temp.clear();
+
+                    //читаем KD
+                    SkipSpace(loc, str, &i);
+                    ReadValue(&temp, loc, &i, str);
+
+                    double KDFactor = atof( temp.c_str() );
+                    temp.clear();
+
+                    //заполняем коэффициенты проп. PID
+                    mPID.StiffFactor = KPFactor;
+                    mPID.DumpFactor = KIFactor;
+                    mPID.TorqueFactor = KDFactor;
+
+                    mPID.Stiff *= mPID.StiffFactor;
+                    mPID.Dump *= mPID.DumpFactor;
+                    mPID.Torque *= mPID.TorqueFactor;
                 }
-
-                nextCommand.Time = (int)Time;
-                nextCommand.Number = Number;
-                nextCommand.Angle = (int)Angle;
-                nextCommand.PIDs = mPID;
-
-                //добавляем команду в список
-                mCommands.push_back( nextCommand );
-                mCountRows++;
-                currentTime = Time;
-
             }
-            else
-            {
-                mCommands.clear();
-                mCountRows = 0;
-                return OFStates::InvalidFormat;
-            }
+
+            //заполняем команду
+            nextCommand.Time = (int)Time;
+            nextCommand.Number = Number;
+            nextCommand.Angle = (int)Angle;
+            nextCommand.PIDs = mPID;
+
+            //добавляем команду в список
+            mCommands.push_back(nextCommand);
+            mCountRows++;
+            currentTime=Time;
         }
 
         mDuration = currentTime;//в микросекундах
@@ -230,12 +280,12 @@ OFStates MoveController::OpenFile(std::string fileName)
         qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
 
         file.close();
-        return OFStates::Succes;
+        return true;
     }
     else
     {
         file.close();
-        return OFStates::Empty;
+        return false;
     }
 
 }
