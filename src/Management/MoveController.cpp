@@ -50,7 +50,11 @@ void MoveController::StepPlay()
         BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
         BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
 
-        BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle );
+        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number);
+
+        qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
+
+        BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle + CorrectionValue);
         mCommandId++;
 
         if(mCommandId >= mCountRows){goto StopPlay;}

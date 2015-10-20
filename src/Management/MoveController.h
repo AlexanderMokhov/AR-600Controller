@@ -23,6 +23,7 @@
 
 #include "Buffers/BufferController.h"
 #include "ConfigController.h"
+#include "MoveCorrector.h"
 
 struct PID
 {

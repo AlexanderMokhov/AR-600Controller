@@ -113,6 +113,7 @@
     </property>
     <addaction name="actionOpenConfigFile"/>
     <addaction name="actionSaveConfigFile"/>
+    <addaction name="actionOpenCorrectionFile"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -185,6 +186,11 @@
   <action name="actionOpenConnectConfig">
    <property name="text">
     <string>Настройки</string>
+   </property>
+  </action>
+  <action name="actionOpenCorrectionFile">
+   <property name="text">
+    <string>Открыть файл обр. связи</string>
    </property>
   </action>
  </widget>

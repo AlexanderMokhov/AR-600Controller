@@ -13,6 +13,7 @@
 
 #include "Management/ConfigController.h"
 #include "Management/MoveController.h"
+#include "Management/MoveCorrector.h"
 #include "Management/DeviceLogController.h"
 
 #include "Models/MotorTableModel.h"
@@ -86,6 +87,8 @@ private slots:
     void ProcessTheDatagram();
     void SaveXML();
     void OpenXML();
+
+    void OpenCorrectionFile();
 
 public slots:
     void Connect();

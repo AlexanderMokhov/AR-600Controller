@@ -74,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mSender = new Sender;
     mReceiver = new Receiver;
+
+    MoveCorrector::Inst()->Init();
 }
 
 MainWindow::~MainWindow()
@@ -167,6 +169,9 @@ void MainWindow::ConnectionsInit()
     //настройка кнопок меню
     connect(ui->actionOpenConfigFile,SIGNAL(triggered()),this,SLOT(OpenXML()));
     connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
+
+    connect(ui->actionOpenCorrectionFile,SIGNAL(triggered()),this,SLOT(OpenCorrectionFile()));
+
     connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
     connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
     connect(ui->actionOn,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOnAll_clicked()));
@@ -295,4 +300,25 @@ void MainWindow::OpenXML()
             qDebug() << "Возможно, имя или формат файла заданы неверно" <<endl;
         }
     }
+}
+
+void MainWindow::OpenCorrectionFile()
+{
+    QString fileName = QFileDialog::getOpenFileName(0,"Open Correction File Dialog","","*.TXT *.txt");
+    if (!fileName.isEmpty())
+    {
+        bool isOk = MoveCorrector::Inst()->OpenFile(fileName.toStdString());
+
+        if(isOk)
+        {
+            qDebug() << "Файл коррекции успешно загружен из " << fileName << endl;
+            qDebug() << "Настройки успешно прочитаны" <<endl;
+        }
+        else
+        {
+            qDebug() << "Файл коррекции не был загружен из " << fileName << endl;
+            qDebug() << "Возможно, имя или формат файла заданы неверно" <<endl;
+        }
+    }
+
 }
