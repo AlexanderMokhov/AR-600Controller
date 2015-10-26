@@ -1,16 +1,17 @@
 <RCC>
     <qresource prefix="/MyIcons">
-        <file alias="Connect.ico">bin/Icons/connect.ico</file>
-        <file alias="Disconnect.ico">bin/Icons/disconnect.ico</file>
-        <file alias="Folder.ico">bin/Icons/folder.ico</file>
-        <file alias="Off.ico">bin/Icons/off.ico</file>
-        <file alias="On.ico">bin/Icons/on.ico</file>
-        <file alias="Open.ico">bin/Icons/open.ico</file>
-        <file alias="Pause.ico">bin/Icons/pause.ico</file>
-        <file alias="Play.ico">bin/Icons/play.ico</file>
-        <file alias="Redo.ico">bin/Icons/redo.ico</file>
-        <file alias="Save.ico">bin/Icons/save.ico</file>
-        <file alias="Settings.ico">bin/Icons/settings.ico</file>
-        <file alias="Stop.ico">bin/Icons/stop.ico</file>
+        <file>Icons/AR600.ico</file>
+        <file>Icons/connect.ico</file>
+        <file>Icons/disconnect.ico</file>
+        <file>Icons/folder.ico</file>
+        <file>Icons/off.ico</file>
+        <file>Icons/on.ico</file>
+        <file>Icons/open.ico</file>
+        <file>Icons/pause.ico</file>
+        <file>Icons/play.ico</file>
+        <file>Icons/redo.ico</file>
+        <file>Icons/save.ico</file>
+        <file>Icons/settings.ico</file>
+        <file>Icons/stop.ico</file>
     </qresource>
 </RCC>

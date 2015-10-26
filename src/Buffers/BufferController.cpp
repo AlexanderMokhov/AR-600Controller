@@ -25,7 +25,7 @@ void BufferController::InitBuffers()
         mBufferSend.SetMotorEnable((*it).first,(*it).second.GetEnable());
         mBufferSend.SetMotorMinAngle((*it).first,PosMin);
         mBufferSend.SetMotorMaxAngle((*it).first,PosMax);
-        mBufferSend.MotorStop((*it).first);
+        mBufferSend.MotorStopBrake((*it).first);
     }
 
     for(auto it = ConfigController::Inst()->GetSensors()->begin();

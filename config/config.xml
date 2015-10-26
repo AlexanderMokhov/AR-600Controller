@@ -11,7 +11,7 @@
             <Stiff>900</Stiff>
             <Dump>2</Dump>
             <Torque>1</Torque>
-            <Calibration>-35</Calibration>
+            <Calibration>-114</Calibration>
             <Enable>true</Enable>
         </Motor>
         <Motor>
@@ -24,7 +24,7 @@
             <Stiff>900</Stiff>
             <Dump>2</Dump>
             <Torque>1</Torque>
-            <Calibration>-5141</Calibration>
+            <Calibration>-5361</Calibration>
             <Enable>true</Enable>
         </Motor>
         <Motor>
@@ -89,8 +89,8 @@
             <Stiff>900</Stiff>
             <Dump>2</Dump>
             <Torque>1</Torque>
-            <Calibration>6503</Calibration>
-            <Enable>false</Enable>
+            <Calibration>6389</Calibration>
+            <Enable>true</Enable>
         </Motor>
         <Motor>
             <Number>8</Number>
@@ -102,7 +102,7 @@
             <Stiff>900</Stiff>
             <Dump>2</Dump>
             <Torque>1</Torque>
-            <Calibration>-694</Calibration>
+            <Calibration>-870</Calibration>
             <Enable>true</Enable>
         </Motor>
         <Motor>
@@ -220,7 +220,7 @@
             <Dump>2</Dump>
             <Torque>1</Torque>
             <Calibration>487</Calibration>
-            <Enable>false</Enable>
+            <Enable>true</Enable>
         </Motor>
         <Motor>
             <Number>44</Number>
@@ -233,7 +233,7 @@
             <Dump>1</Dump>
             <Torque>1</Torque>
             <Calibration>9097</Calibration>
-            <Enable>false</Enable>
+            <Enable>true</Enable>
         </Motor>
         <Motor>
             <Number>45</Number>
@@ -246,7 +246,7 @@
             <Dump>1</Dump>
             <Torque>1</Torque>
             <Calibration>2988</Calibration>
-            <Enable>false</Enable>
+            <Enable>true</Enable>
         </Motor>
         <Motor>
             <Number>46</Number>
@@ -259,7 +259,7 @@
             <Dump>1</Dump>
             <Torque>1</Torque>
             <Calibration>8437</Calibration>
-            <Enable>false</Enable>
+            <Enable>true</Enable>
         </Motor>
         <Motor>
             <Number>49</Number>
@@ -271,110 +271,110 @@
             <Stiff>500</Stiff>
             <Dump>1</Dump>
             <Torque>1</Torque>
-            <Calibration>-15864</Calibration>
-            <Enable>false</Enable>
+            <Calibration>-15477</Calibration>
+            <Enable>true</Enable>
         </Motor>
     </MotorSettings>
-	<SensorSettings>
-	<Sensor>
-	  <Number>1</Number>
-	  <Channel>14</Channel>
-	  <Name>Акселерометр X</Name>
-	  <NameLog>Accelerometr_X</NameLog>
-	  <Param>1</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>2</Number>
-	  <Channel>14</Channel>
-	  <Name>Акселерометр Y</Name>
-	  <NameLog>Accelerometr_Y</NameLog>
-	  <Param>2</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>3</Number>
-	  <Channel>14</Channel>
-	  <Name>Акселерометр Z</Name>
-	  <NameLog>Accelerometr_Z</NameLog>
-	  <Param>3</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>4</Number>
-	  <Channel>14</Channel>
-	  <Name>Гироскоп X</Name>
-	  <NameLog>Gyroscope_X</NameLog>
-	  <Param>4</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>5</Number>
-	  <Channel>14</Channel>
-	  <Name>Гироскоп Y</Name>
-	  <NameLog>Gyroscope_Y</NameLog>
-	  <Param>5</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>6</Number>
-	  <Channel>14</Channel>
-	  <Name>Гироскоп Z</Name>
-	  <NameLog>Gyroscope_Z</NameLog>
-	  <Param>6</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>7</Number>
-	  <Channel>15</Channel>
-	  <Name>Давление на левой ноге 0</Name>
-	  <NameLog>Pressure_on_the_left_leg_0</NameLog>
-	  <Param>1</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>8</Number>
-	  <Channel>15</Channel>
-	  <Name>Давление на левой ноге 1</Name>
-	  <NameLog>Pressure_on_the_left_leg_1</NameLog>
-	  <Param>2</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>9</Number>
-	  <Channel>15</Channel>
-	  <Name>Давление на левой ноге 2</Name>
-	  <NameLog>Pressure_on_the_left_leg_2</NameLog>
-	  <Param>3</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>10</Number>
-	  <Channel>15</Channel>
-	  <Name>Давление на левой ноге 3</Name>
-	  <NameLog>Pressure_on_the_left_leg_3</NameLog>
-	  <Param>4</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>11</Number>
-	  <Channel>16</Channel>
-	  <Name>Давление на правой ноге 0</Name>
-	  <NameLog>Pressure_on_the_right_leg_0</NameLog>
-	  <Param>1</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>12</Number>
-	  <Channel>16</Channel>
-	  <Name>Давление на правой ноге 1</Name>
-	  <NameLog>Pressure_on_the_right_leg_1</NameLog>
-	  <Param>2</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>13</Number>
-	  <Channel>16</Channel>
-	  <Name>Давление на правой ноге 2</Name>
-	  <NameLog>Pressure_on_the_right_leg_2</NameLog>
-	  <Param>3</Param>
-	</Sensor>
-	<Sensor>
-	  <Number>14</Number>
-	  <Channel>16</Channel>
-	  <Name>Давление на правой ноге 3</Name>
-	  <NameLog>Pressure_on_the_right_leg_3</NameLog>
-	  <Param>4</Param>
-	</Sensor>
-  </SensorSettings>
+    <SensorSettings>
+        <Sensor>
+            <Number>1</Number>
+            <Channel>14</Channel>
+            <Name>Акселерометр X</Name>
+            <NameLog>Accelerometr_X</NameLog>
+            <Param>1</Param>
+        </Sensor>
+        <Sensor>
+            <Number>2</Number>
+            <Channel>14</Channel>
+            <Name>Акселерометр Y</Name>
+            <NameLog>Accelerometr_Y</NameLog>
+            <Param>2</Param>
+        </Sensor>
+        <Sensor>
+            <Number>3</Number>
+            <Channel>14</Channel>
+            <Name>Акселерометр Z</Name>
+            <NameLog>Accelerometr_Z</NameLog>
+            <Param>3</Param>
+        </Sensor>
+        <Sensor>
+            <Number>4</Number>
+            <Channel>14</Channel>
+            <Name>Гироскоп X</Name>
+            <NameLog>Gyroscope_X</NameLog>
+            <Param>4</Param>
+        </Sensor>
+        <Sensor>
+            <Number>5</Number>
+            <Channel>14</Channel>
+            <Name>Гироскоп Y</Name>
+            <NameLog>Gyroscope_Y</NameLog>
+            <Param>5</Param>
+        </Sensor>
+        <Sensor>
+            <Number>6</Number>
+            <Channel>14</Channel>
+            <Name>Гироскоп Z</Name>
+            <NameLog>Gyroscope_Z</NameLog>
+            <Param>6</Param>
+        </Sensor>
+        <Sensor>
+            <Number>7</Number>
+            <Channel>15</Channel>
+            <Name>Давление на левой ноге 0</Name>
+            <NameLog>Pressure_on_the_left_leg_0</NameLog>
+            <Param>1</Param>
+        </Sensor>
+        <Sensor>
+            <Number>8</Number>
+            <Channel>15</Channel>
+            <Name>Давление на левой ноге 1</Name>
+            <NameLog>Pressure_on_the_left_leg_1</NameLog>
+            <Param>2</Param>
+        </Sensor>
+        <Sensor>
+            <Number>9</Number>
+            <Channel>15</Channel>
+            <Name>Давление на левой ноге 2</Name>
+            <NameLog>Pressure_on_the_left_leg_2</NameLog>
+            <Param>3</Param>
+        </Sensor>
+        <Sensor>
+            <Number>10</Number>
+            <Channel>15</Channel>
+            <Name>Давление на левой ноге 3</Name>
+            <NameLog>Pressure_on_the_left_leg_3</NameLog>
+            <Param>4</Param>
+        </Sensor>
+        <Sensor>
+            <Number>11</Number>
+            <Channel>16</Channel>
+            <Name>Давление на правой ноге 0</Name>
+            <NameLog>Pressure_on_the_right_leg_0</NameLog>
+            <Param>1</Param>
+        </Sensor>
+        <Sensor>
+            <Number>12</Number>
+            <Channel>16</Channel>
+            <Name>Давление на правой ноге 1</Name>
+            <NameLog>Pressure_on_the_right_leg_1</NameLog>
+            <Param>2</Param>
+        </Sensor>
+        <Sensor>
+            <Number>13</Number>
+            <Channel>16</Channel>
+            <Name>Давление на правой ноге 2</Name>
+            <NameLog>Pressure_on_the_right_leg_2</NameLog>
+            <Param>3</Param>
+        </Sensor>
+        <Sensor>
+            <Number>14</Number>
+            <Channel>16</Channel>
+            <Name>Давление на правой ноге 3</Name>
+            <NameLog>Pressure_on_the_right_leg_3</NameLog>
+            <Param>4</Param>
+        </Sensor>
+    </SensorSettings>
     <ConnectSettings>
         <Host>192.169.1.10</Host>
         <SendPort>10001</SendPort>
@@ -386,6 +386,9 @@
         <DefaultStiff>300</DefaultStiff>
         <DefaultDump>1</DefaultDump>
         <DefaultTorque>1</DefaultTorque>
-		<DefaultSpeed>20</DefaultSpeed>
+        <DefaultStiffFactor>100</DefaultStiffFactor>
+        <DefaultDumpFactor>100</DefaultDumpFactor>
+        <DefaultTorqueFactor>100</DefaultTorqueFactor>
+        <DefaultSpeed>20</DefaultSpeed>
     </CommandControllerSettings>
 </AR600ControllerConf>

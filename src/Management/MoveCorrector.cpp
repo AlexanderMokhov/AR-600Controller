@@ -46,47 +46,47 @@ bool MoveCorrector::OpenFile(string fileName)
             std::string temp;
             unsigned int i = 0;
 
-            double Ak, An, Kn;
-            int N, NumberChannel = 0;
+            double mScale, sScale, sZeroValue;
+            int sNumber, mNumber = 0;
 
             //читаем номер датчика
             SkipSpace(loc, line, &i);
             ReadValue(&temp, loc, &i, line);
-            N = atoi( temp.c_str() );
+            sNumber = atoi( temp.c_str() );
             temp.clear();
 
             //читаем номер привода
             SkipSpace(loc, line, &i);
             ReadValue(&temp, loc, &i, line);
-            NumberChannel = atoi( temp.c_str() );
+            mNumber = atoi( temp.c_str() );
             temp.clear();
 
             //читаем Ak - масшт. к-т привода
             SkipSpace(loc, line, &i);
             ReadValue(&temp, loc, &i, line);
-            Ak = atof( temp.c_str() );
+            mScale = atof( temp.c_str() );
             temp.clear();
 
             //читаем An - масшт. к-т датчика
             SkipSpace(loc, line, &i);
             ReadValue(&temp, loc, &i, line);
-            An = atof( temp.c_str() );
+            sScale = atof( temp.c_str() );
             temp.clear();
 
             //читаем Kn - нулевое значение датчика
             SkipSpace(loc, line, &i);
             ReadValue(&temp, loc, &i, line);
-            Kn = atof( temp.c_str() );
+            sZeroValue = atof( temp.c_str() );
             temp.clear();
 
             //заполняем команду
-            NextAmend.mScale = Ak;
-            NextAmend.sScale = An;
-            NextAmend.sZeroValue = Kn;
-            NextAmend.sNumber = N;
+            NextAmend.mScale = mScale;
+            NextAmend.sScale = sScale;
+            NextAmend.sZeroValue = sZeroValue;
+            NextAmend.sNumber = sNumber;
 
             //добавляем команду в список
-            mAmends[NumberChannel].push_back(NextAmend);
+            mAmends[mNumber].push_back(NextAmend);
             countLines++;
         }
 
@@ -120,10 +120,9 @@ int MoveCorrector::getCorrectValue(int NumberChannel)
 
             qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
 
-
-            double Xk = (double)((sValue - sZeroValue)/sScale)*mScale;
-            qDebug() << "Xk"  << QString::number(Xk) << endl;
-            CorrAngle += Xk;
+            double Amend = (double)((sValue - sZeroValue)/sScale)*mScale;
+            qDebug() << "Amend: "  << QString::number(Amend) << endl;
+            CorrAngle += Amend;
         }
     }
     return CorrAngle;

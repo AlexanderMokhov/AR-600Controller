@@ -170,28 +170,28 @@ bool MoveController::OpenFile(std::string fileName)
             //читаем очередную строку из файла
             std::locale loc;
             std::string temp;
-            unsigned int i = 0;
+            unsigned int pos = 0;
 
             //читаем номер привода
-            SkipSpace(loc, str, &i);
-            ReadValue(&temp, loc, &i, str);
+            SkipSpace(loc, str, &pos);
+            ReadValue(&temp, loc, &pos, str);
 
             //записываем номер привода
             int Number = atoi( temp.c_str() );
             temp.clear();
 
             //читаем время (как целое число)
-            SkipSpace(loc, str, &i);
-            while( str[i] != '.' ){ temp += str.at(i); i++; } i++;
-            ReadValue(&temp, loc, &i, str);
+            SkipSpace(loc, str, &pos);
+            while( str[pos] != '.' ){ temp += str.at(pos); pos++; } pos++;
+            ReadValue(&temp, loc, &pos, str);
 
             //записываем время
             int Time = atoi( temp.c_str() );
             temp.clear();
 
             //читаем угол
-            SkipSpace(loc, str, &i);
-            ReadValue(&temp, loc, &i, str);
+            SkipSpace(loc, str, &pos);
+            ReadValue(&temp, loc, &pos, str);
 
             //записываем угол
             double Angle = atof( temp.c_str() );
@@ -200,27 +200,27 @@ bool MoveController::OpenFile(std::string fileName)
             //Переводим угол в градусы*100
             Angle=(180.0 / M_PI)*Angle*100.0;
 
-            SkipSpace(loc, str, &i);
+            SkipSpace(loc, str, &pos);
 
-            if(str[i] != '\0') //проверяем есть ли коэффициэнты PID
+            if(str[pos] != '\0') //проверяем есть ли коэффициэнты PID
             {
                 //значит здесь записаны коэффициенты PID
                 //читаем KP
-                ReadValue(&temp, loc, &i, str);
+                ReadValue(&temp, loc, &pos, str);
 
                 double KP = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KI
-                SkipSpace(loc, str, &i);
-                ReadValue(&temp, loc, &i, str);
+                SkipSpace(loc, str, &pos);
+                ReadValue(&temp, loc, &pos, str);
 
                 double KI = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KD
-                SkipSpace(loc, str, &i);
-                ReadValue(&temp, loc, &i, str);
+                SkipSpace(loc, str, &pos);
+                ReadValue(&temp, loc, &pos, str);
 
                 double KD = atof( temp.c_str() );
                 temp.clear();
@@ -230,27 +230,27 @@ bool MoveController::OpenFile(std::string fileName)
                 mPID.Dump = KI;
                 mPID.Torque = KD;
 
-                SkipSpace(loc, str, &i);
+                SkipSpace(loc, str, &pos);
 
-                if(str[i] != '\0') //проверяем есть ли коэффициэнты проп. PID
+                if(str[pos] != '\0') //проверяем есть ли коэффициэнты проп. PID
                 {
                     //значит здесь записаны коэффициенты проп. PID
                     //читаем KP
-                    ReadValue(&temp, loc, &i, str);
+                    ReadValue(&temp, loc, &pos, str);
 
                     double KPFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KI
-                    SkipSpace(loc, str, &i);
-                    ReadValue(&temp, loc, &i, str);
+                    SkipSpace(loc, str, &pos);
+                    ReadValue(&temp, loc, &pos, str);
 
                     double KIFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KD
-                    SkipSpace(loc, str, &i);
-                    ReadValue(&temp, loc, &i, str);
+                    SkipSpace(loc, str, &pos);
+                    ReadValue(&temp, loc, &pos, str);
 
                     double KDFactor = atof( temp.c_str() );
                     temp.clear();
