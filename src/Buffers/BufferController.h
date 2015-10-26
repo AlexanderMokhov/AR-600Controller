@@ -14,18 +14,18 @@ class BufferController
 private:
     BufferController(){}
     ~BufferController(){}
-    BufferController(BufferController const&);
+    BufferController( BufferController const& );
 
     static BufferController* mInst;
 
     BufferReceive mBufferReceive;
     BufferSend mBufferSend;
 public:
-    static BufferController* Inst() {return mInst;}
-    static void Init(){delete mInst; mInst = new BufferController;}
+    static BufferController* Inst() { return mInst; }
+    static void Init(){ delete mInst; mInst = new BufferController; }
 
-    BufferReceive *GetBufferR(){return &mBufferReceive;}
-    BufferSend *GetBufferS(){return &mBufferSend;}
+    BufferReceive *GetBufferR(){ return &mBufferReceive; }
+    BufferSend *GetBufferS(){ return &mBufferSend; }
     void InitBuffers();
 };
 

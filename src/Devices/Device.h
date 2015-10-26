@@ -16,7 +16,7 @@ public:
 public:
     Device();
     ~Device();
-    Device(int Number, int Channel, std::string Name);
+    Device( int Number, int Channel, std::string Name );
 
     //геттеры
     int GetNumber();
@@ -24,9 +24,9 @@ public:
     std::string GetName();
 
     //сеттеры
-    void SetNumber(int Number);
-    void SetChannel(int Channel);
-    void SetName(string Name);
+    void SetNumber( int Number );
+    void SetChannel( int Channel );
+    void SetName( string Name );
 
 };
 

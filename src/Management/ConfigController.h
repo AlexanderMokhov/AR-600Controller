@@ -16,7 +16,7 @@ class ConfigController
 private:
     static ConfigController* mInst;
     ConfigController();
-    ConfigController(ConfigController const&);
+    ConfigController( ConfigController const& );
     ~ConfigController(){}
 
     TiXmlDocument * mXMLConfigFile;
@@ -43,31 +43,31 @@ private:
     int mDefaultSpeed;              //Скорость перехода в позицию (град за сек)
 
 public:
-    static ConfigController* Inst(){return mInst;}
-    static void Init(){delete mInst; mInst = new ConfigController;}
+    static ConfigController* Inst(){ return mInst; }
+    static void Init(){ delete mInst; mInst = new ConfigController; }
 
-    bool OpenFile(std::string FileName);//Открыть файл настроек
-    bool SaveFile(std::string FileName);//Сохранить файл настроек
+    bool OpenFile( std::string FileName );//Открыть файл настроек
+    bool SaveFile( std::string FileName );//Сохранить файл настроек
 
-    std::string GetHost(){return mHost;}                //получить адрес назначения
-    int GetSendPort(){return mSendPort;}                //получить порт записи
-    int GetReceivePort(){return mReceivePort;}          //получить порт приема
-    int GetSendDelay(){return mSendDelay;}              //получить интервал записи
-    int GetReceiveDelay(){return mReceiveDelay;}        //получить интервал чтения
-    void SetHost(std::string host){mHost = host;}       //задать адрес назначения
-    void SetReceivePort(int port){mReceivePort = port;} //задать порт чтения
-    void SetSendPort(int port){mSendPort = port;}       //задать порт записи
+    std::string GetHost(){ return mHost; }                //получить адрес назначения
+    int GetSendPort(){ return mSendPort; }                //получить порт записи
+    int GetReceivePort(){ return mReceivePort; }          //получить порт приема
+    int GetSendDelay(){ return mSendDelay; }              //получить интервал записи
+    int GetReceiveDelay(){ return mReceiveDelay; }        //получить интервал чтения
+    void SetHost( std::string host ){ mHost = host; }       //задать адрес назначения
+    void SetReceivePort( int port ){ mReceivePort = port; } //задать порт чтения
+    void SetSendPort( int port ){ mSendPort = port; }       //задать порт записи
 
-    std::map<int, Motor> *GetMotors(){return &mMotors;}
-    std::map<int, Sensor> *GetSensors(){return &mSensors;}
+    std::map<int, Motor> *GetMotors(){ return &mMotors; }
+    std::map<int, Sensor> *GetSensors(){ return &mSensors; }
 
-    int GetDefaultStiff(){return mDefaultStiff;}
-    int GetDefaultDump(){return mDefaultDump;}
-    int GetDefaultTorque(){return mDefaultTorque;}
-    double GetDefaultStiffFactor(){return mDefaultStiffFactor;}
-    double GetDefaultDumpFactor(){return mDefaultDumpFactor;}
-    double GetDefaultTorqueFactor(){return mDefaultTorqueFactor;}
-    int GetDefaultSpeed(){return mDefaultSpeed;}
+    int GetDefaultStiff(){ return mDefaultStiff; }
+    int GetDefaultDump(){ return mDefaultDump; }
+    int GetDefaultTorque(){ return mDefaultTorque; }
+    double GetDefaultStiffFactor(){ return mDefaultStiffFactor; }
+    double GetDefaultDumpFactor(){ return mDefaultDumpFactor; }
+    double GetDefaultTorqueFactor(){ return mDefaultTorqueFactor; }
+    int GetDefaultSpeed(){ return mDefaultSpeed; }
 };
 
 

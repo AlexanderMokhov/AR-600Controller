@@ -4,16 +4,16 @@ MoveCorrector * MoveCorrector::mInst = 0;
 
 MoveCorrector::MoveCorrector()
 {
-    mSensors = ConfigController::Inst()->GetSensors();
+    aSensors = ConfigController::Inst()->GetSensors();
 
-    mMapAmends.clear();
-    mMotors = ConfigController::Inst()->GetMotors();
+    mAmends.clear();
+    aMotors = ConfigController::Inst()->GetMotors();
 
-    for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
+    for(auto it = aMotors->begin(); it != aMotors->end(); ++it)
     {
         vector<Amend> item;
         //Добавляем в контейнер
-        mMapAmends[(*it).second.GetNumber()] = item;
+        mAmends[(*it).second.GetNumber()] = item;
     }
 }
 
@@ -29,7 +29,7 @@ bool MoveCorrector::OpenFile(string fileName)
     if( file.is_open() )
     {
         //очищаем поправки
-        for(auto it = mMapAmends.begin(); it != mMapAmends.end(); ++it)
+        for(auto it = mAmends.begin(); it != mAmends.end(); ++it)
         {
             (*it).second.clear();
         }
@@ -80,13 +80,13 @@ bool MoveCorrector::OpenFile(string fileName)
             temp.clear();
 
             //заполняем команду
-            NextAmend.Ak = Ak;
-            NextAmend.An = An;
-            NextAmend.Kn = Kn;
-            NextAmend.N = N;
+            NextAmend.mScale = Ak;
+            NextAmend.sScale = An;
+            NextAmend.sZeroValue = Kn;
+            NextAmend.sNumber = N;
 
             //добавляем команду в список
-            mMapAmends[NumberChannel].push_back(NextAmend);
+            mAmends[NumberChannel].push_back(NextAmend);
             countLines++;
         }
 
@@ -106,24 +106,22 @@ int MoveCorrector::getCorrectValue(int NumberChannel)
 {
     double CorrAngle = 0;//поправочное значение
     // если есть корректирующие значения для этого канала
-    if(mMapAmends[NumberChannel].size() != 0)
+    if(mAmends[NumberChannel].size() != 0)
     {
-
-
-        for(int i=0; i < mMapAmends[NumberChannel].size(); i++)
+        for(int i=0; i < mAmends[NumberChannel].size(); i++)
         {
-            double Ak = mMapAmends[NumberChannel][i].Ak;
-            double An = mMapAmends[NumberChannel][i].An;
-            int Kn = mMapAmends[NumberChannel][i].Kn;
-            int SNumber = mMapAmends[NumberChannel][i].N;
+            double sScale = mAmends[NumberChannel][i].sScale;
+            double mScale = mAmends[NumberChannel][i].mScale;
+            int sZeroValue = mAmends[NumberChannel][i].sZeroValue;
+            int sNumber = mAmends[NumberChannel][i].sNumber;
 
-            int K = BufferController::Inst()->GetBufferR()->GetSensorValue(
-                        mSensors->at(SNumber).GetChannel(), mSensors->at(SNumber).GetParam() ) ;
+            int sValue = BufferController::Inst()->GetBufferR()->GetSensorValue(
+                        aSensors->at(sNumber).GetChannel(), aSensors->at(sNumber).GetParam() ) ;
 
-            qDebug() << "показания сенсора"  << QString::number(K) << endl;
+            qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
 
 
-            double Xk = (double)((K - Kn)/An)*Ak;
+            double Xk = (double)((sValue - sZeroValue)/sScale)*mScale;
             qDebug() << "Xk"  << QString::number(Xk) << endl;
             CorrAngle += Xk;
         }

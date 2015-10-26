@@ -74,7 +74,7 @@ void MotorControlWidget::UpdateData()
     ui->lineStatusU->setText(QString::number(mReadBuffer->GetMotorU(CurrentNumber)/100.0,'g',6));
 
     //начало чтения статуса
-    unsigned char status = mReadBuffer->GetMotorStatus(CurrentNumber);
+    unsigned char status = mReadBuffer->GetMotorState(CurrentNumber);
     QString statusString;
 
     if((unsigned char)(status & 0) == 0)

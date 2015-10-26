@@ -10,38 +10,38 @@
 class BufferReceive
 {
 private:
-    char mRAW [1472];
+    char mRAW [BufferSize];
     std::mutex mLocker;
-    DeviceData mMotorData[71];
+    DeviceData mMotorData[ChannelsCount];
 public:
     BufferReceive(void);
     ~BufferReceive(void);
 
-    void Init(const char RAW_other[]);
+    void Init( const char RAW_other[] );
     //добавить номер номер устройства в отправляемый буфер
-    void SetDeviceChannel(short NumberDevice, short NumberChannel);
-    void SetMotorReverce(short Number, bool value);
+    void SetDeviceChannel( short NumberDevice, short NumberChannel );
+    void SetMotorReverce( short Number, bool value );
 
-    short GetSensorYaw(short Number);//получить данные с сенсора рысканья
-    short GetSensorPitch(short Number);
-    short GetSensorRoll(short Number);//получить данные с сенсора вращения/крена
-    short GetSensorUCH0(short Number);
-    short GetSensorUCH1(short Number);
-    short GetSensorUCH2(short Number);
-    short GetSensorUCH3(short Number);
-    short GetSensorTX(short Number);
-    short GetSensorTY(short Number);
-    short GetSensorFZ(short Number);
-    short GetSensorValue(short Number,int Param);
+    short GetSensorYaw( short Number );//получить данные с сенсора рысканья
+    short GetSensorPitch( short Number );
+    short GetSensorRoll( short Number );//получить данные с сенсора вращения/крена
+    short GetSensorUCH0( short Number );
+    short GetSensorUCH1( short Number );
+    short GetSensorUCH2( short Number );
+    short GetSensorUCH3( short Number );
+    short GetSensorTX( short Number );
+    short GetSensorTY( short Number );
+    short GetSensorFZ( short Number );
+    short GetSensorValue( short Number, int Param );
 
-    short GetMotorI(short Number);//получить ток мотора
-    short GetMotorU(short Number);//получить напряжение мотора
-    short GetMotorAngle(short Number);//получить текущую позицию мотора
-    short GetMotorStiff(short Number);//получить KP
-    short GetMotorDamp(short Number);//получить KI
-    short GetMotorStatus(short Number);//получить статус мотора
-    short GetMotorMinAngle(short Number);//получить минимальную позицию мотора
-    short GetMotorMaxAngle(short Number);//получить максималную позицию мотора
+    short GetMotorI( short Number );//получить ток мотора
+    short GetMotorU( short Number );//получить напряжение мотора
+    short GetMotorAngle( short Number );//получить текущую позицию мотора
+    short GetMotorStiff( short Number );//получить KP
+    short GetMotorDamp( short Number );//получить KI
+    short GetMotorState( short Number );//получить статус мотора
+    short GetMotorMinAngle( short Number );//получить минимальную позицию мотора
+    short GetMotorMaxAngle( short Number );//получить максималную позицию мотора
 
     float GetPowerU61();
     float GetPowerU62();

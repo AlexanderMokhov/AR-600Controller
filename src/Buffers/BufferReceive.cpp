@@ -240,7 +240,7 @@ short BufferReceive::GetMotorDamp(short Number)
     return motor_damp;
 }
 
-short BufferReceive::GetMotorStatus(short Number)
+short BufferReceive::GetMotorState(short Number)
 {
     mLocker.lock();
     short motor_stat=(BYTE)mRAW[mMotorData[Number].Channel*16+1];

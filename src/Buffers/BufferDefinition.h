@@ -12,5 +12,8 @@ struct DeviceData
     short Channel;  //Номер канала
 };
 
+const int BufferSize  = 1472;
+const int ChannelsCount = 71;
+
 #endif // ADEFINITION
 

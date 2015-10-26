@@ -19,11 +19,11 @@ class Sender : public QThread
 {
     Q_OBJECT
 private:
-    QUdpSocket      *mUdpSocketSender;
-    BufferSend     *mSendBuffer;
-    QTimer          *mTimerSend;
-    std::mutex      *mLocker;
-    QTime           *mTime;
+    QUdpSocket *mUdpSocketSender;
+    BufferSend *mSendBuffer;
+    QTimer *mTimerSend;
+    std::mutex *mLocker;
+    QTime *mTime;
 
     QString         mHost;
     int             mSendPort;
@@ -32,7 +32,7 @@ private:
     volatile bool isRunning;
     void PrintConnectionState();
 public:
-    explicit Sender(QObject *parent = 0);
+    explicit Sender( QObject *parent = 0 );
     ~Sender();
     void run();
     void Connect();

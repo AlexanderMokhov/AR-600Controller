@@ -77,7 +77,7 @@ void MotorTableWidget::UpdatePos()
         mModel->setData(mModel->index(i,3),cPos,Qt::EditRole);
 
         //начало чтения статуса
-        unsigned char status = BufferController::Inst()->GetBufferR()->GetMotorStatus(Number);
+        unsigned char status = BufferController::Inst()->GetBufferR()->GetMotorState(Number);
         QString statusString;
 
         if((unsigned char)(status & 0) == 0)

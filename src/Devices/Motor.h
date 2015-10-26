@@ -41,11 +41,11 @@ public:
     int GetTorque();//получить KD
     int GetCalibration();
     bool GetEnable();
-    void SetCalibration(int Calibration);
-    void SetStiff(int Stiff);
-    void SetDump(int Dump);
-    void SetTorque(int Torque);
-    void SetEnable(bool Enable);
+    void SetCalibration( int Calibration );
+    void SetStiff( int Stiff );
+    void SetDump( int Dump );
+    void SetTorque( int Torque );
+    void SetEnable( bool Enable );
 };
 
 #endif // MOTOR_H

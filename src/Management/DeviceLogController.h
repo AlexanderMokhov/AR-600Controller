@@ -18,9 +18,6 @@
 #include "Buffers/BufferController.h"
 #include "ConfigController.h"
 
-
-
-
 using namespace std;
 
 struct LogData

@@ -12,19 +12,19 @@ private:
 public:
     Sensor();
     ~Sensor(){;}
-    Sensor(int Number,
+    Sensor( int Number,
            int Channel,
            std::string Name,
            std::string NameLog,
-           int param);
+           int param );
 
-    int GetValue(){return mValue;}
-    std::string GetNameLog(){return mNameLog;}
-    int GetParam(){return mParam;}
+    int GetValue(){ return mValue; }
+    std::string GetNameLog(){ return mNameLog; }
+    int GetParam(){ return mParam; }
 
-    void SetValue(int value){mValue = value;}
-    void SetNameLog(std::string NameLog){mNameLog = NameLog;}
-    void SetParam(int Param){mParam = Param;}
+    void SetValue( int value ){ mValue = value; }
+    void SetNameLog( std::string NameLog ){ mNameLog = NameLog; }
+    void SetParam( int Param ){ mParam = Param; }
 };
 
 #endif // SENSOR_H

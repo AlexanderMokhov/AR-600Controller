@@ -20,33 +20,33 @@
 
 struct Amend //поправка
 {
-    int N = 0;      //номер датчика
-    double Kn = 0;  //нулевое значение датчика
-    double Ak = 0;  //масштаб. коэфф. для коэфф. обр. связи
-    double An = 0;  //масштаб. коэфф. для датчика
+    int sNumber = 0;      //номер датчика
+    double sZeroValue = 0;  //нулевое значение датчика
+    double mScale = 0;  //масштаб. коэфф. для коэфф. обр. связи
+    double sScale = 0;  //масштаб. коэфф. для датчика
 };
 
 class MoveCorrector
 {
 private:
-    std::map<int, std::vector<Amend>> mMapAmends;//карта поправок
-    std::map<int, Motor> * mMotors;
-    std::map<int, Sensor> * mSensors;
+    std::map<int, std::vector<Amend>> mAmends;//карта поправок
+    std::map<int, Motor> *aMotors;
+    std::map<int, Sensor> *aSensors;
 
-    void SkipSpace(std::locale loc, std::string str, unsigned int *i);
-    void ReadValue(std::string *temp, std::locale loc, unsigned int *i, std::string str);
+    void SkipSpace( std::locale loc, std::string str, unsigned int *i );
+    void ReadValue( std::string *temp, std::locale loc, unsigned int *i, std::string str );
 
     MoveCorrector();
     ~MoveCorrector(){}
-    MoveCorrector(MoveCorrector const&);
+    MoveCorrector( MoveCorrector const& );
     static MoveCorrector* mInst;
 
 public:
-    static MoveCorrector* Inst(){return mInst;}
+    static MoveCorrector* Inst(){ return mInst; }
     void Init();
 
-    bool OpenFile(std::string fileName);
-    int getCorrectValue(int NumberChannel);
+    bool OpenFile( std::string fileName );
+    int getCorrectValue( int NumberChannel );
 };
 
 #endif // MOVECORRECTOR_H
