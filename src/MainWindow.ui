@@ -114,6 +114,7 @@
     <addaction name="actionOpenConfigFile"/>
     <addaction name="actionSaveConfigFile"/>
     <addaction name="actionOpenCorrectionFile"/>
+    <addaction name="action_Open_DRIVEMAT"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -191,6 +192,11 @@
   <action name="actionOpenCorrectionFile">
    <property name="text">
     <string>Открыть файл обр. связи</string>
+   </property>
+  </action>
+  <action name="action_Open_DRIVEMAT">
+   <property name="text">
+    <string>Открыть файл DRIVEMAT</string>
    </property>
   </action>
  </widget>

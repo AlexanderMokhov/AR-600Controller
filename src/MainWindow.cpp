@@ -171,6 +171,7 @@ void MainWindow::ConnectionsInit()
     connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
 
     connect(ui->actionOpenCorrectionFile,SIGNAL(triggered()),this,SLOT(OpenCorrectionFile()));
+    connect(ui->action_Open_DRIVEMAT,SIGNAL(triggered()),this,SLOT(OpenDRIVEMATFile()));
 
     connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
     connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
@@ -321,4 +322,24 @@ void MainWindow::OpenCorrectionFile()
         }
     }
 
+}
+
+void MainWindow::OpenDRIVEMATFile()
+{
+    QString fileName = QFileDialog::getOpenFileName(0,"Open DRIVEMAT File Dialog","","*.TXT *.txt");
+
+    if ( !fileName.isEmpty() )
+    {
+        bool isOk = MoveCorrector::Inst()->OpenDriveMatFile(fileName.toStdString());
+
+        if(isOk)
+        {
+            qDebug() << "Файл DRIVEMAT успешно загружен из " << fileName << endl;
+        }
+        else
+        {
+            qDebug() << "Файл DRIVEMAT не был загружен из " << fileName << endl;
+            qDebug() << "Возможно, имя или формат файла заданы неверно" << endl;
+        }
+    }
 }

@@ -47,7 +47,13 @@ bool MoveCorrector::OpenFile(string fileName)
             unsigned int i = 0;
 
             double mScale, sScale, sZeroValue;
-            int sNumber, mNumber = 0;
+            int sNumber = 0, Type = 0, mNumber = 0, spNumber;
+
+            //читаем тип строки
+            SkipSpace(loc, line, &i);
+            ReadValue(&temp, loc, &i, line);
+            Type = atoi( temp.c_str() );
+            temp.clear();
 
             //читаем номер датчика
             SkipSpace(loc, line, &i);
@@ -60,6 +66,15 @@ bool MoveCorrector::OpenFile(string fileName)
             ReadValue(&temp, loc, &i, line);
             mNumber = atoi( temp.c_str() );
             temp.clear();
+
+            if(Type == 2)
+            {
+                //читаем номер датчика в файле DRIVEMAT
+                SkipSpace(loc, line, &i);
+                ReadValue(&temp, loc, &i, line);
+                spNumber = atoi( temp.c_str() );
+                temp.clear();
+            }
 
             //читаем Ak - масшт. к-т привода
             SkipSpace(loc, line, &i);
@@ -80,16 +95,106 @@ bool MoveCorrector::OpenFile(string fileName)
             temp.clear();
 
             //заполняем команду
+            NextAmend.Type = Type;
+
             NextAmend.mScale = mScale;
             NextAmend.sScale = sScale;
             NextAmend.sZeroValue = sZeroValue;
             NextAmend.sNumber = sNumber;
+
+            if(Type == 2)
+            {
+                NextAmend.spNumber = spNumber;
+            }
 
             //добавляем команду в список
             mAmends[mNumber].push_back(NextAmend);
             countLines++;
         }
 
+        qDebug() << "считано " << QString::number(countLines) << " строк" << endl;
+
+        file.close();
+        return true;
+    }
+    else
+    {
+        file.close();
+        return false;
+    }
+}
+
+bool MoveCorrector::OpenDriveMatFile(string fileName)
+{
+    std::ifstream file(fileName.c_str());
+
+    if( file.is_open() )
+    {
+        std::locale loc;
+        std::string temp;
+        unsigned int i = 0;
+
+        //очищаем вектор
+        mDriveMatVector.clear();
+        mSensorsNumbers.clear();
+
+        std::string line;
+
+        DriveMatData NextData;
+        int countLines = 0;
+
+        std::getline(file, line);
+        {
+            //считываем номера сенсоров
+            //пропускаем TIME
+            SkipSpace(loc, line, &i);
+            ReadValue(&temp, loc, &i, line);
+            temp.clear();
+            SkipSpace(loc, line, &i);
+
+            while(line[i] != '\0')
+            {
+                //читаем номер сенсора
+                int sNumber = 0;
+
+                ReadValue(&temp, loc, &i, line);
+                sNumber = atoi( temp.c_str() );
+                temp.clear();
+                SkipSpace(loc, line, &i);
+
+                mSensorsNumbers.push_back(sNumber);
+            }
+        }
+
+        //теперь считываем значения времени и сенсоров
+        while( std::getline(file, line) )
+        {
+            i = 0;
+            //читаем очередную строку из файла
+            //пропускаем TIME
+            SkipSpace(loc, line, &i);
+            ReadValue(&temp, loc, &i, line);
+            temp.clear();
+            SkipSpace(loc, line, &i);
+
+            NextData.Time = 0;
+
+            for(int j = 0; j < mSensorsNumbers.size(); j++)
+            {
+                //номер сенсора
+                int sNumber = mSensorsNumbers[j];
+                double sValue = 0;
+
+                ReadValue(&temp, loc, &i, line);
+                sValue = atof( temp.c_str() );
+                temp.clear();
+                SkipSpace(loc, line, &i);
+                NextData.SensorsData[sNumber] = sValue;
+            }
+
+            mDriveMatVector.push_back(NextData);
+            countLines++;
+        }
         qDebug() << "считано " << QString::number(countLines) << " строк" << endl;
 
         file.close();

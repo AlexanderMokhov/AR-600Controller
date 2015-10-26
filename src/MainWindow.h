@@ -89,6 +89,7 @@ private slots:
     void OpenXML();
 
     void OpenCorrectionFile();
+    void OpenDRIVEMATFile();
 
 public slots:
     void Connect();
