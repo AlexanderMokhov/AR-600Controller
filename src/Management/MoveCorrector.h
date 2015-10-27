@@ -31,7 +31,7 @@ struct Amend //поправка
 //New
 struct DriveMatData
 {
-    int Time;
+    long int Time;
     std::map<int, double> SensorsData;
 };
 
@@ -54,13 +54,20 @@ private:
     MoveCorrector( MoveCorrector const& );
     static MoveCorrector* mInst;
 
+    long int mLineId;
+
 public:
     static MoveCorrector* Inst(){ return mInst; }
     void Init();
 
     bool OpenFile( std::string fileName );
     bool OpenDriveMatFile( std::string fileName );
-    int getCorrectValue( int NumberChannel );
+    int getCorrectValue(int NumberChannel, int CTime);
+
+    void setCurLine(long id){mLineId = id;}
+
+    long int mDuration;
+    long int mCountRows;
 };
 
 #endif // MOVECORRECTOR_H

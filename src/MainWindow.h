@@ -19,7 +19,7 @@
 #include "Models/MotorTableModel.h"
 
 #include "Widgets/MotorControlWidget.h"
-#include "Widgets/CommandControlWidget.h"
+#include "Widgets/MoveControlWidget.h"
 #include "Widgets/MotorTableWidget.h"
 #include "Widgets/DeviceLogWidget.h"
 #include "Widgets/PowerControlWidget.h"
@@ -52,7 +52,7 @@ private:
 
     //виджеты
     MotorControlWidget      *mMotorControlWidget;
-    CommandControlWidget    *mCommandControlWidget;
+    MoveControlWidget       *mMoveControlWidget;
     MotorTableWidget        *mMotorTableWidget;
     DeviceLogWidget         *mDeviceLogWidget;
     PowerControlWidget      *mPowerControlWidget;

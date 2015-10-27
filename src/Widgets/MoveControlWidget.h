@@ -1,5 +1,5 @@
-#ifndef COMMANDCONTROLWIDGET_H
-#define COMMANDCONTROLWIDGET_H
+#ifndef MOVECONTROLWIDGET_H
+#define MOVECONTROLWIDGET_H
 
 #include <QWidget>
 #include <QFileDialog>
@@ -12,36 +12,32 @@
 #include "Buffers/BufferController.h"
 #include "Models/MotorTableModel.h"
 #include "Management/MoveController.h"
+#include "Management/MoveCorrector.h"
 
 namespace Ui {
-class CommandControlWidget;
+class MoveControlWidget;
 }
 
-class CommandControlWidget : public QWidget
+class MoveControlWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CommandControlWidget(QWidget *parent = 0);
-    ~CommandControlWidget();
+    explicit MoveControlWidget(QWidget *parent = 0);
+    ~MoveControlWidget();
 
 private slots:
     void on_ButtonLoadFile_clicked();
-
+    void on_ButtonLoadDRIVEMAT_clicked();
     void on_ButtonPlayPause_clicked();
-
     void on_ButtonStop_clicked();
-
     void on_ButtonNext_clicked();
-
     void on_checkBoxLog_clicked(bool checked);
-
     void on_ButtonGoStartPos_clicked();
-
     void on_ButtonStartFile_clicked();
 
 private:
-    Ui::CommandControlWidget *ui;
+    Ui::MoveControlWidget *ui;
     QString DefaultText;
     bool IsLog;
 
@@ -62,4 +58,4 @@ public slots:
     void openFile(QString fileName, bool mode);
 };
 
-#endif // COMMANDCONTROLWIDGET_H
+#endif // MOVECONTROLWIDGET_H

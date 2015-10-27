@@ -21,7 +21,6 @@ SOURCES += main.cpp\
     Widgets/MotorTableWidget.cpp \
     Widgets/SensorTableWidget.cpp \
     Widgets/MotorControlWidget.cpp \
-    Widgets/CommandControlWidget.cpp \
     Widgets/PowerControlWidget.cpp \
     Widgets/CommandFilesWidget.cpp \
     Models/CommandTableModel.cpp \
@@ -45,7 +44,8 @@ SOURCES += main.cpp\
     Management/MoveController.cpp \
     Management/Mover.cpp \
     MainWindow.cpp \
-    Management/MoveCorrector.cpp
+    Management/MoveCorrector.cpp \
+    Widgets/MoveControlWidget.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -53,7 +53,6 @@ HEADERS  += \
     Widgets/MotorTableWidget.h \
     Widgets/SensorTableWidget.h \
     Widgets/MotorControlWidget.h \
-    Widgets/CommandControlWidget.h \
     Widgets/PowerControlWidget.h \
     Widgets/CommandFilesWidget.h \
     Models/CommandTableModel.h \
@@ -76,7 +75,8 @@ HEADERS  += \
     Management/Mover.h \
     MainWindow.h \
     Buffers/BufferDefinition.h \
-    Management/MoveCorrector.h
+    Management/MoveCorrector.h \
+    Widgets/MoveControlWidget.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -84,10 +84,10 @@ FORMS    += \
     Widgets/SensorTableWidget.ui \
     Widgets/MotorTableWidget.ui \
     Widgets/MotorControlWidget.ui \
-    Widgets/CommandControlWidget.ui \
     Widgets/PowerControlWidget.ui \
     Widgets/CommandFilesWidget.ui \
-    MainWindow.ui
+    MainWindow.ui \
+    Widgets/MoveControlWidget.ui
 
 win32 {
     RC_FILE += resource.rc

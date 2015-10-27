@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
         MoveController::Inst()->Init();
         DeviceLogController::Inst()->Init();
 
-        mCommandControlWidget = new CommandControlWidget();
-        ui->CommandControlLayout->addWidget(mCommandControlWidget);
-        connect(MoveController::Inst(),SIGNAL(InitEnd()),mCommandControlWidget,SLOT(startCommand()));
+        mMoveControlWidget = new MoveControlWidget();
+        ui->CommandControlLayout->addWidget(mMoveControlWidget);
+        connect(MoveController::Inst(),SIGNAL(InitEnd()),mMoveControlWidget,SLOT(startCommand()));
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -103,22 +103,22 @@ void MainWindow::ActionsLoad()
     TBactionPlay = new QAction("Начать выполнение",0);
     TBactionPlay->setToolTip("Начать выполнение");
     TBactionPlay->setIcon(QIcon(":/MyIcons/Icons/play.ico"));
-    connect(TBactionPlay,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonPlayPause_clicked()));
+    connect(TBactionPlay,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonPlayPause_clicked()));
 
     TBactionStop = new QAction("Остановить выполнение",0);
     TBactionStop->setToolTip("Остановить выполнение");
     TBactionStop->setIcon(QIcon(":/MyIcons/Icons/stop.ico"));
-    connect(TBactionStop,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonStop_clicked()));
+    connect(TBactionStop,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonStop_clicked()));
 
     TBactionNext = new QAction("Следующая команда",0);
     TBactionNext->setToolTip("Следующая команда");
     TBactionNext->setIcon(QIcon(":/MyIcons/Icons/redo.ico"));
-    connect(TBactionNext,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonNext_clicked()));
+    connect(TBactionNext,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonNext_clicked()));
 
     TBactionOpenCommandFile = new QAction("Загрузить файл команд",0);
     TBactionOpenCommandFile->setToolTip("Загрузить файл команд");
     TBactionOpenCommandFile->setIcon(QIcon(":/MyIcons/Icons/folder.ico"));
-    connect(TBactionOpenCommandFile,SIGNAL(triggered()),mCommandControlWidget,SLOT(on_ButtonLoadFile_clicked()));
+    connect(TBactionOpenCommandFile,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonLoadFile_clicked()));
 
     TBactionOnPower = new QAction("Включить все",0);
     TBactionOnPower->setToolTip("Включить все");
@@ -180,18 +180,18 @@ void MainWindow::ConnectionsInit()
     connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
     //конец настройки кнопок меню
 
-    connect(mCommandControlWidget,SIGNAL(StartWriteLog(int)),mDeviceLogWidget,SLOT(StartWriteLog(int)));
-    connect(mCommandControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
-    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
+    connect(mMoveControlWidget,SIGNAL(StartWriteLog(int)),mDeviceLogWidget,SLOT(StartWriteLog(int)));
+    connect(mMoveControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
+    connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
 
-    connect(mCommandControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(Disactivate()));
-    connect(mCommandControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
+    connect(mMoveControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(Disactivate()));
+    connect(mMoveControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
     connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(Disactivate()));
     connect(MoveController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(MoveController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
-    connect(mCommandControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
+    connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
-    connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mCommandControlWidget,SLOT(openFile(QString,bool)));
+    connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));
 }
 
 void MainWindow::ToolBarInit()

@@ -42,15 +42,11 @@ void MoveController::StepPlay()
         int Dump = mCommands[mCommandId].PIDs.Dump;
         int Torque = mCommands[mCommandId].PIDs.Torque;
 
-        //int StiffFactor = mCommands[mCommandId].PIDs.StiffFactor;
-        //int DumpFactor = mCommands[mCommandId].PIDs.DumpFactor;
-        //int TorqueFactor = mCommands[mCommandId].PIDs.TorqueFactor;
-
         BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
         BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
         BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
 
-        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number);
+        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, mCommands[mCommandId].Time);
 
         qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
 
@@ -94,6 +90,8 @@ void MoveController::StartingPlay()
         BufferController::Inst()->GetBufferS()->MotorTrace( Number );
     }
     mCommandId = 0;
+    MoveCorrector::Inst()->setCurLine(0);
+
     mState = States::MovePlay;
     mTime.start();
 }
@@ -302,7 +300,6 @@ bool MoveController::OpenFile(std::string fileName)
         file.close();
         return false;
     }
-
 }
 
 void MoveController::NextCommand()

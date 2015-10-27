@@ -15,6 +15,14 @@ MoveCorrector::MoveCorrector()
         //Добавляем в контейнер
         mAmends[(*it).second.GetNumber()] = item;
     }
+
+    //очищаем вектор
+    mDriveMatVector.clear();
+    mSensorsNumbers.clear();
+
+    mLineId = 0;
+    mCountRows = 0;
+    mDuration = 0;
 }
 
 void MoveCorrector::Init()
@@ -105,6 +113,7 @@ bool MoveCorrector::OpenFile(string fileName)
             if(Type == 2)
             {
                 NextAmend.spNumber = spNumber;
+                qDebug() << "Type "  << QString::number(Type) << endl;
             }
 
             //добавляем команду в список
@@ -132,11 +141,13 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
     {
         std::locale loc;
         std::string temp;
-        unsigned int i = 0;
+        unsigned int pos = 0;
 
         //очищаем вектор
         mDriveMatVector.clear();
         mSensorsNumbers.clear();
+        mCountRows = 0;
+        mDuration = 0;
 
         std::string line;
 
@@ -147,20 +158,20 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
         {
             //считываем номера сенсоров
             //пропускаем TIME
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
+            SkipSpace(loc, line, &pos);
+            ReadValue(&temp, loc, &pos, line);
             temp.clear();
-            SkipSpace(loc, line, &i);
+            SkipSpace(loc, line, &pos);
 
-            while(line[i] != '\0')
+            while(line[pos] != '\0')
             {
                 //читаем номер сенсора
                 int sNumber = 0;
 
-                ReadValue(&temp, loc, &i, line);
+                ReadValue(&temp, loc, &pos, line);
                 sNumber = atoi( temp.c_str() );
                 temp.clear();
-                SkipSpace(loc, line, &i);
+                SkipSpace(loc, line, &pos);
 
                 mSensorsNumbers.push_back(sNumber);
             }
@@ -169,15 +180,20 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
         //теперь считываем значения времени и сенсоров
         while( std::getline(file, line) )
         {
-            i = 0;
+            pos = 0;
             //читаем очередную строку из файла
-            //пропускаем TIME
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
-            temp.clear();
-            SkipSpace(loc, line, &i);
 
-            NextData.Time = 0;
+            SkipSpace(loc, line, &pos);
+
+            //читаем время (как целое число)
+            while( line[pos] != '.' ){ temp += line.at(pos); pos++; } pos++;
+            ReadValue(&temp, loc, &pos, line);
+            int Time = atoi( temp.c_str() );
+            temp.clear();
+
+            SkipSpace(loc, line, &pos);
+
+            NextData.Time = Time;
 
             for(int j = 0; j < mSensorsNumbers.size(); j++)
             {
@@ -185,10 +201,10 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
                 int sNumber = mSensorsNumbers[j];
                 double sValue = 0;
 
-                ReadValue(&temp, loc, &i, line);
+                ReadValue(&temp, loc, &pos, line);
                 sValue = atof( temp.c_str() );
                 temp.clear();
-                SkipSpace(loc, line, &i);
+                SkipSpace(loc, line, &pos);
                 NextData.SensorsData[sNumber] = sValue;
             }
 
@@ -197,7 +213,12 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
         }
         qDebug() << "считано " << QString::number(countLines) << " строк" << endl;
 
+        mCountRows = countLines;
+        mDuration = mDriveMatVector[countLines-1].Time;
+        mLineId = 0;
+
         file.close();
+
         return true;
     }
     else
@@ -205,9 +226,10 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
         file.close();
         return false;
     }
+
 }
 
-int MoveCorrector::getCorrectValue(int NumberChannel)
+int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
 {
     double CorrAngle = 0;//поправочное значение
     // если есть корректирующие значения для этого канала
@@ -225,7 +247,23 @@ int MoveCorrector::getCorrectValue(int NumberChannel)
 
             qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
 
-            double Amend = (double)((sValue - sZeroValue)/sScale)*mScale;
+            double Amend = 0;
+
+            if(mAmends[NumberChannel][i].Type == 2)
+            {
+                while(mDriveMatVector[mLineId].Time < CTime){mLineId++;}
+                double sZValue = mDriveMatVector[mLineId].SensorsData[sNumber];
+
+                qDebug() << "Time: "  << QString::number(CTime) <<
+                            " SValue: "<< QString::number(sZValue) << endl;
+
+                Amend = (double)(((sValue - sZeroValue)/sScale) - sZValue)*mScale;
+            }
+            else
+            {
+                Amend = (double)((sValue - sZeroValue)/sScale)*mScale;
+            }
+
             qDebug() << "Amend: "  << QString::number(Amend) << endl;
             CorrAngle += Amend;
         }

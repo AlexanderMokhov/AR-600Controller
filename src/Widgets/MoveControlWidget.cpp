@@ -1,10 +1,10 @@
-#include "CommandControlWidget.h"
-#include "ui_CommandControlWidget.h"
+#include "MoveControlWidget.h"
+#include "ui_MoveControlWidget.h"
 #include <QDebug>
 
-CommandControlWidget::CommandControlWidget(QWidget *parent) :
+MoveControlWidget::MoveControlWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CommandControlWidget)
+    ui(new Ui::MoveControlWidget)
 {
     ui->setupUi(this);
     DefaultText = "Нажмите кнопку \"Загрузить Файл\"";
@@ -46,26 +46,58 @@ CommandControlWidget::CommandControlWidget(QWidget *parent) :
 
     isFileCommand = false;
 
+    connect(ui->ButtonLoadDRIVEMAT, SIGNAL(toggled(bool)), this, SLOT(on_ButtonLoadDRIVEMAT_clicked()));
+
 }
 
-CommandControlWidget::~CommandControlWidget()
+MoveControlWidget::~MoveControlWidget()
 {
     delete ui;
 }
 
-void CommandControlWidget::on_ButtonLoadFile_clicked()
+void MoveControlWidget::on_ButtonLoadFile_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(0,"Open Commands List Dialog","","*.txt");
     openFile(fileName, true);
 }
 
-void CommandControlWidget::on_ButtonPlayPause_clicked()
+void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(0,"Open DRIVEMAT File Dialog","","*.TXT *.txt");
+
+    if ( !fileName.isEmpty() )
+    {
+        bool isOk = MoveCorrector::Inst()->OpenDriveMatFile(fileName.toStdString());
+
+        if(isOk)
+        {
+            ui->DRIVEMATPathTextBox->setText(fileName);
+            ui->MessageTextBox->append( "Прочитан DRIVEMAT.TXT \n");
+
+            ui->MessageTextBox->append( "Прочитано " + QString::number(MoveCorrector::Inst()->mCountRows) +
+                                        " строк" + "\n");
+
+            ui->MessageTextBox->append( "Время записи " +
+                                        QString::number((double)MoveCorrector::Inst()->mDuration/1e6) +
+                                        " секунд" + "\n");
+
+            qDebug() << "Файл DRIVEMAT успешно загружен из " << fileName << endl;
+        }
+        else
+        {
+            qDebug() << "Файл DRIVEMAT не был загружен из " << fileName << endl;
+            qDebug() << "Возможно, имя или формат файла заданы неверно" << endl;
+        }
+    }
+}
+
+void MoveControlWidget::on_ButtonPlayPause_clicked()
 {
     isFileCommand = true;
     MoveController::Inst()->StartGoPos(true);
 }
 
-void CommandControlWidget::on_ButtonStop_clicked()
+void MoveControlWidget::on_ButtonStop_clicked()
 {
     isFileCommand = false;
     MoveController::Inst()->StopPlay();
@@ -78,29 +110,29 @@ void CommandControlWidget::on_ButtonStop_clicked()
     emit PlayStop();
 }
 
-void CommandControlWidget::on_ButtonNext_clicked()
+void MoveControlWidget::on_ButtonNext_clicked()
 {
     MoveController::Inst()->NextCommand();
 }
 
-void CommandControlWidget::on_checkBoxLog_clicked(bool checked)
+void MoveControlWidget::on_checkBoxLog_clicked(bool checked)
 {
     IsLog = checked;
 }
 
-void CommandControlWidget::on_ButtonGoStartPos_clicked()
+void MoveControlWidget::on_ButtonGoStartPos_clicked()
 {
     isFileCommand = false;
     MoveController::Inst()->StartGoPos(false);
 }
 
-void CommandControlWidget::on_ButtonStartFile_clicked()
+void MoveControlWidget::on_ButtonStartFile_clicked()
 {
     isFileCommand = false;
     MoveController::Inst()->StartGoPos(true);
 }
 
-void CommandControlWidget::startCommand()
+void MoveControlWidget::startCommand()
 {
     if(isFileCommand)
     {
@@ -114,7 +146,7 @@ void CommandControlWidget::startCommand()
     }
 }
 
-void CommandControlWidget::openFile(QString fileName, bool mode)
+void MoveControlWidget::openFile(QString fileName, bool mode)
 {
     if (!fileName.isEmpty())
     {
@@ -126,7 +158,7 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
             qDebug() << "Команды успешно прочитаны" <<endl;
             int CountRows = MoveController::Inst()->GetCountRows();
             int Duration = MoveController::Inst()->GetDuration();
-            ui->MessageTextBox->clear();
+            //ui->MessageTextBox->clear();
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
 
@@ -135,7 +167,7 @@ void CommandControlWidget::openFile(QString fileName, bool mode)
         else
         {
             qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
-            qDebug() << "Возможно имя, или формат файл()а заданы неверно" <<endl;
+            qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
         }
     }
 
