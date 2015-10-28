@@ -28,6 +28,9 @@ void MoveController::StepPlay()
 {
     long time = mTime.elapsed()*1e3;
 
+    QTime t;
+    t.start();
+
     if(mCommandId >= mCountRows){goto StopPlay;}
 
     while(mCommands[mCommandId].Time <= time)
@@ -57,6 +60,8 @@ void MoveController::StepPlay()
     }
 
 StopPlay:
+    //qDebug() << "Time elapsed: " << QString::number(t.elapsed()) << "ms\n";
+
     //если время закончилось - останавливаем, переводим индекс команды на начало списка
     if(time > mDuration)
     {
