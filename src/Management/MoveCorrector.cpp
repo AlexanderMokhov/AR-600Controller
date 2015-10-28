@@ -60,6 +60,11 @@ bool MoveCorrector::OpenFile(string fileName)
             //читаем тип строки
             SkipSpace(loc, line, &i);
             ReadValue(&temp, loc, &i, line);
+
+            //Проверка на комментарий
+            if( temp.find("//") == 0 )
+                continue;
+
             Type = atoi( temp.c_str() );
             temp.clear();
 
@@ -104,7 +109,6 @@ bool MoveCorrector::OpenFile(string fileName)
 
             //заполняем команду
             NextAmend.Type = Type;
-
             NextAmend.mScale = mScale;
             NextAmend.sScale = sScale;
             NextAmend.sZeroValue = sZeroValue;
@@ -112,16 +116,18 @@ bool MoveCorrector::OpenFile(string fileName)
 
             if(Type == 2)
             {
+                //читаем Zn - номер датчика в файле DRIVEMAT
                 NextAmend.spNumber = spNumber;
-                qDebug() << "Type "  << QString::number(Type) << endl;
             }
+
+            qDebug() << "Type "  << QString::number(Type) << endl;
 
             //добавляем команду в список
             mAmends[mNumber].push_back(NextAmend);
             countLines++;
         }
 
-        qDebug() << "считано " << QString::number(countLines) << " строк" << endl;
+        qDebug() << "Считано " << QString::number(countLines) << " строк" << endl;
 
         file.close();
         return true;
@@ -245,14 +251,16 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
             int sValue = BufferController::Inst()->GetBufferR()->GetSensorValue(
                         aSensors->at(sNumber).GetChannel(), aSensors->at(sNumber).GetParam() ) ;
 
+            int spNumber = mAmends[NumberChannel][i].spNumber;
             qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
 
             double Amend = 0;
 
             if(mAmends[NumberChannel][i].Type == 2)
             {
-                while(mDriveMatVector[mLineId].Time < CTime){mLineId++;}
-                double sZValue = mDriveMatVector[mLineId].SensorsData[sNumber];
+                while(mDriveMatVector[mLineId].Time < CTime){ mLineId++; }
+
+                double sZValue = mDriveMatVector[mLineId].SensorsData[spNumber];
 
                 qDebug() << "Time: "  << QString::number(CTime) <<
                             " SValue: "<< QString::number(sZValue) << endl;

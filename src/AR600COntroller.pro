@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     Management/Mover.cpp \
     MainWindow.cpp \
     Management/MoveCorrector.cpp \
-    Widgets/MoveControlWidget.cpp
+    Widgets/MoveControlWidget.cpp \
+    Management/MoveStorage.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -76,7 +77,8 @@ HEADERS  += \
     MainWindow.h \
     Buffers/BufferDefinition.h \
     Management/MoveCorrector.h \
-    Widgets/MoveControlWidget.h
+    Widgets/MoveControlWidget.h \
+    Management/MoveStorage.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

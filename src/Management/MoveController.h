@@ -130,9 +130,6 @@ public:
     void StopGoPos();
     void StoppingGoPos();
 
-
-
-
 signals:
     void InitStart();
     void InitEnd();
