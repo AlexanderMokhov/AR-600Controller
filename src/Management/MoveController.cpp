@@ -21,6 +21,8 @@ MoveController::MoveController()
         item.isEndPos = false;
         mGoToPosData[(*it).first] = item;
     }
+
+    MoveStorage::Inst()->Init();
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
@@ -145,6 +147,9 @@ void MoveController::ReadValue(std::string *temp, std::locale loc, unsigned int 
 
 bool MoveController::OpenFile(std::string fileName)
 {
+    //MoveStorage::Inst()->OpenFile(fileName);
+    //mCommandId = 0;
+
     std::ifstream file(fileName.c_str());
 
     if( file.is_open() )

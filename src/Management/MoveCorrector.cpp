@@ -87,6 +87,8 @@ bool MoveCorrector::OpenFile(string fileName)
                 ReadValue(&temp, loc, &i, line);
                 spNumber = atoi( temp.c_str() );
                 temp.clear();
+
+                NextAmend.spNumber = spNumber;
             }
 
             //читаем Ak - масшт. к-т привода
@@ -113,12 +115,6 @@ bool MoveCorrector::OpenFile(string fileName)
             NextAmend.sScale = sScale;
             NextAmend.sZeroValue = sZeroValue;
             NextAmend.sNumber = sNumber;
-
-            if(Type == 2)
-            {
-                //читаем Zn - номер датчика в файле DRIVEMAT
-                NextAmend.spNumber = spNumber;
-            }
 
             qDebug() << "Type "  << QString::number(Type) << endl;
 
@@ -169,6 +165,7 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
             temp.clear();
             SkipSpace(loc, line, &pos);
 
+            int number = 1;
             while(line[pos] != '\0')
             {
                 //читаем номер сенсора
@@ -179,7 +176,9 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
                 temp.clear();
                 SkipSpace(loc, line, &pos);
 
-                mSensorsNumbers.push_back(sNumber);
+                //mSensorsNumbers.push_back(sNumber);
+                mSensorsNumbers.push_back(number);
+                number++;
             }
         }
 
@@ -239,43 +238,42 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
 {
     double CorrAngle = 0;//поправочное значение
     // если есть корректирующие значения для этого канала
-    if(mAmends[NumberChannel].size() != 0)
+
+    for(int i=0; i < mAmends[NumberChannel].size(); i++)
     {
-        for(int i=0; i < mAmends[NumberChannel].size(); i++)
+        double sScale = mAmends[NumberChannel][i].sScale;
+        double mScale = mAmends[NumberChannel][i].mScale;
+        int sZeroValue = mAmends[NumberChannel][i].sZeroValue;
+        int sNumber = mAmends[NumberChannel][i].sNumber;
+
+        int sValue = BufferController::Inst()->GetBufferR()->GetSensorValue(
+                    aSensors->at(sNumber).GetChannel(), aSensors->at(sNumber).GetParam() ) ;
+
+        int spNumber = mAmends[NumberChannel][i].spNumber;
+        qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
+
+        double Amend = 0;
+
+        if(mAmends[NumberChannel][i].Type == 2)
         {
-            double sScale = mAmends[NumberChannel][i].sScale;
-            double mScale = mAmends[NumberChannel][i].mScale;
-            int sZeroValue = mAmends[NumberChannel][i].sZeroValue;
-            int sNumber = mAmends[NumberChannel][i].sNumber;
+            while(mDriveMatVector[mLineId].Time < CTime){ mLineId++; }
 
-            int sValue = BufferController::Inst()->GetBufferR()->GetSensorValue(
-                        aSensors->at(sNumber).GetChannel(), aSensors->at(sNumber).GetParam() ) ;
+            double sZValue = mDriveMatVector[mLineId].SensorsData[spNumber];
 
-            int spNumber = mAmends[NumberChannel][i].spNumber;
-            qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
+            qDebug() << "Time: "  << QString::number(CTime) <<
+                        " SValue: "<< QString::number(sZValue) << endl;
 
-            double Amend = 0;
-
-            if(mAmends[NumberChannel][i].Type == 2)
-            {
-                while(mDriveMatVector[mLineId].Time < CTime){ mLineId++; }
-
-                double sZValue = mDriveMatVector[mLineId].SensorsData[spNumber];
-
-                qDebug() << "Time: "  << QString::number(CTime) <<
-                            " SValue: "<< QString::number(sZValue) << endl;
-
-                Amend = (double)(((sValue - sZeroValue)/sScale) - sZValue)*mScale;
-            }
-            else
-            {
-                Amend = (double)((sValue - sZeroValue)/sScale)*mScale;
-            }
-
-            qDebug() << "Amend: "  << QString::number(Amend) << endl;
-            CorrAngle += Amend;
+            Amend = (double)(((sValue - sZeroValue)/sScale) - sZValue)*mScale;
         }
+        else
+        {
+            Amend = (double)((sValue - sZeroValue)/sScale)*mScale;
+        }
+
+        qDebug() << "Amend: "  << QString::number(Amend) << endl;
+        CorrAngle += Amend;
     }
+
     return CorrAngle;
 }
 
