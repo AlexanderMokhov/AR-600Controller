@@ -20,11 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
         BufferController::Inst()->InitBuffers();
         MoveController::Inst()->Init();
-        DeviceLogController::Inst()->Init();
+        RecordController::Inst()->Init();
 
         mMoveControlWidget = new MoveControlWidget();
-        ui->CommandControlLayout->addWidget(mMoveControlWidget);
-        connect(MoveController::Inst(),SIGNAL(InitEnd()),mMoveControlWidget,SLOT(startCommand()));
+        ui->MoveControlLayout->addWidget(mMoveControlWidget);
+        connect(MoveController::Inst(), SIGNAL(InitEnd()), mMoveControlWidget, SLOT(startMove()));
 
         qDebug() << "Настройки успешно прочитаны";
     }
@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mConnectDialog = new ConnectConfigDialog();
     mMotorControlWidget->setModel(mMotorTableWidget->getModel());
-    connect(mMotorTableWidget,SIGNAL(RowChanged(int)),mMotorControlWidget,SLOT(RowChanged(int)));
+    connect(mMotorTableWidget, SIGNAL(RowChanged(int)), mMotorControlWidget, SLOT(RowChanged(int)));
     //конец настройки виджетов
 
     //настройка кнопок тулбара
@@ -115,20 +115,20 @@ void MainWindow::ActionsLoad()
     TBactionNext->setIcon(QIcon(":/MyIcons/Icons/redo.ico"));
     connect(TBactionNext,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonNext_clicked()));
 
-    TBactionOpenCommandFile = new QAction("Загрузить файл команд",0);
-    TBactionOpenCommandFile->setToolTip("Загрузить файл команд");
-    TBactionOpenCommandFile->setIcon(QIcon(":/MyIcons/Icons/folder.ico"));
-    connect(TBactionOpenCommandFile,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonLoadFile_clicked()));
+    TBactionOpenMoveFile = new QAction("Загрузить файл команд",0);
+    TBactionOpenMoveFile->setToolTip("Загрузить файл команд");
+    TBactionOpenMoveFile->setIcon(QIcon(":/MyIcons/Icons/folder.ico"));
+    connect(TBactionOpenMoveFile,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonLoadFile_clicked()));
 
     TBactionOnPower = new QAction("Включить все",0);
     TBactionOnPower->setToolTip("Включить все");
     TBactionOnPower->setIcon(QIcon(":/MyIcons/Icons/on.ico"));
-    connect(TBactionOnPower,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOnAll_clicked()));
+    connect(TBactionOnPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
 
     TBactionOffPower = new QAction("Выключить все",0);
     TBactionOffPower->setToolTip("Выключить все");
     TBactionOffPower->setIcon(QIcon(":/MyIcons/Icons/off.ico"));
-    connect(TBactionOffPower,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOffAll_clicked()));
+    connect(TBactionOffPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
 
     TBactionOpenConnectSettings = new QAction("Настройки соединения",0);
     TBactionOpenConnectSettings->setToolTip("Настройки соединения");
@@ -154,14 +154,14 @@ void MainWindow::WidgetsInit()
     ui->MotorControlLayout->addWidget(mMotorControlWidget);
     mMotorTableWidget = new MotorTableWidget();
     ui->MotorTableLayout->addWidget(mMotorTableWidget);
-    mDeviceLogWidget = new DeviceLogWidget();
-    ui->DeviceLogWidgetLayout->addWidget(mDeviceLogWidget);
-    mPowerControlWidget = new PowerControlWidget();
-    ui->PowerControlLayout->addWidget(mPowerControlWidget);
+    mRecordWidget = new RecordWidget();
+    ui->RecordWidgetLayout->addWidget(mRecordWidget);
+    mPowerWidget = new PowerWidget();
+    ui->PowerWidgetLayout->addWidget(mPowerWidget);
     mSensorTableWidget = new SensorTableWidget();
     ui->SensorTableLayout->addWidget(mSensorTableWidget);
-    mCommandFilesWidget = new CommandFilesWidget();
-    ui->CommandFilesLayout->addWidget(mCommandFilesWidget);
+    mMoveFilesWidget = new MoveFilesWidget();
+    ui->MoveFilesWidgetLayout->addWidget(mMoveFilesWidget);
 }
 
 void MainWindow::ConnectionsInit()
@@ -175,13 +175,13 @@ void MainWindow::ConnectionsInit()
 
     connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
     connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
-    connect(ui->actionOn,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOnAll_clicked()));
-    connect(ui->actionOff,SIGNAL(triggered()),mPowerControlWidget,SLOT(on_ButtonOffAll_clicked()));
+    connect(ui->actionOn,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
+    connect(ui->actionOff,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
     connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
     //конец настройки кнопок меню
 
-    connect(mMoveControlWidget,SIGNAL(StartWriteLog(int)),mDeviceLogWidget,SLOT(StartWriteLog(int)));
-    connect(mMoveControlWidget,SIGNAL(StopWriteLog()),mDeviceLogWidget,SLOT(StopWriteLog()));
+    connect(mMoveControlWidget,SIGNAL(StartWriteRecord(int)),mRecordWidget,SLOT(StartWriteRecord(int)));
+    connect(mMoveControlWidget,SIGNAL(StopWriteRecord()),mRecordWidget,SLOT(StopWriteRecord()));
     connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
 
     connect(mMoveControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(Disactivate()));
@@ -189,9 +189,9 @@ void MainWindow::ConnectionsInit()
     connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(Disactivate()));
     connect(MoveController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(MoveController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
-    connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mCommandFilesWidget,SLOT(AddFile(QString,int,int,bool)));
+    connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mMoveFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
-    connect(mCommandFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));
+    connect(mMoveFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));
 }
 
 void MainWindow::ToolBarInit()
@@ -207,7 +207,7 @@ void MainWindow::ToolBarInit()
     ui->MainToolBar->addAction(TBactionOnPower);
     ui->MainToolBar->addAction(TBactionOffPower);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionOpenCommandFile);
+    ui->MainToolBar->addAction(TBactionOpenMoveFile);
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionPlay);
     ui->MainToolBar->addAction(TBactionPlay);
@@ -263,7 +263,7 @@ void MainWindow::OpenConnectConfig()
 //обработка принятого пакета от робота
 void MainWindow::ProcessTheDatagram()
 {
-    mPowerControlWidget->UpdatePowerLabel();
+    mPowerWidget->UpdatePowerLabel();
     mMotorControlWidget->UpdateData();
     mMotorTableWidget->UpdatePos();
     mSensorTableWidget->UpdatePos();

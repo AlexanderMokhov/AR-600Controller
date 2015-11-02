@@ -36,6 +36,10 @@ private slots:
     void on_ButtonGoStartPos_clicked();
     void on_ButtonStartFile_clicked();
 
+    void on_cBoxUseUserStiff_clicked(bool checked);
+
+    void on_cBoxUseUserDump_clicked(bool checked);
+
 private:
     Ui::MoveControlWidget *ui;
     QString DefaultText;
@@ -45,16 +49,16 @@ private:
     QState        *statePlay;
     QState        *stateStop;
     QState        *stateNotOpenFile;
-    bool          isFileCommand;
+    bool          isMoveFile;
 
 signals:
-    StartWriteLog(int LogTime);
-    StopWriteLog();
-    FileLoaded(QString FileName,int CountRows, int Duration,bool Mode);
+    StartWriteRecord(int LogTime);
+    StopWriteRecord();
+    FileLoaded(QString FileName,int CountRows, int Duration, bool Mode);
     PlayStart();
     PlayStop();
 public slots:
-    void startCommand();
+    void startMove();
     void openFile(QString fileName, bool mode);
 };
 

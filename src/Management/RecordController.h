@@ -1,5 +1,5 @@
-#ifndef DEVICELOGCONTROLLER_H
-#define DEVICELOGCONTROLLER_H
+#ifndef RECORDCONTROLLER_H
+#define RECORDCONTROLLER_H
 
 #include <QTime>
 #include <QDebug>
@@ -20,36 +20,41 @@
 
 using namespace std;
 
-struct LogData
+struct RecordData
 {
     int Time;
-    std::map<int,int> DriversData;
-    std::map<int,int> SensorsData;
+    std::map<int, int> DriversData;
+    std::map<int, int> SensorsData;
+    std::map<int, float> DriversCurrent;
 };
 
-class DeviceLogController
+class RecordController
 {
 
 private:
-    DeviceLogController();
-    ~DeviceLogController(){}
-    DeviceLogController(DeviceLogController const&);
-    static DeviceLogController* mInst;
+    RecordController();
+    ~RecordController(){}
+    RecordController(RecordController const&);
+    static RecordController* mInst;
 public:
     BufferReceive *mReadBuffer;
+
     std::map<int,int> mDriversMap;
     std::map<int,int> mSensorsMap;
-    std::vector<LogData> mLogVector;
+    std::map<int, float> mDrivsCurMap;
+
+    std::vector<RecordData> mRecordVector;
     std::map<int,Motor> * mConfigMap;
     std::map<int,Sensor> * mSensMap;
     QTime mTime;
 
-    static DeviceLogController* Inst(){return mInst;}
-    static void Init(){delete mInst; mInst = new DeviceLogController;}
+    static RecordController* Inst(){return mInst;}
+    static void Init(){delete mInst; mInst = new RecordController;}
 
     void AddRawData();
     bool SaveData(std::string fileName);
+    bool SaveCurData(std::string fileName);
     void StartWrite();
 };
 
-#endif // DEVICELOGCONTROLLER_H
+#endif // RECORDCONTROLLER_H

@@ -18,10 +18,10 @@
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout" rowstretch="0,10" columnstretch="0,10,0">
       <item row="0" column="0">
-       <layout class="QVBoxLayout" name="PowerControlLayout"/>
+       <layout class="QVBoxLayout" name="PowerWidgetLayout"/>
       </item>
       <item row="0" column="1">
-       <layout class="QVBoxLayout" name="DeviceLogWidgetLayout">
+       <layout class="QVBoxLayout" name="RecordWidgetLayout">
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
         </property>
@@ -30,7 +30,7 @@
       <item row="0" column="2" rowspan="2">
        <layout class="QGridLayout" name="gridLayout_5" rowstretch="2,8">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="CommandControlLayout">
+         <layout class="QHBoxLayout" name="MoveControlLayout">
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
@@ -48,7 +48,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabDriver">
          <attribute name="title">
@@ -84,7 +84,7 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
-           <layout class="QVBoxLayout" name="CommandFilesLayout">
+           <layout class="QVBoxLayout" name="MoveFilesWidgetLayout">
             <property name="sizeConstraint">
              <enum>QLayout::SetFixedSize</enum>
             </property>

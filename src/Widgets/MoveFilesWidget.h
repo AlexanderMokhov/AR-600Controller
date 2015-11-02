@@ -1,5 +1,5 @@
-#ifndef COMMANDFILESWIDGET_H
-#define COMMANDFILESWIDGET_H
+#ifndef MOVEFILESWIDGET_H
+#define MOVEFILESWIDGET_H
 
 #include <QWidget>
 #include <QItemSelectionModel>
@@ -13,19 +13,19 @@
 #include "Management/MoveController.h"
 
 namespace Ui {
-class CommandFilesWidget;
+class MoveFilesWidget;
 }
 
-class CommandFilesWidget : public QWidget
+class MoveFilesWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CommandFilesWidget(QWidget *parent = 0);
-    ~CommandFilesWidget();
+    explicit MoveFilesWidget(QWidget *parent = 0);
+    ~MoveFilesWidget();
 
 private:
-    Ui::CommandFilesWidget *ui;
+    Ui::MoveFilesWidget *ui;
     CommandTableModel *mModel;
     QItemSelectionModel *mSelectionModel;
     QInputDialog *mSetNameDialog;
@@ -46,4 +46,4 @@ private slots:
     void onDialogAccepted();
 };
 
-#endif // COMMANDFILESWIDGET_H
+#endif // MOVEFILESWIDGET_H

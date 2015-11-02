@@ -23,6 +23,12 @@ MoveController::MoveController()
     }
 
     MoveStorage::Inst()->Init();
+
+        UserStiff = 0;
+        UserDump = 0;
+
+        useUserStiff = false;
+        useUserDump = false;
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
@@ -43,8 +49,18 @@ void MoveController::StepPlay()
         int Number = mCommands[mCommandId].Number;
         int Angle = mCommands[mCommandId].Angle;
 
-        int Stiff = mCommands[mCommandId].PIDs.Stiff;
-        int Dump = mCommands[mCommandId].PIDs.Dump;
+        int Stiff = 0;
+        if(useUserStiff)
+            Stiff = UserStiff;
+        else
+            Stiff = mCommands[mCommandId].PIDs.Stiff;
+
+        int Dump = 0;
+        if(useUserDump)
+            Dump = UserDump;
+        else
+            Dump = mCommands[mCommandId].PIDs.Dump;
+
         int Torque = mCommands[mCommandId].PIDs.Torque;
 
         BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );

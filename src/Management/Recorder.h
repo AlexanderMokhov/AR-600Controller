@@ -1,5 +1,5 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef RECORDER_H
+#define RECORDER_H
 
 #include <QObject>
 #include <QThread>
@@ -9,9 +9,9 @@
 
 #include <stdlib.h>
 
-#include "DeviceLogController.h"
+#include "RecordController.h"
 
-class Logger : public QThread
+class Recorder : public QThread
 {
     Q_OBJECT
 private:
@@ -23,8 +23,8 @@ private:
     void SaveData();
 
 public:
-    explicit Logger(QObject *parent = 0);
-    ~Logger();
+    explicit Recorder(QObject *parent = 0);
+    ~Recorder();
     void run();
     void StartWriting();
     void StopWriting();
@@ -37,4 +37,4 @@ signals:
 
 };
 
-#endif // LOGGER_H
+#endif // RECORDER_H

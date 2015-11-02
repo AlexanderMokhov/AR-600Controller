@@ -131,6 +131,12 @@ public:
     void StopGoPos();
     void StoppingGoPos();
 
+    int UserStiff = 0;
+    int UserDump = 0;
+
+    bool useUserStiff = false;
+    bool useUserDump = false;
+
 signals:
     void InitStart();
     void InitEnd();

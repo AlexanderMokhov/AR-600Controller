@@ -1,9 +1,9 @@
-#include "CommandFilesWidget.h"
-#include "ui_CommandFilesWidget.h"
+#include "MoveFilesWidget.h"
+#include "ui_MoveFilesWidget.h"
 
-CommandFilesWidget::CommandFilesWidget(QWidget *parent) :
+MoveFilesWidget::MoveFilesWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CommandFilesWidget)
+    ui(new Ui::MoveFilesWidget)
 {
     ui->setupUi(this);
 
@@ -32,22 +32,22 @@ CommandFilesWidget::CommandFilesWidget(QWidget *parent) :
 
 }
 
-CommandFilesWidget::~CommandFilesWidget()
+MoveFilesWidget::~MoveFilesWidget()
 {
     delete ui;
 }
 
-CommandTableModel *CommandFilesWidget::getModel()
+CommandTableModel *MoveFilesWidget::getModel()
 {
     return mModel;
 }
 
-void CommandFilesWidget::ShowConfigData()
+void MoveFilesWidget::ShowConfigData()
 {
     ;
 }
 
-void CommandFilesWidget::AddFile(QString fileName,int RowsCount, int Duration, bool mode)
+void MoveFilesWidget::AddFile(QString fileName,int RowsCount, int Duration, bool mode)
 {
     if(mode)
     {
@@ -60,19 +60,19 @@ void CommandFilesWidget::AddFile(QString fileName,int RowsCount, int Duration, b
     }
 }
 
-void CommandFilesWidget::OnRowChanged()
+void MoveFilesWidget::OnRowChanged()
 {
 
 }
 
-void CommandFilesWidget::on_FilesTable_doubleClicked(const QModelIndex &index)
+void MoveFilesWidget::on_FilesTable_doubleClicked(const QModelIndex &index)
 {
     if(mModel->rowCount() == 0) return;
     emit fileChosen(mModel->mDataList.at(
                         mSelectionModel->currentIndex().row())->FileName, false );
 }
 
-void CommandFilesWidget::ShowContextMenu(const QPoint &pos)
+void MoveFilesWidget::ShowContextMenu(const QPoint &pos)
 {
     if( mModel->rowCount() == 0 ) return;
 
@@ -91,19 +91,19 @@ void CommandFilesWidget::ShowContextMenu(const QPoint &pos)
     myMenu.exec(globalPos);
 }
 
-void CommandFilesWidget::onDeleteAction()
+void MoveFilesWidget::onDeleteAction()
 {
     mModel->removeRow(mSelectionModel->currentIndex().row(), mSelectionModel->currentIndex());
 }
 
-void CommandFilesWidget::onSetNameAction()
+void MoveFilesWidget::onSetNameAction()
 {
     QString name = mModel->mDataList.at(mSelectionModel->currentIndex().row())->Description;
     mSetNameDialog->setTextValue(name);
     mSetNameDialog->show();
 }
 
-void CommandFilesWidget::onDialogAccepted()
+void MoveFilesWidget::onDialogAccepted()
 {
     if(!mSetNameDialog->textValue().isEmpty())
     {

@@ -1,9 +1,9 @@
-#include "PowerControlWidget.h"
-#include "ui_PowerControlWidget.h"
+#include "PowerWidget.h"
+#include "ui_PowerWidget.h"
 
-PowerControlWidget::PowerControlWidget(QWidget *parent) :
+PowerWidget::PowerWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PowerControlWidget)
+    ui(new Ui::PowerWidget)
 {
     ui->setupUi(this);
     mTimer = new QTimer(this);
@@ -15,12 +15,12 @@ PowerControlWidget::PowerControlWidget(QWidget *parent) :
     connect(mTimer,SIGNAL(timeout()),this,SLOT(OnTimerTick()));
 }
 
-PowerControlWidget::~PowerControlWidget()
+PowerWidget::~PowerWidget()
 {
     delete ui;
 }
 
-void PowerControlWidget::UpdatePowerLabel()
+void PowerWidget::UpdatePowerLabel()
 {
     ui->line48_U->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerU48()));
     ui->line48_I->setText(QString::number(BufferController::Inst()->GetBufferR()->GetPowerI48()));
@@ -40,7 +40,7 @@ void PowerControlWidget::UpdatePowerLabel()
 }
 
 //включить все
-void PowerControlWidget::on_ButtonOnAll_clicked()
+void PowerWidget::on_ButtonOnAll_clicked()
 {
     isOn = true;
     ChechBoxSetEnable(false);
@@ -50,7 +50,7 @@ void PowerControlWidget::on_ButtonOnAll_clicked()
     }
 }
 
-void PowerControlWidget::on_ButtonOffAll_clicked()
+void PowerWidget::on_ButtonOffAll_clicked()
 {
    isOn = false;
    ChechBoxSetEnable(false);
@@ -60,7 +60,7 @@ void PowerControlWidget::on_ButtonOffAll_clicked()
    }
 }
 
-void PowerControlWidget::OnTimerTick()
+void PowerWidget::OnTimerTick()
 {
     if(isOn)
     {
@@ -149,7 +149,7 @@ void PowerControlWidget::OnTimerTick()
 
 }
 
-void PowerControlWidget::ChechBoxSetEnable(bool enable)
+void PowerWidget::ChechBoxSetEnable(bool enable)
 {
     ui->checkBox48V->setEnabled(enable);
     ui->checkBox8V2->setEnabled(enable);
@@ -158,7 +158,7 @@ void PowerControlWidget::ChechBoxSetEnable(bool enable)
     ui->checkBox6V1->setEnabled(enable);
 }
 
-void PowerControlWidget::on_checkBox48V_clicked(bool checked)
+void PowerWidget::on_checkBox48V_clicked(bool checked)
 {
     if(checked)
     {
@@ -172,7 +172,7 @@ void PowerControlWidget::on_checkBox48V_clicked(bool checked)
     }
 }
 
-void PowerControlWidget::on_checkBox8V2_clicked(bool checked)
+void PowerWidget::on_checkBox8V2_clicked(bool checked)
 {
     if(checked)
     {
@@ -186,7 +186,7 @@ void PowerControlWidget::on_checkBox8V2_clicked(bool checked)
     }
 }
 
-void PowerControlWidget::on_checkBox8V1_clicked(bool checked)
+void PowerWidget::on_checkBox8V1_clicked(bool checked)
 {
     if(checked)
     {
@@ -200,7 +200,7 @@ void PowerControlWidget::on_checkBox8V1_clicked(bool checked)
     }
 }
 
-void PowerControlWidget::on_checkBox6V2_clicked(bool checked)
+void PowerWidget::on_checkBox6V2_clicked(bool checked)
 {
     if(checked)
     {
@@ -214,7 +214,7 @@ void PowerControlWidget::on_checkBox6V2_clicked(bool checked)
     }
 }
 
-void PowerControlWidget::on_checkBox6V1_clicked(bool checked)
+void PowerWidget::on_checkBox6V1_clicked(bool checked)
 {
     if(checked)
     {

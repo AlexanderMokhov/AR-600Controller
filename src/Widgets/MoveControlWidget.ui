@@ -37,6 +37,23 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
+       <item row="4" column="1">
+        <widget class="QPushButton" name="ButtonNext">
+         <property name="text">
+          <string>Кадр Next</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QSpinBox" name="sBoxUserStiffValue">
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+         <property name="value">
+          <number>1200</number>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0" colspan="2">
         <widget class="QLineEdit" name="FilePathTextBox">
          <property name="sizePolicy">
@@ -60,20 +77,10 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QLabel" name="label">
+       <item row="4" column="0">
+        <widget class="QPushButton" name="ButtonPlayPause">
          <property name="text">
-          <string>Информация по загруженному файлу:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QCheckBox" name="checkBoxLog">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>Вести лог</string>
+          <string>Запуск</string>
          </property>
         </widget>
        </item>
@@ -93,20 +100,6 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QPushButton" name="ButtonPlayPause">
-         <property name="text">
-          <string>Запуск</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QPushButton" name="ButtonNext">
-         <property name="text">
-          <string>Кадр Next</string>
-         </property>
-        </widget>
-       </item>
        <item row="4" column="2">
         <widget class="QPushButton" name="ButtonStop">
          <property name="text">
@@ -114,14 +107,14 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
+       <item row="7" column="0" colspan="2">
         <widget class="QPushButton" name="ButtonGoStartPos">
          <property name="text">
           <string>Стартовое положение</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="2">
+       <item row="7" column="2">
         <widget class="QPushButton" name="ButtonStartFile">
          <property name="text">
           <string>Из файла</string>
@@ -137,6 +130,61 @@
        </item>
        <item row="1" column="0" colspan="2">
         <widget class="QLineEdit" name="DRIVEMATPathTextBox"/>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Информация по загруженному файлу:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QCheckBox" name="checkBoxLog">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Вести лог</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QSpinBox" name="sBoxUserDumpValue">
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+         <property name="value">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>User KP (for all)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>User KI (for all)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QCheckBox" name="cBoxUseUserStiff">
+         <property name="text">
+          <string>Применить</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QCheckBox" name="cBoxUseUserDump">
+         <property name="text">
+          <string>Применить</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

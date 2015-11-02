@@ -17,12 +17,9 @@ CONFIG += qt c++11 thread
 
 SOURCES += main.cpp\
     Widgets/ConnectConfigDialog.cpp \
-    Widgets/DeviceLogWidget.cpp \
     Widgets/MotorTableWidget.cpp \
     Widgets/SensorTableWidget.cpp \
     Widgets/MotorControlWidget.cpp \
-    Widgets/PowerControlWidget.cpp \
-    Widgets/CommandFilesWidget.cpp \
     Models/CommandTableModel.cpp \
     Models/MotorTableModel.cpp \
     Models/SensorTableModel.cpp \
@@ -39,23 +36,23 @@ SOURCES += main.cpp\
     Libs/TinyXML/tinyxmlerror.cpp \
     Libs/TinyXML/tinyxmlparser.cpp \
     Management/ConfigController.cpp \
-    Management/DeviceLogController.cpp \
-    Management/Logger.cpp \
     Management/MoveController.cpp \
     Management/Mover.cpp \
     MainWindow.cpp \
     Management/MoveCorrector.cpp \
     Widgets/MoveControlWidget.cpp \
-    Management/MoveStorage.cpp
+    Management/MoveStorage.cpp \
+    Management/RecordController.cpp \
+    Management/Recorder.cpp \
+    Widgets/RecordWidget.cpp \
+    Widgets/MoveFilesWidget.cpp \
+    Widgets/PowerWidget.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
-    Widgets/DeviceLogWidget.h \
     Widgets/MotorTableWidget.h \
     Widgets/SensorTableWidget.h \
     Widgets/MotorControlWidget.h \
-    Widgets/PowerControlWidget.h \
-    Widgets/CommandFilesWidget.h \
     Models/CommandTableModel.h \
     Models/MotorTableModel.h \
     Models/SensorTableModel.h \
@@ -70,26 +67,29 @@ HEADERS  += \
     Libs/TinyXML/tinystr.h \
     Libs/TinyXML/tinyxml.h \
     Management/ConfigController.h \
-    Management/DeviceLogController.h \
-    Management/Logger.h \
     Management/MoveController.h \
     Management/Mover.h \
     MainWindow.h \
     Buffers/BufferDefinition.h \
     Management/MoveCorrector.h \
     Widgets/MoveControlWidget.h \
-    Management/MoveStorage.h
+    Management/MoveStorage.h \
+    Management/RecordController.h \
+    Management/Recorder.h \
+    Widgets/RecordWidget.h \
+    Widgets/MoveFilesWidget.h \
+    Widgets/PowerWidget.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
-    Widgets/DeviceLogWidget.ui \
     Widgets/SensorTableWidget.ui \
     Widgets/MotorTableWidget.ui \
     Widgets/MotorControlWidget.ui \
-    Widgets/PowerControlWidget.ui \
-    Widgets/CommandFilesWidget.ui \
     MainWindow.ui \
-    Widgets/MoveControlWidget.ui
+    Widgets/MoveControlWidget.ui \
+    Widgets/RecordWidget.ui \
+    Widgets/MoveFilesWidget.ui \
+    Widgets/PowerWidget.ui
 
 win32 {
     RC_FILE += resource.rc

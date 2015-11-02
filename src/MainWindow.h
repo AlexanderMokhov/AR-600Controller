@@ -14,18 +14,18 @@
 #include "Management/ConfigController.h"
 #include "Management/MoveController.h"
 #include "Management/MoveCorrector.h"
-#include "Management/DeviceLogController.h"
+#include "Management/RecordController.h"
 
 #include "Models/MotorTableModel.h"
 
 #include "Widgets/MotorControlWidget.h"
 #include "Widgets/MoveControlWidget.h"
 #include "Widgets/MotorTableWidget.h"
-#include "Widgets/DeviceLogWidget.h"
-#include "Widgets/PowerControlWidget.h"
+#include "Widgets/RecordWidget.h"
+#include "Widgets/PowerWidget.h"
 #include "Widgets/ConnectConfigDialog.h"
 #include "Widgets/SensorTableWidget.h"
-#include "Widgets/CommandFilesWidget.h"
+#include "Widgets/MoveFilesWidget.h"
 
 #include "Buffers/BufferController.h"
 
@@ -54,13 +54,13 @@ private:
     MotorControlWidget      *mMotorControlWidget;
     MoveControlWidget       *mMoveControlWidget;
     MotorTableWidget        *mMotorTableWidget;
-    DeviceLogWidget         *mDeviceLogWidget;
-    PowerControlWidget      *mPowerControlWidget;
+    RecordWidget            *mRecordWidget;
+    PowerWidget             *mPowerWidget;
     QLabel                  *mConnectStatusLabel;
     QLabel                  *mCommandControllerStatusLabel;
     ConnectConfigDialog     *mConnectDialog;
     SensorTableWidget       *mSensorTableWidget;
-    CommandFilesWidget      *mCommandFilesWidget;
+    MoveFilesWidget         *mMoveFilesWidget;
 
     //действия
     QAction *TBactionOpenCF;
@@ -73,7 +73,7 @@ private:
     QAction *TBactionOpenConnectSettings;
     QAction *TBactionConnect;
     QAction *TBactionDisconnect;
-    QAction *TBactionOpenCommandFile;
+    QAction *TBactionOpenMoveFile;
 
     //потоки
     Receiver                *mReceiver;

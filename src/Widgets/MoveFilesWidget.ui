@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CommandFilesWidget</class>
- <widget class="QWidget" name="CommandFilesWidget">
+ <class>MoveFilesWidget</class>
+ <widget class="QWidget" name="MoveFilesWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -38,7 +38,7 @@
       <bool>false</bool>
      </property>
      <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
+      <bool>false</bool>
      </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>70</number>

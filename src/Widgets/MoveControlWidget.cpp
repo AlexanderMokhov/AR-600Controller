@@ -44,7 +44,7 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     machine->setInitialState(stateNotOpenFile);
     machine->start();
 
-    isFileCommand = false;
+    isMoveFile = false;
 
     connect(ui->ButtonLoadDRIVEMAT, SIGNAL(toggled(bool)), this, SLOT(on_ButtonLoadDRIVEMAT_clicked()));
 
@@ -93,18 +93,18 @@ void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
 
 void MoveControlWidget::on_ButtonPlayPause_clicked()
 {
-    isFileCommand = true;
+    isMoveFile = true;
     MoveController::Inst()->StartGoPos(true);
 }
 
 void MoveControlWidget::on_ButtonStop_clicked()
 {
-    isFileCommand = false;
+    isMoveFile = false;
     MoveController::Inst()->StopPlay();
 
     if(IsLog)
     {
-        emit StopWriteLog();
+        emit StopWriteRecord();
     }
 
     emit PlayStop();
@@ -122,24 +122,24 @@ void MoveControlWidget::on_checkBoxLog_clicked(bool checked)
 
 void MoveControlWidget::on_ButtonGoStartPos_clicked()
 {
-    isFileCommand = false;
+    isMoveFile = false;
     MoveController::Inst()->StartGoPos(false);
 }
 
 void MoveControlWidget::on_ButtonStartFile_clicked()
 {
-    isFileCommand = false;
+    isMoveFile = false;
     MoveController::Inst()->StartGoPos(true);
 }
 
-void MoveControlWidget::startCommand()
+void MoveControlWidget::startMove()
 {
-    if(isFileCommand)
+    if(isMoveFile)
     {
         MoveController::Inst()->StartPlay();
         if(IsLog)
         {
-            emit StartWriteLog(MoveController::Inst()->GetDuration()/1e3);
+            emit StartWriteRecord(MoveController::Inst()->GetDuration()/1e3);
 
         }
         emit PlayStart();
@@ -162,7 +162,7 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
 
-            emit FileLoaded(fileName,CountRows,Duration, mode);
+            emit FileLoaded(fileName, CountRows, Duration, mode);
         }
         else
         {
@@ -173,8 +173,20 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
 
     if(!mode)
     {
-        isFileCommand = true;
+        isMoveFile = true;
         MoveController::Inst()->StartGoPos(true);
         emit PlayStart();
     }
+}
+
+void MoveControlWidget::on_cBoxUseUserStiff_clicked(bool checked)
+{
+    MoveController::Inst()->useUserStiff = checked;
+    MoveController::Inst()->UserStiff = ui->sBoxUserStiffValue->value();
+}
+
+void MoveControlWidget::on_cBoxUseUserDump_clicked(bool checked)
+{
+    MoveController::Inst()->useUserDump = checked;
+    MoveController::Inst()->UserDump = ui->sBoxUserDumpValue->value();
 }

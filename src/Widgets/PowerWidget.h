@@ -1,5 +1,5 @@
-#ifndef POWERCONTROLWIDGET_H
-#define POWERCONTROLWIDGET_H
+#ifndef POWERWIDGET_H
+#define POWERWIDGET_H
 
 #include <QWidget>
 #include <QTimer>
@@ -7,22 +7,22 @@
 #include "Buffers/BufferController.h"
 
 namespace Ui {
-class PowerControlWidget;
+class PowerWidget;
 }
 
-class PowerControlWidget : public QWidget
+class PowerWidget : public QWidget
 {
     Q_OBJECT
 private:
-    Ui::PowerControlWidget *ui;
+    Ui::PowerWidget *ui;
 
     QTimer *mTimer;
     int mTime;
     int mInterval;
     bool isOn;
 public:
-    explicit PowerControlWidget(QWidget *parent = 0);
-    ~PowerControlWidget();
+    explicit PowerWidget(QWidget *parent = 0);
+    ~PowerWidget();
     void UpdatePowerLabel();
 
 private slots:
@@ -41,4 +41,4 @@ private:
     void ChechBoxSetEnable(bool enable);
 };
 
-#endif // POWERCONTROLWIDGET_H
+#endif // POWERWIDGET_H

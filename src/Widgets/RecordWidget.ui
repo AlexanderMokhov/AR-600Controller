@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DeviceLogWidget</class>
- <widget class="QWidget" name="DeviceLogWidget">
+ <class>RecordWidget</class>
+ <widget class="QWidget" name="RecordWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -118,7 +118,7 @@
             <set>Qt::AlignCenter</set>
            </property>
            <property name="maximum">
-            <number>40000</number>
+            <number>1000000</number>
            </property>
            <property name="value">
             <number>15000</number>

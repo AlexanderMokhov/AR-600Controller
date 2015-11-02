@@ -1,18 +1,18 @@
-#include "Logger.h"
+#include "Recorder.h"
 #include <QApplication>
 
-Logger::Logger(QObject *parent) : QThread(parent)
+Recorder::Recorder(QObject *parent) : QThread(parent)
 {
     isRunning = false;
     isRestart = false;
 }
 
-Logger::~Logger()
+Recorder::~Recorder()
 {
 
 }
 
-void Logger::run()
+void Recorder::run()
 {
     //нить потока создана
 pointStart:
@@ -22,7 +22,7 @@ pointStart:
     mTimer = new QTimer;
     mTimer->setInterval(mDelay);
     connect(mTimer, SIGNAL(timeout()),SLOT(WriteRecord()),Qt::DirectConnection);
-    DeviceLogController::Inst()->StartWrite();
+    RecordController::Inst()->StartWrite();
     mTimer->start();
     //Запускаем цикл обработки событий
     exec();
@@ -35,7 +35,7 @@ pointStart:
     //нить потока удалена
 }
 
-void Logger::StartWriting()
+void Recorder::StartWriting()
 {
     if(isRunning == false)
     {
@@ -49,34 +49,38 @@ void Logger::StartWriting()
     }
 }
 
-void Logger::StopWriting()
+void Recorder::StopWriting()
 {
     isRunning = false;
     exit();
 }
 
-void Logger::SetParam(int delay, long duration)
+void Recorder::SetParam(int delay, long duration)
 {
     mDelay = delay;
     mDuration = duration;
 }
 
-void Logger::WriteRecord()
+void Recorder::WriteRecord()
 {
-    DeviceLogController::Inst()->AddRawData();
-    emit UpdateTime(DeviceLogController::Inst()->mTime.elapsed());
+    RecordController::Inst()->AddRawData();
+    emit UpdateTime(RecordController::Inst()->mTime.elapsed());
 
-    if(DeviceLogController::Inst()->mTime.elapsed()> mDuration)
+    if(RecordController::Inst()->mTime.elapsed()> mDuration)
     {
         exit();
     }
 }
 
-void Logger::SaveData()
+void Recorder::SaveData()
 {
-    qDebug() << "Log was saved" << endl;
+    qDebug() << "Record was saved" << endl;
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();
-    QString FileName = "DeviceLog_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
-    DeviceLogController::Inst()->SaveData(FileName.toStdString());
+    QString FileName = "Record_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
+    QString FileName2 = "RecordCurrents_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
+    RecordController::Inst()->SaveData(FileName.toStdString());
+    RecordController::Inst()->SaveCurData(FileName2.toStdString());
 }
+
+
 
