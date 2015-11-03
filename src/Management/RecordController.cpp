@@ -15,7 +15,7 @@ RecordController::RecordController()
         mDrivsCurMap.insert(pair<int,float>(Number, -1*mReadBuffer->GetMotorI(Number)/100.0));
     }
 
-    for(auto it = mSensMap->begin();it!=mSensMap->end();++it)
+    for(auto it = mSensMap->begin(); it != mSensMap->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
         int Value = (*it).second.GetValue();
@@ -61,8 +61,8 @@ bool RecordController::SaveData(string fileName)
 
     if (!file.is_open()) // если файл небыл открыт
     {
-     //Файл не может быть открыт или создан
-     return false;
+        //Файл не может быть открыт или создан
+        return false;
     }
     else
     {
@@ -129,8 +129,8 @@ bool RecordController::SaveCurData(string fileName)
 
     if (!file.is_open()) // если файл небыл открыт
     {
-     //Файл не может быть открыт или создан
-     return false;
+        //Файл не может быть открыт или создан
+        return false;
     }
     else
     {

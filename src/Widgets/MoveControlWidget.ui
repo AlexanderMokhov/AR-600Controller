@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>312</width>
-    <height>287</height>
+    <height>296</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -161,14 +161,14 @@
        <item row="5" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>User KP (for all)</string>
+          <string>Использовать KP</string>
          </property>
         </widget>
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>User KI (for all)</string>
+          <string>Использовать KI</string>
          </property>
         </widget>
        </item>
