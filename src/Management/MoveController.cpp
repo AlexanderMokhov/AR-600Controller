@@ -24,11 +24,11 @@ MoveController::MoveController()
 
     MoveStorage::Inst()->Init();
 
-        UserStiff = 0;
-        UserDump = 0;
+    UserStiff = 0;
+    UserDump = 0;
 
-        useUserStiff = false;
-        useUserDump = false;
+    useUserStiff = false;
+    useUserDump = false;
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
@@ -68,7 +68,6 @@ void MoveController::StepPlay()
         BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
 
         int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, mCommands[mCommandId].Time);
-
         qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
 
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle + CorrectionValue);
@@ -377,7 +376,7 @@ void MoveController::DoStepWork()
         break;
     case GoToPos: //переход в начальную позицию
     {
-        StepGoToPos();
+        StepGoPos();
     }
         break;
     case GoPosStopping: //переход в начальную позицию
@@ -451,7 +450,7 @@ void MoveController::SetupGoPos(long TimeToGo)
     }
 }
 
-void MoveController::StepGoToPos()
+void MoveController::StepGoPos()
 {
     for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
     {
@@ -484,8 +483,8 @@ void MoveController::StepGoToPos()
     if(mMotorExistCount == 0)
     {
         qDebug() << "Достигнуто стартовое положение " << endl;
-        mState = States::NotWork;
-        emit InitEnd();
+        mState = States::GoPosStopping;
+        //emit InitEnd();
     }
 }
 

@@ -178,3 +178,4 @@ bool MoveStorage::OpenFile(string fileName)
     }
 }
 
+

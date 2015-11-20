@@ -11,6 +11,7 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     ui->MessageTextBox->setText(DefaultText);
 
     IsLog = false;
+    mMover = new Mover;
 
     machine = new QStateMachine(this);
 
@@ -39,15 +40,19 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     statePlay->assignProperty(ui->ButtonNext,"enabled",true);
 
     statePlay->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
-    statePlay->addTransition(MoveController::Inst(), SIGNAL(PlayEnd()), stateStop);
+    //statePlay->addTransition(MoveController::Inst(), SIGNAL(PlayEnd()), stateStop);
+    statePlay->addTransition(mMover, SIGNAL(MoveEnd()), stateStop);
 
     machine->setInitialState(stateNotOpenFile);
     machine->start();
 
     isMoveFile = false;
 
+
+
     connect(ui->ButtonLoadDRIVEMAT, SIGNAL(toggled(bool)), this, SLOT(on_ButtonLoadDRIVEMAT_clicked()));
 
+    connect(mMover, SIGNAL(PrepEnd()), this, SLOT(startMove()));
 }
 
 MoveControlWidget::~MoveControlWidget()
@@ -57,13 +62,13 @@ MoveControlWidget::~MoveControlWidget()
 
 void MoveControlWidget::on_ButtonLoadFile_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(0,"Open Commands List Dialog","","*.txt");
+    QString fileName = QFileDialog::getOpenFileName(0,"Загрузка файла движений","","*.txt");
     openFile(fileName, true);
 }
 
 void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(0,"Open DRIVEMAT File Dialog","","*.TXT *.txt");
+    QString fileName = QFileDialog::getOpenFileName(0,"Загрузка DRIVEMAT файла","","*.TXT *.txt");
 
     if ( !fileName.isEmpty() )
     {
@@ -94,13 +99,15 @@ void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
 void MoveControlWidget::on_ButtonPlayPause_clicked()
 {
     isMoveFile = true;
-    MoveController::Inst()->StartGoPos(true);
+    mMover->StartGoToPos(false);
+    //MoveController::Inst()->StartGoPos(true);
 }
 
 void MoveControlWidget::on_ButtonStop_clicked()
 {
     isMoveFile = false;
-    MoveController::Inst()->StopPlay();
+    mMover->StopMove();
+    //MoveController::Inst()->StopPlay();
 
     if(IsLog)
     {
@@ -123,24 +130,27 @@ void MoveControlWidget::on_checkBoxLog_clicked(bool checked)
 void MoveControlWidget::on_ButtonGoStartPos_clicked()
 {
     isMoveFile = false;
-    MoveController::Inst()->StartGoPos(false);
+    mMover->StartGoToPos(true);
+    //MoveController::Inst()->StartGoPos(false);
 }
 
 void MoveControlWidget::on_ButtonStartFile_clicked()
 {
     isMoveFile = false;
-    MoveController::Inst()->StartGoPos(true);
+    mMover->StartGoToPos(false);
+    //MoveController::Inst()->StartGoPos(true);
 }
 
 void MoveControlWidget::startMove()
 {
     if(isMoveFile)
     {
-        MoveController::Inst()->StartPlay();
+        mMover->StartMove();
+        //MoveController::Inst()->StartPlay();
+
         if(IsLog)
         {
             emit StartWriteRecord(MoveController::Inst()->GetDuration()/1e3);
-
         }
         emit PlayStart();
     }
@@ -174,7 +184,8 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
     if(!mode)
     {
         isMoveFile = true;
-        MoveController::Inst()->StartGoPos(true);
+        mMover->StartGoToPos(false);
+        //MoveController::Inst()->StartGoPos(true);
         emit PlayStart();
     }
 }

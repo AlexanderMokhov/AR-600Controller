@@ -63,6 +63,7 @@ public:
     bool OpenFile(std::string fileName);
     int GetCountRows(){ return mCountRows; }
     int GetDuration(){ return mDuration; }
+    std::vector<MoveCommand> * GetMoves(){return &mMoves;}
 };
 
 #endif // MOVESTORAGE_H

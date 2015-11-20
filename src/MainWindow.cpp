@@ -24,8 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
         mMoveControlWidget = new MoveControlWidget();
         ui->MoveControlLayout->addWidget(mMoveControlWidget);
-        connect(MoveController::Inst(), SIGNAL(InitEnd()), mMoveControlWidget, SLOT(startMove()));
-
         qDebug() << "Настройки успешно прочитаны";
     }
     else
@@ -186,9 +184,9 @@ void MainWindow::ConnectionsInit()
 
     connect(mMoveControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(Disactivate()));
     connect(mMoveControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(Disactivate()));
-    connect(MoveController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
-    connect(MoveController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
+    //connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(Disactivate()));
+    //connect(MoveController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
+    //connect(MoveController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mMoveFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
     connect(mMoveFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));

@@ -105,6 +105,7 @@ public:
     bool OpenFile(std::string fileName);
     int GetCountRows(){return mCountRows;}
     int GetDuration(){return mDuration;}
+    States getState(){ return mState; }
 
     void NextCommand();//--
 
@@ -127,7 +128,7 @@ public:
     void StartingGoPos();
     void SetPosData(int Number, int DestPos, int StartPos);
     void SetupGoPos(long TimeToGo);
-    void StepGoToPos();
+    void StepGoPos();
     void StopGoPos();
     void StoppingGoPos();
 
@@ -142,6 +143,7 @@ signals:
     void InitEnd();
 
     void PlayEnd();
+    void setColor(int color);
 };
 
 

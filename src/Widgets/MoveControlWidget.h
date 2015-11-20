@@ -11,8 +11,11 @@
 #include "Management/ConfigController.h"
 #include "Buffers/BufferController.h"
 #include "Models/MotorTableModel.h"
+
 #include "Management/MoveController.h"
 #include "Management/MoveCorrector.h"
+#include "Management/MoveStorage.h"
+#include "Management/Mover.h"
 
 namespace Ui {
 class MoveControlWidget;
@@ -35,9 +38,7 @@ private slots:
     void on_checkBoxLog_clicked(bool checked);
     void on_ButtonGoStartPos_clicked();
     void on_ButtonStartFile_clicked();
-
     void on_cBoxUseUserStiff_clicked(bool checked);
-
     void on_cBoxUseUserDump_clicked(bool checked);
 
 private:
@@ -50,6 +51,7 @@ private:
     QState        *stateStop;
     QState        *stateNotOpenFile;
     bool          isMoveFile;
+    Mover         *mMover;
 
 signals:
     StartWriteRecord(int LogTime);

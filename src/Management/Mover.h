@@ -8,24 +8,37 @@
 #include <QTime>
 
 #include <stdlib.h>
+#include "MoveController.h"
 
 class Mover : public QThread
 {
     Q_OBJECT
 private:
     QTimer *mTimer;
-
+    int mDelay;
     bool isRunning;
     bool isRestart;
+
+    bool isPrep;
 
 public:
     explicit Mover(QObject *parent = 0);
     ~Mover();
     void run();
 
+    void StartMove();
+    void StopMove();
+
+    void StartGoToPos( bool isNullPos );
+    void StopGoToPos();
+
 private slots:
+    void Move();
 
 signals:
+    void PrepStart(); //Подготовка начата
+    void PrepEnd(); //Подготовка закончена
+    void MoveEnd(); //Движение закончено
 };
 
 #endif // MOVER_H
