@@ -24,34 +24,29 @@ public:
 
 private slots:
     void on_ButtonSTOP_clicked();
-
     void on_ButtonBRAKE_clicked();
-
     void on_ButtonRELAX_clicked();
 
     void on_groupBoxCalibration_clicked(bool checked);
-
     void on_ButtonSaveZero_clicked();
 
+    void on_checkBoxTrace_clicked(bool checked);
     void on_SliderAngle_sliderMoved(int position);
 
-    void on_checkBoxTrace_clicked(bool checked);
-
-    void SliderInit();
-
     void on_ButtonStiffWrite_clicked();
-
     void on_ButtonStiffSave_clicked();
-
     void on_ButtonDumpSave_clicked();
-
     void on_ButtonDumpWrite_clicked();
 
     void on_ButtonGoToPos_clicked();
-
     void on_ButtonStopGoToPos_clicked();
 
+    void SliderInit();
+
 private:
+    enum States {TRACE, STOP, STOPBRAKE, RELAX, CALIBRATE};
+    States state;
+
     Ui::MotorControlWidget *ui;
     MotorTableModel * mModel;
     BufferReceive *mReadBuffer;
@@ -59,8 +54,6 @@ private:
     int currentRow;
     int CurrentNumber;
     bool Reverce;
-    bool Calibration;
-    bool TRACE;
     int ReverceCoeff;
 signals:
     void PropertyChanged(int Number);

@@ -6,10 +6,11 @@ MotorControlWidget::MotorControlWidget(QWidget *parent) :
     ui(new Ui::MotorControlWidget)
 {
     ui->setupUi(this);
+
     mReadBuffer = BufferController::Inst()->GetBufferR();
     mWriteBuffer = BufferController::Inst()->GetBufferS();
-    Calibration = false;
-    TRACE = false;
+
+    state = States::STOPBRAKE;
 }
 
 MotorControlWidget::~MotorControlWidget()
@@ -19,17 +20,18 @@ MotorControlWidget::~MotorControlWidget()
 
 void MotorControlWidget::setModel(MotorTableModel *model)
 {
-    mModel=model;
+    mModel = model;
 }
 
 void MotorControlWidget::RowChanged(int cRow)
 {
+    state = States::STOPBRAKE;
+
     //останавливаем предыдущий мотор
     mWriteBuffer->MotorStopBrake(CurrentNumber);
     //отключаем режим калибрации и управление слайдером
     on_checkBoxTrace_clicked(false);
-    TRACE=false;
-    Calibration=false;
+
     ui->checkBoxTrace->setChecked(false);
     ui->groupBoxCalibration->setChecked(false);
     ui->checkBoxTrace->setEnabled(true);
@@ -43,9 +45,11 @@ void MotorControlWidget::RowChanged(int cRow)
         ReverceCoeff = -1;
     else
         ReverceCoeff = 1;
+
+    state = States::STOPBRAKE;
+
     //инициализируем слайдер
     SliderInit();
-
     UpdateData();
 }
 
@@ -54,7 +58,7 @@ void MotorControlWidget::UpdateData()
 {
     //обновляем текущую позицию
     int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
-    if(Reverce && Calibration)
+    if(Reverce && state == States::CALIBRATE)
     {
         ui->lineCurrentAngle->setText(QString::number(-1*CurrentPos));
     }
@@ -64,7 +68,7 @@ void MotorControlWidget::UpdateData()
     }
 
     //если слайдер не управляет обновляем и на нем
-    if(!TRACE)
+    if(state != States::TRACE)
     {
         ui->SliderAngle->setValue(CurrentPos);
     }
@@ -93,18 +97,26 @@ void MotorControlWidget::UpdateData()
 void MotorControlWidget::on_ButtonSTOP_clicked()
 {
     mWriteBuffer->MotorStopBrake(CurrentNumber);
-
+    ui->checkBoxTrace->setChecked(false);
+    ui->groupBoxCalibration->setEnabled(true);
+    state = States::STOP;
 }
 
 void MotorControlWidget::on_ButtonBRAKE_clicked()
 {
     mWriteBuffer->MotorStop(CurrentNumber);
+    ui->checkBoxTrace->setChecked(false);
+    ui->groupBoxCalibration->setEnabled(true);
+    state = States::STOPBRAKE;
 
 }
 
 void MotorControlWidget::on_ButtonRELAX_clicked()
 {
     mWriteBuffer->MotorRelax(CurrentNumber);
+    ui->checkBoxTrace->setChecked(false);
+    ui->groupBoxCalibration->setEnabled(true);
+    state = States::RELAX;
 }
 
 //происходит при входе и выходе в режим калибрации
@@ -113,29 +125,26 @@ void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
     if(!checked)
     {
         //выходим из режима калибровки
-
-        //записываем в мотор калибровочные коэффициенты
-        mWriteBuffer->SetMotorCalibration(CurrentNumber,ConfigController::Inst()->GetMotors()->at(CurrentNumber).GetCalibration());
+        mWriteBuffer->SetMotorCalibration(CurrentNumber, ConfigController::Inst()->GetMotors()->at(CurrentNumber).GetCalibration());
         mWriteBuffer->SetMotorAngle(CurrentNumber, mReadBuffer->GetMotorAngle(CurrentNumber));
-        Calibration=false;
 
         //разрешаем вход в режим управления слайдером
         mWriteBuffer->MotorStopBrake(CurrentNumber);
-        TRACE=false;
+
         ui->checkBoxTrace->setEnabled(true);
+
+        state = States::STOPBRAKE;
     }
     else
     {
         //входим в режим калибровки
-
-        //записываем в мотор нулевой колибровочный коэфиициент
         mWriteBuffer->MotorStopBrake(CurrentNumber);
         mWriteBuffer->SetMotorCalibration(CurrentNumber,0);
-        Calibration=true;
 
         //запрещаем вход в режим управления слайдером
-        TRACE=false;
         ui->checkBoxTrace->setEnabled(false);
+
+        state = States::CALIBRATE;
     }
 }
 
@@ -155,24 +164,27 @@ void MotorControlWidget::on_ButtonSaveZero_clicked()
 
     //разрешаем вход в режим управления слайдером
     ui->groupBoxCalibration->setChecked(false);
-    Calibration=false;
     ui->checkBoxTrace->setEnabled(true);
+
+    state = States::STOPBRAKE;
 }
 
 //происходит при изменении позиции слайдером
 void MotorControlWidget::on_SliderAngle_sliderMoved(int position)
 {
-    if(TRACE)
+    if(state == States::TRACE)
     {
-        mWriteBuffer->SetMotorAngle(CurrentNumber,position);
+        mWriteBuffer->SetMotorAngle(CurrentNumber, position);
     }
 }
 
 //происходит при входе и выходе в режим управления слайдером
 void MotorControlWidget::on_checkBoxTrace_clicked(bool checked)
 {
-    TRACE=checked;
-    if(TRACE)
+    if(checked) state = States::TRACE;
+    else state = States::STOPBRAKE;
+
+    if(state == States::TRACE)
     {
         //входим в режим управления
         SliderInit();
@@ -232,7 +244,7 @@ void MotorControlWidget::on_ButtonDumpSave_clicked()
 
 void MotorControlWidget::on_ButtonDumpWrite_clicked()
 {
-    mWriteBuffer->SetMotorDump(CurrentNumber,ui->spinDump->value());
+    mWriteBuffer->SetMotorDump(CurrentNumber, ui->spinDump->value());
 }
 
 void MotorControlWidget::on_ButtonGoToPos_clicked()
