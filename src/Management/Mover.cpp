@@ -37,11 +37,7 @@ pointStart:
 void Mover::StartMove()
 {
     MoveController::Inst()->StartPlay();
-    isPrep = true;
-    emit PrepStart();
-
-    if( !isRunning )
-        start();
+    if( !isRunning ) start();
 }
 
 void Mover::StopMove()
@@ -54,9 +50,7 @@ void Mover::StartGoToPos(bool isNullPos)
 {
     MoveController::Inst()->StartGoPos(!isNullPos);
     isPrep = true;
-    if( !isRunning )
-        start();
-
+    if( !isRunning ) start();
 }
 
 void Mover::StopGoToPos()
@@ -71,13 +65,14 @@ void Mover::Move()
     //Если закончилось выполнение движения
     if(MoveController::Inst()->getState() == States::NotWork)
     {
-        emit MoveEnd();
         exit();
-    }
-
-    if(MoveController::Inst()->getState() == States::GoPosStopping && isPrep)
-    {
-        emit PrepEnd();
-        isPrep = false;
+        if(isPrep)
+        {
+            isPrep = false; emit PrepEnd();
+        }
+        else
+        {
+            emit MoveEnd();
+        }
     }
 }

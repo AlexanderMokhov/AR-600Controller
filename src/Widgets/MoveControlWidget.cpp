@@ -100,14 +100,12 @@ void MoveControlWidget::on_ButtonPlayPause_clicked()
 {
     isMoveFile = true;
     mMover->StartGoToPos(false);
-    //MoveController::Inst()->StartGoPos(true);
 }
 
 void MoveControlWidget::on_ButtonStop_clicked()
 {
     isMoveFile = false;
     mMover->StopMove();
-    //MoveController::Inst()->StopPlay();
 
     if(IsLog)
     {
@@ -131,14 +129,12 @@ void MoveControlWidget::on_ButtonGoStartPos_clicked()
 {
     isMoveFile = false;
     mMover->StartGoToPos(true);
-    //MoveController::Inst()->StartGoPos(false);
 }
 
 void MoveControlWidget::on_ButtonStartFile_clicked()
 {
     isMoveFile = false;
     mMover->StartGoToPos(false);
-    //MoveController::Inst()->StartGoPos(true);
 }
 
 void MoveControlWidget::startMove()
@@ -146,7 +142,6 @@ void MoveControlWidget::startMove()
     if(isMoveFile)
     {
         mMover->StartMove();
-        //MoveController::Inst()->StartPlay();
 
         if(IsLog)
         {
@@ -168,7 +163,7 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
             qDebug() << "Команды успешно прочитаны" <<endl;
             int CountRows = MoveController::Inst()->GetCountRows();
             int Duration = MoveController::Inst()->GetDuration();
-            //ui->MessageTextBox->clear();
+
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
 
@@ -185,7 +180,6 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
     {
         isMoveFile = true;
         mMover->StartGoToPos(false);
-        //MoveController::Inst()->StartGoPos(true);
         emit PlayStart();
     }
 }
