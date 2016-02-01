@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     Management/Recorder.cpp \
     Widgets/RecordWidget.cpp \
     Widgets/MoveFilesWidget.cpp \
-    Widgets/PowerWidget.cpp
+    Widgets/PowerWidget.cpp \
+    Libs/Sockets/Socket.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -78,7 +79,8 @@ HEADERS  += \
     Management/Recorder.h \
     Widgets/RecordWidget.h \
     Widgets/MoveFilesWidget.h \
-    Widgets/PowerWidget.h
+    Widgets/PowerWidget.h \
+    Libs/Sockets/Socket.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -94,6 +96,7 @@ FORMS    += \
 win32 {
     RC_FILE += resource.rc
     OTHER_FILES += resource.rc
+    LIBS += -lws2_32
 }
 
 RESOURCES += \

@@ -18,10 +18,23 @@ void Sender::run()
     //нить создана
     mUdpSocketSender = new QUdpSocket();
 
-    qDebug() << "Sender - connecting..." << endl;
+    //New initialisation
+    //WORD wVersionRequested; // 01.02.2016
+    //WSADATA wsaData; // 01.02.2016
+    //wVersionRequested = MAKEWORD(2, 2); // 01.02.2016
+    //WSAStartup(wVersionRequested, &wsaData); // 01.02.2016
 
     mSendPort = ConfigController::Inst()->GetSendPort();
     mHost = QString::fromStdString(ConfigController::Inst()->GetHost());
+
+    //Prepare the sockaddr_in structure
+    //dest_addr.sin_family = AF_INET; // 01.02.2016
+    //dest_addr.sin_addr.s_addr = inet_addr(ConfigController::Inst()->GetHost().c_str()); // 01.02.2016
+    //dest_addr.sin_port = htons(mSendPort); // 01.02.2016
+
+    qDebug() << "Sender - connecting..." << endl;
+
+
     mSendDelay = ConfigController::Inst()->GetSendDelay();
 
     mUdpSocketSender->connectToHost(mHost, mSendPort);
@@ -39,7 +52,7 @@ void Sender::run()
     //Завершился цикл обработки событий
 
     qDebug() << "Sender - disconnecting..." << endl;
-    disconnect(mTimerSend,SIGNAL(timeout()));
+    disconnect(mTimerSend, SIGNAL(timeout()));
 
     mUdpSocketSender->disconnect();
     mUdpSocketSender->close();
@@ -69,6 +82,9 @@ void Sender::SendDatagram()
 {
     QHostAddress mAddress = QHostAddress(mHost);
     mLocker->lock();
+    //sendto(SendSocket,mSendBuffer->GetRAW(),mSendBuffer->GetSize()* sizeof(char),0,
+            //(sockaddr *) &dest_addr,sizeof(dest_addr));
+    //qDebug() << "Sender - send..." << endl;
     mUdpSocketSender->writeDatagram(mSendBuffer->GetRAW(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
     mUdpSocketSender->waitForBytesWritten();
     mLocker->unlock();

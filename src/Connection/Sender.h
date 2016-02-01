@@ -15,10 +15,15 @@
 #include "Management/ConfigController.h"
 #include "Management/MoveController.h"
 
+//#include "Libs/Sockets/Socket.h"
+
 class Sender : public QThread
 {
     Q_OBJECT
 private:
+
+//    SOCKET SendSocket; // 01.02.2016
+//    sockaddr_in dest_addr;
     QUdpSocket *mUdpSocketSender;
     BufferSend *mSendBuffer;
     QTimer *mTimerSend;
