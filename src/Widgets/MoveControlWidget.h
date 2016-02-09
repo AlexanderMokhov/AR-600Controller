@@ -41,6 +41,7 @@ private slots:
     void on_cBoxUseUserStiff_clicked(bool checked);
     void on_cBoxUseUserDump_clicked(bool checked);
 
+
 private:
     Ui::MoveControlWidget *ui;
     QString DefaultText;

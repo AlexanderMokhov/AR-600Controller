@@ -21,6 +21,10 @@ MotorTableWidget::MotorTableWidget(QWidget *parent) :
     ui->MotorTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->MotorTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnRowChanged()));
+
+    ui->MotorTableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->MotorTableView, SIGNAL(customContextMenuRequested(const QPoint&)),
+        this, SLOT(ShowContextMenu(const QPoint&)));
 }
 
 MotorTableWidget::~MotorTableWidget()
@@ -102,4 +106,37 @@ void MotorTableWidget::Activate()
 void MotorTableWidget::Disactivate()
 {
     ui->MotorTableView->setEnabled(false);
+}
+
+void MotorTableWidget::ShowContextMenu(const QPoint &pos)
+{
+    if( mModel->rowCount() == 0 ) return;
+
+    QPoint globalPos = ui->MotorTableView->mapToGlobal(pos);
+
+    QMenu myMenu;
+
+    int cRow = mSelectionModel->currentIndex().row();
+    int Number = mModel->mDataList.at(cRow)->GetNumber();
+    bool isEnable = ConfigController::Inst()->GetMotors()->at(Number).GetEnable();
+
+    string text = "Выключить";
+    if(!isEnable) text = "Включить";
+    QAction *SetEnableAction = new QAction(tr(text.c_str()), this);
+
+    connect(SetEnableAction,SIGNAL(triggered()), SLOT(onSetEnableAction()));
+
+    myMenu.addAction(SetEnableAction);
+
+    myMenu.exec(globalPos);
+}
+
+void MotorTableWidget::onSetEnableAction()
+{
+    int cRow = mSelectionModel->currentIndex().row();
+    int Number = mModel->mDataList.at(cRow)->GetNumber();
+    bool isEnable = ConfigController::Inst()->GetMotors()->at(Number).GetEnable();
+    BufferController::Inst()->GetBufferS()->SetMotorEnable(Number, !isEnable);
+    ConfigController::Inst()->GetMotors()->at(Number).SetEnable(!isEnable);
+    mModel->setData(mModel->index(cRow,11), QString::number(!isEnable));
 }

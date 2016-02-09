@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QItemSelectionModel>
+#include <QMenu>
 
 #include "Management/ConfigController.h"
 #include "Models/MotorTableModel.h"
@@ -34,6 +35,8 @@ signals:
     void RowChanged(int cRow);
 private slots:
     void OnRowChanged();
+    void ShowContextMenu(const QPoint& pos);
+    void onSetEnableAction();
 };
 
 #endif // MOTORTABLEWIDGET_H
