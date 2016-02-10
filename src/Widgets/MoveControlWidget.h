@@ -34,7 +34,6 @@ private slots:
     void on_ButtonLoadDRIVEMAT_clicked();
     void on_ButtonPlayPause_clicked();
     void on_ButtonStop_clicked();
-    void on_ButtonNext_clicked();
     void on_checkBoxLog_clicked(bool checked);
     void on_ButtonGoStartPos_clicked();
     void on_ButtonStartFile_clicked();

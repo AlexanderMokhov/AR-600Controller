@@ -123,10 +123,13 @@ void MotorTableWidget::ShowContextMenu(const QPoint &pos)
     string text = "Выключить";
     if(!isEnable) text = "Включить";
     QAction *SetEnableAction = new QAction(tr(text.c_str()), this);
+    QAction *SetLimitsAction = new QAction(tr("Изменение пределов по позиции"), this);
 
     connect(SetEnableAction,SIGNAL(triggered()), SLOT(onSetEnableAction()));
+    connect(SetLimitsAction,SIGNAL(triggered()), SLOT(onSetLimitsAction()));
 
     myMenu.addAction(SetEnableAction);
+    myMenu.addAction(SetLimitsAction);
 
     myMenu.exec(globalPos);
 }
@@ -139,4 +142,9 @@ void MotorTableWidget::onSetEnableAction()
     BufferController::Inst()->GetBufferS()->SetMotorEnable(Number, !isEnable);
     ConfigController::Inst()->GetMotors()->at(Number).SetEnable(!isEnable);
     mModel->setData(mModel->index(cRow,11), QString::number(!isEnable));
+}
+
+void MotorTableWidget::onSetLimitsAction()
+{
+
 }

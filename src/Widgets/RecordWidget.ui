@@ -35,7 +35,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Запись результатов</string>
+      <string>Запись показаний</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -134,7 +134,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Текущее время (мс)</string>
+            <string>Прошло (мс)</string>
            </property>
           </widget>
          </item>
@@ -161,7 +161,7 @@
          <item>
           <widget class="QPushButton" name="ButtonStartRecord">
            <property name="text">
-            <string>Начать</string>
+            <string>Старт</string>
            </property>
           </widget>
          </item>
@@ -181,7 +181,7 @@
          <item>
           <widget class="QPushButton" name="ButtonStopRecord">
            <property name="text">
-            <string>Остановка</string>
+            <string>Стоп</string>
            </property>
           </widget>
          </item>

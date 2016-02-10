@@ -22,14 +22,12 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     stateNotOpenFile->assignProperty(ui->ButtonLoadFile,"enabled",true);
     stateNotOpenFile->assignProperty(ui->ButtonPlayPause,"enabled",false);
     stateNotOpenFile->assignProperty(ui->ButtonStop,"enabled",false);
-    stateNotOpenFile->assignProperty(ui->ButtonNext,"enabled",false);
 
     stateNotOpenFile->addTransition(this, SIGNAL(FileLoaded(QString,int,int,bool)), stateStop);
 
     stateStop->assignProperty(ui->ButtonLoadFile,"enabled",true);
     stateStop->assignProperty(ui->ButtonPlayPause,"enabled",true);
     stateStop->assignProperty(ui->ButtonStop,"enabled",false);
-    stateStop->assignProperty(ui->ButtonNext,"enabled",true);
 
     stateStop->addTransition(ui->ButtonPlayPause, SIGNAL(clicked()), statePlay);
     stateStop->addTransition(this, SIGNAL(PlayStart()), statePlay);
@@ -37,7 +35,6 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     statePlay->assignProperty(ui->ButtonLoadFile,"enabled",false);
     statePlay->assignProperty(ui->ButtonPlayPause,"enabled",true);
     statePlay->assignProperty(ui->ButtonStop,"enabled",true);
-    statePlay->assignProperty(ui->ButtonNext,"enabled",true);
 
     statePlay->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
     //statePlay->addTransition(MoveController::Inst(), SIGNAL(PlayEnd()), stateStop);
@@ -113,11 +110,6 @@ void MoveControlWidget::on_ButtonStop_clicked()
     }
 
     emit PlayStop();
-}
-
-void MoveControlWidget::on_ButtonNext_clicked()
-{
-    MoveController::Inst()->NextCommand();
 }
 
 void MoveControlWidget::on_checkBoxLog_clicked(bool checked)

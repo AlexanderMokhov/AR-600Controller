@@ -37,15 +37,11 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="4" column="1">
-        <widget class="QPushButton" name="ButtonNext">
-         <property name="text">
-          <string>Кадр Next</string>
-         </property>
-        </widget>
-       </item>
        <item row="5" column="1">
         <widget class="QSpinBox" name="sBoxUserStiffValue">
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
          <property name="maximum">
           <number>10000</number>
          </property>
@@ -77,13 +73,6 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QPushButton" name="ButtonPlayPause">
-         <property name="text">
-          <string>Запуск</string>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="0" colspan="3">
         <widget class="QTextEdit" name="MessageTextBox">
          <property name="enabled">
@@ -97,13 +86,6 @@
          </property>
          <property name="readOnly">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QPushButton" name="ButtonStop">
-         <property name="text">
-          <string>Остановка</string>
          </property>
         </widget>
        </item>
@@ -144,12 +126,15 @@
           <enum>Qt::LeftToRight</enum>
          </property>
          <property name="text">
-          <string>Вести лог</string>
+          <string>Вести запись</string>
          </property>
         </widget>
        </item>
        <item row="6" column="1">
         <widget class="QSpinBox" name="sBoxUserDumpValue">
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
          <property name="maximum">
           <number>1000</number>
          </property>
@@ -183,6 +168,20 @@
         <widget class="QCheckBox" name="cBoxUseUserDump">
          <property name="text">
           <string>Применить</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QPushButton" name="ButtonPlayPause">
+         <property name="text">
+          <string>Запуск</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" colspan="2">
+        <widget class="QPushButton" name="ButtonStop">
+         <property name="text">
+          <string>Остановка</string>
          </property>
         </widget>
        </item>

@@ -37,6 +37,7 @@ private slots:
     void OnRowChanged();
     void ShowContextMenu(const QPoint& pos);
     void onSetEnableAction();
+    void onSetLimitsAction();
 };
 
 #endif // MOTORTABLEWIDGET_H
