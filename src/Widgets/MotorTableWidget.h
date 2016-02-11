@@ -8,6 +8,7 @@
 #include "Management/ConfigController.h"
 #include "Models/MotorTableModel.h"
 #include "Buffers/BufferController.h"
+#include "SetLimitsDialog.h"
 
 namespace Ui {
 class MotorTableWidget;
@@ -28,6 +29,7 @@ private:
     Ui::MotorTableWidget *ui;
     MotorTableModel *mModel;
     QItemSelectionModel *mSelectionModel;
+    SetLimitsDialog *mSetLimitsDlg;
 public slots:
     void Activate();
     void Disactivate();

@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     Widgets/RecordWidget.cpp \
     Widgets/MoveFilesWidget.cpp \
     Widgets/PowerWidget.cpp \
-    Libs/Sockets/Socket.cpp
+    Libs/Sockets/Socket.cpp \
+    Widgets/SetLimitsDialog.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -80,7 +81,8 @@ HEADERS  += \
     Widgets/RecordWidget.h \
     Widgets/MoveFilesWidget.h \
     Widgets/PowerWidget.h \
-    Libs/Sockets/Socket.h
+    Libs/Sockets/Socket.h \
+    Widgets/SetLimitsDialog.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -91,7 +93,8 @@ FORMS    += \
     Widgets/MoveControlWidget.ui \
     Widgets/RecordWidget.ui \
     Widgets/MoveFilesWidget.ui \
-    Widgets/PowerWidget.ui
+    Widgets/PowerWidget.ui \
+    Widgets/SetLimitsDialog.ui
 
 win32 {
     RC_FILE += resource.rc

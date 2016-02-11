@@ -146,5 +146,7 @@ void MotorTableWidget::onSetEnableAction()
 
 void MotorTableWidget::onSetLimitsAction()
 {
-
+    mSetLimitsDlg = new SetLimitsDialog();
+    mSetLimitsDlg->Update(12);
+    mSetLimitsDlg->show();
 }
