@@ -21,6 +21,9 @@ public:
 
 private:
     Ui::SetLimitsDialog *ui;
+    int cNumber;
+public slots:
+    void accepted();
 };
 
 #endif // SETLIMITSDIALOG_H

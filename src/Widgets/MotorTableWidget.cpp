@@ -146,7 +146,10 @@ void MotorTableWidget::onSetEnableAction()
 
 void MotorTableWidget::onSetLimitsAction()
 {
+    int cRow = mSelectionModel->currentIndex().row();
+    int Number = mModel->mDataList.at(cRow)->GetNumber();
     mSetLimitsDlg = new SetLimitsDialog();
-    mSetLimitsDlg->Update(12);
+    mSetLimitsDlg->setModal(true);
+    mSetLimitsDlg->Update(Number);
     mSetLimitsDlg->show();
 }

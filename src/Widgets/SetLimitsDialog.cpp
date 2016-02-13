@@ -6,6 +6,7 @@ SetLimitsDialog::SetLimitsDialog(QWidget *parent) :
     ui(new Ui::SetLimitsDialog)
 {
     ui->setupUi(this);
+    connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(accepted()));
 }
 
 SetLimitsDialog::~SetLimitsDialog()
@@ -15,8 +16,18 @@ SetLimitsDialog::~SetLimitsDialog()
 
 void SetLimitsDialog::Update(int cNumber)
 {
-    int MinAngle = ConfigController::Inst()->GetMotors()->at(2).GetMinPos();
-    int MaxAngle = ConfigController::Inst()->GetMotors()->at(2).GetMaxPos();
+    this->cNumber = cNumber;
+    int MinAngle = ConfigController::Inst()->GetMotors()->at(cNumber).GetMinPos();
+    int MaxAngle = ConfigController::Inst()->GetMotors()->at(cNumber).GetMaxPos();
 
     ui->EditMinOld->setText(QString::number( MinAngle));
+    ui->EditMaxOld->setText(QString::number( MaxAngle));
+
+    ui->EditNewMin->setValue(MinAngle);
+    ui->EditNewMax->setValue(MaxAngle);
+}
+
+void SetLimitsDialog::accepted()
+{
+    //ConfigController::Inst()->GetMotors()->at(cNumber).
 }
