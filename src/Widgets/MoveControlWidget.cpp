@@ -37,7 +37,6 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     statePlay->assignProperty(ui->ButtonStop,"enabled",true);
 
     statePlay->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
-    //statePlay->addTransition(MoveController::Inst(), SIGNAL(PlayEnd()), stateStop);
     statePlay->addTransition(mMover, SIGNAL(MoveEnd()), stateStop);
 
     machine->setInitialState(stateNotOpenFile);
@@ -50,6 +49,9 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     connect(ui->ButtonLoadDRIVEMAT, SIGNAL(toggled(bool)), this, SLOT(on_ButtonLoadDRIVEMAT_clicked()));
 
     connect(mMover, SIGNAL(PrepEnd()), this, SLOT(startMove()));
+
+    connect(mMover, SIGNAL(MoveEnd()),this, SLOT(on_ButtonStop_clicked()));
+
 }
 
 MoveControlWidget::~MoveControlWidget()
