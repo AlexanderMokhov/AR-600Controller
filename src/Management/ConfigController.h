@@ -42,6 +42,9 @@ private:
     double mDefaultTorqueFactor;    //Диффиренциальный коэффициент по умолчанию (доля)
     int mDefaultSpeed;              //Скорость перехода в позицию (град за сек)
 
+    //настройки файлов стандартных движений
+    std::string mFileForward, mFileBack;
+
 public:
     static ConfigController* Inst(){ return mInst; }
     static void Init(){ delete mInst; mInst = new ConfigController; }
@@ -68,6 +71,9 @@ public:
     double GetDefaultDumpFactor(){ return mDefaultDumpFactor; }
     double GetDefaultTorqueFactor(){ return mDefaultTorqueFactor; }
     int GetDefaultSpeed(){ return mDefaultSpeed; }
+
+    std::string GetFileForward() { return mFileForward; }
+    std::string GetFileBack() { return mFileBack; }
 };
 
 

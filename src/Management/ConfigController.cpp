@@ -106,6 +106,10 @@ bool ConfigController::OpenFile(string FileName)
 
         mDefaultSpeed = atoi(xml_CommandControllerSettings->FirstChildElement("DefaultSpeed")->GetText());
 
+        //Читаем имена файлов со стандартными движениями
+        mFileForward = xml_CommandControllerSettings->FirstChildElement("FileForward")->GetText();
+        mFileBack = xml_CommandControllerSettings->FirstChildElement("FileBack")->GetText();
+
         return true;
     }
 }

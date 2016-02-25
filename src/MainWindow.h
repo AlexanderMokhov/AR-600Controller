@@ -26,6 +26,7 @@
 #include "Widgets/ConnectConfigDialog.h"
 #include "Widgets/SensorTableWidget.h"
 #include "Widgets/MoveFilesWidget.h"
+#include "Widgets/StdMovesWidget.h"
 
 #include "Buffers/BufferController.h"
 
@@ -61,6 +62,7 @@ private:
     ConnectConfigDialog     *mConnectDialog;
     SensorTableWidget       *mSensorTableWidget;
     MoveFilesWidget         *mMoveFilesWidget;
+    StdMovesWidget          *mStdMovesWidget;
 
     //действия
     QAction *TBactionOpenCF;
@@ -83,6 +85,9 @@ private:
     void WidgetsInit();
     void ConnectionsInit();
     void ToolBarInit();
+
+    void closeEvent(QCloseEvent *event);
+
 private slots:
     void ProcessTheDatagram();
     void SaveXML();

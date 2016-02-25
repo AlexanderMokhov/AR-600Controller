@@ -127,7 +127,7 @@ bool RecordController::SaveCurData(string fileName)
     std::ofstream file;
     file.open(fileName.c_str(),ios_base::out | ios_base::trunc);
 
-    if (!file.is_open()) // если файл небыл открыт
+    if (!file.is_open()) // если файл не был открыт
     {
         //Файл не может быть открыт или создан
         return false;

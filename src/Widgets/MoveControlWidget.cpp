@@ -98,6 +98,10 @@ void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
 void MoveControlWidget::on_ButtonPlayPause_clicked()
 {
     isMoveFile = true;
+    MoveController::Inst()->useUserStiff = ui->cBoxUseUserStiff->isChecked();
+    MoveController::Inst()->UserStiff = ui->sBoxUserStiffValue->value();
+    MoveController::Inst()->useUserDump = ui->cBoxUseUserDump->isChecked();
+    MoveController::Inst()->UserDump = ui->sBoxUserDumpValue->value();
     mMover->StartGoToPos(false);
 }
 
@@ -139,8 +143,18 @@ void MoveControlWidget::startMove()
 
         if(IsLog)
         {
-            emit StartWriteRecord(MoveController::Inst()->GetDuration()/1e3);
+            emit StartWriteRecord(MoveStorage::Inst()->GetDuration()/1e3);
         }
+        emit PlayStart();
+    }
+}
+
+void MoveControlWidget::StartPlayFile(bool mode)
+{
+    if(!mode)
+    {
+        isMoveFile = true;
+        mMover->StartGoToPos(false);
         emit PlayStart();
     }
 }
@@ -155,8 +169,8 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
         {
             qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
             qDebug() << "Команды успешно прочитаны" <<endl;
-            int CountRows = MoveController::Inst()->GetCountRows();
-            int Duration = MoveController::Inst()->GetDuration();
+            int CountRows = MoveStorage::Inst()->GetCountRows();
+            int Duration = MoveStorage::Inst()->GetDuration();
 
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
@@ -170,12 +184,7 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
         }
     }
 
-    if(!mode)
-    {
-        isMoveFile = true;
-        mMover->StartGoToPos(false);
-        emit PlayStart();
-    }
+    StartPlayFile(mode);
 }
 
 void MoveControlWidget::on_cBoxUseUserStiff_clicked(bool checked)
@@ -188,4 +197,9 @@ void MoveControlWidget::on_cBoxUseUserDump_clicked(bool checked)
 {
     MoveController::Inst()->useUserDump = checked;
     MoveController::Inst()->UserDump = ui->sBoxUserDumpValue->value();
+}
+
+void MoveControlWidget::startStdMove()
+{
+    StartPlayFile(false);
 }

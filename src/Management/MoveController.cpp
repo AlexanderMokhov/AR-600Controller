@@ -39,50 +39,50 @@ void MoveController::StepPlay()
     QTime t;
     t.start();
 
-    if(mCommandId >= mCountRows){goto StopPlay;}
+    if(MoveStorage::Inst()->mMoveID >= MoveStorage::Inst()->mCountRows){goto StopPlay;}
 
-    while(mCommands[mCommandId].Time <= time)
+    while(MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Time <= time)
     {
-        if(mCommandId >= mCountRows){goto StopPlay;}
+        if(MoveStorage::Inst()->mMoveID >= MoveStorage::Inst()->mCountRows){goto StopPlay;}
 
         //записываем значение в мотор и проверяем следующую команду
-        int Number = mCommands[mCommandId].Number;
-        int Angle = mCommands[mCommandId].Angle;
+        int Number = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].NumberChannel;
+        int Angle = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Angle;
 
         int Stiff = 0;
         if(useUserStiff)
             Stiff = UserStiff;
         else
-            Stiff = mCommands[mCommandId].PIDs.Stiff;
+            Stiff = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].PIDs.Stiff;
 
         int Dump = 0;
         if(useUserDump)
             Dump = UserDump;
         else
-            Dump = mCommands[mCommandId].PIDs.Dump;
+            Dump = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].PIDs.Dump;
 
-        int Torque = mCommands[mCommandId].PIDs.Torque;
+        int Torque = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].PIDs.Torque;
 
         BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
         BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
         BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
 
-        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, mCommands[mCommandId].Time);
+        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Time);
         qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
 
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle + CorrectionValue);
-        mCommandId++;
+        MoveStorage::Inst()->mMoveID++;
 
-        if(mCommandId >= mCountRows){goto StopPlay;}
+        if(MoveStorage::Inst()->mMoveID >= MoveStorage::Inst()->mCountRows){goto StopPlay;}
     }
 
 StopPlay:
     //qDebug() << "Time elapsed: " << QString::number(t.elapsed()) << "ms\n";
 
     //если время закончилось - останавливаем, переводим индекс команды на начало списка
-    if(time > mDuration)
+    if(time > MoveStorage::Inst()->mDuration)
     {
-        mCommandId = 0;
+        MoveStorage::Inst()->mMoveID = 0;
         qDebug() << "Выполнена последняя строка"  << endl;
         emit PlayEnd();
         mState = States::MoveStopping;
@@ -111,7 +111,7 @@ void MoveController::StartingPlay()
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle );
         BufferController::Inst()->GetBufferS()->MotorTrace( Number );
     }
-    mCommandId = 0;
+    MoveStorage::Inst()->mMoveID = 0;
     MoveCorrector::Inst()->setCurLine(0);
 
     mState = States::MovePlay;
@@ -141,7 +141,7 @@ void MoveController::StoppingPlay()
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, MotorAngle );
         BufferController::Inst()->GetBufferS()->MotorStopBrake( Number);
     }
-    mCommandId = 0;
+    MoveStorage::Inst()->mMoveID = 0;
     mState = States::NotWork;
 }
 
@@ -162,178 +162,16 @@ void MoveController::ReadValue(std::string *temp, std::locale loc, unsigned int 
 
 bool MoveController::OpenFile(std::string fileName)
 {
-    //MoveStorage::Inst()->OpenFile(fileName);
-    //mCommandId = 0;
-
-    std::ifstream file(fileName.c_str());
-
-    if( file.is_open() )
-    {
-        //очищаем список команд
-        mCommands.clear();
-        std::string line;
-
-        int currentTime=0;
-        Command nextCommand;
-        mCountRows=0;
-
-        PID mPID;
-
-        //по умолчанию заполняем значениями из файла настроек
-        mPID.Stiff = ConfigController::Inst()->GetDefaultStiff();
-        mPID.Dump = ConfigController::Inst()->GetDefaultDump();
-        mPID.Torque = ConfigController::Inst()->GetDefaultTorque();
-
-        mPID.StiffFactor = ConfigController::Inst()->GetDefaultStiffFactor();
-        mPID.DumpFactor = ConfigController::Inst()->GetDefaultDumpFactor();
-        mPID.TorqueFactor = ConfigController::Inst()->GetDefaultTorqueFactor();
-
-        while( std::getline(file, line) )
-        {
-            const char * s = line.c_str();
-            char * ptr = 0;
-            errno = 0;
-            int Number_ = strtol(s, &ptr, 10);
-            if (!(errno != ERANGE && ptr > s))
-                break;
-
-            double Time_ = strtod(ptr, &ptr);
-            if (!(errno != ERANGE && ptr > s))
-                break;
-
-            //читаем очередную строку из файла
-            std::locale loc;
-            std::string temp;
-            unsigned int pos = 0;
-
-            //читаем номер привода
-            SkipSpace(loc, line, &pos);
-            ReadValue(&temp, loc, &pos, line);
-
-            //записываем номер привода
-            int Number = atoi( temp.c_str() );
-            temp.clear();
-
-            //читаем время (как целое число)
-            SkipSpace(loc, line, &pos);
-            while( line[pos] != '.' ){ temp += line.at(pos); pos++; } pos++;
-            ReadValue(&temp, loc, &pos, line);
-
-            //записываем время
-            int Time = atoi( temp.c_str() );
-            temp.clear();
-
-            //читаем угол
-            SkipSpace(loc, line, &pos);
-            ReadValue(&temp, loc, &pos, line);
-
-            //записываем угол
-            double Angle = atof( temp.c_str() );
-            temp.clear();
-
-            //Переводим угол в градусы*100
-            Angle=(180.0 / M_PI)*Angle*100.0;
-
-            SkipSpace(loc, line, &pos);
-
-            if(line[pos] != '\0') //проверяем есть ли коэффициэнты PID
-            {
-                //значит здесь записаны коэффициенты PID
-                //читаем KP
-                ReadValue(&temp, loc, &pos, line);
-
-                double KP = atof( temp.c_str() );
-                temp.clear();
-
-                //читаем KI
-                SkipSpace(loc, line, &pos);
-                ReadValue(&temp, loc, &pos, line);
-
-                double KI = atof( temp.c_str() );
-                temp.clear();
-
-                //читаем KD
-                SkipSpace(loc, line, &pos);
-                ReadValue(&temp, loc, &pos, line);
-
-                double KD = atof( temp.c_str() );
-                temp.clear();
-
-                //заполняем PID
-                mPID.Stiff = KP;
-                mPID.Dump = KI;
-                mPID.Torque = KD;
-
-                SkipSpace(loc, line, &pos);
-
-                if(line[pos] != '\0') //проверяем есть ли коэффициэнты проп. PID
-                {
-                    //значит здесь записаны коэффициенты проп. PID
-                    //читаем KP
-                    ReadValue(&temp, loc, &pos, line);
-
-                    double KPFactor = atof( temp.c_str() );
-                    temp.clear();
-
-                    //читаем KI
-                    SkipSpace(loc, line, &pos);
-                    ReadValue(&temp, loc, &pos, line);
-
-                    double KIFactor = atof( temp.c_str() );
-                    temp.clear();
-
-                    //читаем KD
-                    SkipSpace(loc, line, &pos);
-                    ReadValue(&temp, loc, &pos, line);
-
-                    double KDFactor = atof( temp.c_str() );
-                    temp.clear();
-
-                    //заполняем коэффициенты проп. PID
-                    mPID.StiffFactor = KPFactor;
-                    mPID.DumpFactor = KIFactor;
-                    mPID.TorqueFactor = KDFactor;
-
-                    mPID.Stiff *= mPID.StiffFactor;
-                    mPID.Dump *= mPID.DumpFactor;
-                    mPID.Torque *= mPID.TorqueFactor;
-                }
-            }
-
-            //заполняем команду
-            nextCommand.Time = (int)Time;
-            nextCommand.Number = Number;
-            nextCommand.Angle = (int)Angle;
-            nextCommand.PIDs = mPID;
-
-            //добавляем команду в список
-            mCommands.push_back(nextCommand);
-            mCountRows++;
-            currentTime=Time;
-        }
-
-        mDuration = currentTime;//в микросекундах
-        mCommandId = 0;
-        qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
-        qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
-
-        file.close();
-        return true;
-    }
-    else
-    {
-        file.close();
-        return false;
-    }
+    return MoveStorage::Inst()->OpenFile(fileName);
 }
 
 void MoveController::NextCommand()
 {
-    int Number = mCommands[mCommandId].Number;
-    int Angle = mCommands[mCommandId].Angle;
+    int Number = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].NumberChannel;
+    int Angle = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Angle;
     BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
     BufferController::Inst()->GetBufferS()->MotorTrace(Number);
-    mCommandId++;
+    MoveStorage::Inst()->mMoveID++;
 }
 
 void MoveController::DoStepWork()
@@ -409,11 +247,11 @@ void MoveController::StartingGoPos()
     int i=0;
 
     mMotors = ConfigController::Inst()->GetMotors();
-    for(auto it = mMotors->begin();it!=mMotors->end();++it)
+    for(auto it = mMotors->begin();it != mMotors->end();++it)
     {
         int Number = (*it).first;
         int StartAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
-        int DestAngle = mGoPosMode == true ? mCommands[i].Angle : 0;
+        int DestAngle = mGoPosMode == true ? MoveStorage::Inst()->mMoves[i].Angle : 0;
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.GetEnable()) ? DiffAngle : MaxDiff;
 
@@ -495,7 +333,7 @@ void MoveController::StopGoPos()
 
 void MoveController::StoppingGoPos()
 {
-    for(auto it = mMotors->begin();it!=mMotors->end();++it)
+    for(auto it = mMotors->begin();it != mMotors->end();++it)
     {
         int Angle = BufferController::Inst()->GetBufferR()->GetMotorAngle((*it).first);
 
@@ -526,7 +364,7 @@ void MoveController::StartingGoToAngle()
 
     int SendDelay = ConfigController::Inst()->GetSendDelay();
     int diffAngle = mDestAngle - mStartAngle;//разница в градус*100
-    mStep = (double)diffAngle/((double)mTimeToGo/(double)SendDelay);//шаг в градус*100
+    mStep = (double)diffAngle / ((double)mTimeToGo/(double)SendDelay);//шаг в градус*100
     mCurrentAngle = mStartAngle;
 
     //включаем мотор

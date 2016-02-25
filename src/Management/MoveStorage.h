@@ -47,11 +47,18 @@ private:
 
     static MoveStorage* mInst;
     std::map<int,Motor> * mMotors;
-
+public:
     std::vector<MoveCommand> mMoves;
     int mMoveID;
     int mDuration;
     int mCountRows;
+
+    int mForwardDuration;
+    int mForwardCountRows;
+    std::vector<MoveCommand> mForwardMoves;
+    int mBackDuration;
+    int mBackCountRows;
+    std::vector<MoveCommand> mBackMoves;
 
     void SkipSpace(std::locale loc, std::string str, int *pos);
     void ReadValue(std::string *temp, std::locale loc, int *pos, std::string str);
@@ -64,6 +71,12 @@ public:
     int GetCountRows(){ return mCountRows; }
     int GetDuration(){ return mDuration; }
     std::vector<MoveCommand> * GetMoves(){return &mMoves;}
+
+    bool LoadFile(string filename);
+    bool LoadForwardMoves();
+    bool LoadBackMoves();
+    void setForwardMoves();
+    void setBackMoves();
 };
 
 #endif // MOVESTORAGE_H

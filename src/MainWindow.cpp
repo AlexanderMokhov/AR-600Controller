@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mTimerUpdate = new QTimer();
     mTimerUpdate->setInterval(mUpdateDelay);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
+
     //создание потоков на отправку и прием буфера
 
     mSender = new Sender;
@@ -83,6 +84,8 @@ MainWindow::~MainWindow()
     mReceiver->wait();
     mSender->wait();
     delete ui;
+    mStdMovesWidget->close();
+    delete mStdMovesWidget;
 }
 
 //Настройка кнопок тулбара
@@ -160,6 +163,8 @@ void MainWindow::WidgetsInit()
     ui->SensorTableLayout->addWidget(mSensorTableWidget);
     mMoveFilesWidget = new MoveFilesWidget();
     ui->MoveFilesWidgetLayout->addWidget(mMoveFilesWidget);
+    mStdMovesWidget = new StdMovesWidget();
+    mStdMovesWidget->show();
 }
 
 void MainWindow::ConnectionsInit()
@@ -190,6 +195,9 @@ void MainWindow::ConnectionsInit()
     connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mMoveFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
     connect(mMoveFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));
+
+    connect(mStdMovesWidget,SIGNAL(startStdMove()),mMoveControlWidget,SLOT(startStdMove()));
+    connect(mStdMovesWidget,SIGNAL(stopStdMove()),mMoveControlWidget,SLOT(on_ButtonStop_clicked()));
 }
 
 void MainWindow::ToolBarInit()
@@ -340,4 +348,9 @@ void MainWindow::OpenDRIVEMATFile()
             qDebug() << "Возможно, имя или формат файла заданы неверно" << endl;
         }
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    mStdMovesWidget->close();
 }

@@ -29,6 +29,7 @@ public:
     explicit MoveControlWidget(QWidget *parent = 0);
     ~MoveControlWidget();
 
+    void StartPlayFile(bool mode);
 private slots:
     void on_ButtonLoadFile_clicked();
     void on_ButtonLoadDRIVEMAT_clicked();
@@ -62,6 +63,7 @@ signals:
 public slots:
     void startMove();
     void openFile(QString fileName, bool mode);
+    void startStdMove();
 };
 
 #endif // MOVECONTROLWIDGET_H

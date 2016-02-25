@@ -76,8 +76,8 @@ void Recorder::SaveData()
 {
     qDebug() << "Record was saved" << endl;
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();
-    QString FileName = "Record_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
-    QString FileName2 = "RecordCurrents_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
+    QString FileName = "Records\\Record_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
+    QString FileName2 = "Records\\RecordCurrents_" + mCurrentDateTime.toString("dd_MM_yyyy_HH_mm_ss")+"_.txt";
     RecordController::Inst()->SaveData(FileName.toStdString());
     RecordController::Inst()->SaveCurData(FileName2.toStdString());
 }
