@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     Widgets/PowerWidget.cpp \
     Libs/Sockets/Socket.cpp \
     Widgets/SetLimitsDialog.cpp \
-    Widgets/StdMovesWidget.cpp
+    Widgets/StdMovesWidget.cpp \
+    Connection/ConsoleReceiver.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -84,7 +85,8 @@ HEADERS  += \
     Widgets/PowerWidget.h \
     Libs/Sockets/Socket.h \
     Widgets/SetLimitsDialog.h \
-    Widgets/StdMovesWidget.h
+    Widgets/StdMovesWidget.h \
+    Connection/ConsoleReceiver.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

@@ -32,6 +32,7 @@
 
 #include "Connection/Receiver.h"
 #include "Connection/Sender.h"
+#include "Connection/ConsoleReceiver.h"
 
 namespace Ui {
 class MainWindow;
@@ -80,6 +81,7 @@ private:
     //потоки
     Receiver                *mReceiver;
     Sender                  *mSender;
+    ConsoleReceiver         *mConsoleReceiver;
 
     void ActionsLoad();
     void WidgetsInit();

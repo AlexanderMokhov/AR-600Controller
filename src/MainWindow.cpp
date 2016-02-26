@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mSender = new Sender;
     mReceiver = new Receiver;
+    mConsoleReceiver = new ConsoleReceiver;
 
     MoveCorrector::Inst()->Init();
 }
@@ -114,7 +115,6 @@ void MainWindow::ActionsLoad()
     TBactionNext = new QAction("Следующая команда",0);
     TBactionNext->setToolTip("Следующая команда");
     TBactionNext->setIcon(QIcon(":/MyIcons/Icons/redo.ico"));
-    connect(TBactionNext,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonNext_clicked()));
 
     TBactionOpenMoveFile = new QAction("Загрузить файл команд",0);
     TBactionOpenMoveFile->setToolTip("Загрузить файл команд");
@@ -229,6 +229,7 @@ void MainWindow::Connect()
 {
     mReceiver->Connect();
     mSender->Connect();
+    mConsoleReceiver->Connect();
     mTimerUpdate->start();
     mConnectStatusLabel->setText("Соединение установлено");
 }
@@ -245,6 +246,7 @@ void MainWindow::Disconnect()
 
     mReceiver->Disconnect();
     mSender->Disconnect();
+    mConsoleReceiver->Disconnect();
 
     mTimerUpdate->stop();
     mConnectStatusLabel->setText("Соединение не установлено");
