@@ -34,7 +34,7 @@ MotorTableWidget::~MotorTableWidget()
 
 void MotorTableWidget::ShowConfigData()
 {
-    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotors();
+    std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
     mModel->removeRows(0,mModel->rowCount());
 
     for(auto it = mMap->begin();it!=mMap->end();++it)
@@ -72,7 +72,7 @@ MotorTableModel *MotorTableWidget::getModel()
 
 void MotorTableWidget::UpdatePos()
 {
-    std::map<int,Motor> * mMap = ConfigController::Inst()->GetMotors();
+    std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
     int i=0;
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
@@ -118,7 +118,7 @@ void MotorTableWidget::ShowContextMenu(const QPoint &pos)
 
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->GetNumber();
-    bool isEnable = ConfigController::Inst()->GetMotors()->at(Number).GetEnable();
+    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).GetEnable();
 
     string text = "Выключить";
     if(!isEnable) text = "Включить";
@@ -138,9 +138,9 @@ void MotorTableWidget::onSetEnableAction()
 {
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->GetNumber();
-    bool isEnable = ConfigController::Inst()->GetMotors()->at(Number).GetEnable();
+    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).GetEnable();
     BufferController::Inst()->GetBufferS()->SetMotorEnable(Number, !isEnable);
-    ConfigController::Inst()->GetMotors()->at(Number).SetEnable(!isEnable);
+    SettingsStorage::Inst()->GetMotors()->at(Number).SetEnable(!isEnable);
     mModel->setData(mModel->index(cRow,11), QString::number(!isEnable));
 }
 
@@ -149,7 +149,16 @@ void MotorTableWidget::onSetLimitsAction()
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->GetNumber();
     mSetLimitsDlg = new SetLimitsDialog();
+    connect(mSetLimitsDlg, SIGNAL(accepted()),this,SLOT(onSetLimitsAccepted()));
     mSetLimitsDlg->setModal(true);
     mSetLimitsDlg->Update(Number);
     mSetLimitsDlg->show();
+}
+
+void MotorTableWidget::onSetLimitsAccepted()
+{
+    int cRow = mSelectionModel->currentIndex().row();
+    int Number = mModel->mDataList.at(cRow)->GetNumber();
+    mModel->mDataList.at(cRow)->SetMinPos(SettingsStorage::Inst()->GetMotors()->at(Number).GetMinPos());
+    mModel->mDataList.at(cRow)->SetMaxPos(SettingsStorage::Inst()->GetMotors()->at(Number).GetMaxPos());
 }

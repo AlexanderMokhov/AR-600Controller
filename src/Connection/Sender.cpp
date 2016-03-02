@@ -24,8 +24,8 @@ void Sender::run()
     //wVersionRequested = MAKEWORD(2, 2); // 01.02.2016
     //WSAStartup(wVersionRequested, &wsaData); // 01.02.2016
 
-    mSendPort = ConfigController::Inst()->GetSendPort();
-    mHost = QString::fromStdString(ConfigController::Inst()->GetHost());
+    mSendPort = SettingsStorage::Inst()->GetSendPort();
+    mHost = QString::fromStdString(SettingsStorage::Inst()->GetHost());
 
     //Prepare the sockaddr_in structure
     //dest_addr.sin_family = AF_INET; // 01.02.2016
@@ -35,7 +35,7 @@ void Sender::run()
     qDebug() << "Sender - connecting..." << endl;
 
 
-    mSendDelay = ConfigController::Inst()->GetSendDelay();
+    mSendDelay = SettingsStorage::Inst()->GetSendDelay();
 
     mUdpSocketSender->connectToHost(mHost, mSendPort);
     mUdpSocketSender->waitForConnected(1000);

@@ -143,7 +143,7 @@ void MoveControlWidget::startMove()
 
         if(IsLog)
         {
-            emit StartWriteRecord(MoveStorage::Inst()->GetDuration()/1e3);
+            emit StartWriteRecord(MovesStorage::Inst()->GetDuration()/1e3);
         }
         emit PlayStart();
     }
@@ -169,8 +169,8 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
         {
             qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
             qDebug() << "Команды успешно прочитаны" <<endl;
-            int CountRows = MoveStorage::Inst()->GetCountRows();
-            int Duration = MoveStorage::Inst()->GetDuration();
+            int CountRows = MovesStorage::Inst()->GetCountRows();
+            int Duration = MovesStorage::Inst()->GetDuration();
 
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");

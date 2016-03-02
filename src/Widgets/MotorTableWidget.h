@@ -5,7 +5,7 @@
 #include <QItemSelectionModel>
 #include <QMenu>
 
-#include "Management/ConfigController.h"
+#include "Management/SettingsStorage.h"
 #include "Models/MotorTableModel.h"
 #include "Buffers/BufferController.h"
 #include "SetLimitsDialog.h"
@@ -40,6 +40,7 @@ private slots:
     void ShowContextMenu(const QPoint& pos);
     void onSetEnableAction();
     void onSetLimitsAction();
+    void onSetLimitsAccepted();
 };
 
 #endif // MOTORTABLEWIDGET_H

@@ -6,6 +6,13 @@ SetLimitsDialog::SetLimitsDialog(QWidget *parent) :
     ui(new Ui::SetLimitsDialog)
 {
     ui->setupUi(this);
+
+    //Запретить изменение размера окна begin
+    setMaximumHeight(sizeHint().height());
+    setMaximumWidth(this->width());
+    setMinimumWidth(this->width());
+    //Запретить изменение размера окна end
+
     connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(accepted()));
 }
 
@@ -17,8 +24,8 @@ SetLimitsDialog::~SetLimitsDialog()
 void SetLimitsDialog::Update(int cNumber)
 {
     this->cNumber = cNumber;
-    int MinAngle = ConfigController::Inst()->GetMotors()->at(cNumber).GetMinPos();
-    int MaxAngle = ConfigController::Inst()->GetMotors()->at(cNumber).GetMaxPos();
+    int MinAngle = SettingsStorage::Inst()->GetMotors()->at(cNumber).GetMinPos();
+    int MaxAngle = SettingsStorage::Inst()->GetMotors()->at(cNumber).GetMaxPos();
 
     ui->EditMinOld->setText(QString::number( MinAngle));
     ui->EditMaxOld->setText(QString::number( MaxAngle));
@@ -29,5 +36,11 @@ void SetLimitsDialog::Update(int cNumber)
 
 void SetLimitsDialog::accepted()
 {
-    //ConfigController::Inst()->GetMotors()->at(cNumber).
+    int MinAngle = ui->EditNewMin->value();
+    int MaxAngle = ui->EditNewMax->value();
+    SettingsStorage::Inst()->GetMotors()->at(cNumber).SetMinPos(MinAngle);
+    SettingsStorage::Inst()->GetMotors()->at(cNumber).SetMaxPos(MaxAngle);
+
+    BufferController::Inst()->GetBufferS()->SetMotorMinAngle(cNumber, MinAngle);
+    BufferController::Inst()->GetBufferS()->SetMotorMaxAngle(cNumber, MaxAngle);
 }

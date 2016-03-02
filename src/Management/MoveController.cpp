@@ -6,11 +6,11 @@ MoveController::MoveController()
 {
     mState = States::NotWork; //ничего не делаем
     mCommandId = 0;
-    mSendDelay = ConfigController::Inst()->GetSendDelay();
+    mSendDelay = SettingsStorage::Inst()->GetSendDelay();
 
     mGoToPosData.clear();
 
-    mMotors = ConfigController::Inst()->GetMotors();
+    mMotors = SettingsStorage::Inst()->GetMotors();
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
         PosData item;
@@ -22,7 +22,7 @@ MoveController::MoveController()
         mGoToPosData[(*it).first] = item;
     }
 
-    MoveStorage::Inst()->Init();
+    MovesStorage::Inst()->Init();
 
     UserStiff = 0;
     UserDump = 0;
@@ -39,50 +39,50 @@ void MoveController::StepPlay()
     QTime t;
     t.start();
 
-    if(MoveStorage::Inst()->mMoveID >= MoveStorage::Inst()->mCountRows){goto StopPlay;}
+    if(MovesStorage::Inst()->mMoveID >= MovesStorage::Inst()->mCountRows){goto StopPlay;}
 
-    while(MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Time <= time)
+    while(MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].Time <= time)
     {
-        if(MoveStorage::Inst()->mMoveID >= MoveStorage::Inst()->mCountRows){goto StopPlay;}
+        if(MovesStorage::Inst()->mMoveID >= MovesStorage::Inst()->mCountRows){goto StopPlay;}
 
         //записываем значение в мотор и проверяем следующую команду
-        int Number = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].NumberChannel;
-        int Angle = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Angle;
+        int Number = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].NumberChannel;
+        int Angle = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].Angle;
 
         int Stiff = 0;
         if(useUserStiff)
             Stiff = UserStiff;
         else
-            Stiff = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].PIDs.Stiff;
+            Stiff = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Stiff;
 
         int Dump = 0;
         if(useUserDump)
             Dump = UserDump;
         else
-            Dump = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].PIDs.Dump;
+            Dump = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Dump;
 
-        int Torque = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].PIDs.Torque;
+        int Torque = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Torque;
 
         BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
         BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
         BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
 
-        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Time);
+        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].Time);
         qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
 
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle + CorrectionValue);
-        MoveStorage::Inst()->mMoveID++;
+        MovesStorage::Inst()->mMoveID++;
 
-        if(MoveStorage::Inst()->mMoveID >= MoveStorage::Inst()->mCountRows){goto StopPlay;}
+        if(MovesStorage::Inst()->mMoveID >= MovesStorage::Inst()->mCountRows){goto StopPlay;}
     }
 
 StopPlay:
     //qDebug() << "Time elapsed: " << QString::number(t.elapsed()) << "ms\n";
 
     //если время закончилось - останавливаем, переводим индекс команды на начало списка
-    if(time > MoveStorage::Inst()->mDuration)
+    if(time > MovesStorage::Inst()->mDuration)
     {
-        MoveStorage::Inst()->mMoveID = 0;
+        MovesStorage::Inst()->mMoveID = 0;
         qDebug() << "Выполнена последняя строка"  << endl;
         emit PlayEnd();
         mState = States::MoveStopping;
@@ -96,7 +96,7 @@ void MoveController::StartPlay()
 
 void MoveController::StartingPlay()
 {
-    mMotors = ConfigController::Inst()->GetMotors();
+    mMotors = SettingsStorage::Inst()->GetMotors();
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
@@ -111,7 +111,7 @@ void MoveController::StartingPlay()
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle );
         BufferController::Inst()->GetBufferS()->MotorTrace( Number );
     }
-    MoveStorage::Inst()->mMoveID = 0;
+    MovesStorage::Inst()->mMoveID = 0;
     MoveCorrector::Inst()->setCurLine(0);
 
     mState = States::MovePlay;
@@ -126,7 +126,7 @@ void MoveController::StopPlay()
 void MoveController::StoppingPlay()
 {
     //переход в состояние после отправки последовательности
-    mMotors = ConfigController::Inst()->GetMotors();
+    mMotors = SettingsStorage::Inst()->GetMotors();
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
         int Number = (*it).second.GetNumber();
@@ -141,7 +141,7 @@ void MoveController::StoppingPlay()
         BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, MotorAngle );
         BufferController::Inst()->GetBufferS()->MotorStopBrake( Number);
     }
-    MoveStorage::Inst()->mMoveID = 0;
+    MovesStorage::Inst()->mMoveID = 0;
     mState = States::NotWork;
 }
 
@@ -162,16 +162,16 @@ void MoveController::ReadValue(std::string *temp, std::locale loc, unsigned int 
 
 bool MoveController::OpenFile(std::string fileName)
 {
-    return MoveStorage::Inst()->OpenFile(fileName);
+    return MovesStorage::Inst()->OpenFile(fileName);
 }
 
 void MoveController::NextCommand()
 {
-    int Number = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].NumberChannel;
-    int Angle = MoveStorage::Inst()->mMoves[MoveStorage::Inst()->mMoveID].Angle;
+    int Number = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].NumberChannel;
+    int Angle = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].Angle;
     BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
     BufferController::Inst()->GetBufferS()->MotorTrace(Number);
-    MoveStorage::Inst()->mMoveID++;
+    MovesStorage::Inst()->mMoveID++;
 }
 
 void MoveController::DoStepWork()
@@ -246,12 +246,12 @@ void MoveController::StartingGoPos()
     int MaxDiff = 0;
     int i=0;
 
-    mMotors = ConfigController::Inst()->GetMotors();
+    mMotors = SettingsStorage::Inst()->GetMotors();
     for(auto it = mMotors->begin();it != mMotors->end();++it)
     {
         int Number = (*it).first;
         int StartAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
-        int DestAngle = mGoPosMode == true ? MoveStorage::Inst()->mMoves[i].Angle : 0;
+        int DestAngle = mGoPosMode == true ? MovesStorage::Inst()->mMoves[i].Angle : 0;
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.GetEnable()) ? DiffAngle : MaxDiff;
 
@@ -262,7 +262,7 @@ void MoveController::StartingGoPos()
         i++;
     }
 
-    long TimeMs = MaxDiff * 1000 / (ConfigController::Inst()->GetDefaultSpeed()*100);
+    long TimeMs = MaxDiff * 1000 / (SettingsStorage::Inst()->GetDefaultSpeed()*100);
     TimeMs = TimeMs < 1000 ? 1000 : TimeMs;
     SetupGoPos(TimeMs);
     mMotorExistCount = 21;
@@ -271,7 +271,7 @@ void MoveController::StartingGoPos()
 
 void MoveController::SetupGoPos(long TimeToGo)
 {
-    int SendDelay = ConfigController::Inst()->GetSendDelay();
+    int SendDelay = SettingsStorage::Inst()->GetSendDelay();
 
     for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
     {
@@ -362,7 +362,7 @@ void MoveController::StartingGoToAngle()
     mDestAngle = NewDestAngle;
     mStartAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(mMotorNumber);
 
-    int SendDelay = ConfigController::Inst()->GetSendDelay();
+    int SendDelay = SettingsStorage::Inst()->GetSendDelay();
     int diffAngle = mDestAngle - mStartAngle;//разница в градус*100
     mStep = (double)diffAngle / ((double)mTimeToGo/(double)SendDelay);//шаг в градус*100
     mCurrentAngle = mStartAngle;

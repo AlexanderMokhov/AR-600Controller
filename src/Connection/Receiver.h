@@ -8,7 +8,7 @@
 #include <QTime>
 
 #include "Buffers/BufferController.h"
-#include "Management/ConfigController.h"
+#include "Management/SettingsStorage.h"
 
 #include "Libs/Sockets/Socket.h"
 

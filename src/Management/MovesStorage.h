@@ -1,5 +1,5 @@
-#ifndef MOVESTORAGE_H
-#define MOVESTORAGE_H
+#ifndef MOVESSTORAGE_H
+#define MOVESSTORAGE_H
 
 #define _USE_MATH_DEFINES
 
@@ -17,7 +17,7 @@
 #include <mutex>
 #include <regex>
 
-#include "ConfigController.h"
+#include "SettingsStorage.h"
 
 struct PID
 {
@@ -38,14 +38,14 @@ struct MoveCommand
 };
 
 //для работы с файлами движений
-class MoveStorage
+class MovesStorage
 {
 private:
-    MoveStorage();
-    ~MoveStorage(){}
-    MoveStorage(MoveStorage const&);
+    MovesStorage();
+    ~MovesStorage(){}
+    MovesStorage(MovesStorage const&);
 
-    static MoveStorage* mInst;
+    static MovesStorage* mInst;
     std::map<int,Motor> * mMotors;
 public:
     std::vector<MoveCommand> mMoves;
@@ -64,8 +64,8 @@ public:
     void ReadValue(std::string *temp, std::locale loc, int *pos, std::string str);
 
 public:
-    static MoveStorage* Inst(){ return mInst; }
-    static void Init(){ delete mInst; mInst = new MoveStorage; }
+    static MovesStorage* Inst(){ return mInst; }
+    static void Init(){ delete mInst; mInst = new MovesStorage; }
 
     bool OpenFile(std::string fileName);
     int GetCountRows(){ return mCountRows; }
@@ -79,4 +79,4 @@ public:
     void setBackMoves();
 };
 
-#endif // MOVESTORAGE_H
+#endif // MOVESSTORAGE_H

@@ -22,9 +22,9 @@
 #include <regex>
 
 #include "Buffers/BufferController.h"
-#include "ConfigController.h"
+#include "SettingsStorage.h"
 #include "MoveCorrector.h"
-#include "MoveStorage.h"
+#include "MovesStorage.h"
 
 //struct PID
 //{

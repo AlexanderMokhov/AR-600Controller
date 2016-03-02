@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 #include "Buffers/BufferController.h"
-#include "ConfigController.h"
+#include "SettingsStorage.h"
 
 using namespace std;
 

@@ -35,13 +35,11 @@ SOURCES += main.cpp\
     Libs/TinyXML/tinyxml.cpp \
     Libs/TinyXML/tinyxmlerror.cpp \
     Libs/TinyXML/tinyxmlparser.cpp \
-    Management/ConfigController.cpp \
     Management/MoveController.cpp \
     Management/Mover.cpp \
     MainWindow.cpp \
     Management/MoveCorrector.cpp \
     Widgets/MoveControlWidget.cpp \
-    Management/MoveStorage.cpp \
     Management/RecordController.cpp \
     Management/Recorder.cpp \
     Widgets/RecordWidget.cpp \
@@ -50,7 +48,9 @@ SOURCES += main.cpp\
     Libs/Sockets/Socket.cpp \
     Widgets/SetLimitsDialog.cpp \
     Widgets/StdMovesWidget.cpp \
-    Connection/ConsoleReceiver.cpp
+    Connection/ConsoleReceiver.cpp \
+    Management/SettingsStorage.cpp \
+    Management/MovesStorage.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -70,14 +70,12 @@ HEADERS  += \
     Devices/Sensor.h \
     Libs/TinyXML/tinystr.h \
     Libs/TinyXML/tinyxml.h \
-    Management/ConfigController.h \
     Management/MoveController.h \
     Management/Mover.h \
     MainWindow.h \
     Buffers/BufferDefinition.h \
     Management/MoveCorrector.h \
     Widgets/MoveControlWidget.h \
-    Management/MoveStorage.h \
     Management/RecordController.h \
     Management/Recorder.h \
     Widgets/RecordWidget.h \
@@ -86,7 +84,9 @@ HEADERS  += \
     Libs/Sockets/Socket.h \
     Widgets/SetLimitsDialog.h \
     Widgets/StdMovesWidget.h \
-    Connection/ConsoleReceiver.h
+    Connection/ConsoleReceiver.h \
+    Management/SettingsStorage.h \
+    Management/MovesStorage.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

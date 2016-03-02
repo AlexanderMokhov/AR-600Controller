@@ -11,7 +11,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "Management/ConfigController.h"
+#include "Management/SettingsStorage.h"
 #include "Management/MoveController.h"
 #include "Management/MoveCorrector.h"
 #include "Management/RecordController.h"

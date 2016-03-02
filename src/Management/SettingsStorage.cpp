@@ -1,13 +1,13 @@
-#include "ConfigController.h"
+#include "SettingsStorage.h"
 
-ConfigController * ConfigController::mInst = 0;
+SettingsStorage * SettingsStorage::mInst = 0;
 
-ConfigController::ConfigController()
+SettingsStorage::SettingsStorage()
 {
     mXMLConfigFile = NULL;
 }
 
-bool ConfigController::OpenFile(string FileName)
+bool SettingsStorage::OpenFile(string FileName)
 {
     mXMLConfigFile = new TiXmlDocument(FileName.c_str());
 
@@ -114,7 +114,7 @@ bool ConfigController::OpenFile(string FileName)
     }
 }
 
-bool ConfigController::SaveFile(string FileName)
+bool SettingsStorage::SaveFile(string FileName)
 {
     mXMLConfigFile = new TiXmlDocument();
     TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","ANSI","yes");

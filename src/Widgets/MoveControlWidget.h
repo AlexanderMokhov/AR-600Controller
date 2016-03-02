@@ -8,13 +8,13 @@
 #include <QPropertyAnimation>
 #include <QSignalTransition>
 
-#include "Management/ConfigController.h"
+#include "Management/SettingsStorage.h"
 #include "Buffers/BufferController.h"
 #include "Models/MotorTableModel.h"
 
 #include "Management/MoveController.h"
 #include "Management/MoveCorrector.h"
-#include "Management/MoveStorage.h"
+#include "Management/MovesStorage.h"
 #include "Management/Mover.h"
 
 namespace Ui {

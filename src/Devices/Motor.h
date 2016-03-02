@@ -41,6 +41,9 @@ public:
     int GetTorque();//получить KD
     int GetCalibration();
     bool GetEnable();
+
+    void SetMinPos(int Angle);
+    void SetMaxPos(int Angle);
     void SetCalibration( int Calibration );
     void SetStiff( int Stiff );
     void SetDump( int Dump );

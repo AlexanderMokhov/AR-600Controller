@@ -35,7 +35,7 @@ void Receiver::run()
 //    wVersionRequested = MAKEWORD(2, 2); // 01.02.2016
 //    WSAStartup(wVersionRequested, &wsaData); // 01.02.2016
 
-    int ReceivePort = ConfigController::Inst()->GetReceivePort();
+    int ReceivePort = SettingsStorage::Inst()->GetReceivePort();
 
     //Prepare the sockaddr_in structure
 //    sockaddr_in local; // 01.02.2016

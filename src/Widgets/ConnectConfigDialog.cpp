@@ -6,8 +6,13 @@ ConnectConfigDialog::ConnectConfigDialog(QWidget *parent) :
     ui(new Ui::ConnectConfigDialog)
 {
     ui->setupUi(this);
-    connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(accepted()));
 
+    //Запретить изменение размера окна begin
+    setMaximumHeight(sizeHint().height());
+    setMaximumWidth(sizeHint().width());
+    //Запретить изменение размера окна end
+
+    connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(accepted()));
 }
 
 ConnectConfigDialog::~ConnectConfigDialog()
@@ -17,9 +22,9 @@ ConnectConfigDialog::~ConnectConfigDialog()
 
 void ConnectConfigDialog::Update()
 {
-    mHost = QString::fromStdString(ConfigController::Inst()->GetHost());
-    mSendPort = ConfigController::Inst()->GetSendPort();
-    mReceivePort = ConfigController::Inst()->GetReceivePort();
+    mHost = QString::fromStdString(SettingsStorage::Inst()->GetHost());
+    mSendPort = SettingsStorage::Inst()->GetSendPort();
+    mReceivePort = SettingsStorage::Inst()->GetReceivePort();
 
     ui->lineEditHost->setText(mHost);
     ui->lineEditSendPort->setText(QString::number(mSendPort));
@@ -28,7 +33,7 @@ void ConnectConfigDialog::Update()
 
 void ConnectConfigDialog::accepted()
 {
-    ConfigController::Inst()->SetHost(ui->lineEditHost->text().toStdString());
-    ConfigController::Inst()->SetReceivePort(ui->lineEditReceivePort->text().toInt());
-    ConfigController::Inst()->SetSendPort(ui->lineEditSendPort->text().toInt());
+    SettingsStorage::Inst()->SetHost(ui->lineEditHost->text().toStdString());
+    SettingsStorage::Inst()->SetReceivePort(ui->lineEditReceivePort->text().toInt());
+    SettingsStorage::Inst()->SetSendPort(ui->lineEditSendPort->text().toInt());
 }

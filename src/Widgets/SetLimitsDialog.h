@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "Management/ConfigController.h"
+#include "Management/SettingsStorage.h"
 #include "Buffers/BufferController.h"
 
 namespace Ui {

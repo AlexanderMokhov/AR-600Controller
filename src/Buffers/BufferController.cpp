@@ -4,8 +4,8 @@ BufferController * BufferController::mInst = 0;
 
 void BufferController::InitBuffers()
 {
-    for(auto it = ConfigController::Inst()->GetMotors()->begin();
-        it != ConfigController::Inst()->GetMotors()->end();++it)
+    for(auto it = SettingsStorage::Inst()->GetMotors()->begin();
+        it != SettingsStorage::Inst()->GetMotors()->end();++it)
     {
         int Channel = (*it).second.GetChannel();
         int PosMin = (*it).second.GetMinPos();
@@ -28,8 +28,8 @@ void BufferController::InitBuffers()
         mBufferSend.MotorStopBrake((*it).first);
     }
 
-    for(auto it = ConfigController::Inst()->GetSensors()->begin();
-        it != ConfigController::Inst()->GetSensors()->end();++it)
+    for(auto it = SettingsStorage::Inst()->GetSensors()->begin();
+        it != SettingsStorage::Inst()->GetSensors()->end();++it)
     {
         int Channel = (*it).second.GetChannel();
         mBufferSend.SetDeviceChannel(Channel,Channel);

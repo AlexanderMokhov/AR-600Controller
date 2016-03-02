@@ -6,6 +6,11 @@ StdMovesWidget::StdMovesWidget(QWidget *parent) :
     ui(new Ui::StdMovesWidget)
 {
     ui->setupUi(this);
+
+    //Запретить изменение размера окна begin
+    setMaximumHeight(sizeHint().height());
+    setMaximumWidth(sizeHint().width());
+    //Запретить изменение размера окна end
 }
 
 StdMovesWidget::~StdMovesWidget()
@@ -15,13 +20,13 @@ StdMovesWidget::~StdMovesWidget()
 
 void StdMovesWidget::on_ButtonForward_clicked()
 {
-    MoveStorage::Inst()->setForwardMoves();
+    MovesStorage::Inst()->setForwardMoves();
     emit startStdMove();
 }
 
 void StdMovesWidget::on_ButtonBack_clicked()
 {
-    MoveStorage::Inst()->setBackMoves();
+    MovesStorage::Inst()->setBackMoves();
     emit startStdMove();
 }
 

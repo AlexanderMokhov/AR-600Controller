@@ -8,15 +8,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //инициализация контроллеров
-    ConfigController::Inst()->Init();
+    SettingsStorage::Inst()->Init();
     BufferController::Inst()->Init();
 
     //чтение настроек их XML файла
-    bool isOk = ConfigController::Inst()->OpenFile("config.xml");
+    bool isOk = SettingsStorage::Inst()->OpenFile("config.xml");
 
     if(isOk)
     {
-        mUpdateDelay = ConfigController::Inst()->GetReceiveDelay();
+        mUpdateDelay = SettingsStorage::Inst()->GetReceiveDelay();
 
         BufferController::Inst()->InitBuffers();
         MoveController::Inst()->Init();
@@ -283,7 +283,7 @@ void MainWindow::SaveXML()
     QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        ConfigController::Inst()->SaveFile(fileName.toStdString());
+        SettingsStorage::Inst()->SaveFile(fileName.toStdString());
         qDebug() << "Файл настроек успешно сохранен в " << fileName << endl;
     }
 }
@@ -294,7 +294,7 @@ void MainWindow::OpenXML()
     QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        bool isOk = ConfigController::Inst()->OpenFile(fileName.toStdString());
+        bool isOk = SettingsStorage::Inst()->OpenFile(fileName.toStdString());
 
         if(isOk)
         {

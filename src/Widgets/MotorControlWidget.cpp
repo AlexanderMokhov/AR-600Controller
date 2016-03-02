@@ -39,8 +39,9 @@ void MotorControlWidget::RowChanged(int cRow)
     //Считываем номер мотра, адрес буфера, реверс
     currentRow = cRow;
     CurrentNumber = mModel->data(mModel->index(currentRow,0),Qt::EditRole).toInt();
-    ui->lineNumber->setText(QString::number(CurrentNumber));
-    Reverce = ConfigController::Inst()->GetMotors()->at(CurrentNumber).GetReverce();
+    QString name = QString::fromLocal8Bit(SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).GetName().c_str());
+    ui->lineName->setText(name);
+    Reverce = SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).GetReverce();
     if(Reverce)
         ReverceCoeff = -1;
     else
@@ -125,7 +126,7 @@ void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
     if(!checked)
     {
         //выходим из режима калибровки
-        mWriteBuffer->SetMotorCalibration(CurrentNumber, ConfigController::Inst()->GetMotors()->at(CurrentNumber).GetCalibration());
+        mWriteBuffer->SetMotorCalibration(CurrentNumber, SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).GetCalibration());
         mWriteBuffer->SetMotorAngle(CurrentNumber, mReadBuffer->GetMotorAngle(CurrentNumber));
 
         //разрешаем вход в режим управления слайдером
@@ -154,9 +155,9 @@ void MotorControlWidget::on_ButtonSaveZero_clicked()
     //записываем в файл настроек новые калибровочные коэффициенты
     int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
     int NewCalibration=ReverceCoeff*CurrentPos;
-    ConfigController::Inst()->GetMotors()->at(CurrentNumber).SetCalibration(NewCalibration);
+    SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).SetCalibration(NewCalibration);
     mModel->setData(mModel->index(currentRow,10),QString::number(NewCalibration));
-    ConfigController::Inst()->SaveFile("config.xml");
+    SettingsStorage::Inst()->SaveFile("config.xml");
 
     //записываем в мотор калибровочные коэффициенты
     mWriteBuffer->SetMotorCalibration(CurrentNumber,NewCalibration);
@@ -233,12 +234,12 @@ void MotorControlWidget::on_ButtonStiffWrite_clicked()
 
 void MotorControlWidget::on_ButtonStiffSave_clicked()
 {
-    ConfigController::Inst()->GetMotors()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
+    SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).SetStiff(ui->spinStiff->value());
 }
 
 void MotorControlWidget::on_ButtonDumpSave_clicked()
 {
-    ConfigController::Inst()->GetMotors()->at(CurrentNumber).SetDump(ui->spinDump->value());
+    SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).SetDump(ui->spinDump->value());
 }
 
 

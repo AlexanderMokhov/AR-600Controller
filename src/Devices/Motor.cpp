@@ -77,6 +77,16 @@ bool Motor::GetEnable()
     return mEnable;
 }
 
+void Motor::SetMinPos(int Angle)
+{
+    mMinPos = Angle;
+}
+
+void Motor::SetMaxPos(int Angle)
+{
+    mMaxPos = Angle;
+}
+
 void Motor::SetCalibration(int Calibration)
 {
     mCalibration = Calibration;

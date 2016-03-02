@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "Management/ConfigController.h"
+#include "Management/SettingsStorage.h"
 #include "Buffers/BufferController.h"
 #include "Models/MotorTableModel.h"
 #include "Management/MoveController.h"

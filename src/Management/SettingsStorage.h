@@ -1,5 +1,5 @@
-#ifndef CONFIGCONTROLLER_H
-#define CONFIGCONTROLLER_H
+#ifndef SETTINGSSTORAGE_H
+#define SETTINGSSTORAGE_H
 
 #include <iostream>
 #include <map>
@@ -11,13 +11,13 @@
 
 using namespace std;
 //загрузка и хранение основных параметров приложения
-class ConfigController
+class SettingsStorage
 {
 private:
-    static ConfigController* mInst;
-    ConfigController();
-    ConfigController( ConfigController const& );
-    ~ConfigController(){}
+    static SettingsStorage* mInst;
+    SettingsStorage();
+    SettingsStorage( SettingsStorage const& );
+    ~SettingsStorage(){}
 
     TiXmlDocument * mXMLConfigFile;
 
@@ -46,8 +46,8 @@ private:
     std::string mFileForward, mFileBack;
 
 public:
-    static ConfigController* Inst(){ return mInst; }
-    static void Init(){ delete mInst; mInst = new ConfigController; }
+    static SettingsStorage* Inst(){ return mInst; }
+    static void Init(){ delete mInst; mInst = new SettingsStorage; }
 
     bool OpenFile( std::string FileName );//Открыть файл настроек
     bool SaveFile( std::string FileName );//Сохранить файл настроек
@@ -77,4 +77,4 @@ public:
 };
 
 
-#endif // CONFIGCONTROLLER_H
+#endif // SETTINGSSTORAGE_H

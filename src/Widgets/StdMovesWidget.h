@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "Management/MoveStorage.h"
+#include "Management/MovesStorage.h"
 #include "Widgets/MoveControlWidget.h"
 
 namespace Ui {

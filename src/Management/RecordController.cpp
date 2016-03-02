@@ -5,8 +5,8 @@ RecordController * RecordController::mInst = 0;
 RecordController::RecordController()
 {
     mReadBuffer = BufferController::Inst()->GetBufferR();
-    mConfigMap = ConfigController::Inst()->GetMotors();
-    mSensMap = ConfigController::Inst()->GetSensors();
+    mConfigMap = SettingsStorage::Inst()->GetMotors();
+    mSensMap = SettingsStorage::Inst()->GetSensors();
 
     for(auto it = mConfigMap->begin();it != mConfigMap->end(); ++it)
     {
