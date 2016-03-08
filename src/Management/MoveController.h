@@ -26,16 +26,6 @@
 #include "MoveCorrector.h"
 #include "MovesStorage.h"
 
-//struct PID
-//{
-//    int Stiff = 0;
-//    int Dump = 0;
-//    int Torque = 0;
-//    double StiffFactor = 0;
-//    double DumpFactor = 0;
-//    double TorqueFactor = 0;
-//};
-
 struct Command
 {
     int Time = 0;
@@ -75,7 +65,6 @@ private:
     std::map<int,Motor> * mMotors;
 
     //для выполнения команд из файла
-    std::vector<Command> mCommands;
     int mCommandId;
     int mDuration;
     int mCountRows;
@@ -106,8 +95,6 @@ public:
     int GetCountRows(){return mCountRows;}
     int GetDuration(){return mDuration;}
     States getState(){ return mState; }
-
-    void NextCommand();//--
 
     //для воспроизведения последовательности команд
     void StepPlay();

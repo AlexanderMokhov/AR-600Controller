@@ -50,16 +50,12 @@ void MoveController::StepPlay()
         int Angle = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].Angle;
 
         int Stiff = 0;
-        if(useUserStiff)
-            Stiff = UserStiff;
-        else
-            Stiff = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Stiff;
+        if(useUserStiff) Stiff = UserStiff;
+        else Stiff = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Stiff;
 
         int Dump = 0;
-        if(useUserDump)
-            Dump = UserDump;
-        else
-            Dump = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Dump;
+        if(useUserDump) Dump = UserDump;
+        else Dump = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Dump;
 
         int Torque = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Torque;
 
@@ -163,15 +159,6 @@ void MoveController::ReadValue(std::string *temp, std::locale loc, unsigned int 
 bool MoveController::OpenFile(std::string fileName)
 {
     return MovesStorage::Inst()->OpenFile(fileName);
-}
-
-void MoveController::NextCommand()
-{
-    int Number = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].NumberChannel;
-    int Angle = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].Angle;
-    BufferController::Inst()->GetBufferS()->SetMotorAngle(Number,Angle);
-    BufferController::Inst()->GetBufferS()->MotorTrace(Number);
-    MovesStorage::Inst()->mMoveID++;
 }
 
 void MoveController::DoStepWork()

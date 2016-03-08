@@ -10,6 +10,7 @@
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QProcess>
 
 #include "Management/SettingsStorage.h"
 #include "Management/MoveController.h"
@@ -77,6 +78,7 @@ private:
     QAction *TBactionConnect;
     QAction *TBactionDisconnect;
     QAction *TBactionOpenMoveFile;
+    QAction *TBactionStartFrund;
 
     //потоки
     Receiver                *mReceiver;
@@ -103,6 +105,7 @@ public slots:
     void Disconnect();
     void ActivateActions();
     void OpenConnectConfig();
+    void StartFrund();
 
 };
 

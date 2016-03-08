@@ -47,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     TBactionPlay->setEnabled(false);
     TBactionStop->setEnabled(false);
-    TBactionNext->setEnabled(false);
 
     ToolBarInit();
 
@@ -95,58 +94,59 @@ void MainWindow::ActionsLoad()
     TBactionOpenCF = new QAction("Открыть файл настроек",0);
     TBactionOpenCF->setToolTip("Открыть файл настроек");
     TBactionOpenCF->setIcon(QIcon(":/MyIcons/Icons/open.ico"));
-    connect(TBactionOpenCF,SIGNAL(triggered()),this,SLOT(OpenXML()));
+    connect(TBactionOpenCF, SIGNAL(triggered()),this,SLOT(OpenXML()));
 
     TBactionSaveCF = new QAction("Сохранить файл настроек",0);
     TBactionSaveCF->setToolTip("Сохранить файл настроек");
     TBactionSaveCF->setIcon(QIcon(":/MyIcons/Icons/save.ico"));
-    connect(TBactionSaveCF,SIGNAL(triggered()),this,SLOT(SaveXML()));
+    connect(TBactionSaveCF, SIGNAL(triggered()),this,SLOT(SaveXML()));
 
     TBactionPlay = new QAction("Начать выполнение",0);
     TBactionPlay->setToolTip("Начать выполнение");
     TBactionPlay->setIcon(QIcon(":/MyIcons/Icons/play.ico"));
-    connect(TBactionPlay,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonPlayPause_clicked()));
+    connect(TBactionPlay, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonPlayPause_clicked()));
 
     TBactionStop = new QAction("Остановить выполнение",0);
     TBactionStop->setToolTip("Остановить выполнение");
     TBactionStop->setIcon(QIcon(":/MyIcons/Icons/stop.ico"));
-    connect(TBactionStop,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonStop_clicked()));
-
-    TBactionNext = new QAction("Следующая команда",0);
-    TBactionNext->setToolTip("Следующая команда");
-    TBactionNext->setIcon(QIcon(":/MyIcons/Icons/redo.ico"));
+    connect(TBactionStop, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonStop_clicked()));
 
     TBactionOpenMoveFile = new QAction("Загрузить файл команд",0);
     TBactionOpenMoveFile->setToolTip("Загрузить файл команд");
     TBactionOpenMoveFile->setIcon(QIcon(":/MyIcons/Icons/folder.ico"));
-    connect(TBactionOpenMoveFile,SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonLoadFile_clicked()));
+    connect(TBactionOpenMoveFile, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonLoadFile_clicked()));
 
     TBactionOnPower = new QAction("Включить все",0);
     TBactionOnPower->setToolTip("Включить все");
     TBactionOnPower->setIcon(QIcon(":/MyIcons/Icons/on.ico"));
-    connect(TBactionOnPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
+    connect(TBactionOnPower, SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
 
     TBactionOffPower = new QAction("Выключить все",0);
     TBactionOffPower->setToolTip("Выключить все");
     TBactionOffPower->setIcon(QIcon(":/MyIcons/Icons/off.ico"));
-    connect(TBactionOffPower,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+    connect(TBactionOffPower, SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
 
     TBactionOpenConnectSettings = new QAction("Настройки соединения",0);
     TBactionOpenConnectSettings->setToolTip("Настройки соединения");
     TBactionOpenConnectSettings->setIcon(QIcon(":/MyIcons/Icons/settings.ico"));
-    connect(TBactionOpenConnectSettings,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
+    connect(TBactionOpenConnectSettings, SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
 
     TBactionConnect = new QAction("Подключение",0);
     TBactionConnect->setToolTip("Подключение");
 
     TBactionConnect->setIcon(QIcon(":/MyIcons/Icons/connect.ico"));
     TBactionConnect->setIconVisibleInMenu(true);
-    connect(TBactionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
+    connect(TBactionConnect, SIGNAL(triggered()),this,SLOT(Connect()));
 
     TBactionDisconnect = new QAction("Отключение",0);
     TBactionDisconnect->setToolTip("Отключение");
     TBactionDisconnect->setIcon(QIcon(":/MyIcons/Icons/disconnect.ico"));
-    connect(TBactionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
+    connect(TBactionDisconnect, SIGNAL(triggered()),this,SLOT(Disconnect()));
+
+    TBactionStartFrund = new QAction("Запустить RASHET32.EXE",0);
+    TBactionStartFrund->setToolTip("Запустить RASHET32.EXE");
+    TBactionStartFrund->setIcon(QIcon(":/MyIcons/Icons/forward.ico"));
+    connect(TBactionStartFrund, SIGNAL(triggered()),this,SLOT(StartFrund()));
 }
 
 void MainWindow::WidgetsInit()
@@ -212,15 +212,10 @@ void MainWindow::ToolBarInit()
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionOnPower);
     ui->MainToolBar->addAction(TBactionOffPower);
+    //ui->MainToolBar->addSeparator();
+    //ui->MainToolBar->addAction(TBactionOpenMoveFile);
     ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionOpenMoveFile);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionPlay);
-    ui->MainToolBar->addAction(TBactionPlay);
-    ui->MainToolBar->addAction(TBactionStop);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionNext);
-    ui->MainToolBar->addSeparator();
+    ui->MainToolBar->addAction(TBactionStartFrund);
     //конец добавление кнопок на тулбар
 }
 
@@ -266,6 +261,15 @@ void MainWindow::OpenConnectConfig()
     mConnectDialog->setModal(true);
     mConnectDialog->Update();
     mConnectDialog->show();
+}
+
+void MainWindow::StartFrund()
+{
+    QProcess* m_process;
+    m_process = new QProcess(this);
+    QString strCommand = "RASHET32.exe";
+    m_process->start(strCommand);
+    qDebug() << "RASHET32.exe успешно запущен" << endl;
 }
 
 //обработка принятого пакета от робота
