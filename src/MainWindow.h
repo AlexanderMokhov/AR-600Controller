@@ -35,6 +35,9 @@
 #include "Connection/Sender.h"
 #include "Connection/ConsoleReceiver.h"
 
+#include <Windows.h>
+
+
 namespace Ui {
 class MainWindow;
 }

@@ -1,0 +1,15 @@
+-out:rashet32.exe
+-debug:none
+-force:multiple
+-machine:i386
+-base:0x01000000
+-subsystem:console
+-entry:mainCRTStartup
+-stack:32768,4096
+-defaultlib:libf.lib
+-defaultlib:libc.lib
+-defaultlib:kernel32.lib
+-defaultlib:rashv4db.lib
+fpravo.obj
+calls.obj
+fsila.obj

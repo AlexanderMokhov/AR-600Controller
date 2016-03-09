@@ -265,11 +265,15 @@ void MainWindow::OpenConnectConfig()
 
 void MainWindow::StartFrund()
 {
-    QProcess* m_process;
-    m_process = new QProcess(this);
-    QString strCommand = "RASHET32.exe";
-    m_process->start(strCommand);
-    qDebug() << "RASHET32.exe успешно запущен" << endl;
+//    QProcess* m_process;
+//    m_process = new QProcess(this);
+//    QString strCommand = "forw125/rashet32.exe";
+//    m_process->start(strCommand);
+//    if(m_process->isOpen())
+//        qDebug() << "RASHET32.exe успешно запущен" << endl;
+//    m_process->waitForFinished();
+
+    WinExec("H:\\Mokhov\\Dev\\AR-600Controller\\bin\\forw125\\rashet32.exe", 1);
 }
 
 //обработка принятого пакета от робота

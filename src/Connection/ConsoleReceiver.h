@@ -6,6 +6,7 @@
 #include <QUdpSocket>
 #include <QDebug>
 #include <QTime>
+#include <QFile>
 
 #include "Buffers/BufferController.h"
 #include "Management/SettingsStorage.h"
@@ -16,6 +17,7 @@ class ConsoleReceiver : public QThread
 private:
     QUdpSocket *mUdpSocketReceiver;
     volatile bool isRunning;
+    void writeToFile(QByteArray data);
 public:
     explicit ConsoleReceiver(QObject *parent = 0);
     ~ConsoleReceiver();

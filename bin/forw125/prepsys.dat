@@ -1,0 +1,27 @@
+tfootxyz.mac
+@ управление левой ступней вспомогательное
+34 500 32 100 4 0
+tspatp2.mac
+@ Default macro name1
+35 504 35 112 4 0
+tspatp2.mac
+@ Default macro name2
+36 513 40 130 4 0
+tspatp2.mac
+@ Default macro name3
+37 522 45 148 4 0
+tspatp2.mac
+@ вспомогательная вертикальная траектория
+38 531 50 166 4 0
+tfootxyz.mac
+@ управление правой ступней вспомогательное
+39 540 55 184 4 0
+tfootxyz.mac
+@ управление левой ступней 
+40 544 58 196 4 0
+tfootxyz.mac
+@ управление правой ступней 
+41 548 61 208 4 0
+tspatp2.mac
+@ help macro
+42 552 64 220 4 0
