@@ -50,8 +50,7 @@ SOURCES += main.cpp\
     Widgets/StdMovesWidget.cpp \
     Connection/ConsoleReceiver.cpp \
     Management/SettingsStorage.cpp \
-    Management/MovesStorage.cpp \
-    Management/MoveControllerFrund.cpp
+    Management/MovesStorage.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -87,8 +86,7 @@ HEADERS  += \
     Widgets/StdMovesWidget.h \
     Connection/ConsoleReceiver.h \
     Management/SettingsStorage.h \
-    Management/MovesStorage.h \
-    Management/MoveControllerFrund.h
+    Management/MovesStorage.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

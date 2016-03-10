@@ -148,8 +148,6 @@ void MainWindow::ActionsLoad()
     TBactionStartPlayOnline->setToolTip("Движения онлайн");
     TBactionStartPlayOnline->setIcon(QIcon(":/MyIcons/Icons/play.ico"));
     connect(TBactionStartPlayOnline, SIGNAL(triggered()),this, SLOT(StartPlayOnline()));
-	
-    connect(TBactionDisconnect, SIGNAL(triggered()),this,SLOT(Disconnect()));
 
     TBactionStartFrund = new QAction("Запустить RASHET32.EXE",0);
     TBactionStartFrund->setToolTip("Запустить RASHET32.EXE");
@@ -220,16 +218,11 @@ void MainWindow::ToolBarInit()
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionOnPower);
     ui->MainToolBar->addAction(TBactionOffPower);
-    //ui->MainToolBar->addSeparator();
-    //ui->MainToolBar->addAction(TBactionOpenMoveFile);
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionOpenMoveFile);
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionPlay);
-    ui->MainToolBar->addAction(TBactionPlay);
     ui->MainToolBar->addAction(TBactionStop);
-    ui->MainToolBar->addSeparator();
-    ui->MainToolBar->addAction(TBactionNext);
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionStartPlayOnline);
     ui->MainToolBar->addAction(TBactionStartFrund);

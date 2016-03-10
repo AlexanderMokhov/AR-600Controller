@@ -13,7 +13,6 @@
 
 class Mover : public QThread
 {
-    enum StatesMover { playFrund, playMove };
 
     Q_OBJECT
 private:
@@ -23,8 +22,6 @@ private:
     bool isRestart;
 
     bool isPrep;
-
-    StatesMover mState;
 
 public:
     explicit Mover(QObject *parent = 0);

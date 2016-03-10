@@ -82,7 +82,6 @@ private:
     QAction *TBactionDisconnect;
     QAction *TBactionOpenMoveFile;
     QAction *TBactionStartFrund;
-
     QAction *TBactionStartPlayOnline;
 
     //потоки

@@ -72,7 +72,6 @@ void ConsoleReceiver::ProcessPendingDatagrams()
             qDebug() << "ConsoleReceiver data: " << datagram.data() <<"size"<< QString::number(datagram.size()) << endl;
             writeToFile(datagram);
         }
-
      }
 }
 

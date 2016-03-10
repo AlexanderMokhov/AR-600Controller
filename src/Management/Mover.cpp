@@ -6,7 +6,6 @@ Mover::Mover(QObject *parent) : QThread(parent)
     isRestart = false;
     mDelay = 5;
     isPrep = false;
-    mState = StatesMover::playMove;
 }
 
 Mover::~Mover()
@@ -68,25 +67,18 @@ void Mover::StopGoToPos()
 
 void Mover::Move()
 {
-    if(mState == StatesMover::playMove)
+    MoveController::Inst()->DoStepWork();
+    //Если закончилось выполнение движения
+    if(MoveController::Inst()->getState() == States::NotWork)
     {
-        MoveController::Inst()->DoStepWork();
-        //Если закончилось выполнение движения
-        if(MoveController::Inst()->getState() == States::NotWork)
+        exit();
+        if(isPrep)
         {
-            exit();
-            if(isPrep)
-            {
-                isPrep = false; emit PrepEnd();
-            }
-            else
-            {
-                emit MoveEnd();
-            }
+            isPrep = false; emit PrepEnd();
         }
-    }
-    else
-    {
-
+        else
+        {
+            emit MoveEnd();
+        }
     }
 }
