@@ -13,5 +13,6 @@
         <file>Icons/save.ico</file>
         <file>Icons/settings.ico</file>
         <file>Icons/stop.ico</file>
+        <file>Icons/forward.ico</file>
     </qresource>
 </RCC>

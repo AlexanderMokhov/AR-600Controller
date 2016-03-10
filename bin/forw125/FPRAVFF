@@ -1,0 +1,1742 @@
+      W=V*T
+      IF(KODVEL.EQ.1)W=0.0
+      WMOST1=W+DXS
+      CALL SH0054
+           ELX054=0.0
+           ELZ054=0.0
+      CALL SH0053
+           ELX053=0.0
+           ELY053=0.0
+           ELZ053=0.0
+      CALL SH0052
+           ELY052=0.0
+           ELZ052=0.0
+      CALL SH0051
+           ELX051=0.0
+           ELY051=0.0
+           ELZ051=0.0
+      CALL SH0050
+           ELX050=0.0
+           ELY050=0.0
+      CALL SH0049
+           ELX049=0.0
+           ELY049=0.0
+           ELZ049=0.0
+      CALL SH0040
+           ELY040=0.0
+           ELZ040=0.0
+      CALL SH0039
+           ELX039=0.0
+           ELY039=0.0
+           ELZ039=0.0
+      CALL SH0096
+           ELX096=0.0
+           ELY096=0.0
+      CALL SH0036
+           ELY036=0.0
+           ELZ036=0.0
+      CALL SH0035
+           ELX035=0.0
+           ELY035=0.0
+           ELZ035=0.0
+      CALL SH0086
+           ELX086=0.0
+           ELY086=0.0
+      CALL SH0034
+           ELX034=0.0
+           ELZ034=0.0
+      CALL SH0033
+           ELX033=0.0
+           ELY033=0.0
+           ELZ033=0.0
+      CALL SH0031
+           ELX031=0.0
+           ELY031=0.0
+           ELZ031=0.0
+      CALL SH0088
+           ELX088=0.0
+           ELY088=0.0
+      CALL SH0032
+           ELX032=0.0
+           ELZ032=0.0
+      CALL SH0028
+           ELX028=0.0
+           ELZ028=0.0
+      CALL SH0027
+           ELX027=0.0
+           ELY027=0.0
+           ELZ027=0.0
+      CALL SH0090
+           ELX090=0.0
+           ELY090=0.0
+      CALL SH0030
+           ELY030=0.0
+           ELZ030=0.0
+      CALL SH0029
+           ELX029=0.0
+           ELY029=0.0
+           ELZ029=0.0
+      CALL SH0095
+           ELX095=0.0
+           ELY095=0.0
+      CALL SH0024
+           ELY024=0.0
+           ELZ024=0.0
+      CALL SH0023
+           ELX023=0.0
+           ELY023=0.0
+           ELZ023=0.0
+      CALL SH0087
+           ELX087=0.0
+           ELY087=0.0
+      CALL SH0022
+           ELX022=0.0
+           ELZ022=0.0
+      CALL SH0021
+           ELX021=0.0
+           ELY021=0.0
+           ELZ021=0.0
+      CALL SH0019
+           ELX019=0.0
+           ELY019=0.0
+           ELZ019=0.0
+      CALL SH0089
+           ELX089=0.0
+           ELY089=0.0
+      CALL SH0020
+           ELX020=0.0
+           ELZ020=0.0
+      CALL SH0018
+           ELX018=0.0
+           ELZ018=0.0
+      CALL SH0017
+           ELX017=0.0
+           ELY017=0.0
+           ELZ017=0.0
+      CALL SH0091
+           ELX091=0.0
+           ELY091=0.0
+      CALL SH0016
+           ELY016=0.0
+           ELZ016=0.0
+      CALL SH0015
+           ELX015=0.0
+           ELY015=0.0
+           ELZ015=0.0
+      CALL SH0099
+           ELY099=0.0
+      CALL SH0098
+           ELX098=0.0
+           ELY098=0.0
+      CALL SH0097
+           ELX097=0.0
+           ELY097=0.0
+           ELZ097=0.0
+      CALL SH0026
+           ELX026=0.0
+           ELY026=0.0
+           ELZ026=0.0
+      CALL SH0025
+           ELX025=0.0
+           ELY025=0.0
+      CALL SH0014
+           ELX014=0.0
+           ELY014=0.0
+      CALL SH0013
+           ELX013=0.0
+           ELY013=0.0
+           ELZ013=0.0
+      CALL SH0012
+           ELX012=0.0
+           ELY012=0.0
+           ELZ012=0.0
+      CALL SH0004
+           ELX004=0.0
+           ELY004=0.0
+           ELZ004=0.0
+      CALL SH0003
+           ELY003=0.0
+           ELZ003=0.0
+      CALL SH0094
+           ELY094=0.0
+      CALL SH0048
+           ELX048=0.0
+           ELZ048=0.0
+      CALL SH0047
+           ELX047=0.0
+           ELY047=0.0
+           ELZ047=0.0
+      CALL SH0038
+           ELX038=0.0
+           ELY038=0.0
+           ELZ038=0.0
+      CALL SH0037
+           ELX037=0.0
+           ELZ037=0.0
+      CALL SH0011
+           ELX011=0.0
+           ELY011=0.0
+      CALL SH0002
+           ELX002=0.0
+           ELY002=0.0
+           ELZ002=0.0
+      CALL SH0001
+           ELX001=0.0
+           ELZ001=0.0
+      CALL SH0101
+           ELX101=0.0
+           ELY101=0.0
+           ELZ101=0.0
+      CALL SH0113
+           ELX113=0.0
+           ELY113=0.0
+           ELZ113=0.0
+      CALL SH0131
+           ELX131=0.0
+           ELY131=0.0
+           ELZ131=0.0
+      CALL SH0149
+           ELX149=0.0
+           ELY149=0.0
+           ELZ149=0.0
+      CALL SH0167
+           ELX167=0.0
+           ELY167=0.0
+           ELZ167=0.0
+      CALL SH0185
+           ELX185=0.0
+           ELY185=0.0
+           ELZ185=0.0
+      CALL SH0197
+           ELX197=0.0
+           ELY197=0.0
+           ELZ197=0.0
+      CALL SH0209
+           ELX209=0.0
+           ELY209=0.0
+           ELZ209=0.0
+      CALL SH0221
+           ELX221=0.0
+           ELY221=0.0
+           ELZ221=0.0
+      XUZ081=+ZU0800-ZU0700
+      YUZ081=+ZW0800-ZW0700
+      EUZ081=FUZ018(XUZ081,YUZ081,UUZ081,TUZ081)
+      XUY075=+YU1300-YU1000
+      YUY075=+YW1300-YW1000
+      EUY075=FUY015(XUY075,YUY075,UUY075,TUY075)
+      XUX076=+XU1900-XU1800
+      YUX076=+XW1900-XW1800
+      EUX076=FUX016(XUX076,YUX076,UUX076,TUX076)
+      XUX074=+XU1300-XU1100
+      YUX074=+XW1300-XW1100
+      EUX074=FUX016(XUX074,YUX074,UUX074,TUX074)
+      XUY059=+YU0200-YU0100
+      YUY059=+YW0200-YW0100
+      EUY059=FUY009(XUY059,YUY059,UUY059,TUY059)
+      XUX071=+XU0800-XU1200
+      YUX071=+XW0800-XW1200
+      EUX071=FUX016(XUX071,YUX071,UUX071,TUX071)
+      XUY077=+YU1800-YU1700
+      YUY077=+YW1800-YW1700
+      EUY077=FUY015(XUY077,YUY077,UUY077,TUY077)
+      XUX072=+XU1500-XU1400
+      YUX072=+XW1500-XW1400
+      EUX072=FUX016(XUX072,YUX072,UUX072,TUX072)
+      XUX063=+XU2100-XU2000
+      YUX063=+XW2100-XW2000
+      EUX063=FUX022(XUX063,YUX063,UUX063,TUX063)
+      XUZ066=+ZU2500-ZU2600
+      YUZ066=+ZW2500-ZW2600
+      EUZ066=FUZ011(XUZ066,YUZ066,UUZ066,TUZ066)
+      XUX067=+XU2600-XU2700
+      YUX067=+XW2600-XW2700
+      EUX067=FUX012(XUX067,YUX067,UUX067,TUX067)
+      XUY068=+YU2800-YU2700
+      YUY068=+YW2800-YW2700
+      EUY068=FUY013(XUY068,YUY068,UUY068,TUY068)
+      XUY073=+YU1600-YU1500
+      YUY073=+YW1600-YW1500
+      EUY073=FUY015(XUY073,YUY073,UUY073,TUY073)
+      XUY078=+YU1000-YU0900
+      YUY078=+YW1000-YW0900
+      EUY078=FUY017(XUY078,YUY078,UUY078,TUY078)
+      XUY079=+YU1700-YU1600
+      YUY079=+YW1700-YW1600
+      EUY079=FUY017(XUY079,YUY079,UUY079,TUY079)
+      XUX058=+XU0200-XU0300
+      YUX058=+XW0200-XW0300
+      EUX058=FUX008(XUX058,YUX058,UUX058,TUX058)
+      XUZ080=+ZU0700-ZU1400
+      YUZ080=+ZW0700-ZW1400
+      EUZ080=FUZ018(XUZ080,YUZ080,UUZ080,TUZ080)
+      XUY064=+YU2000-YU0100
+      YUY064=+YW2000-YW0100
+      EUY064=FUY009(XUY064,YUY064,UUY064,TUY064)
+      XUZ069=+ZU0700-ZU0100
+      YUZ069=+ZW0700-ZW0100
+      EUZ069=FUZ014(XUZ069,YUZ069,UUZ069,TUZ069)
+      XUY065=+YU2500-YU0100
+      YUY065=+YW2500-YW0100
+      EUY065=FUY010(XUY065,YUY065,UUY065,TUY065)
+      XUY070=+YU0900-YU1200
+      YUY070=+YW0900-YW1200
+      EUY070=FUY015(XUY070,YUY070,UUY070,TUY070)
+CSTART_SIL
+             SLX001=0.0
+             SLY001=0.0
+      SLZ001=PLZ001(W)
+             SLX002=0.0
+             SLY002=0.0
+      SLZ002=PLZ002(W)
+             SLX003=0.0
+             SLY003=0.0
+      SLZ003=PLZ003(W)
+             SLX004=0.0
+             SLY004=0.0
+      SLZ004=PLZ004(W)
+C     gpoint
+      SLXAAB=+XL3100
+C     gpoint
+C     gpoint
+C  GENA
+      EMAAAD=+EMAAAH*EMAAAE+EMAAAK*EMAAAF+EMAAAN*EMAAAG
+      SLXAAC=+XL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLYAAB=+YL3100
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAI*EMAAAE+EMAAAL*EMAAAF+EMAAAO*EMAAAG
+      SLYAAC=+YL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLZAAB=+ZL3100
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAJ*EMAAAE+EMAAAM*EMAAAF+EMAAAP*EMAAAG
+      SLZAAC=+ZL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLXAAQ=+XL3000
+C     gpoint
+C     gpoint
+      SVXAAQ=+XV3000
+C     gpoint
+C     gpoint
+      SAXAAQ=+ACSEL(000133)
+C     gpoint
+C     gpoint
+      SLYAAQ=+YL3000
+C     gpoint
+C     gpoint
+      SVYAAQ=+YV3000
+C     gpoint
+C     gpoint
+      SAYAAQ=+ACSEL(000134)
+C     gpoint
+C     gpoint
+      SLZAAQ=+ZL3000
+C     gpoint
+C     gpoint
+      SVZAAQ=+ZV3000
+C     gpoint
+C     gpoint
+      SAZAAQ=+ACSEL(000135)
+C     gpoint
+C     gpoint
+C  GENA
+      EMAAAD=+EMAAAV*EMAAAS+EMAAAY*EMAAAT+EMAAA$*EMAAAU
+      SLXAAR=+XL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAAAT+EMAABA*EMAAAU
+      EMAABE=              +EMAAA5*EMAAAS-EMAAA9*EMAAAU
+      EMAABF=              -EMAABA*EMAAAS+EMAAA9*EMAAAT
+      EMAAAD=+EMAAAV*EMAABD+EMAAAY*EMAABE+EMAAA$*EMAABF
+      SVXAAR=+XV3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABG=ACSEL(   136)
+      EMAABH=ACSEL(   137)
+      EMAABI=ACSEL(   138)
+C VEKUM
+      EMAABS=              +EMAABH*EMAAAU-EMAABI*EMAAAT
+      EMAABT=              +EMAABI*EMAAAS-EMAABG*EMAAAU
+      EMAABU=              +EMAABG*EMAAAT-EMAABH*EMAAAS
+C END VEKUM
+      EMAABV=              -EMAABK*EMAAAT+EMAABP*EMAAAU
+      EMAABW=              +EMAABK*EMAAAS-EMAABO*EMAAAU
+      EMAABX=              -EMAABP*EMAAAS+EMAABO*EMAAAT
+      EMAABY=              -EMAABK*EMAABW+EMAABP*EMAABX
+      EMAABZ=              +EMAABK*EMAABV-EMAABO*EMAABX
+      EMAAB_=              -EMAABP*EMAABV+EMAABO*EMAABW
+C VEKSUM   
+      EMAAB$=                            +EMAABS+EMAABY
+      EMAAB2=                            +EMAABT+EMAABZ
+      EMAAB3=                            +EMAABU+EMAAB_
+C VEKSUM END
+      EMAAAD=+EMAAAV*EMAAB$+EMAAAY*EMAAB2+EMAAA$*EMAAB3
+      SAXAAR=+ACSEL(000133)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAW*EMAAAS+EMAAAZ*EMAAAT+EMAAA2*EMAAAU
+      SLYAAR=+YL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAAAT+EMAABA*EMAAAU
+      EMAABE=              +EMAAA5*EMAAAS-EMAAA9*EMAAAU
+      EMAABF=              -EMAABA*EMAAAS+EMAAA9*EMAAAT
+      EMAAAD=+EMAAAW*EMAABD+EMAAAZ*EMAABE+EMAAA2*EMAABF
+      SVYAAR=+YV3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAW*EMAAB$+EMAAAZ*EMAAB2+EMAAA2*EMAAB3
+      SAYAAR=+ACSEL(000134)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAX*EMAAAS+EMAAA_*EMAAAT+EMAAA3*EMAAAU
+      SLZAAR=+ZL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAAAT+EMAABA*EMAAAU
+      EMAABE=              +EMAAA5*EMAAAS-EMAAA9*EMAAAU
+      EMAABF=              -EMAABA*EMAAAS+EMAAA9*EMAAAT
+      EMAAAD=+EMAAAX*EMAABD+EMAAA_*EMAABE+EMAAA3*EMAABF
+      SVZAAR=+ZV3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAX*EMAAB$+EMAAA_*EMAAB2+EMAAA3*EMAAB3
+      SAZAAR=+ACSEL(000135)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAV*EMAAB5+EMAAAY*EMAAB6+EMAAA$*EMAAB7
+      SLXAB4=+XL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAAB6+EMAABA*EMAAB7
+      EMAABE=              +EMAAA5*EMAAB5-EMAAA9*EMAAB7
+      EMAABF=              -EMAABA*EMAAB5+EMAAA9*EMAAB6
+      EMAAAD=+EMAAAV*EMAABD+EMAAAY*EMAABE+EMAAA$*EMAABF
+      SVXAB4=+XV3000+EMAAAD
+C     gpoint
+C     gpoint
+C VEKUM
+      EMAAB8=              +EMAABH*EMAAB7-EMAABI*EMAAB6
+      EMAAB9=              +EMAABI*EMAAB5-EMAABG*EMAAB7
+      EMAACA=              +EMAABG*EMAAB6-EMAABH*EMAAB5
+C END VEKUM
+      EMAACB=              -EMAABK*EMAAB6+EMAABP*EMAAB7
+      EMAACC=              +EMAABK*EMAAB5-EMAABO*EMAAB7
+      EMAACD=              -EMAABP*EMAAB5+EMAABO*EMAAB6
+      EMAACE=              -EMAABK*EMAACC+EMAABP*EMAACD
+      EMAACF=              +EMAABK*EMAACB-EMAABO*EMAACD
+      EMAACG=              -EMAABP*EMAACB+EMAABO*EMAACC
+C VEKSUM   
+      EMAACH=                            +EMAAB8+EMAACE
+      EMAACI=                            +EMAAB9+EMAACF
+      EMAACJ=                            +EMAACA+EMAACG
+C VEKSUM END
+      EMAAAD=+EMAAAV*EMAACH+EMAAAY*EMAACI+EMAAA$*EMAACJ
+      SAXAB4=+ACSEL(000133)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAW*EMAAB5+EMAAAZ*EMAAB6+EMAAA2*EMAAB7
+      SLYAB4=+YL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAAB6+EMAABA*EMAAB7
+      EMAABE=              +EMAAA5*EMAAB5-EMAAA9*EMAAB7
+      EMAABF=              -EMAABA*EMAAB5+EMAAA9*EMAAB6
+      EMAAAD=+EMAAAW*EMAABD+EMAAAZ*EMAABE+EMAAA2*EMAABF
+      SVYAB4=+YV3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAW*EMAACH+EMAAAZ*EMAACI+EMAAA2*EMAACJ
+      SAYAB4=+ACSEL(000134)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAX*EMAAB5+EMAAA_*EMAAB6+EMAAA3*EMAAB7
+      SLZAB4=+ZL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAAB6+EMAABA*EMAAB7
+      EMAABE=              +EMAAA5*EMAAB5-EMAAA9*EMAAB7
+      EMAABF=              -EMAABA*EMAAB5+EMAAA9*EMAAB6
+      EMAAAD=+EMAAAX*EMAABD+EMAAA_*EMAABE+EMAAA3*EMAABF
+      SVZAB4=+ZV3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAX*EMAACH+EMAAA_*EMAACI+EMAAA3*EMAACJ
+      SAZAB4=+ACSEL(000135)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAV*EMAACL+EMAAAY*EMAACM+EMAAA$*EMAACN
+      SLXACK=+XL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAACM+EMAABA*EMAACN
+      EMAABE=              +EMAAA5*EMAACL-EMAAA9*EMAACN
+      EMAABF=              -EMAABA*EMAACL+EMAAA9*EMAACM
+      EMAAAD=+EMAAAV*EMAABD+EMAAAY*EMAABE+EMAAA$*EMAABF
+      SVXACK=+XV3000+EMAAAD
+C     gpoint
+C     gpoint
+C VEKUM
+      EMAACO=              +EMAABH*EMAACN-EMAABI*EMAACM
+      EMAACP=              +EMAABI*EMAACL-EMAABG*EMAACN
+      EMAACQ=              +EMAABG*EMAACM-EMAABH*EMAACL
+C END VEKUM
+      EMAACR=              -EMAABK*EMAACM+EMAABP*EMAACN
+      EMAACS=              +EMAABK*EMAACL-EMAABO*EMAACN
+      EMAACT=              -EMAABP*EMAACL+EMAABO*EMAACM
+      EMAACU=              -EMAABK*EMAACS+EMAABP*EMAACT
+      EMAACV=              +EMAABK*EMAACR-EMAABO*EMAACT
+      EMAACW=              -EMAABP*EMAACR+EMAABO*EMAACS
+C VEKSUM   
+      EMAACX=                            +EMAACO+EMAACU
+      EMAACY=                            +EMAACP+EMAACV
+      EMAACZ=                            +EMAACQ+EMAACW
+C VEKSUM END
+      EMAAAD=+EMAAAV*EMAACX+EMAAAY*EMAACY+EMAAA$*EMAACZ
+      SAXACK=+ACSEL(000133)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAW*EMAACL+EMAAAZ*EMAACM+EMAAA2*EMAACN
+      SLYACK=+YL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAACM+EMAABA*EMAACN
+      EMAABE=              +EMAAA5*EMAACL-EMAAA9*EMAACN
+      EMAABF=              -EMAABA*EMAACL+EMAAA9*EMAACM
+      EMAAAD=+EMAAAW*EMAABD+EMAAAZ*EMAABE+EMAAA2*EMAABF
+      SVYACK=+YV3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAW*EMAACX+EMAAAZ*EMAACY+EMAAA2*EMAACZ
+      SAYACK=+ACSEL(000134)+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAX*EMAACL+EMAAA_*EMAACM+EMAAA3*EMAACN
+      SLZACK=+ZL3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAABD=              -EMAAA5*EMAACM+EMAABA*EMAACN
+      EMAABE=              +EMAAA5*EMAACL-EMAAA9*EMAACN
+      EMAABF=              -EMAABA*EMAACL+EMAAA9*EMAACM
+      EMAAAD=+EMAAAX*EMAABD+EMAAA_*EMAABE+EMAAA3*EMAABF
+      SVZACK=+ZV3000+EMAAAD
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAX*EMAACX+EMAAA_*EMAACY+EMAAA3*EMAACZ
+      SAZACK=+ACSEL(000135)+EMAAAD
+C     gpoint
+C     gpoint
+      SLXAC_=+XL3200
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAH*EMAAC2+EMAAAK*EMAAC3+EMAAAN*EMAAC4
+      SLXAC$=+XL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLYAC_=+YL3200
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAI*EMAAC2+EMAAAL*EMAAC3+EMAAAO*EMAAC4
+      SLYAC$=+YL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLZAC_=+ZL3200
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAJ*EMAAC2+EMAAAM*EMAAC3+EMAAAP*EMAAC4
+      SLZAC$=+ZL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLXAC5=+XL1100
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAH*EMAAAE+EMAAAK*EMAAAF+EMAAAN*EMAAAG
+      SLXAAC=+XL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLYAC5=+YL1100
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAI*EMAAAE+EMAAAL*EMAAAF+EMAAAO*EMAAAG
+      SLYAAC=+YL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLZAC5=+ZL1100
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAJ*EMAAAE+EMAAAM*EMAAAF+EMAAAP*EMAAAG
+      SLZAAC=+ZL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLXAC6=+XL1900
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAH*EMAAC2+EMAAAK*EMAAC3+EMAAAN*EMAAC4
+      SLXAC$=+XL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLYAC6=+YL1900
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAI*EMAAC2+EMAAAL*EMAAC3+EMAAAO*EMAAC4
+      SLYAC$=+YL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLZAC6=+ZL1900
+C     gpoint
+C     gpoint
+      EMAAAD=+EMAAAJ*EMAAC2+EMAAAM*EMAAC3+EMAAAP*EMAAC4
+      SLZAC$=+ZL3400+EMAAAD
+C     gpoint
+C     gpoint
+      SLXAC7=+XL3300
+C     gpoint
+C     gpoint
+      SVXAC7=+XV3300
+C     gpoint
+C     gpoint
+      SAXAC7=+ACSEL(000151)
+C     gpoint
+C     gpoint
+      SLYAC7=+YL3300
+C     gpoint
+C     gpoint
+      SVYAC7=+YV3300
+C     gpoint
+C     gpoint
+      SAYAC7=+ACSEL(000152)
+C     gpoint
+C     gpoint
+      SLZAC7=+ZL3300
+C     gpoint
+C     gpoint
+      SVZAC7=+ZV3300
+C     gpoint
+C     gpoint
+      SAZAC7=+ACSEL(000153)
+C     gpoint
+      CALL FM496(
+     #SLXAAB,
+     #SLXAAC,
+     #SLYAAB,
+     #SLYAAC,
+     #SLZAAB,
+     #SLZAAC,
+     #PSS501,
+     #GV( 1079),    1)
+      NOMERUS=  129
+      CALL FM608(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS503,
+     #GV( 1088),    1)
+      IF(WL(  129).EQ.99999.)WL(  129)=SL(  129)-CU1(1)
+      SL(  129)=SL(  129)-WL(  129)-CU1(1)
+      VL(  129)=VL(  129)-CU1(2)
+      B(  129)=B(  129)+CU1(3)
+      ACRV(  129)=CU1(3)
+      IF(WL(  130).EQ.99999.)WL(  130)=SL(  130)-CU2(1)
+      SL(  130)=SL(  130)-WL(  130)-CU2(1)
+      VL(  130)=VL(  130)-CU2(2)
+      B(  130)=B(  130)+CU2(3)
+      ACRV(  130)=CU2(3)
+      IF(WL(  131).EQ.99999.)WL(  131)=SL(  131)-CU3(1)
+      SL(  131)=SL(  131)-WL(  131)-CU3(1)
+      VL(  131)=VL(  131)-CU3(2)
+      B(  131)=B(  131)+CU3(3)
+      ACRV(  131)=CU3(3)
+      NOMERUS=  132
+      CALL FM613(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS505,
+     #GV( 1101),    1)
+      IF(WL(  132).EQ.99999.)WL(  132)=SL(  132)-CU1(1)
+      SL(  132)=SL(  132)-WL(  132)-CU1(1)
+      VL(  132)=VL(  132)-CU1(2)
+      B(  132)=B(  132)+CU1(3)
+      ACRV(  132)=CU1(3)
+      IF(WL(  133).EQ.99999.)WL(  133)=SL(  133)-CU2(1)
+      SL(  133)=SL(  133)-WL(  133)-CU2(1)
+      VL(  133)=VL(  133)-CU2(2)
+      B(  133)=B(  133)+CU2(3)
+      ACRV(  133)=CU2(3)
+      IF(WL(  134).EQ.99999.)WL(  134)=SL(  134)-CU3(1)
+      SL(  134)=SL(  134)-WL(  134)-CU3(1)
+      VL(  134)=VL(  134)-CU3(2)
+      B(  134)=B(  134)+CU3(3)
+      ACRV(  134)=CU3(3)
+      CALL FM497(
+     #SLXAAQ,
+     #SVXAAQ,
+     #SAXAAQ,
+     #PSS508,
+     #GV( 1114),    1)
+      CALL FM497(
+     #SLYAAQ,
+     #SVYAAQ,
+     #SAYAAQ,
+     #PSS510,
+     #GV( 1123),    2)
+      CALL FM497(
+     #SLZAAQ,
+     #SVZAAQ,
+     #SAZAAQ,
+     #PSS512,
+     #GV( 1132),    3)
+      NOMERUS=  135
+      CALL FM613(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS514,
+     #GV( 1141),    2)
+      IF(WL(  135).EQ.99999.)WL(  135)=SL(  135)-CU1(1)
+      SL(  135)=SL(  135)-WL(  135)-CU1(1)
+      VL(  135)=VL(  135)-CU1(2)
+      B(  135)=B(  135)+CU1(3)
+      ACRV(  135)=CU1(3)
+      IF(WL(  136).EQ.99999.)WL(  136)=SL(  136)-CU2(1)
+      SL(  136)=SL(  136)-WL(  136)-CU2(1)
+      VL(  136)=VL(  136)-CU2(2)
+      B(  136)=B(  136)+CU2(3)
+      ACRV(  136)=CU2(3)
+      IF(WL(  137).EQ.99999.)WL(  137)=SL(  137)-CU3(1)
+      SL(  137)=SL(  137)-WL(  137)-CU3(1)
+      VL(  137)=VL(  137)-CU3(2)
+      B(  137)=B(  137)+CU3(3)
+      ACRV(  137)=CU3(3)
+      CALL FM497(
+     #SLXAAR,
+     #SVXAAR,
+     #SAXAAR,
+     #PSS517,
+     #GV( 1154),    4)
+      CALL FM497(
+     #SLYAAR,
+     #SVYAAR,
+     #SAYAAR,
+     #PSS519,
+     #GV( 1163),    5)
+      CALL FM497(
+     #SLZAAR,
+     #SVZAAR,
+     #SAZAAR,
+     #PSS521,
+     #GV( 1172),    6)
+      NOMERUS=  138
+      CALL FM613(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS523,
+     #GV( 1181),    3)
+      IF(WL(  138).EQ.99999.)WL(  138)=SL(  138)-CU1(1)
+      SL(  138)=SL(  138)-WL(  138)-CU1(1)
+      VL(  138)=VL(  138)-CU1(2)
+      B(  138)=B(  138)+CU1(3)
+      ACRV(  138)=CU1(3)
+      IF(WL(  139).EQ.99999.)WL(  139)=SL(  139)-CU2(1)
+      SL(  139)=SL(  139)-WL(  139)-CU2(1)
+      VL(  139)=VL(  139)-CU2(2)
+      B(  139)=B(  139)+CU2(3)
+      ACRV(  139)=CU2(3)
+      IF(WL(  140).EQ.99999.)WL(  140)=SL(  140)-CU3(1)
+      SL(  140)=SL(  140)-WL(  140)-CU3(1)
+      VL(  140)=VL(  140)-CU3(2)
+      B(  140)=B(  140)+CU3(3)
+      ACRV(  140)=CU3(3)
+      CALL FM497(
+     #SLXAB4,
+     #SVXAB4,
+     #SAXAB4,
+     #PSS526,
+     #GV( 1194),    7)
+      CALL FM497(
+     #SLYAB4,
+     #SVYAB4,
+     #SAYAB4,
+     #PSS528,
+     #GV( 1203),    8)
+      CALL FM497(
+     #SLZAB4,
+     #SVZAB4,
+     #SAZAB4,
+     #PSS530,
+     #GV( 1212),    9)
+      NOMERUS=  141
+      CALL FM613(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS532,
+     #GV( 1221),    4)
+      IF(WL(  141).EQ.99999.)WL(  141)=SL(  141)-CU1(1)
+      SL(  141)=SL(  141)-WL(  141)-CU1(1)
+      VL(  141)=VL(  141)-CU1(2)
+      B(  141)=B(  141)+CU1(3)
+      ACRV(  141)=CU1(3)
+      IF(WL(  142).EQ.99999.)WL(  142)=SL(  142)-CU2(1)
+      SL(  142)=SL(  142)-WL(  142)-CU2(1)
+      VL(  142)=VL(  142)-CU2(2)
+      B(  142)=B(  142)+CU2(3)
+      ACRV(  142)=CU2(3)
+      IF(WL(  143).EQ.99999.)WL(  143)=SL(  143)-CU3(1)
+      SL(  143)=SL(  143)-WL(  143)-CU3(1)
+      VL(  143)=VL(  143)-CU3(2)
+      B(  143)=B(  143)+CU3(3)
+      ACRV(  143)=CU3(3)
+      CALL FM497(
+     #SLXACK,
+     #SVXACK,
+     #SAXACK,
+     #PSS535,
+     #GV( 1234),   10)
+      CALL FM497(
+     #SLYACK,
+     #SVYACK,
+     #SAYACK,
+     #PSS537,
+     #GV( 1243),   11)
+      CALL FM497(
+     #SLZACK,
+     #SVZACK,
+     #SAZACK,
+     #PSS539,
+     #GV( 1252),   12)
+      CALL FM496(
+     #SLXAC_,
+     #SLXAC$,
+     #SLYAC_,
+     #SLYAC$,
+     #SLZAC_,
+     #SLZAC$,
+     #PSS541,
+     #GV( 1261),    2)
+      NOMERUS=  144
+      CALL FM608(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS543,
+     #GV( 1270),    2)
+      IF(WL(  144).EQ.99999.)WL(  144)=SL(  144)-CU1(1)
+      SL(  144)=SL(  144)-WL(  144)-CU1(1)
+      VL(  144)=VL(  144)-CU1(2)
+      B(  144)=B(  144)+CU1(3)
+      ACRV(  144)=CU1(3)
+      IF(WL(  145).EQ.99999.)WL(  145)=SL(  145)-CU2(1)
+      SL(  145)=SL(  145)-WL(  145)-CU2(1)
+      VL(  145)=VL(  145)-CU2(2)
+      B(  145)=B(  145)+CU2(3)
+      ACRV(  145)=CU2(3)
+      IF(WL(  146).EQ.99999.)WL(  146)=SL(  146)-CU3(1)
+      SL(  146)=SL(  146)-WL(  146)-CU3(1)
+      VL(  146)=VL(  146)-CU3(2)
+      B(  146)=B(  146)+CU3(3)
+      ACRV(  146)=CU3(3)
+      CALL FM496(
+     #SLXAC5,
+     #SLXAAC,
+     #SLYAC5,
+     #SLYAAC,
+     #SLZAC5,
+     #SLZAAC,
+     #PSS545,
+     #GV( 1283),    3)
+      NOMERUS=  147
+      CALL FM608(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS547,
+     #GV( 1292),    3)
+      IF(WL(  147).EQ.99999.)WL(  147)=SL(  147)-CU1(1)
+      SL(  147)=SL(  147)-WL(  147)-CU1(1)
+      VL(  147)=VL(  147)-CU1(2)
+      B(  147)=B(  147)+CU1(3)
+      ACRV(  147)=CU1(3)
+      IF(WL(  148).EQ.99999.)WL(  148)=SL(  148)-CU2(1)
+      SL(  148)=SL(  148)-WL(  148)-CU2(1)
+      VL(  148)=VL(  148)-CU2(2)
+      B(  148)=B(  148)+CU2(3)
+      ACRV(  148)=CU2(3)
+      IF(WL(  149).EQ.99999.)WL(  149)=SL(  149)-CU3(1)
+      SL(  149)=SL(  149)-WL(  149)-CU3(1)
+      VL(  149)=VL(  149)-CU3(2)
+      B(  149)=B(  149)+CU3(3)
+      ACRV(  149)=CU3(3)
+      CALL FM496(
+     #SLXAC6,
+     #SLXAC$,
+     #SLYAC6,
+     #SLYAC$,
+     #SLZAC6,
+     #SLZAC$,
+     #PSS549,
+     #GV( 1305),    4)
+      NOMERUS=  150
+      CALL FM608(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS551,
+     #GV( 1314),    4)
+      IF(WL(  150).EQ.99999.)WL(  150)=SL(  150)-CU1(1)
+      SL(  150)=SL(  150)-WL(  150)-CU1(1)
+      VL(  150)=VL(  150)-CU1(2)
+      B(  150)=B(  150)+CU1(3)
+      ACRV(  150)=CU1(3)
+      IF(WL(  151).EQ.99999.)WL(  151)=SL(  151)-CU2(1)
+      SL(  151)=SL(  151)-WL(  151)-CU2(1)
+      VL(  151)=VL(  151)-CU2(2)
+      B(  151)=B(  151)+CU2(3)
+      ACRV(  151)=CU2(3)
+      IF(WL(  152).EQ.99999.)WL(  152)=SL(  152)-CU3(1)
+      SL(  152)=SL(  152)-WL(  152)-CU3(1)
+      VL(  152)=VL(  152)-CU3(2)
+      B(  152)=B(  152)+CU3(3)
+      ACRV(  152)=CU3(3)
+      NOMERUS=  153
+      CALL FM615(
+     #CU1,
+     #CU2,
+     #CU3,
+     #PSS553,
+     #GV( 1327),    1)
+      IF(WL(  153).EQ.99999.)WL(  153)=SL(  153)-CU1(1)
+      SL(  153)=SL(  153)-WL(  153)-CU1(1)
+      VL(  153)=VL(  153)-CU1(2)
+      B(  153)=B(  153)+CU1(3)
+      ACRV(  153)=CU1(3)
+      IF(WL(  154).EQ.99999.)WL(  154)=SL(  154)-CU2(1)
+      SL(  154)=SL(  154)-WL(  154)-CU2(1)
+      VL(  154)=VL(  154)-CU2(2)
+      B(  154)=B(  154)+CU2(3)
+      ACRV(  154)=CU2(3)
+      IF(WL(  155).EQ.99999.)WL(  155)=SL(  155)-CU3(1)
+      SL(  155)=SL(  155)-WL(  155)-CU3(1)
+      VL(  155)=VL(  155)-CU3(2)
+      B(  155)=B(  155)+CU3(3)
+      ACRV(  155)=CU3(3)
+      CALL FM497(
+     #SLXAC7,
+     #SVXAC7,
+     #SAXAC7,
+     #PSS556,
+     #GV( 1340),   13)
+      CALL FM497(
+     #SLYAC7,
+     #SVYAC7,
+     #SAYAC7,
+     #PSS558,
+     #GV( 1349),   14)
+      CALL FM497(
+     #SLZAC7,
+     #SVZAC7,
+     #SAZAC7,
+     #PSS560,
+     #GV( 1358),   15)
+      SSS502=PSS503
+      SSS504=PSS501
+      SSS506=PSS505
+      SSS507=SSS506
+      SSS509=PSS508
+      SSS511=PSS510
+      SSS513=PSS512
+      SSS515=PSS514
+      SSS516=SSS515
+      SSS518=PSS517
+      SSS520=PSS519
+      SSS522=PSS521
+      SSS524=PSS523
+      SSS525=SSS524
+      SSS527=PSS526
+      SSS529=PSS528
+      SSS531=PSS530
+      SSS533=PSS532
+      SSS534=SSS533
+      SSS536=PSS535
+      SSS538=PSS537
+      SSS540=PSS539
+      SSS542=PSS543
+      SSS544=PSS541
+      SSS546=PSS547
+      SSS548=PSS545
+      SSS550=PSS551
+      SSS552=PSS549
+      SSS554=PSS553
+      SSS555=SSS554
+      SSS557=PSS556
+      SSS559=PSS558
+      SSS561=PSS560
+CROLLST
+CBODY      1
+C  çÄóÄãé ROLLST
+C   S J M = SLX001    2    1
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C  GENA
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    1
+C   S J M = SLY001    2    2
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    2
+C   S J M = SLZ001    2    3
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    3
+C   S J M = 000000    2    4
+C   S J M = EUY065    2    5
+C   S J M = EUY064    9    5
+C   S J M = EUY059   16    5
+C   S J M = 000000   23    5
+C   S J M = EUZ069    2    6
+C   S J M = 000000    9    6
+C  äéçÖñ  ROLLST
+      XA0100=XA0100
+     #+SLX001
+      XA0100=XA0100/MASP01
+      YA0100=YA0100
+     #+SLY001
+      YA0100=YA0100/MASP01
+      ZA0100=ZA0100
+     #+SLZ001
+      ZA0100=ZA0100/MASP01
+      XB0100=0.0   -YW0100*ZW0100*(JNSZ01-JNSY01)
+      XB0100=XB0100/JNSX01
+      YB0100=YB0100
+     #+EUY065+EUY064+EUY059
+      YB0100=YB0100-ZW0100*XW0100*(JNSX01-JNSZ01)
+      YB0100=YB0100/JNSY01
+      ZB0100=ZB0100
+     #+EUZ069
+      ZB0100=ZB0100-XW0100*YW0100*(JNSY01-JNSX01)
+      ZB0100=ZB0100/JNSZ01
+CBODY      2
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX058    2    4
+C   S J M = 000000    9    4
+C   S J M = EUY059    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA0200=0.0
+      YA0200=0.0
+      ZA0200=0.0
+      XB0200=XB0200
+     #-EUX058
+      XB0200=XB0200-YW0200*ZW0200*(JNSZ02-JNSY02)
+      XB0200=XB0200/JNSX02
+      YB0200=YB0200
+     #-EUY059
+      YB0200=YB0200-ZW0200*XW0200*(JNSX02-JNSZ02)
+      YB0200=YB0200/JNSY02
+      ZB0200=0.0   -XW0200*YW0200*(JNSY02-JNSX02)
+      ZB0200=ZB0200/JNSZ02
+CBODY      3
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX058    2    4
+C   S J M = 000000    9    4
+C   S J M = 000000    2    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA0300=0.0
+      YA0300=0.0
+      ZA0300=0.0
+      XB0300=XB0300
+     #+EUX058
+      XB0300=XB0300-YW0300*ZW0300*(JNSZ03-JNSY03)
+      XB0300=XB0300/JNSX03
+      YB0300=0.0   -ZW0300*XW0300*(JNSX03-JNSZ03)
+      YB0300=YB0300/JNSY03
+      ZB0300=0.0   -XW0300*YW0300*(JNSY03-JNSX03)
+      ZB0300=ZB0300/JNSZ03
+CBODY      4
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = 000000    2    5
+C   S J M = EUZ081    2    6
+C   S J M = EUZ080    9    6
+C   S J M = EUZ069   16    6
+C   S J M = 000000   23    6
+C  äéçÖñ  ROLLST
+      XA0700=0.0
+      YA0700=0.0
+      ZA0700=0.0
+      XB0700=0.0   -YW0700*ZW0700*(JNSZ07-JNSY07)
+      XB0700=XB0700/JNSX07
+      YB0700=0.0   -ZW0700*XW0700*(JNSX07-JNSZ07)
+      YB0700=YB0700/JNSY07
+      ZB0700=ZB0700
+     #+EUZ081-EUZ080-EUZ069
+      ZB0700=ZB0700-XW0700*YW0700*(JNSY07-JNSX07)
+      ZB0700=ZB0700/JNSZ07
+CBODY      5
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX071    2    4
+C   S J M = 000000    9    4
+C   S J M = 000000    2    5
+C   S J M = EUZ081    2    6
+C   S J M = 000000    9    6
+C  äéçÖñ  ROLLST
+      XA0800=0.0
+      YA0800=0.0
+      ZA0800=0.0
+      XB0800=XB0800
+     #-EUX071
+      XB0800=XB0800-YW0800*ZW0800*(JNSZ08-JNSY08)
+      XB0800=XB0800/JNSX08
+      YB0800=0.0   -ZW0800*XW0800*(JNSX08-JNSZ08)
+      YB0800=YB0800/JNSY08
+      ZB0800=ZB0800
+     #-EUZ081
+      ZB0800=ZB0800-XW0800*YW0800*(JNSY08-JNSX08)
+      ZB0800=ZB0800/JNSZ08
+CBODY      6
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = EUY078    2    5
+C   S J M = EUY070    9    5
+C   S J M = 000000   16    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA0900=0.0
+      YA0900=0.0
+      ZA0900=0.0
+      XB0900=0.0   -YW0900*ZW0900*(JNSZ09-JNSY09)
+      XB0900=XB0900/JNSX09
+      YB0900=YB0900
+     #+EUY078-EUY070
+      YB0900=YB0900-ZW0900*XW0900*(JNSX09-JNSZ09)
+      YB0900=YB0900/JNSY09
+      ZB0900=0.0   -XW0900*YW0900*(JNSY09-JNSX09)
+      ZB0900=ZB0900/JNSZ09
+CBODY      7
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = EUY078    2    5
+C   S J M = EUY075    9    5
+C   S J M = 000000   16    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1000=0.0
+      YA1000=0.0
+      ZA1000=0.0
+      XB1000=0.0   -YW1000*ZW1000*(JNSZ10-JNSY10)
+      XB1000=XB1000/JNSX10
+      YB1000=YB1000
+     #-EUY078+EUY075
+      YB1000=YB1000-ZW1000*XW1000*(JNSX10-JNSZ10)
+      YB1000=YB1000/JNSY10
+      ZB1000=0.0   -XW1000*YW1000*(JNSY10-JNSX10)
+      ZB1000=ZB1000/JNSZ10
+CBODY      8
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX074    2    4
+C   S J M = 000000    9    4
+C   S J M = 000000    2    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1100=0.0
+      YA1100=0.0
+      ZA1100=0.0
+      XB1100=XB1100
+     #+EUX074
+      XB1100=XB1100-YW1100*ZW1100*(JNSZ11-JNSY11)
+      XB1100=XB1100/JNSX11
+      YB1100=YB1100-ZW1100*XW1100*(JNSX11-JNSZ11)
+      YB1100=YB1100/JNSY11
+      ZB1100=ZB1100-XW1100*YW1100*(JNSY11-JNSX11)
+      ZB1100=ZB1100/JNSZ11
+CBODY      9
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX071    2    4
+C   S J M = 000000    9    4
+C   S J M = EUY070    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1200=0.0
+      YA1200=0.0
+      ZA1200=0.0
+      XB1200=XB1200
+     #+EUX071
+      XB1200=XB1200-YW1200*ZW1200*(JNSZ12-JNSY12)
+      XB1200=XB1200/JNSX12
+      YB1200=YB1200
+     #+EUY070
+      YB1200=YB1200-ZW1200*XW1200*(JNSX12-JNSZ12)
+      YB1200=YB1200/JNSY12
+      ZB1200=0.0   -XW1200*YW1200*(JNSY12-JNSX12)
+      ZB1200=ZB1200/JNSZ12
+CBODY     10
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX074    2    4
+C   S J M = 000000    9    4
+C   S J M = EUY075    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1300=0.0
+      YA1300=0.0
+      ZA1300=0.0
+      XB1300=XB1300
+     #-EUX074
+      XB1300=XB1300-YW1300*ZW1300*(JNSZ13-JNSY13)
+      XB1300=XB1300/JNSX13
+      YB1300=YB1300
+     #-EUY075
+      YB1300=YB1300-ZW1300*XW1300*(JNSX13-JNSZ13)
+      YB1300=YB1300/JNSY13
+      ZB1300=0.0   -XW1300*YW1300*(JNSY13-JNSX13)
+      ZB1300=ZB1300/JNSZ13
+CBODY     11
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX072    2    4
+C   S J M = 000000    9    4
+C   S J M = 000000    2    5
+C   S J M = EUZ080    2    6
+C   S J M = 000000    9    6
+C  äéçÖñ  ROLLST
+      XA1400=0.0
+      YA1400=0.0
+      ZA1400=0.0
+      XB1400=XB1400
+     #+EUX072
+      XB1400=XB1400-YW1400*ZW1400*(JNSZ14-JNSY14)
+      XB1400=XB1400/JNSX14
+      YB1400=0.0   -ZW1400*XW1400*(JNSX14-JNSZ14)
+      YB1400=YB1400/JNSY14
+      ZB1400=ZB1400
+     #+EUZ080
+      ZB1400=ZB1400-XW1400*YW1400*(JNSY14-JNSX14)
+      ZB1400=ZB1400/JNSZ14
+CBODY     12
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX072    2    4
+C   S J M = 000000    9    4
+C   S J M = EUY073    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1500=0.0
+      YA1500=0.0
+      ZA1500=0.0
+      XB1500=XB1500
+     #-EUX072
+      XB1500=XB1500-YW1500*ZW1500*(JNSZ15-JNSY15)
+      XB1500=XB1500/JNSX15
+      YB1500=YB1500
+     #+EUY073
+      YB1500=YB1500-ZW1500*XW1500*(JNSX15-JNSZ15)
+      YB1500=YB1500/JNSY15
+      ZB1500=0.0   -XW1500*YW1500*(JNSY15-JNSX15)
+      ZB1500=ZB1500/JNSZ15
+CBODY     13
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = EUY079    2    5
+C   S J M = EUY073    9    5
+C   S J M = 000000   16    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1600=0.0
+      YA1600=0.0
+      ZA1600=0.0
+      XB1600=0.0   -YW1600*ZW1600*(JNSZ16-JNSY16)
+      XB1600=XB1600/JNSX16
+      YB1600=YB1600
+     #+EUY079-EUY073
+      YB1600=YB1600-ZW1600*XW1600*(JNSX16-JNSZ16)
+      YB1600=YB1600/JNSY16
+      ZB1600=0.0   -XW1600*YW1600*(JNSY16-JNSX16)
+      ZB1600=ZB1600/JNSZ16
+CBODY     14
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = EUY079    2    5
+C   S J M = EUY077    9    5
+C   S J M = 000000   16    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1700=0.0
+      YA1700=0.0
+      ZA1700=0.0
+      XB1700=0.0   -YW1700*ZW1700*(JNSZ17-JNSY17)
+      XB1700=XB1700/JNSX17
+      YB1700=YB1700
+     #-EUY079+EUY077
+      YB1700=YB1700-ZW1700*XW1700*(JNSX17-JNSZ17)
+      YB1700=YB1700/JNSY17
+      ZB1700=0.0   -XW1700*YW1700*(JNSY17-JNSX17)
+      ZB1700=ZB1700/JNSZ17
+CBODY     15
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX076    2    4
+C   S J M = 000000    9    4
+C   S J M = EUY077    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1800=0.0
+      YA1800=0.0
+      ZA1800=0.0
+      XB1800=XB1800
+     #+EUX076
+      XB1800=XB1800-YW1800*ZW1800*(JNSZ18-JNSY18)
+      XB1800=XB1800/JNSX18
+      YB1800=YB1800
+     #-EUY077
+      YB1800=YB1800-ZW1800*XW1800*(JNSX18-JNSZ18)
+      YB1800=YB1800/JNSY18
+      ZB1800=0.0   -XW1800*YW1800*(JNSY18-JNSX18)
+      ZB1800=ZB1800/JNSZ18
+CBODY     16
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX076    2    4
+C   S J M = 000000    9    4
+C   S J M = 000000    2    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA1900=0.0
+      YA1900=0.0
+      ZA1900=0.0
+      XB1900=XB1900
+     #-EUX076
+      XB1900=XB1900-YW1900*ZW1900*(JNSZ19-JNSY19)
+      XB1900=XB1900/JNSX19
+      YB1900=YB1900-ZW1900*XW1900*(JNSX19-JNSZ19)
+      YB1900=YB1900/JNSY19
+      ZB1900=ZB1900-XW1900*YW1900*(JNSY19-JNSX19)
+      ZB1900=ZB1900/JNSZ19
+CBODY     17
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX063    2    4
+C   S J M = 000000    9    4
+C   S J M = EUY064    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA2000=0.0
+      YA2000=0.0
+      ZA2000=0.0
+      XB2000=XB2000
+     #+EUX063
+      XB2000=XB2000-YW2000*ZW2000*(JNSZ20-JNSY20)
+      XB2000=XB2000/JNSX20
+      YB2000=YB2000
+     #-EUY064
+      YB2000=YB2000-ZW2000*XW2000*(JNSX20-JNSZ20)
+      YB2000=YB2000/JNSY20
+      ZB2000=0.0   -XW2000*YW2000*(JNSY20-JNSX20)
+      ZB2000=ZB2000/JNSZ20
+CBODY     18
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX063    2    4
+C   S J M = 000000    9    4
+C   S J M = 000000    2    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA2100=0.0
+      YA2100=0.0
+      ZA2100=0.0
+      XB2100=XB2100
+     #-EUX063
+      XB2100=XB2100-YW2100*ZW2100*(JNSZ21-JNSY21)
+      XB2100=XB2100/JNSX21
+      YB2100=0.0   -ZW2100*XW2100*(JNSX21-JNSZ21)
+      YB2100=YB2100/JNSY21
+      ZB2100=0.0   -XW2100*YW2100*(JNSY21-JNSX21)
+      ZB2100=ZB2100/JNSZ21
+CBODY     19
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = EUY065    2    5
+C   S J M = 000000    9    5
+C   S J M = EUZ066    2    6
+C   S J M = 000000    9    6
+C  äéçÖñ  ROLLST
+      XA2500=0.0
+      YA2500=0.0
+      ZA2500=0.0
+      XB2500=0.0   -YW2500*ZW2500*(JNSZ25-JNSY25)
+      XB2500=XB2500/JNSX25
+      YB2500=YB2500
+     #-EUY065
+      YB2500=YB2500-ZW2500*XW2500*(JNSX25-JNSZ25)
+      YB2500=YB2500/JNSY25
+      ZB2500=ZB2500
+     #-EUZ066
+      ZB2500=ZB2500-XW2500*YW2500*(JNSY25-JNSX25)
+      ZB2500=ZB2500/JNSZ25
+CBODY     20
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX067    2    4
+C   S J M = 000000    9    4
+C   S J M = 000000    2    5
+C   S J M = EUZ066    2    6
+C   S J M = 000000    9    6
+C  äéçÖñ  ROLLST
+      XA2600=0.0
+      YA2600=0.0
+      ZA2600=0.0
+      XB2600=XB2600
+     #-EUX067
+      XB2600=XB2600-YW2600*ZW2600*(JNSZ26-JNSY26)
+      XB2600=XB2600/JNSX26
+      YB2600=0.0   -ZW2600*XW2600*(JNSX26-JNSZ26)
+      YB2600=YB2600/JNSY26
+      ZB2600=ZB2600
+     #+EUZ066
+      ZB2600=ZB2600-XW2600*YW2600*(JNSY26-JNSX26)
+      ZB2600=ZB2600/JNSZ26
+CBODY     21
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = EUX067    2    4
+C   S J M = 000000    9    4
+C   S J M = EUY068    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA2700=0.0
+      YA2700=0.0
+      ZA2700=0.0
+      XB2700=XB2700
+     #+EUX067
+      XB2700=XB2700-YW2700*ZW2700*(JNSZ27-JNSY27)
+      XB2700=XB2700/JNSX27
+      YB2700=YB2700
+     #+EUY068
+      YB2700=YB2700-ZW2700*XW2700*(JNSX27-JNSZ27)
+      YB2700=YB2700/JNSY27
+      ZB2700=0.0   -XW2700*YW2700*(JNSY27-JNSX27)
+      ZB2700=ZB2700/JNSZ27
+CBODY     22
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = EUY068    2    5
+C   S J M = 000000    9    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA2800=0.0
+      YA2800=0.0
+      ZA2800=0.0
+      XB2800=0.0   -YW2800*ZW2800*(JNSZ28-JNSY28)
+      XB2800=XB2800/JNSX28
+      YB2800=YB2800
+     #-EUY068
+      YB2800=YB2800-ZW2800*XW2800*(JNSX28-JNSZ28)
+      YB2800=YB2800/JNSY28
+      ZB2800=0.0   -XW2800*YW2800*(JNSY28-JNSX28)
+      ZB2800=ZB2800/JNSZ28
+CBODY     23
+CBODY     24
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = 000000    2    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA3000=0.0
+      YA3000=0.0
+      ZA3000=0.0
+      XB3000=0.0   -YW3000*ZW3000*(JNSZ30-JNSY30)
+      XB3000=XB3000/JNSX30
+      YB3000=0.0   -ZW3000*XW3000*(JNSX30-JNSZ30)
+      YB3000=YB3000/JNSY30
+      ZB3000=0.0   -XW3000*YW3000*(JNSY30-JNSX30)
+      ZB3000=ZB3000/JNSZ30
+CBODY     25
+C  çÄóÄãé ROLLST
+C   S J M = SLX002    2    1
+C  çÄóÄãé ROLLS 
+C   SFS = +SLX002+SLY002+SLZ002
+C  GENA
+      EM1429=                            +EM1422*SLZ002
+      EM1430=                            +EM1425*SLZ002
+      EM1431=                            +EM1428*SLZ002
+C   SFN = +EM1429+EM1430+EM1431
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    1
+C   S J M = SLY002    2    2
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    2
+C   S J M = SLZ002    2    3
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    3
+C   S J M = EM1430    2    4
+C   S J M = DZ3102    9    4
+C   S J M = EM1431   16    4
+C   S J M = DY3102   23    4
+C   S J M = 000000   30    4
+C   S J M = EM1429    2    5
+C   S J M = DZ3102    9    5
+C   S J M = EM1431   16    5
+C   S J M = DX3102   23    5
+C   S J M = 000000   30    5
+C   S J M = EM1429    2    6
+C   S J M = DY3102    9    6
+C   S J M = EM1430   16    6
+C   S J M = DX3102   23    6
+C   S J M = 000000   30    6
+C  äéçÖñ  ROLLST
+      XA3100=XA3100
+     #+SLX002
+      XA3100=XA3100/MASP31
+      YA3100=YA3100
+     #+SLY002
+      YA3100=YA3100/MASP31
+      ZA3100=ZA3100
+     #+SLZ002
+      ZA3100=ZA3100/MASP31
+      XB3100=XB3100
+     #-EM1430*DZ3102+EM1431*DY3102
+      XB3100=XB3100-YW3100*ZW3100*(JNSZ31-JNSY31)
+      XB3100=XB3100/JNSX31
+      YB3100=YB3100
+     #+EM1429*DZ3102-EM1431*DX3102
+      YB3100=YB3100-ZW3100*XW3100*(JNSX31-JNSZ31)
+      YB3100=YB3100/JNSY31
+      ZB3100=ZB3100
+     #-EM1429*DY3102+EM1430*DX3102
+      ZB3100=ZB3100-XW3100*YW3100*(JNSY31-JNSX31)
+      ZB3100=ZB3100/JNSZ31
+CBODY     26
+C  çÄóÄãé ROLLST
+C   S J M = SLX003    2    1
+C  çÄóÄãé ROLLS 
+C   SFS = +SLX003+SLY003+SLZ003
+C  GENA
+      EM1498=                            +EM1491*SLZ003
+      EM1499=                            +EM1494*SLZ003
+      EM1500=                            +EM1497*SLZ003
+C   SFN = +EM1498+EM1499+EM1500
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    1
+C   S J M = SLY003    2    2
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    2
+C   S J M = SLZ003    2    3
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    3
+C   S J M = EM1499    2    4
+C   S J M = DZ3202    9    4
+C   S J M = EM1500   16    4
+C   S J M = DY3202   23    4
+C   S J M = 000000   30    4
+C   S J M = EM1498    2    5
+C   S J M = DZ3202    9    5
+C   S J M = EM1500   16    5
+C   S J M = DX3202   23    5
+C   S J M = 000000   30    5
+C   S J M = EM1498    2    6
+C   S J M = DY3202    9    6
+C   S J M = EM1499   16    6
+C   S J M = DX3202   23    6
+C   S J M = 000000   30    6
+C  äéçÖñ  ROLLST
+      XA3200=XA3200
+     #+SLX003
+      XA3200=XA3200/MASP32
+      YA3200=YA3200
+     #+SLY003
+      YA3200=YA3200/MASP32
+      ZA3200=ZA3200
+     #+SLZ003
+      ZA3200=ZA3200/MASP32
+      XB3200=XB3200
+     #-EM1499*DZ3202+EM1500*DY3202
+      XB3200=XB3200-YW3200*ZW3200*(JNSZ32-JNSY32)
+      XB3200=XB3200/JNSX32
+      YB3200=YB3200
+     #+EM1498*DZ3202-EM1500*DX3202
+      YB3200=YB3200-ZW3200*XW3200*(JNSX32-JNSZ32)
+      YB3200=YB3200/JNSY32
+      ZB3200=ZB3200
+     #-EM1498*DY3202+EM1499*DX3202
+      ZB3200=ZB3200-XW3200*YW3200*(JNSY32-JNSX32)
+      ZB3200=ZB3200/JNSZ32
+CBODY     27
+C  çÄóÄãé ROLLST
+C   S J M = SLX004    2    1
+C  çÄóÄãé ROLLS 
+C   SFS = +SLX004+SLY004+SLZ004
+C  GENA
+      EM1567=                            +EM1560*SLZ004
+      EM1568=                            +EM1563*SLZ004
+      EM1569=                            +EM1566*SLZ004
+C   SFN = +EM1567+EM1568+EM1569
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    1
+C   S J M = SLY004    2    2
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    2
+C   S J M = SLZ004    2    3
+C  çÄóÄãé ROLLS 
+C   SFS = 000000000000000000000
+C   SFN = 000000000000000000000
+C   äéçÖñ  ROLLS 
+C   S J M = 000000    9    3
+C   S J M = EM1568    2    4
+C   S J M = DZ3302    9    4
+C   S J M = EM1569   16    4
+C   S J M = DY3302   23    4
+C   S J M = 000000   30    4
+C   S J M = EM1567    2    5
+C   S J M = DZ3302    9    5
+C   S J M = EM1569   16    5
+C   S J M = DX3302   23    5
+C   S J M = 000000   30    5
+C   S J M = EM1567    2    6
+C   S J M = DY3302    9    6
+C   S J M = EM1568   16    6
+C   S J M = DX3302   23    6
+C   S J M = 000000   30    6
+C  äéçÖñ  ROLLST
+      XA3300=XA3300
+     #+SLX004
+      XA3300=XA3300/MASP33
+      YA3300=YA3300
+     #+SLY004
+      YA3300=YA3300/MASP33
+      ZA3300=ZA3300
+     #+SLZ004
+      ZA3300=ZA3300/MASP33
+      XB3300=XB3300
+     #-EM1568*DZ3302+EM1569*DY3302
+      XB3300=XB3300-YW3300*ZW3300*(JNSZ33-JNSY33)
+      XB3300=XB3300/JNSX33
+      YB3300=YB3300
+     #+EM1567*DZ3302-EM1569*DX3302
+      YB3300=YB3300-ZW3300*XW3300*(JNSX33-JNSZ33)
+      YB3300=YB3300/JNSY33
+      ZB3300=ZB3300
+     #-EM1567*DY3302+EM1568*DX3302
+      ZB3300=ZB3300-XW3300*YW3300*(JNSY33-JNSX33)
+      ZB3300=ZB3300/JNSZ33
+CBODY     28
+C  çÄóÄãé ROLLST
+C   S J M = 000000    2    1
+C   S J M = 000000    2    2
+C   S J M = 000000    2    3
+C   S J M = 000000    2    4
+C   S J M = 000000    2    5
+C   S J M = 000000    2    6
+C  äéçÖñ  ROLLST
+      XA3400=0.0
+      YA3400=0.0
+      ZA3400=0.0
+      XB3400=0.0   -YW3400*ZW3400*(JNSZ34-JNSY34)
+      XB3400=XB3400/JNSX34
+      YB3400=0.0   -ZW3400*XW3400*(JNSX34-JNSZ34)
+      YB3400=YB3400/JNSY34
+      ZB3400=0.0   -XW3400*YW3400*(JNSY34-JNSX34)
+      ZB3400=ZB3400/JNSZ34
+CBODY     29
+CBODY     30
+CBODY     31
+CBODY     32
+CBODY     33
+CBODY     34
+CBODY     35
+CBODY     36
+CBODY     37
+      CALL SOLV
+      RETURN
+      END
+

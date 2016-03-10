@@ -1,0 +1,7 @@
+-out:rashet32.exe
+-SUBSYSTEM:CONSOLE
+-defaultlib:c:\utilf\rashidb.lib
+fpravo.obj
+calls.obj
+fsila.obj
+*.obj

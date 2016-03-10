@@ -9,9 +9,12 @@
 
 #include <stdlib.h>
 #include "MoveController.h"
+#include "MoveControllerFrund.h"
 
 class Mover : public QThread
 {
+    enum StatesMover { playFrund, playMove };
+
     Q_OBJECT
 private:
     QTimer *mTimer;
@@ -20,6 +23,8 @@ private:
     bool isRestart;
 
     bool isPrep;
+
+    StatesMover mState;
 
 public:
     explicit Mover(QObject *parent = 0);

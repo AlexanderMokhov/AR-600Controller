@@ -10,6 +10,7 @@
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QProcess>
 
 #include "Management/SettingsStorage.h"
 #include "Management/MoveController.h"
@@ -33,6 +34,9 @@
 #include "Connection/Receiver.h"
 #include "Connection/Sender.h"
 #include "Connection/ConsoleReceiver.h"
+
+#include <Windows.h>
+
 
 namespace Ui {
 class MainWindow;
@@ -77,6 +81,7 @@ private:
     QAction *TBactionConnect;
     QAction *TBactionDisconnect;
     QAction *TBactionOpenMoveFile;
+    QAction *TBactionStartFrund;
 
     QAction *TBactionStartPlayOnline;
 
@@ -106,6 +111,7 @@ public slots:
     void ActivateActions();
     void OpenConnectConfig();
     void StartPlayOnline();
+    void StartFrund();
 
 };
 
