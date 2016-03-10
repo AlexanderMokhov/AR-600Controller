@@ -29,8 +29,8 @@ bool MovesStorage::OpenFile(string fileName)
 {
     if(LoadFile(fileName))
     {
-        qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
-        qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
+        //qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
+        //qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
         return true;
     }
     else
@@ -216,8 +216,8 @@ bool MovesStorage::LoadFile(std::string filename)
         }
 
         mMoveID = 0;
-        //qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
-        //qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
+        qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
+        qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
 
         file.close();
         return true;

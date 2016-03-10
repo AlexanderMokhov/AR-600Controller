@@ -27,6 +27,7 @@ public:
     void run();
 
     void StartMove();
+    void StartMoveOnline();
     void StopMove();
 
     void StartGoToPos( bool isNullPos );

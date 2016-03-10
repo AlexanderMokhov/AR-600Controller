@@ -78,6 +78,8 @@ private:
     QAction *TBactionDisconnect;
     QAction *TBactionOpenMoveFile;
 
+    QAction *TBactionStartPlayOnline;
+
     //потоки
     Receiver                *mReceiver;
     Sender                  *mSender;
@@ -103,6 +105,7 @@ public slots:
     void Disconnect();
     void ActivateActions();
     void OpenConnectConfig();
+    void StartPlayOnline();
 
 };
 

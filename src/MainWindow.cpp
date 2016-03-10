@@ -147,6 +147,11 @@ void MainWindow::ActionsLoad()
     TBactionDisconnect->setToolTip("Отключение");
     TBactionDisconnect->setIcon(QIcon(":/MyIcons/Icons/disconnect.ico"));
     connect(TBactionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
+
+    TBactionStartPlayOnline = new QAction("Движения онлайн",0);
+    TBactionStartPlayOnline->setToolTip("Движения онлайн");
+    TBactionStartPlayOnline->setIcon(QIcon(":/MyIcons/Icons/play.ico"));
+    connect(TBactionStartPlayOnline, SIGNAL(triggered()),this, SLOT(StartPlayOnline()));
 }
 
 void MainWindow::WidgetsInit()
@@ -221,6 +226,7 @@ void MainWindow::ToolBarInit()
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionNext);
     ui->MainToolBar->addSeparator();
+    ui->MainToolBar->addAction(TBactionStartPlayOnline);
     //конец добавление кнопок на тулбар
 }
 
@@ -266,6 +272,11 @@ void MainWindow::OpenConnectConfig()
     mConnectDialog->setModal(true);
     mConnectDialog->Update();
     mConnectDialog->show();
+}
+
+void MainWindow::StartPlayOnline()
+{
+    mMoveControlWidget->startMoveOnline();
 }
 
 //обработка принятого пакета от робота

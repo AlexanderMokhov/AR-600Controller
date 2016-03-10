@@ -62,6 +62,7 @@ signals:
     PlayStop();
 public slots:
     void startMove();
+    void startMoveOnline();
     void openFile(QString fileName, bool mode);
     void startStdMove();
 };

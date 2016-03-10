@@ -40,6 +40,12 @@ void Mover::StartMove()
     if( !isRunning ) start();
 }
 
+void Mover::StartMoveOnline()
+{
+    MoveController::Inst()->StartPlayOnline();
+    if( !isRunning ) start();
+}
+
 void Mover::StopMove()
 {
     MoveController::Inst()->StopPlay();

@@ -145,6 +145,45 @@ void MoveController::StoppingPlay()
     mState = States::NotWork;
 }
 
+void MoveController::StepPlayOnline()
+{
+    MovesStorage::Inst()->LoadFile("DRIVEMAR.txt");
+
+    if(MovesStorage::Inst()->mMoveID >= MovesStorage::Inst()->mCountRows){goto StopPlay;}
+
+    while(MovesStorage::Inst()->mMoveID < MovesStorage::Inst()->mCountRows)
+    {
+        //записываем значение в мотор и проверяем следующую команду
+        int Number = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].NumberChannel;
+        int Angle = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].Angle;
+
+        int Stiff = 0;
+        if(useUserStiff)
+            Stiff = UserStiff;
+        else
+            Stiff = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Stiff;
+
+        int Dump = 0;
+        if(useUserDump)
+            Dump = UserDump;
+        else
+            Dump = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Dump;
+
+        int Torque = MovesStorage::Inst()->mMoves[MovesStorage::Inst()->mMoveID].PIDs.Torque;
+
+        BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
+        BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
+        BufferController::Inst()->GetBufferS()->SetMotorTorque( Number, Torque );
+        BufferController::Inst()->GetBufferS()->SetMotorAngle( Number, Angle);
+        MovesStorage::Inst()->mMoveID++;
+
+        if(MovesStorage::Inst()->mMoveID >= MovesStorage::Inst()->mCountRows){goto StopPlay;}
+    }
+StopPlay:
+        MovesStorage::Inst()->mMoveID = 0;
+        qDebug() << "Выполнен очередной файл"  << endl;
+}
+
 void MoveController::SkipSpace(std::locale loc, std::string str, unsigned int *i)
 {
     while( std::isspace(str[(*i)], loc) )
@@ -185,6 +224,11 @@ void MoveController::DoStepWork()
     case MovePlay: //отработка команд
     {
         StepPlay();
+    }
+        break;
+    case MovePlayOnline: //отработка команд
+    {
+        StepPlayOnline();
     }
         break;
     case MoveStopping: //остановка отработки

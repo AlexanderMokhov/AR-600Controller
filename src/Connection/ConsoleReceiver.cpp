@@ -66,7 +66,21 @@ void ConsoleReceiver::ProcessPendingDatagrams()
         mUdpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
         qDebug() << "ConsoleReceiver data: " << datagram.data() <<"size"<< QString::number(datagram.size()) << endl;
 
-        //Отправляем пакет на обработку
-        //emit ReadyData();
+        if(datagram.data() == "0")
+        {
+            mUdpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
+            qDebug() << "ConsoleReceiver data: " << datagram.data() <<"size"<< QString::number(datagram.size()) << endl;
+            writeToFile(datagram);
+        }
      }
+}
+
+void ConsoleReceiver::writeToFile(QByteArray data)
+{
+    QFile file("controlFile.txt");
+    if(file.open(QIODevice::WriteOnly))
+    {
+        file.write(data);
+        file.close();
+    }
 }

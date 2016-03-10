@@ -149,6 +149,11 @@ void MoveControlWidget::startMove()
     }
 }
 
+void MoveControlWidget::startMoveOnline()
+{
+    mMover->StartMoveOnline();
+}
+
 void MoveControlWidget::StartPlayFile(bool mode)
 {
     if(!mode)

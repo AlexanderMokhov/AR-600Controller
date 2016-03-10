@@ -53,7 +53,7 @@ struct PosData
     bool isEndPos;
 };
 
-enum States {MovePlay, MoveStarting, MoveStopping,
+enum States {MovePlay, MovePlayOnline, MoveStarting, MoveStopping,
              GoToAngleStarting, GoToAngle, GoToAngleStopping,
              GoPosStarting, GoToPos, GoToPosEnding, GoPosStopping,
              NotWork};
@@ -115,6 +115,10 @@ public:
     void StartingPlay();
     void StopPlay();
     void StoppingPlay();
+
+    // для вопроизведения онлайн
+    void StepPlayOnline();
+    void StartPlayOnline() { mState = States::MovePlayOnline; }
 
     //для перехода в заданный угол (один двигатель)
     void StepGoToAngle();
