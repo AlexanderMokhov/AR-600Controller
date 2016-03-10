@@ -13,7 +13,7 @@ MoveCorrector::MoveCorrector()
     {
         vector<Amend> item;
         //Добавляем в контейнер
-        mAmends[(*it).second.GetNumber()] = item;
+        mAmends[(*it).second.getNumber()] = item;
     }
 
     //очищаем вектор
@@ -247,7 +247,7 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
         int sNumber = mAmends[NumberChannel][i].sNumber;
 
         int sValue = BufferController::Inst()->GetBufferR()->GetSensorValue(
-                    aSensors->at(sNumber).GetChannel(), aSensors->at(sNumber).GetParam() ) ;
+                    aSensors->at(sNumber).getChannel(), aSensors->at(sNumber).getParam() ) ;
 
         int spNumber = mAmends[NumberChannel][i].spNumber;
         qDebug() << "показания сенсора"  << QString::number(sValue) << endl;

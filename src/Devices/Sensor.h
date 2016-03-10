@@ -6,25 +6,25 @@
 class Sensor : public Device
 {
 private:
-    std::string     mNameLog;
-    int             mParam;
-    int             mValue;
+    std::string     m_nameLog;
+    int             m_param;
+    int             m_value;
 public:
     Sensor();
     ~Sensor(){;}
-    Sensor( int Number,
-           int Channel,
-           std::string Name,
-           std::string NameLog,
+    Sensor( int number,
+           int channel,
+           std::string name,
+           std::string nameLog,
            int param );
 
-    int GetValue(){ return mValue; }
-    std::string GetNameLog(){ return mNameLog; }
-    int GetParam(){ return mParam; }
+    int getValue(){ return m_value; }
+    std::string getNameLog(){ return m_nameLog; }
+    int getParam(){ return m_param; }
 
-    void SetValue( int value ){ mValue = value; }
-    void SetNameLog( std::string NameLog ){ mNameLog = NameLog; }
-    void SetParam( int Param ){ mParam = Param; }
+    void setValue( int value ){ m_value = value; }
+    void setNameLog( std::string nameLog ){ m_nameLog = nameLog; }
+    void setParam( int param ){ m_param = param; }
 };
 
 #endif // SENSOR_H

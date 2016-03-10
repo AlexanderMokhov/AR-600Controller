@@ -40,11 +40,11 @@ QVariant SensorTableModel::data(const QModelIndex &index, int role) const
     // для каждого столбца возвращаем нужные данные
     if (role == Qt::DisplayRole || role == Qt::EditRole){
         if (index.column() == 0 )
-            return QString::number(mDataList.at(index.row())->GetNumber());
+            return QString::number(mDataList.at(index.row())->getNumber());
         if (index.column() == 1 )
-            return QString::fromStdString(mDataList.at(index.row())->GetName());
+            return QString::fromStdString(mDataList.at(index.row())->getName());
         if (index.column() == 2 )
-            return QString::number(mDataList.at(index.row())->GetValue());
+            return QString::number(mDataList.at(index.row())->getValue());
     }
     return QVariant();
 }
@@ -55,13 +55,13 @@ bool SensorTableModel::setData(const QModelIndex &index, const QVariant &value, 
     {
         // записываем данные из каждого столбца
         if(index.column()==0){
-            mDataList.at(index.row())->SetNumber(value.toString().toInt());
+            mDataList.at(index.row())->setNumber(value.toString().toInt());
         }
         if(index.column()==1){
-            mDataList.at(index.row())->SetName(value.toString().toStdString());
+            mDataList.at(index.row())->setName(value.toString().toStdString());
         }
         if(index.column()==2){
-            mDataList.at(index.row())->SetValue(value.toString().toInt());
+            mDataList.at(index.row())->setValue(value.toString().toInt());
         }
         emit dataChanged(index, index);
         return true;

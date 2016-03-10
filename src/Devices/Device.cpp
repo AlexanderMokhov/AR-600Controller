@@ -2,9 +2,9 @@
 
 Device::Device()
 {
-    mNumber = 0;
-    mChannel = 0;
-    mName = "";
+    m_number = 0;
+    m_channel = 0;
+    m_name = "";
 }
 
 Device::~Device()
@@ -12,40 +12,40 @@ Device::~Device()
 
 }
 
-Device::Device(int Number, int Channel, string Name)
+Device::Device(int number, int channel, string name)
 {
-    mNumber = Number;
-    mChannel = Channel;
-    mName = Name;
+    m_number = number;
+    m_channel = channel;
+    m_name = name;
 }
 
-int Device::GetNumber()
+int Device::getNumber()
 {
-    return mNumber;
+    return m_number;
 }
 
-int Device::GetChannel()
+int Device::getChannel()
 {
-    return mChannel;
+    return m_channel;
 }
 
-string Device::GetName()
+string Device::getName()
 {
-    return mName;
+    return m_name;
 }
 
-void Device::SetNumber(int Number)
+void Device::setNumber(int number)
 {
-    mNumber = Number;
+    m_number = number;
 }
 
-void Device::SetChannel(int Channel)
+void Device::setChannel(int channel)
 {
-    mChannel = Channel;
+    m_channel = channel;
 }
 
-void Device::SetName(string Name)
+void Device::setName(string name)
 {
-    mName = Name;
+    m_name = name;
 }
 

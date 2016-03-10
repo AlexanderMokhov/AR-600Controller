@@ -40,17 +40,17 @@ void MotorTableWidget::ShowConfigData()
     for(auto it = mMap->begin();it!=mMap->end();++it)
     {
         QString Number = QString::number((*it).first);
-        QString Name = QString::fromLocal8Bit((*it).second.GetName().c_str());
+        QString Name = QString::fromLocal8Bit((*it).second.getName().c_str());
         QString Status = "0";
-        bool Reverce = (*it).second.GetReverce();
+        bool Reverce = (*it).second.getReverceState();
         QString sReverce = QString::number(Reverce);
-        QString MinPos = QString::number((*it).second.GetMinPos());
-        QString MaxPos = QString::number((*it).second.GetMaxPos());
-        QString KP = QString::number((*it).second.GetStiff());
-        QString KI = QString::number((*it).second.GetDump());
-        QString KD = QString::number((*it).second.GetTorque());
-        QString Calibration = QString::number((*it).second.GetCalibration());
-        bool Enable = (*it).second.GetEnable();
+        QString MinPos = QString::number((*it).second.getMinAngle());
+        QString MaxPos = QString::number((*it).second.getMaxAngle());
+        QString KP = QString::number((*it).second.getPIDGates()->getPGate());
+        QString KI = QString::number((*it).second.getPIDGates()->getIGate());
+        QString KD = QString::number((*it).second.getPIDGates()->getDGate());
+        QString Calibration = QString::number((*it).second.getShiftValue());
+        bool Enable = (*it).second.getEnable();
         QString sEnable = QString::number(Enable);
         mModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,sReverce,KP,KI,KD,Calibration,sEnable);
     }
@@ -76,7 +76,7 @@ void MotorTableWidget::UpdatePos()
     int i=0;
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
-        int Number = (*it).second.GetNumber();
+        int Number = (*it).second.getNumber();
         QString cPos = QString::number(BufferController::Inst()->GetBufferR()->GetMotorAngle(Number));
         mModel->setData(mModel->index(i,3),cPos,Qt::EditRole);
 
@@ -117,8 +117,8 @@ void MotorTableWidget::ShowContextMenu(const QPoint &pos)
     QMenu myMenu;
 
     int cRow = mSelectionModel->currentIndex().row();
-    int Number = mModel->mDataList.at(cRow)->GetNumber();
-    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).GetEnable();
+    int Number = mModel->mDataList.at(cRow)->getNumber();
+    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).getEnable();
 
     string text = "Выключить";
     if(!isEnable) text = "Включить";
@@ -137,17 +137,17 @@ void MotorTableWidget::ShowContextMenu(const QPoint &pos)
 void MotorTableWidget::onSetEnableAction()
 {
     int cRow = mSelectionModel->currentIndex().row();
-    int Number = mModel->mDataList.at(cRow)->GetNumber();
-    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).GetEnable();
+    int Number = mModel->mDataList.at(cRow)->getNumber();
+    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).getEnable();
     BufferController::Inst()->GetBufferS()->SetMotorEnable(Number, !isEnable);
-    SettingsStorage::Inst()->GetMotors()->at(Number).SetEnable(!isEnable);
+    SettingsStorage::Inst()->GetMotors()->at(Number).setEnable(!isEnable);
     mModel->setData(mModel->index(cRow,11), QString::number(!isEnable));
 }
 
 void MotorTableWidget::onSetLimitsAction()
 {
     int cRow = mSelectionModel->currentIndex().row();
-    int Number = mModel->mDataList.at(cRow)->GetNumber();
+    int Number = mModel->mDataList.at(cRow)->getNumber();
     mSetLimitsDlg = new SetLimitsDialog();
     connect(mSetLimitsDlg, SIGNAL(accepted()),this,SLOT(onSetLimitsAccepted()));
     mSetLimitsDlg->setModal(true);
@@ -158,7 +158,7 @@ void MotorTableWidget::onSetLimitsAction()
 void MotorTableWidget::onSetLimitsAccepted()
 {
     int cRow = mSelectionModel->currentIndex().row();
-    int Number = mModel->mDataList.at(cRow)->GetNumber();
-    mModel->mDataList.at(cRow)->SetMinPos(SettingsStorage::Inst()->GetMotors()->at(Number).GetMinPos());
-    mModel->mDataList.at(cRow)->SetMaxPos(SettingsStorage::Inst()->GetMotors()->at(Number).GetMaxPos());
+    int Number = mModel->mDataList.at(cRow)->getNumber();
+    mModel->mDataList.at(cRow)->setMinAngle(SettingsStorage::Inst()->GetMotors()->at(Number).getMinAngle());
+    mModel->mDataList.at(cRow)->setMaxAngle(SettingsStorage::Inst()->GetMotors()->at(Number).getMaxAngle());
 }

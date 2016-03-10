@@ -2,16 +2,16 @@
 
 Sensor::Sensor()
 {
-    mValue = 0;
+    m_value = 0;
 }
 
-Sensor::Sensor(int Number,
-               int Channel,
-               string Name,
-               string NameLog,
-               int param): Device(Number,Channel,Name)
+Sensor::Sensor(int number,
+               int channel,
+               string name,
+               string nameLog,
+               int param): Device(number, channel, name)
 {
-    mParam = param;
-    mValue = 0;
-    mNameLog = NameLog;
+    m_param = param;
+    m_value = 0;
+    m_nameLog = nameLog;
 }

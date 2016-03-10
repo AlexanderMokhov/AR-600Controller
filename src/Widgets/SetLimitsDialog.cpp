@@ -24,8 +24,8 @@ SetLimitsDialog::~SetLimitsDialog()
 void SetLimitsDialog::Update(int cNumber)
 {
     this->cNumber = cNumber;
-    int MinAngle = SettingsStorage::Inst()->GetMotors()->at(cNumber).GetMinPos();
-    int MaxAngle = SettingsStorage::Inst()->GetMotors()->at(cNumber).GetMaxPos();
+    int MinAngle = SettingsStorage::Inst()->GetMotors()->at(cNumber).getMinAngle();
+    int MaxAngle = SettingsStorage::Inst()->GetMotors()->at(cNumber).getMaxAngle();
 
     ui->EditMinOld->setText(QString::number( MinAngle));
     ui->EditMaxOld->setText(QString::number( MaxAngle));
@@ -38,8 +38,8 @@ void SetLimitsDialog::accepted()
 {
     int MinAngle = ui->EditNewMin->value();
     int MaxAngle = ui->EditNewMax->value();
-    SettingsStorage::Inst()->GetMotors()->at(cNumber).SetMinPos(MinAngle);
-    SettingsStorage::Inst()->GetMotors()->at(cNumber).SetMaxPos(MaxAngle);
+    SettingsStorage::Inst()->GetMotors()->at(cNumber).setMinAngle(MinAngle);
+    SettingsStorage::Inst()->GetMotors()->at(cNumber).setMaxAngle(MaxAngle);
 
     BufferController::Inst()->GetBufferS()->SetMotorMinAngle(cNumber, MinAngle);
     BufferController::Inst()->GetBufferS()->SetMotorMaxAngle(cNumber, MaxAngle);

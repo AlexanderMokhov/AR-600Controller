@@ -9,24 +9,24 @@ using namespace std;
 class Device
 {
 public:
-    int mNumber;//номер
-    int mChannel;//адрес буфера
-    std::string mName;//название
+    int m_number;//номер
+    int m_channel;//адрес буфера
+    std::string m_name;//название
 
 public:
     Device();
     ~Device();
-    Device( int Number, int Channel, std::string Name );
+    Device( int number, int channel, std::string name );
 
     //геттеры
-    int GetNumber();
-    int GetChannel();
-    std::string GetName();
+    int getNumber();
+    int getChannel();
+    std::string getName();
 
     //сеттеры
-    void SetNumber( int Number );
-    void SetChannel( int Channel );
-    void SetName( string Name );
+    void setNumber( int number );
+    void setChannel( int channel );
+    void setName( string name );
 
 };
 

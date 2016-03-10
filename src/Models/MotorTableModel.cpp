@@ -50,29 +50,29 @@ QVariant MotorTableModel::data(const QModelIndex &index, int role) const
     // для каждого столбца возвращаем нужные данные
     if (role == Qt::DisplayRole || role == Qt::EditRole){
         if (index.column() == 0 )
-            return QString::number(mDataList.at(index.row())->mNumber);
+            return QString::number(mDataList.at(index.row())->getNumber());
         if (index.column() == 1 )
-            return QString::fromStdString(mDataList.at(index.row())->mName);
+            return QString::fromStdString(mDataList.at(index.row())->getName());
         if (index.column() == 2 )
-            return QString::fromStdString(mDataList.at(index.row())->mStatus);
+            return QString::fromStdString(mDataList.at(index.row())->m_status);
         if (index.column() == 3 )
-            return QString::number(mDataList.at(index.row())->mPos);
+            return QString::number(mDataList.at(index.row())->m_angle);
         if (index.column() == 4 )
-            return QString::number(mDataList.at(index.row())->mMinPos);
+            return QString::number(mDataList.at(index.row())->getMinAngle());
         if (index.column() == 5 )
-            return QString::number(mDataList.at(index.row())->mMaxPos);
+            return QString::number(mDataList.at(index.row())->getMaxAngle());
         if (index.column() == 6 )
-            return QString::number(mDataList.at(index.row())->mReverce);
+            return QString::number(mDataList.at(index.row())->getReverceState());
         if (index.column() == 7 )
-            return QString::number(mDataList.at(index.row())->mStiff);
+            return QString::number(mDataList.at(index.row())->getPIDGates()->getPGate());
         if (index.column() == 8 )
-            return QString::number(mDataList.at(index.row())->mDump);
+            return QString::number(mDataList.at(index.row())->getPIDGates()->getIGate());
         if (index.column() == 9 )
-            return QString::number(mDataList.at(index.row())->mTorque);
+            return QString::number(mDataList.at(index.row())->getPIDGates()->getDGate());
         if (index.column() == 10 )
-            return QString::number(mDataList.at(index.row())->mCalibration);
+            return QString::number(mDataList.at(index.row())->getShiftValue());
         if (index.column() == 11 )
-            return QString::number(mDataList.at(index.row())->mEnable);
+            return QString::number(mDataList.at(index.row())->getEnable());
     }
     //Роль - выравнивание
     if (role == Qt::TextAlignmentRole)
@@ -88,40 +88,40 @@ bool MotorTableModel::setData(const QModelIndex &index, const QVariant &value, i
     {
         // записываем данные из каждого столбца
         if(index.column()==0){
-            mDataList.at(index.row())->mNumber = value.toString().toInt();
+            mDataList.at(index.row())->setNumber(value.toString().toInt());
         }
         if(index.column()==1){
-            mDataList.at(index.row())->mName = value.toString().toStdString();
+            mDataList.at(index.row())->setName(value.toString().toStdString());
         }
         if(index.column()==2){
-            mDataList.at(index.row())->mStatus = value.toString().toStdString();
+            mDataList.at(index.row())->m_status = value.toString().toStdString();
         }
         if(index.column()==3){
-            mDataList.at(index.row())->mPos = value.toString().toInt();
+            mDataList.at(index.row())->m_angle = value.toString().toInt();
         }
         if(index.column()==4){
-            mDataList.at(index.row())->mMinPos = value.toString().toInt();
+            mDataList.at(index.row())->setMinAngle(value.toString().toInt());
         }
         if(index.column()==5){
-            mDataList.at(index.row())->mMaxPos = value.toString().toInt();
+            mDataList.at(index.row())->setMaxAngle(value.toString().toInt());
         }
         if(index.column()==6){
-            mDataList.at(index.row())->mReverce = value.toString().toInt();
+            mDataList.at(index.row())->m_reverceState = value.toString().toInt();
         }
         if(index.column()==7){
-            mDataList.at(index.row())->mStiff = value.toString().toInt();
+            mDataList.at(index.row())->getPIDGates()->setPGate(value.toString().toInt());
         }
         if(index.column()==8){
-            mDataList.at(index.row())->mDump = value.toString().toInt();
+            mDataList.at(index.row())->getPIDGates()->setIGate(value.toString().toInt());
         }
         if(index.column()==9){
-            mDataList.at(index.row())->mTorque = value.toString().toInt();
+            mDataList.at(index.row())->getPIDGates()->setDGate(value.toString().toInt());
         }
         if(index.column()==10){
-            mDataList.at(index.row())->mCalibration = value.toString().toInt();
+            mDataList.at(index.row())->setShiftValue(value.toString().toInt());
         }
         if(index.column()==11){
-            mDataList.at(index.row())->mEnable = value.toString().toInt();
+            mDataList.at(index.row())->setEnable(value.toString().toInt());
         }
         emit dataChanged(index, index);
         return true;

@@ -2,14 +2,12 @@
 
 Motor::Motor() : Device()
 {
-    mMinPos =       0;
-    mMaxPos =       0;
-    mReverce =      false;
-    mStiff =        0;//KP
-    mDump =         0;//KI
-    mTorque =       0;//KD
-    mCalibration =  0;
-    mEnable =       false;
+    m_minAngle = 0;
+    m_maxAngle = 0;
+    m_reverceState = false;
+    m_PIDGates = new PIDGates();
+    m_shiftValue =  0;
+    m_enable = false;
 }
 
 Motor::~Motor()
@@ -17,98 +15,73 @@ Motor::~Motor()
 
 }
 
-Motor::Motor(int Number,
-               int Channel,
-               string Name, int MinPos,
-               int MaxPos, bool Reverce,
-               int Stiff,
-               int Dump,
-               int Torque,
-               int Calibration,
-               bool Enable) : Device(Number,Channel,Name)
+Motor::Motor(int number,
+               int channel,
+               string name, int minAngle,
+               int maxAngle, bool reverceState,
+               PIDGates *gates,
+               int shiftValue,
+               bool enable) : Device(number, channel, name)
 {
-    mMinPos = MinPos;
-    mMaxPos = MaxPos;
-    mReverce = Reverce;
-    mStiff = Stiff;
-    mDump = Dump;
-    mTorque = Torque;
-    mCalibration = Calibration;
-    mEnable = Enable;
+    m_minAngle = minAngle;
+    m_maxAngle = maxAngle;
+    m_reverceState = reverceState;
+    m_PIDGates = gates;
+    m_shiftValue = shiftValue;
+    m_enable = enable;
 }
 
-int Motor::GetMinPos()
+int Motor::getMinAngle()
 {
-    return mMinPos;
+    return m_minAngle;
 }
 
-int Motor::GetMaxPos()
+int Motor::getMaxAngle()
 {
-    return mMaxPos;
+    return m_maxAngle;
 }
 
-bool Motor::GetReverce()
+bool Motor::getReverceState()
 {
-    return mReverce;
+    return m_reverceState;
 }
 
-int Motor::GetStiff()
+PIDGates* Motor::getPIDGates()
 {
-    return mStiff;
+    return m_PIDGates;
 }
 
-int Motor::GetDump()
+int Motor::getShiftValue()
 {
-    return mDump;
+    return m_shiftValue;
 }
 
-int Motor::GetTorque()
+bool Motor::getEnable()
 {
-    return mTorque;
+    return m_enable;
 }
 
-int Motor::GetCalibration()
+void Motor::setMinAngle(int angle)
 {
-    return mCalibration;
+    m_minAngle = angle;
 }
 
-bool Motor::GetEnable()
+void Motor::setMaxAngle(int angle)
 {
-    return mEnable;
+    m_maxAngle = angle;
 }
 
-void Motor::SetMinPos(int Angle)
+void Motor::setShiftValue(int shiftValue)
 {
-    mMinPos = Angle;
+    m_shiftValue = shiftValue;
 }
 
-void Motor::SetMaxPos(int Angle)
+void Motor::setPIDGates(PIDGates *gates)
 {
-    mMaxPos = Angle;
+    m_PIDGates = gates;
 }
-
-void Motor::SetCalibration(int Calibration)
+void Motor::setEnable(bool enable)
 {
-    mCalibration = Calibration;
-}
-
-void Motor::SetStiff(int Stiff)
-{
-    mStiff = Stiff;
-}
-
-void Motor::SetDump(int Dump)
-{
-    mDump = Dump;
-}
-
-void Motor::SetTorque(int Torque)
-{
-    mTorque = Torque;
-}
-
-void Motor::SetEnable(bool Enable)
-{
-    mEnable = Enable;
+    m_enable = enable;
 }
 

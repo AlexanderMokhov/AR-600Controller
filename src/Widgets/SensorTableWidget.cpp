@@ -36,8 +36,8 @@ void SensorTableWidget::ShowConfigData()
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
         QString Number = QString::number((*it).first);
-        QString Name = QString::fromLocal8Bit((*it).second.GetName().c_str());
-        QString Value = QString::number((*it).second.GetValue());
+        QString Name = QString::fromLocal8Bit((*it).second.getName().c_str());
+        QString Value = QString::number((*it).second.getValue());
         mModel->insertRow(Number,Name,Value);
     }
     ui->SensorTableView->selectRow(0);
@@ -55,8 +55,8 @@ void SensorTableWidget::UpdatePos()
     int i=0;
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
-        int Number = (*it).second.GetChannel();//в виде исключения
-        int Param = (*it).second.GetParam();
+        int Number = (*it).second.getChannel();//в виде исключения
+        int Param = (*it).second.getParam();
         QString cValue = QString::number(BufferController::Inst()->GetBufferR()->GetSensorValue(Number,Param));
         mModel->setData(mModel->index(i,2),cValue,Qt::EditRole);
         i++;

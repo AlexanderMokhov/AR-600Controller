@@ -2,53 +2,46 @@
 #define MOTOR_H
 
 #include "Device.h"
+#include "PIDGates.h"
 
 //Класс двигателя робота
 class Motor : public Device
 {
 public:
-    std::string     mStatus;
-    int             mPos;
-    int             mMinPos;
-    int             mMaxPos;
-    bool            mReverce;
-    int             mStiff;
-    int             mDump;
-    int             mTorque;
-    int             mCalibration;
-    bool            mEnable;
+    std::string     m_status;
+    int             m_angle;
+    int             m_minAngle;
+    int             m_maxAngle;
+    bool            m_reverceState;
+    PIDGates       *m_PIDGates;
+    int             m_shiftValue;
+    bool            m_enable;
 
 public:
     Motor();
     ~Motor();
-    Motor(int Number,
-           int Channel,
-           std::string Name,
-           int MinPos,
-           int MaxPos,
-           bool Reverce,
-           int Stiff,
-           int Dump,
-           int Torque,
-           int Calibration,
-           bool Enable);
+    Motor(int number,
+           int channel,
+           std::string name,
+           int minAngle,
+           int maxAngle,
+           bool reverceState,
+           PIDGates *gates,
+           int shiftValue,
+           bool enable);
 
-    int GetMinPos();
-    int GetMaxPos();
-    bool GetReverce();
-    int GetStiff();//получить KP
-    int GetDump();//получить KI
-    int GetTorque();//получить KD
-    int GetCalibration();
-    bool GetEnable();
+    int getMinAngle();
+    int getMaxAngle();
+    bool getReverceState();
+    PIDGates *getPIDGates();
+    int getShiftValue();
+    bool getEnable();
 
-    void SetMinPos(int Angle);
-    void SetMaxPos(int Angle);
-    void SetCalibration( int Calibration );
-    void SetStiff( int Stiff );
-    void SetDump( int Dump );
-    void SetTorque( int Torque );
-    void SetEnable( bool Enable );
+    void setMinAngle(int angle);
+    void setMaxAngle(int angle);
+    void setShiftValue( int value );
+    void setPIDGates( PIDGates *gates );
+    void setEnable(bool enable);
 };
 
 #endif // MOTOR_H

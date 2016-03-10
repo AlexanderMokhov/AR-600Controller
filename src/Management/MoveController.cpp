@@ -95,11 +95,11 @@ void MoveController::StartingPlay()
     mMotors = SettingsStorage::Inst()->GetMotors();
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
-        int Number = (*it).second.GetNumber();
+        int Number = (*it).second.getNumber();
         int Angle = BufferController::Inst()->GetBufferR()->GetMotorAngle( Number );
-        int Stiff = (*it).second.GetStiff();
-        int Dump = (*it).second.GetDump();
-        int Torque = (*it).second.GetTorque();
+        int Stiff = (*it).second.getPIDGates()->getPGate();
+        int Dump = (*it).second.getPIDGates()->getIGate();
+        int Torque = (*it).second.getPIDGates()->getDGate();
 
         BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
         BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
@@ -125,11 +125,11 @@ void MoveController::StoppingPlay()
     mMotors = SettingsStorage::Inst()->GetMotors();
     for(auto it = mMotors->begin(); it != mMotors->end(); ++it)
     {
-        int Number = (*it).second.GetNumber();
+        int Number = (*it).second.getNumber();
         int MotorAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle( Number );
-        int Stiff = (*it).second.GetStiff();
-        int Dump = (*it).second.GetDump();
-        int Torque = (*it).second.GetTorque();
+        int Stiff = (*it).second.getPIDGates()->getPGate();
+        int Dump = (*it).second.getPIDGates()->getIGate();
+        int Torque = (*it).second.getPIDGates()->getDGate();
 
         BufferController::Inst()->GetBufferS()->SetMotorStiff( Number, Stiff );
         BufferController::Inst()->GetBufferS()->SetMotorDump( Number, Dump );
@@ -284,7 +284,7 @@ void MoveController::StartingGoPos()
         int StartAngle = BufferController::Inst()->GetBufferR()->GetMotorAngle(Number);
         int DestAngle = mGoPosMode == true ? MovesStorage::Inst()->mMoves[i].Angle : 0;
         int DiffAngle = std::abs(DestAngle - StartAngle);
-        MaxDiff = (DiffAngle > MaxDiff && (*it).second.GetEnable()) ? DiffAngle : MaxDiff;
+        MaxDiff = (DiffAngle > MaxDiff && (*it).second.getEnable()) ? DiffAngle : MaxDiff;
 
         SetPosData(Number,DestAngle,StartAngle);
 

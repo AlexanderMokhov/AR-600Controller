@@ -10,15 +10,15 @@ RecordController::RecordController()
 
     for(auto it = mConfigMap->begin();it != mConfigMap->end(); ++it)
     {
-        int Number = (*it).second.GetNumber();
+        int Number = (*it).second.getNumber();
         mDriversMap.insert(pair<int, int>(Number, mReadBuffer->GetMotorAngle(Number)));
         mDrivsCurMap.insert(pair<int,float>(Number, -1*mReadBuffer->GetMotorI(Number)/100.0));
     }
 
     for(auto it = mSensMap->begin(); it != mSensMap->end(); ++it)
     {
-        int Number = (*it).second.GetNumber();
-        int Value = (*it).second.GetValue();
+        int Number = (*it).second.getNumber();
+        int Value = (*it).second.getValue();
         mSensorsMap.insert(pair<int, int>(Number,Value));
     }
 
@@ -33,8 +33,8 @@ void RecordController::AddRawData()
 
     for(auto it = mSensorsMap.begin(); it != mSensorsMap.end(); ++it)
     {
-        int Value = mReadBuffer->GetSensorValue(mSensMap->at((*it).first).GetChannel(),
-                                                mSensMap->at((*it).first).GetParam()) ;
+        int Value = mReadBuffer->GetSensorValue(mSensMap->at((*it).first).getChannel(),
+                                                mSensMap->at((*it).first).getParam()) ;
         (*it).second=Value;
     }
 
@@ -82,7 +82,7 @@ bool RecordController::SaveData(string fileName)
         for(auto it2 = mSensMap->begin();it2 != mSensMap->end(); ++it2)
         {
             file << "\t";
-            file << (*it2).second.GetNameLog();
+            file << (*it2).second.getNameLog();
         }
 
         file << "\n";

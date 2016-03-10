@@ -42,13 +42,15 @@ bool SettingsStorage::OpenFile(string FileName)
             int MinPos = atoi(xml_Motor->FirstChildElement("MinPos")->GetText());
             int MaxPos = atoi(xml_Motor->FirstChildElement("MaxPos")->GetText());
             bool Reverce = strcmp("false",xml_Motor->FirstChildElement("Reverce")->GetText());
-            int Stiff = atoi(xml_Motor->FirstChildElement("Stiff")->GetText());
-            int Dump = atoi(xml_Motor->FirstChildElement("Dump")->GetText());
-            int Torque = atoi(xml_Motor->FirstChildElement("Torque")->GetText());
+
+            PIDGates *gates = new PIDGates();
+            gates->setPGate(atoi(xml_Motor->FirstChildElement("Stiff")->GetText()));
+            gates->setIGate(atoi(xml_Motor->FirstChildElement("Dump")->GetText()));
+            gates->setDGate(atoi(xml_Motor->FirstChildElement("Torque")->GetText()));
             int Calibration = atoi(xml_Motor->FirstChildElement("Calibration")->GetText());
             bool Enable = strcmp("false",xml_Motor->FirstChildElement("Enable")->GetText());
 
-            Motor item(Number,Channel,Name,MinPos,MaxPos,Reverce,Stiff,Dump,Torque,Calibration,Enable);
+            Motor item(Number,Channel,Name,MinPos,MaxPos,Reverce,gates,Calibration,Enable);
             //Добавляем в контейнер
             mMotors[Number] = item;
 
@@ -135,32 +137,32 @@ bool SettingsStorage::SaveFile(string FileName)
         xml_MotorSettings->LinkEndChild(xml_Motor);
 
         TiXmlElement* Number = new TiXmlElement("Number");
-        WriteValue = new TiXmlText(itoa((*it).second.GetNumber(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getNumber(),buffer,10));
         Number->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Number);
 
         TiXmlElement* Channel = new TiXmlElement("Channel");
-        WriteValue = new TiXmlText(itoa((*it).second.GetChannel(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getChannel(),buffer,10));
         Channel->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Channel);
 
         TiXmlElement* Name = new TiXmlElement("Name");
-        WriteValue = new TiXmlText((*it).second.GetName().c_str());
+        WriteValue = new TiXmlText((*it).second.getName().c_str());
         Name->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Name);
 
         TiXmlElement* MinPos = new TiXmlElement("MinPos");
-        WriteValue = new TiXmlText(itoa((*it).second.GetMinPos(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getMinAngle(),buffer,10));
         MinPos->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(MinPos);
 
         TiXmlElement* MaxPos = new TiXmlElement("MaxPos");
-        WriteValue = new TiXmlText(itoa((*it).second.GetMaxPos(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getMaxAngle(),buffer,10));
         MaxPos->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(MaxPos);
 
         TiXmlElement* Reverce = new TiXmlElement("Reverce");
-        if((*it).second.GetReverce()!=0)
+        if((*it).second.getReverceState()!=0)
             WriteValue = new TiXmlText("true");
         else
             WriteValue = new TiXmlText("false");
@@ -168,27 +170,27 @@ bool SettingsStorage::SaveFile(string FileName)
         xml_Motor->LinkEndChild(Reverce);
 
         TiXmlElement* Stiff = new TiXmlElement("Stiff");
-        WriteValue = new TiXmlText(itoa((*it).second.GetStiff(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getPIDGates()->getPGate(),buffer,10));
         Stiff->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Stiff);
 
         TiXmlElement* Dump = new TiXmlElement("Dump");
-        WriteValue = new TiXmlText(itoa((*it).second.GetDump(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getPIDGates()->getIGate(),buffer,10));
         Dump->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Dump);
 
         TiXmlElement* Torque = new TiXmlElement("Torque");
-        WriteValue = new TiXmlText(itoa((*it).second.GetTorque(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getPIDGates()->getDGate(),buffer,10));
         Torque->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Torque);
 
         TiXmlElement* Calibration = new TiXmlElement("Calibration");
-        WriteValue = new TiXmlText(itoa((*it).second.GetCalibration(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it).second.getShiftValue(),buffer,10));
         Calibration->LinkEndChild(WriteValue);
         xml_Motor->LinkEndChild(Calibration);
 
         TiXmlElement* Enable = new TiXmlElement("Enable");
-        if((*it).second.GetEnable()!=0)
+        if((*it).second.getEnable()!=0)
             WriteValue = new TiXmlText("true");
         else
             WriteValue = new TiXmlText("false");
@@ -207,27 +209,27 @@ bool SettingsStorage::SaveFile(string FileName)
         xml_SensorSettings->LinkEndChild(xml_Sensor);
 
         TiXmlElement* Number = new TiXmlElement("Number");
-        WriteValue = new TiXmlText(itoa((*it2).second.GetNumber(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it2).second.getNumber(),buffer,10));
         Number->LinkEndChild(WriteValue);
         xml_Sensor->LinkEndChild(Number);
 
         TiXmlElement* Channel = new TiXmlElement("Channel");
-        WriteValue = new TiXmlText(itoa((*it2).second.GetChannel(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it2).second.getChannel(),buffer,10));
         Channel->LinkEndChild(WriteValue);
         xml_Sensor->LinkEndChild(Channel);
 
         TiXmlElement* Name = new TiXmlElement("Name");
-        WriteValue = new TiXmlText((*it2).second.GetName().c_str());
+        WriteValue = new TiXmlText((*it2).second.getName().c_str());
         Name->LinkEndChild(WriteValue);
         xml_Sensor->LinkEndChild(Name);
 
         TiXmlElement* NameLog = new TiXmlElement("NameLog");
-        WriteValue = new TiXmlText((*it2).second.GetNameLog().c_str());
+        WriteValue = new TiXmlText((*it2).second.getNameLog().c_str());
         NameLog->LinkEndChild(WriteValue);
         xml_Sensor->LinkEndChild(NameLog);
 
         TiXmlElement* Param = new TiXmlElement("Param");
-        WriteValue = new TiXmlText(itoa((*it2).second.GetParam(),buffer,10));
+        WriteValue = new TiXmlText(itoa((*it2).second.getParam(),buffer,10));
         Param->LinkEndChild(WriteValue);
         xml_Sensor->LinkEndChild(Param);
     }
