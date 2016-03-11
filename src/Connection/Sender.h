@@ -15,8 +15,6 @@
 #include "Management/SettingsStorage.h"
 #include "Management/MoveController.h"
 
-//#include "Libs/Sockets/Socket.h"
-
 class Sender : public QThread
 {
     Q_OBJECT
@@ -24,18 +22,17 @@ private:
 
 //    SOCKET SendSocket; // 01.02.2016
 //    sockaddr_in dest_addr;
-    QUdpSocket *mUdpSocketSender;
-    BufferSend *mSendBuffer;
-    QTimer *mTimerSend;
-    std::mutex *mLocker;
-    QTime *mTime;
+    QUdpSocket *m_udpSocketSender;
+    QTimer *m_timerSend;
+    std::mutex *m_locker;
+    QTime *m_time;
 
-    QString         mHost;
-    int             mSendPort;
-    int             mSendDelay;
+    QString         m_host;
+    int             m_sendPort;
+    int             m_sendDelay;
 
     volatile bool isRunning;
-    void PrintConnectionState();
+    void printConnectionState();
 public:
     explicit Sender( QObject *parent = 0 );
     ~Sender();
@@ -43,7 +40,7 @@ public:
     void Connect();
     void Disconnect();
 private slots:
-    void SendDatagram();
+    void sendDatagram();
 };
 
 #endif // SENDER_H

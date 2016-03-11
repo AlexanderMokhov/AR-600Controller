@@ -4,15 +4,15 @@ RecordController * RecordController::mInst = 0;
 
 RecordController::RecordController()
 {
-    mReadBuffer = BufferController::Inst()->GetBufferR();
+    mReadBuffer = BufferController::Inst()->getBufferRecv();
     mConfigMap = SettingsStorage::Inst()->GetMotors();
     mSensMap = SettingsStorage::Inst()->GetSensors();
 
     for(auto it = mConfigMap->begin();it != mConfigMap->end(); ++it)
     {
         int Number = (*it).second.getNumber();
-        mDriversMap.insert(pair<int, int>(Number, mReadBuffer->GetMotorAngle(Number)));
-        mDrivsCurMap.insert(pair<int,float>(Number, -1*mReadBuffer->GetMotorI(Number)/100.0));
+        mDriversMap.insert(pair<int, int>(Number, mReadBuffer->getMotorAngle(Number)));
+        mDrivsCurMap.insert(pair<int,float>(Number, -1*mReadBuffer->getMotorCurrent(Number)/100.0));
     }
 
     for(auto it = mSensMap->begin(); it != mSensMap->end(); ++it)
@@ -28,19 +28,19 @@ void RecordController::AddRawData()
 {
     for(auto it = mDriversMap.begin(); it != mDriversMap.end(); ++it)
     {
-        (*it).second = mReadBuffer->GetMotorAngle((*it).first);
+        (*it).second = mReadBuffer->getMotorAngle((*it).first);
     }
 
     for(auto it = mSensorsMap.begin(); it != mSensorsMap.end(); ++it)
     {
-        int Value = mReadBuffer->GetSensorValue(mSensMap->at((*it).first).getChannel(),
+        int Value = mReadBuffer->getSensorValue(mSensMap->at((*it).first).getChannel(),
                                                 mSensMap->at((*it).first).getParam()) ;
         (*it).second=Value;
     }
 
     for(auto it = mDrivsCurMap.begin(); it != mDrivsCurMap.end(); ++it)
     {
-        (*it).second = -1 * mReadBuffer->GetMotorI((*it).first) / 100.0;
+        (*it).second = -1 * mReadBuffer->getMotorCurrent((*it).first) / 100.0;
     }
 
     //создаем элемент вектора с данными моторов

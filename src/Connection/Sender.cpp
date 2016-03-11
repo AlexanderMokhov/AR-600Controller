@@ -2,9 +2,8 @@
 
 Sender::Sender(QObject *parent) : QThread(parent)
 {
-    mTime = new QTime;
-    mSendBuffer = BufferController::Inst()->GetBufferS();
-    mLocker = mSendBuffer->GetLocker();
+    m_time = new QTime;
+    m_locker = BufferController::Inst()->getBufferSend()->getLocker();
     isRunning = false;
 }
 
@@ -16,47 +15,35 @@ Sender::~Sender()
 void Sender::run()
 {
     //нить создана
-    mUdpSocketSender = new QUdpSocket();
+    m_udpSocketSender = new QUdpSocket();
 
-    //New initialisation
-    //WORD wVersionRequested; // 01.02.2016
-    //WSADATA wsaData; // 01.02.2016
-    //wVersionRequested = MAKEWORD(2, 2); // 01.02.2016
-    //WSAStartup(wVersionRequested, &wsaData); // 01.02.2016
-
-    mSendPort = SettingsStorage::Inst()->GetSendPort();
-    mHost = QString::fromStdString(SettingsStorage::Inst()->GetHost());
-
-    //Prepare the sockaddr_in structure
-    //dest_addr.sin_family = AF_INET; // 01.02.2016
-    //dest_addr.sin_addr.s_addr = inet_addr(ConfigController::Inst()->GetHost().c_str()); // 01.02.2016
-    //dest_addr.sin_port = htons(mSendPort); // 01.02.2016
+    m_sendPort = SettingsStorage::Inst()->GetSendPort();
+    m_host = QString::fromStdString(SettingsStorage::Inst()->GetHost());
 
     qDebug() << "Sender - connecting..." << endl;
 
+    m_sendDelay = SettingsStorage::Inst()->GetSendDelay();
 
-    mSendDelay = SettingsStorage::Inst()->GetSendDelay();
+    m_udpSocketSender->connectToHost(m_host, m_sendPort);
+    m_udpSocketSender->waitForConnected(1000);
 
-    mUdpSocketSender->connectToHost(mHost, mSendPort);
-    mUdpSocketSender->waitForConnected(1000);
+    m_timerSend = new QTimer;
+    m_timerSend->setInterval(m_sendDelay);
+    connect(m_timerSend,SIGNAL(timeout()),SLOT(sendDatagram()),Qt::DirectConnection);
+    m_timerSend->start(m_sendDelay);
 
-    mTimerSend = new QTimer;
-    mTimerSend->setInterval(mSendDelay);
-    connect(mTimerSend,SIGNAL(timeout()),SLOT(SendDatagram()),Qt::DirectConnection);
-    mTimerSend->start(mSendDelay);
-
-    PrintConnectionState();
+    printConnectionState();
 
     //Запускаем цикл обработки событий
     exec();
     //Завершился цикл обработки событий
 
     qDebug() << "Sender - disconnecting..." << endl;
-    disconnect(mTimerSend, SIGNAL(timeout()));
+    disconnect(m_timerSend, SIGNAL(timeout()));
 
-    mUdpSocketSender->disconnect();
-    mUdpSocketSender->close();
-    PrintConnectionState();
+    m_udpSocketSender->disconnect();
+    m_udpSocketSender->close();
+    printConnectionState();
     //нить удалена
 }
 
@@ -78,22 +65,18 @@ void Sender::Disconnect()
     }
 }
 
-void Sender::SendDatagram()
+void Sender::sendDatagram()
 {
-    QHostAddress mAddress = QHostAddress(mHost);
-    mLocker->lock();
-    //sendto(SendSocket,mSendBuffer->GetRAW(),mSendBuffer->GetSize()* sizeof(char),0,
-            //(sockaddr *) &dest_addr,sizeof(dest_addr));
-    //qDebug() << "Sender - send..." << endl;
-    mUdpSocketSender->writeDatagram(mSendBuffer->GetRAW(), mSendBuffer->GetSize()* sizeof(char), mAddress, mSendPort);
-    mUdpSocketSender->waitForBytesWritten();
-    mLocker->unlock();
-    //MoveController::Inst()->DoStepWork();
+    QHostAddress address = QHostAddress(m_host);
+    m_locker->lock();
+    m_udpSocketSender->writeDatagram(BufferController::Inst()->getBufferSend()->getRAW(), BufferController::Inst()->getBufferSend()->getSize()* sizeof(char), address, m_sendPort);
+    m_udpSocketSender->waitForBytesWritten();
+    m_locker->unlock();
 }
 
-void Sender::PrintConnectionState()
+void Sender::printConnectionState()
 {
-    if (mUdpSocketSender->state() == QUdpSocket::ConnectedState)
+    if (m_udpSocketSender->state() == QUdpSocket::ConnectedState)
     {
         qDebug() << "Sender - connected";
     }

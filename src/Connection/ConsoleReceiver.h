@@ -15,7 +15,7 @@ class ConsoleReceiver : public QThread
 {
     Q_OBJECT
 private:
-    QUdpSocket *mUdpSocketReceiver;
+    QUdpSocket *m_udpSocketReceiver;
     volatile bool isRunning;
     void writeToFile(QByteArray data);
 public:
@@ -25,7 +25,7 @@ public:
     void Connect();
     void Disconnect();
 private slots:
-    void ProcessPendingDatagrams();
+    void processPendingDatagrams();
 signals:
     void ReadyData();
 };

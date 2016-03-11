@@ -1,43 +1,43 @@
 #include "MoveCorrector.h"
 
-MoveCorrector * MoveCorrector::mInst = 0;
+MoveCorrector * MoveCorrector::m_inst = 0;
 
 MoveCorrector::MoveCorrector()
 {
-    aSensors = SettingsStorage::Inst()->GetSensors();
+    m_sensors = SettingsStorage::Inst()->GetSensors();
 
-    mAmends.clear();
-    aMotors = SettingsStorage::Inst()->GetMotors();
+    m_amends.clear();
+    m_motors = SettingsStorage::Inst()->GetMotors();
 
-    for(auto it = aMotors->begin(); it != aMotors->end(); ++it)
+    for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {
         vector<Amend> item;
         //Добавляем в контейнер
-        mAmends[(*it).second.getNumber()] = item;
+        m_amends[(*it).second.getNumber()] = item;
     }
 
     //очищаем вектор
-    mDriveMatVector.clear();
-    mSensorsNumbers.clear();
+    m_driveMatVector.clear();
+    m_sensorsNumbers.clear();
 
-    mLineId = 0;
-    mCountRows = 0;
-    mDuration = 0;
+    m_lineId = 0;
+    m_RowsNumber = 0;
+    m_duration = 0;
 }
 
-void MoveCorrector::Init()
+void MoveCorrector::initialize()
 {
-    delete mInst; mInst = new MoveCorrector;
+    delete m_inst; m_inst = new MoveCorrector;
 }
 
-bool MoveCorrector::OpenFile(string fileName)
+bool MoveCorrector::openFile(string fileName)
 {
     std::ifstream file(fileName.c_str());
 
     if( file.is_open() )
     {
         //очищаем поправки
-        for(auto it = mAmends.begin(); it != mAmends.end(); ++it)
+        for(auto it = m_amends.begin(); it != m_amends.end(); ++it)
         {
             (*it).second.clear();
         }
@@ -58,8 +58,8 @@ bool MoveCorrector::OpenFile(string fileName)
             int sNumber = 0, Type = 0, mNumber = 0, spNumber;
 
             //читаем тип строки
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
+            skipSpace(loc, line, &i);
+            readValue(&temp, loc, &i, line);
 
             //Проверка на комментарий
             if( temp.find("//") == 0 )
@@ -69,22 +69,22 @@ bool MoveCorrector::OpenFile(string fileName)
             temp.clear();
 
             //читаем номер датчика
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
+            skipSpace(loc, line, &i);
+            readValue(&temp, loc, &i, line);
             sNumber = atoi( temp.c_str() );
             temp.clear();
 
             //читаем номер привода
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
+            skipSpace(loc, line, &i);
+            readValue(&temp, loc, &i, line);
             mNumber = atoi( temp.c_str() );
             temp.clear();
 
             if(Type == 2)
             {
                 //читаем номер датчика в файле DRIVEMAT
-                SkipSpace(loc, line, &i);
-                ReadValue(&temp, loc, &i, line);
+                skipSpace(loc, line, &i);
+                readValue(&temp, loc, &i, line);
                 spNumber = atoi( temp.c_str() );
                 temp.clear();
 
@@ -92,20 +92,20 @@ bool MoveCorrector::OpenFile(string fileName)
             }
 
             //читаем Ak - масшт. к-т привода
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
+            skipSpace(loc, line, &i);
+            readValue(&temp, loc, &i, line);
             mScale = atof( temp.c_str() );
             temp.clear();
 
             //читаем An - масшт. к-т датчика
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
+            skipSpace(loc, line, &i);
+            readValue(&temp, loc, &i, line);
             sScale = atof( temp.c_str() );
             temp.clear();
 
             //читаем Kn - нулевое значение датчика
-            SkipSpace(loc, line, &i);
-            ReadValue(&temp, loc, &i, line);
+            skipSpace(loc, line, &i);
+            readValue(&temp, loc, &i, line);
             sZeroValue = atof( temp.c_str() );
             temp.clear();
 
@@ -119,7 +119,7 @@ bool MoveCorrector::OpenFile(string fileName)
             qDebug() << "Type "  << QString::number(Type) << endl;
 
             //добавляем команду в список
-            mAmends[mNumber].push_back(NextAmend);
+            m_amends[mNumber].push_back(NextAmend);
             countLines++;
         }
 
@@ -135,7 +135,7 @@ bool MoveCorrector::OpenFile(string fileName)
     }
 }
 
-bool MoveCorrector::OpenDriveMatFile(string fileName)
+bool MoveCorrector::openDriveMatFile(string fileName)
 {
     std::ifstream file(fileName.c_str());
 
@@ -146,10 +146,10 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
         unsigned int pos = 0;
 
         //очищаем вектор
-        mDriveMatVector.clear();
-        mSensorsNumbers.clear();
-        mCountRows = 0;
-        mDuration = 0;
+        m_driveMatVector.clear();
+        m_sensorsNumbers.clear();
+        m_RowsNumber = 0;
+        m_duration = 0;
 
         std::string line;
 
@@ -160,10 +160,10 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
         {
             //считываем номера сенсоров
             //пропускаем TIME
-            SkipSpace(loc, line, &pos);
-            ReadValue(&temp, loc, &pos, line);
+            skipSpace(loc, line, &pos);
+            readValue(&temp, loc, &pos, line);
             temp.clear();
-            SkipSpace(loc, line, &pos);
+            skipSpace(loc, line, &pos);
 
             int number = 1;
             while(line[pos] != '\0')
@@ -171,13 +171,13 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
                 //читаем номер сенсора
                 int sNumber = 0;
 
-                ReadValue(&temp, loc, &pos, line);
+                readValue(&temp, loc, &pos, line);
                 sNumber = atoi( temp.c_str() );
                 temp.clear();
-                SkipSpace(loc, line, &pos);
+                skipSpace(loc, line, &pos);
 
                 //mSensorsNumbers.push_back(sNumber);
-                mSensorsNumbers.push_back(number);
+                m_sensorsNumbers.push_back(number);
                 number++;
             }
         }
@@ -188,39 +188,39 @@ bool MoveCorrector::OpenDriveMatFile(string fileName)
             pos = 0;
             //читаем очередную строку из файла
 
-            SkipSpace(loc, line, &pos);
+            skipSpace(loc, line, &pos);
 
             //читаем время (как целое число)
             while( line[pos] != '.' ){ temp += line.at(pos); pos++; } pos++;
-            ReadValue(&temp, loc, &pos, line);
+            readValue(&temp, loc, &pos, line);
             int Time = atoi( temp.c_str() );
             temp.clear();
 
-            SkipSpace(loc, line, &pos);
+            skipSpace(loc, line, &pos);
 
             NextData.Time = Time;
 
-            for(int j = 0; j < mSensorsNumbers.size(); j++)
+            for(int j = 0; j < m_sensorsNumbers.size(); j++)
             {
                 //номер сенсора
-                int sNumber = mSensorsNumbers[j];
+                int sNumber = m_sensorsNumbers[j];
                 double sValue = 0;
 
-                ReadValue(&temp, loc, &pos, line);
+                readValue(&temp, loc, &pos, line);
                 sValue = atof( temp.c_str() );
                 temp.clear();
-                SkipSpace(loc, line, &pos);
+                skipSpace(loc, line, &pos);
                 NextData.SensorsData[sNumber] = sValue;
             }
 
-            mDriveMatVector.push_back(NextData);
+            m_driveMatVector.push_back(NextData);
             countLines++;
         }
         qDebug() << "считано " << QString::number(countLines) << " строк" << endl;
 
-        mCountRows = countLines;
-        mDuration = mDriveMatVector[countLines-1].Time;
-        mLineId = 0;
+        m_RowsNumber = countLines;
+        m_duration = m_driveMatVector[countLines-1].Time;
+        m_lineId = 0;
 
         file.close();
 
@@ -239,26 +239,26 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
     double CorrAngle = 0;//поправочное значение
     // если есть корректирующие значения для этого канала
 
-    for(int i=0; i < mAmends[NumberChannel].size(); i++)
+    for(int i=0; i < m_amends[NumberChannel].size(); i++)
     {
-        double sScale = mAmends[NumberChannel][i].sScale;
-        double mScale = mAmends[NumberChannel][i].mScale;
-        int sZeroValue = mAmends[NumberChannel][i].sZeroValue;
-        int sNumber = mAmends[NumberChannel][i].sNumber;
+        double sScale = m_amends[NumberChannel][i].sScale;
+        double mScale = m_amends[NumberChannel][i].mScale;
+        int sZeroValue = m_amends[NumberChannel][i].sZeroValue;
+        int sNumber = m_amends[NumberChannel][i].sNumber;
 
-        int sValue = BufferController::Inst()->GetBufferR()->GetSensorValue(
-                    aSensors->at(sNumber).getChannel(), aSensors->at(sNumber).getParam() ) ;
+        int sValue = BufferController::Inst()->getBufferRecv()->getSensorValue(
+                    m_sensors->at(sNumber).getChannel(), m_sensors->at(sNumber).getParam() ) ;
 
-        int spNumber = mAmends[NumberChannel][i].spNumber;
+        int spNumber = m_amends[NumberChannel][i].spNumber;
         qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
 
         double Amend = 0;
 
-        if(mAmends[NumberChannel][i].Type == 2)
+        if(m_amends[NumberChannel][i].Type == 2)
         {
-            while(mDriveMatVector[mLineId].Time < CTime){ mLineId++; }
+            while(m_driveMatVector[m_lineId].Time < CTime){ m_lineId++; }
 
-            double sZValue = mDriveMatVector[mLineId].SensorsData[spNumber];
+            double sZValue = m_driveMatVector[m_lineId].SensorsData[spNumber];
 
             qDebug() << "Time: "  << QString::number(CTime) <<
                         " SValue: "<< QString::number(sZValue) << endl;
@@ -277,13 +277,13 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
     return CorrAngle;
 }
 
-void MoveCorrector::SkipSpace(std::locale loc, std::string str, unsigned int *i)
+void MoveCorrector::skipSpace(std::locale loc, std::string str, unsigned int *i)
 {
     while( std::isspace(str[(*i)], loc) )
         (*i)++;
 }
 
-void MoveCorrector::ReadValue(std::string *temp, std::locale loc, unsigned int *i, std::string str)
+void MoveCorrector::readValue(std::string *temp, std::locale loc, unsigned int *i, std::string str)
 {
     while( !std::isspace(str[*i], loc) && *i < str.length() )
     {

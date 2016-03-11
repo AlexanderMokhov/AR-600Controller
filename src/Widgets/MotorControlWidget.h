@@ -49,7 +49,7 @@ private:
 
     Ui::MotorControlWidget *ui;
     MotorTableModel * mModel;
-    BufferReceive *mReadBuffer;
+    BufferRecv *mReadBuffer;
     BufferSend *mWriteBuffer;
     int currentRow;
     int CurrentNumber;

@@ -77,11 +77,11 @@ void MotorTableWidget::UpdatePos()
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
         int Number = (*it).second.getNumber();
-        QString cPos = QString::number(BufferController::Inst()->GetBufferR()->GetMotorAngle(Number));
+        QString cPos = QString::number(BufferController::Inst()->getBufferRecv()->getMotorAngle(Number));
         mModel->setData(mModel->index(i,3),cPos,Qt::EditRole);
 
         //начало чтения статуса
-        unsigned char status = BufferController::Inst()->GetBufferR()->GetMotorState(Number);
+        unsigned char status = BufferController::Inst()->getBufferRecv()->getMotorState(Number);
         QString statusString;
 
         if((unsigned char)(status & 0) == 0)
@@ -139,7 +139,7 @@ void MotorTableWidget::onSetEnableAction()
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->getNumber();
     bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).getEnable();
-    BufferController::Inst()->GetBufferS()->SetMotorEnable(Number, !isEnable);
+    BufferController::Inst()->getBufferSend()->setMotorEnable(Number, !isEnable);
     SettingsStorage::Inst()->GetMotors()->at(Number).setEnable(!isEnable);
     mModel->setData(mModel->index(cRow,11), QString::number(!isEnable));
 }

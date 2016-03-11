@@ -10,65 +10,68 @@
 class BufferSend
 {
 private:
-    char mRAW [BufferSize];//массив сырых данных
-    std::mutex mLocker;//мьютекс
-    DeviceData mMotorData[ChannelsCount];
+    char m_RAW [bufferSize];//массив сырых данных
+    std::mutex m_locker;//мьютекс
+    deviceData m_motorsData[channelsNumber];
+
+    void writeInt16(uint16_t address, int16_t value);
+
 public:
     BufferSend(void);
     ~BufferSend(void);
 
     //инициализация
-    void Init( unsigned char RAW_other[] );
-    void Init(void);
-    const char *GetRAW();
-    int GetSize(){ return BufferSize; }
+    void initialize( unsigned char RAW_other[] );
+    void initialize(void);
+    const char *getRAW();
+    int getSize(){ return bufferSize; }
 
 	//датчик усилия
-    void SetSensorUCH0( short Number, short value );
-    void SetSensorUCH1( short Number, short value );
-    void SetSensorUCH2( short Number, short value );
-    void SetSensorUCH3( short Number, short value );
+    void setSensorUCH0( short Number, short value );
+    void setSensorUCH1( short Number, short value );
+    void setSensorUCH2( short Number, short value );
+    void setSensorUCH3( short Number, short value );
 
     //управление моторами
-    void SetMotorAngle( short Number, short value );
-    void SetMotorCalibration( short Number, short value );
-    void SetMotorStiff( short Number, short value );//установить KP
-    void SetMotorDump( short Number, short value );//установить KI
-    void SetMotorTorque( short Number, short value );//установить KD
-    void SetMotorMinAngle( short Number, short value );
-    void SetMotorMaxAngle( short Number, short value );
-    void SetMotorEnable( short Number, bool value );
-    void SetMotorReverce( short Number, bool value );
+    void setMotorAngle( short Number, short value );
+    void setMotorShiftValue( short Number, short value );
+    void setMotorPGate( short Number, short value );//установить KP
+    void setMotorIGate( short Number, short value );//установить KI
+    void setMotorDGate( short Number, short value );//установить KD
+    void setMotorMinAngle( short Number, short value );
+    void setMotorMaxAngle( short Number, short value );
+    void setMotorEnable( short Number, bool value );
+    void setMotorReverceState( short Number, bool value );
 
-    short GetMotorTorque( short Number);
+    short getMotorDGate( short Number);
     //изменение состояния мотора
-    void MotorStop( short Number );//динамическое торможение
-    void MotorTrace( short Number );//режим следование за положением
-    void MotorRelax( short Number );//убрать фиксацию мотора
-    void MotorStopBrake( short Number );//режим фиксации
+    void motorStop( short Number );//динамическое торможение
+    void motorTrace( short Number );//режим следование за положением
+    void motorRelax( short Number );//убрать фиксацию мотора
+    void motorStopBrake( short Number );//режим фиксации
 
     //управление питанием
-    void PowerOn61(void);
-    void PowerOn62(void);
-    void PowerOn81(void);
-    void PowerOn82(void);
-    void PowerOn12(void);
-    void PowerOn48(void);
+    void onPower6_1(void);
+    void onPower6_2(void);
+    void onPower8_1(void);
+    void onPower8_2(void);
+    void onPower12(void);
+    void onPower48(void);
 
-    void PowerOff61(void);
-    void PowerOff62(void);
-    void PowerOff81(void);
-    void PowerOff82(void);
-    void PowerOff12(void);
-    void PowerOff48(void);
+    void offPower6_1(void);
+    void offPower6_2(void);
+    void offPower8_1(void);
+    void offPower8_2(void);
+    void offPower12(void);
+    void offPower48(void);
 
     //управление звуком
-    void MuteOn(void);
-    void MuteOff(void);
+    void onMute(void);
+    void offMute(void);
 
     //добавить номер номер устройства в отправляемый буфер
-    void SetDeviceChannel( short NumberDevice, short NumberChannel );
+    void setDeviceChannel( short NumberDevice, short NumberChannel );
 
-    std::mutex *GetLocker();
+    std::mutex *getLocker();
 };
 

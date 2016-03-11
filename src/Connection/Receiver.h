@@ -10,19 +10,13 @@
 #include "Buffers/BufferController.h"
 #include "Management/SettingsStorage.h"
 
-#include "Libs/Sockets/Socket.h"
-
 class Receiver : public QThread
 {
     Q_OBJECT
 private:
-
-    SOCKET ReceiveSocket; // 01.02.2016
-
-    QUdpSocket *mUdpSocketResiver;
-    BufferReceive *mReceiveBuffer;
-    QTime *mTime;
-    void PrintConnectionState();
+    QUdpSocket *m_udpSocketResiver;
+    QTime *m_time;
+    void printConnectionState();
     volatile bool isRunning;
 public:
     explicit Receiver( QObject *parent = 0 );
@@ -31,7 +25,7 @@ public:
     void Connect();
     void Disconnect();
 private slots:
-    void ProcessPendingDatagrams();
+    void processPendingDatagrams();
 signals:
     void ReadyData();
 };

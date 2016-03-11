@@ -37,7 +37,7 @@ private:
     RecordController(RecordController const&);
     static RecordController* mInst;
 public:
-    BufferReceive *mReadBuffer;
+    BufferRecv *mReadBuffer;
 
     std::map<int,int> mDriversMap;
     std::map<int,int> mSensorsMap;

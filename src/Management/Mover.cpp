@@ -4,7 +4,7 @@ Mover::Mover(QObject *parent) : QThread(parent)
 {
     isRunning = false;
     isRestart = false;
-    mDelay = 5;
+    m_delay = 5;
     isPrep = false;
 }
 
@@ -20,54 +20,54 @@ pointStart:
     isRestart = false;
     isRunning = true;
 
-    mTimer = new QTimer;
-    mTimer->setInterval(mDelay);
-    connect(mTimer, SIGNAL(timeout()), SLOT(Move()), Qt::DirectConnection);
-    mTimer->start();
+    m_timer = new QTimer;
+    m_timer->setInterval(m_delay);
+    connect(m_timer, SIGNAL(timeout()), SLOT(Move()), Qt::DirectConnection);
+    m_timer->start();
     //Запускаем цикл обработки событий
     exec();
     //Завершился цикл обработки событий
-    mTimer->stop();
+    m_timer->stop();
 
     isRunning = false;
     if(isRestart) goto pointStart;
     //нить потока удалена
 }
 
-void Mover::StartMove()
+void Mover::startMove()
 {
-    MoveController::Inst()->StartPlay();
+    MoveController::Inst()->startPlay();
     if( !isRunning ) start();
 }
 
-void Mover::StartMoveOnline()
+void Mover::startMoveOnline()
 {
-    MoveController::Inst()->StartPlayOnline();
+    MoveController::Inst()->startPlayOnline();
     if( !isRunning ) start();
 }
 
-void Mover::StopMove()
+void Mover::stopMove()
 {
-    MoveController::Inst()->StopPlay();
+    MoveController::Inst()->stopPlay();
     isPrep = false;
 }
 
-void Mover::StartGoToPos(bool isNullPos)
+void Mover::startGoToPos(bool isNullPos)
 {
-    MoveController::Inst()->StartGoPos(!isNullPos);
+    MoveController::Inst()->startGoPos(!isNullPos);
     isPrep = true;
     if( !isRunning ) start();
 }
 
-void Mover::StopGoToPos()
+void Mover::stopGoToPos()
 {
-    MoveController::Inst()->StopGoPos();
+    MoveController::Inst()->stopGoPos();
     isPrep = false;
 }
 
 void Mover::Move()
 {
-    MoveController::Inst()->DoStepWork();
+    MoveController::Inst()->doStepWork();
     //Если закончилось выполнение движения
     if(MoveController::Inst()->getState() == States::NotWork)
     {

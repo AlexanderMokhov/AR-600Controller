@@ -16,8 +16,8 @@ class Mover : public QThread
 
     Q_OBJECT
 private:
-    QTimer *mTimer;
-    int mDelay;
+    QTimer *m_timer;
+    int m_delay;
     bool isRunning;
     bool isRestart;
 
@@ -28,12 +28,12 @@ public:
     ~Mover();
     void run();
 
-    void StartMove();
-    void StartMoveOnline();
-    void StopMove();
+    void startMove();
+    void startMoveOnline();
+    void stopMove();
 
-    void StartGoToPos( bool isNullPos );
-    void StopGoToPos();
+    void startGoToPos( bool isNullPos );
+    void stopGoToPos();
 
 private slots:
     void Move();

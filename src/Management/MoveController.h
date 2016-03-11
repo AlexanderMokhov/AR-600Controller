@@ -58,17 +58,11 @@ private:
     ~MoveController(){}
     MoveController(MoveController const&);
 
-    static MoveController* mInst;
-    States mState; //текущее состояние
-    std::mutex mLocker; //мьютекс
-    QTime mTime;
-    std::map<int,Motor> * mMotors;
-
-    //для выполнения команд из файла
-    int mCommandId;
-    int mDuration;
-    int mCountRows;
-    int mSendDelay;
+    static MoveController* m_inst;
+    States m_state; //текущее состояние
+    std::mutex m_locker; //мьютекс
+    QTime m_time;
+    std::map<int,Motor> * m_motors;
 
     //для перехода в заданный угол
     int mTimeToGo, NewTimeToGo;
@@ -82,49 +76,44 @@ private:
     std::map<int,PosData> mGoToPosData;
     bool mGoPosMode;
     int mMotorExistCount;
-    void SkipSpace(std::locale loc, std::string str, unsigned int *i);
-    void ReadValue(std::string *temp, std::locale loc, unsigned int *i, std::string str);
-
 public:
-    static MoveController* Inst(){return mInst;}
-    static void Init(){delete mInst; mInst = new MoveController;}
+    static MoveController* Inst(){return m_inst;}
+    static void Init(){delete m_inst; m_inst = new MoveController;}
 
-    void DoStepWork();
+    void doStepWork();
 
-    bool OpenFile(std::string fileName);
-    int GetCountRows(){return mCountRows;}
-    int GetDuration(){return mDuration;}
-    States getState(){ return mState; }
+    bool openFile(std::string fileName);
+    States getState(){ return m_state; }
 
     //для воспроизведения последовательности команд
-    void StepPlay();
-    void StartPlay();
-    void StartingPlay();
-    void StopPlay();
-    void StoppingPlay();
+    void stepPlay();
+    void startPlay();
+    void startingPlay();
+    void stopPlay();
+    void stoppingPlay();
 
     // для вопроизведения онлайн
-    void StepPlayOnline();
-    void StartPlayOnline() { mState = States::MovePlayOnline; }
+    void stepPlayOnline();
+    void startPlayOnline() { m_state = States::MovePlayOnline; }
 
     //для перехода в заданный угол (один двигатель)
-    void StepGoToAngle();
-    void StartGoToAngle(int Number, int DestAngle, int Time);
-    void StartingGoToAngle();
-    void StopGoToAngle();
-    void StoppingGoToAngle();
+    void stepGoToAngle();
+    void startGoToAngle(int Number, int DestAngle, int Time);
+    void startingGoToAngle();
+    void stopGoToAngle();
+    void stoppingGoToAngle();
 
     //для перехода в начальную позицию (все двигатели)
-    void StartGoPos(bool isCommand);
-    void StartingGoPos();
-    void SetPosData(int Number, int DestPos, int StartPos);
-    void SetupGoPos(long TimeToGo);
-    void StepGoPos();
-    void StopGoPos();
-    void StoppingGoPos();
+    void startGoPos(bool isCommand);
+    void startingGoPos();
+    void setPosData(int Number, int DestPos, int StartPos);
+    void setupGoPos(long TimeToGo);
+    void stepGoPos();
+    void stopGoPos();
+    void stoppingGoPos();
 
-    int UserStiff = 0;
-    int UserDump = 0;
+    int userStiff = 0;
+    int userDump = 0;
 
     bool useUserStiff = false;
     bool useUserDump = false;
@@ -134,7 +123,6 @@ signals:
     void InitEnd();
 
     void PlayEnd();
-    void setColor(int color);
 };
 
 

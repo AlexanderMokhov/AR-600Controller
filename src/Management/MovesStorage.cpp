@@ -1,22 +1,22 @@
 #include "MovesStorage.h"
 
-MovesStorage * MovesStorage::mInst = 0;
+MovesStorage * MovesStorage::m_inst = 0;
 
 MovesStorage::MovesStorage()
 {
-    mMoveID = 0;
-    mMotors = SettingsStorage::Inst()->GetMotors();
-    LoadForwardMoves();
-    LoadBackMoves();
+    m_moveID = 0;
+    m_motors = SettingsStorage::Inst()->GetMotors();
+    loadForwardMoves();
+    loadBackMoves();
 }
 
-void MovesStorage::SkipSpace(locale loc, string str, int *pos)
+void MovesStorage::skipSpace(locale loc, string str, int *pos)
 {
     while( std::isspace(str[(*pos)], loc) )
         (*pos)++;
 }
 
-void MovesStorage::ReadValue(string *temp, locale loc, int *pos, string str)
+void MovesStorage::readValue(string *temp, locale loc, int *pos, string str)
 {
     while( !std::isspace(str[*pos], loc) && *pos < str.length() )
     {
@@ -25,9 +25,9 @@ void MovesStorage::ReadValue(string *temp, locale loc, int *pos, string str)
     }
 }
 
-bool MovesStorage::OpenFile(string fileName)
+bool MovesStorage::openFile(string fileName)
 {
-    if(LoadFile(fileName))
+    if(loadFile(fileName))
     {
         //qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
         //qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
@@ -37,15 +37,15 @@ bool MovesStorage::OpenFile(string fileName)
         return false;
 }
 
-bool MovesStorage::LoadForwardMoves()
+bool MovesStorage::loadForwardMoves()
 {
-    if(LoadFile(SettingsStorage::Inst()->GetFileForward()))
+    if(loadFile(SettingsStorage::Inst()->GetFileForward()))
     {
-        mForwardMoves = mMoves;
-        mForwardDuration = mDuration;
-        mForwardCountRows = mCountRows;
-        mMoves.clear();
-        mCountRows = 0;
+        m_forwardMoves = m_moves;
+        m_forwardDuration = m_duration;
+        m_forwardRowsNumber = m_rowsNumber;
+        m_moves.clear();
+        m_rowsNumber = 0;
         qDebug() << "Cчитан файл движения вперед" << endl;
         return true;
     }
@@ -56,15 +56,15 @@ bool MovesStorage::LoadForwardMoves()
     }
 }
 
-bool MovesStorage::LoadBackMoves()
+bool MovesStorage::loadBackMoves()
 {
-    if(LoadFile(SettingsStorage::Inst()->GetFileBack()))
+    if(loadFile(SettingsStorage::Inst()->GetFileBack()))
     {
-        mBackMoves = mMoves;
-        mBackDuration = mDuration;
-        mBackCountRows = mCountRows;
-        mMoves.clear();
-        mCountRows = 0;
+        m_backMoves = m_moves;
+        m_backDuration = m_duration;
+        m_backRowsNumber = m_rowsNumber;
+        m_moves.clear();
+        m_rowsNumber = 0;
         qDebug() << "Cчитан файл движения назад" << endl;
         return true;
     }
@@ -75,14 +75,14 @@ bool MovesStorage::LoadBackMoves()
     }
 }
 
-bool MovesStorage::LoadFile(std::string filename)
+bool MovesStorage::loadFile(std::string filename)
 {
     std::ifstream file(filename.c_str());
     if( file.is_open() )
     {
         //очищаем список команд
-        mMoves.clear();
-        mCountRows = 0;
+        m_moves.clear();
+        m_rowsNumber = 0;
 
         std::string line;
         MoveCommand nextCommand;
@@ -116,25 +116,25 @@ bool MovesStorage::LoadFile(std::string filename)
             int pos = 0;
 
             //читаем номер привода
-            SkipSpace(loc, line, &pos);
-            ReadValue(&temp, loc, &pos, line);
+            skipSpace(loc, line, &pos);
+            readValue(&temp, loc, &pos, line);
 
             //записываем номер привода
             int Number = atoi( temp.c_str() );
             temp.clear();
 
             //читаем время (как целое число)
-            SkipSpace(loc, line, &pos);
+            skipSpace(loc, line, &pos);
             while( line[pos] != '.' ){ temp += line.at(pos); pos++; } pos++;
-            ReadValue(&temp, loc, &pos, line);
+            readValue(&temp, loc, &pos, line);
 
             //записываем время
             int Time = atoi( temp.c_str() );
             temp.clear();
 
             //читаем угол
-            SkipSpace(loc, line, &pos);
-            ReadValue(&temp, loc, &pos, line);
+            skipSpace(loc, line, &pos);
+            readValue(&temp, loc, &pos, line);
 
             //записываем угол
             double Angle = atof( temp.c_str() );
@@ -143,25 +143,25 @@ bool MovesStorage::LoadFile(std::string filename)
             //Переводим угол в градусы*100
             Angle = (180.0 / M_PI) * Angle * 100.0;
 
-            SkipSpace(loc, line, &pos);
+            skipSpace(loc, line, &pos);
 
             if(line[pos] != '\0') //проверяем есть ли коэффициэнты PID
             {
                 //значит здесь записаны коэффициенты PID
                 //читаем KP
-                ReadValue(&temp, loc, &pos, line);
+                readValue(&temp, loc, &pos, line);
                 double KP = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KI
-                SkipSpace(loc, line, &pos);
-                ReadValue(&temp, loc, &pos, line);
+                skipSpace(loc, line, &pos);
+                readValue(&temp, loc, &pos, line);
                 double KI = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KD
-                SkipSpace(loc, line, &pos);
-                ReadValue(&temp, loc, &pos, line);
+                skipSpace(loc, line, &pos);
+                readValue(&temp, loc, &pos, line);
                 double KD = atof( temp.c_str() );
                 temp.clear();
 
@@ -170,25 +170,25 @@ bool MovesStorage::LoadFile(std::string filename)
                 mPID.Dump = KI;
                 mPID.Torque = KD;
 
-                SkipSpace(loc, line, &pos);
+                skipSpace(loc, line, &pos);
 
                 if(line[pos] != '\0') //проверяем есть ли коэффициэнты проп. PID
                 {
                     //значит здесь записаны коэффициенты проп. PID
                     //читаем KP
-                    ReadValue(&temp, loc, &pos, line);
+                    readValue(&temp, loc, &pos, line);
                     double KPFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KI
-                    SkipSpace(loc, line, &pos);
-                    ReadValue(&temp, loc, &pos, line);
+                    skipSpace(loc, line, &pos);
+                    readValue(&temp, loc, &pos, line);
                     double KIFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KD
-                    SkipSpace(loc, line, &pos);
-                    ReadValue(&temp, loc, &pos, line);
+                    skipSpace(loc, line, &pos);
+                    readValue(&temp, loc, &pos, line);
                     double KDFactor = atof( temp.c_str() );
                     temp.clear();
 
@@ -210,14 +210,14 @@ bool MovesStorage::LoadFile(std::string filename)
             nextCommand.PIDs = mPID;
 
             //добавляем команду в список
-            mMoves.push_back(nextCommand);
-            mCountRows++;
-            mDuration = Time;//в микросекундах
+            m_moves.push_back(nextCommand);
+            m_rowsNumber++;
+            m_duration = Time;//в микросекундах
         }
 
-        mMoveID = 0;
-        qDebug() << "считано " << QString::number(mCountRows) << " строк" << endl;
-        qDebug() << "Время записи " << QString::number((double)mDuration/1e6) << " секунд" << endl;
+        m_moveID = 0;
+        qDebug() << "считано " << QString::number(m_rowsNumber) << " строк" << endl;
+        qDebug() << "Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
 
         file.close();
         return true;
@@ -231,16 +231,16 @@ bool MovesStorage::LoadFile(std::string filename)
 
 void MovesStorage::setForwardMoves()
 {
-    mMoves = mForwardMoves;
-    mDuration = mForwardDuration;
-    mCountRows = mForwardCountRows;
+    m_moves = m_forwardMoves;
+    m_duration = m_forwardDuration;
+    m_rowsNumber = m_forwardRowsNumber;
 }
 
 void MovesStorage::setBackMoves()
 {
-    mMoves = mBackMoves;
-    mDuration = mBackDuration;
-    mCountRows = mBackCountRows;
+    m_moves = m_backMoves;
+    m_duration = m_backDuration;
+    m_rowsNumber = m_backRowsNumber;
 }
 
 

@@ -71,18 +71,18 @@ void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
 
     if ( !fileName.isEmpty() )
     {
-        bool isOk = MoveCorrector::Inst()->OpenDriveMatFile(fileName.toStdString());
+        bool isOk = MoveCorrector::Inst()->openDriveMatFile(fileName.toStdString());
 
         if(isOk)
         {
             ui->DRIVEMATPathTextBox->setText(fileName);
             ui->MessageTextBox->append( "Прочитан DRIVEMAT.TXT \n");
 
-            ui->MessageTextBox->append( "Прочитано " + QString::number(MoveCorrector::Inst()->mCountRows) +
+            ui->MessageTextBox->append( "Прочитано " + QString::number(MoveCorrector::Inst()->m_RowsNumber) +
                                         " строк" + "\n");
 
             ui->MessageTextBox->append( "Время записи " +
-                                        QString::number((double)MoveCorrector::Inst()->mDuration/1e6) +
+                                        QString::number((double)MoveCorrector::Inst()->m_duration/1e6) +
                                         " секунд" + "\n");
 
             qDebug() << "Файл DRIVEMAT успешно загружен из " << fileName << endl;
@@ -99,16 +99,16 @@ void MoveControlWidget::on_ButtonPlayPause_clicked()
 {
     isMoveFile = true;
     MoveController::Inst()->useUserStiff = ui->cBoxUseUserStiff->isChecked();
-    MoveController::Inst()->UserStiff = ui->sBoxUserStiffValue->value();
+    MoveController::Inst()->userStiff = ui->sBoxUserStiffValue->value();
     MoveController::Inst()->useUserDump = ui->cBoxUseUserDump->isChecked();
-    MoveController::Inst()->UserDump = ui->sBoxUserDumpValue->value();
-    mMover->StartGoToPos(false);
+    MoveController::Inst()->userDump = ui->sBoxUserDumpValue->value();
+    mMover->startGoToPos(false);
 }
 
 void MoveControlWidget::on_ButtonStop_clicked()
 {
     isMoveFile = false;
-    mMover->StopMove();
+    mMover->stopMove();
 
     if(IsLog)
     {
@@ -126,24 +126,24 @@ void MoveControlWidget::on_checkBoxLog_clicked(bool checked)
 void MoveControlWidget::on_ButtonGoStartPos_clicked()
 {
     isMoveFile = false;
-    mMover->StartGoToPos(true);
+    mMover->startGoToPos(true);
 }
 
 void MoveControlWidget::on_ButtonStartFile_clicked()
 {
     isMoveFile = false;
-    mMover->StartGoToPos(false);
+    mMover->startGoToPos(false);
 }
 
 void MoveControlWidget::startMove()
 {
     if(isMoveFile)
     {
-        mMover->StartMove();
+        mMover->startMove();
 
         if(IsLog)
         {
-            emit StartWriteRecord(MovesStorage::Inst()->GetDuration()/1e3);
+            emit StartWriteRecord(MovesStorage::Inst()->getDuration()/1e3);
         }
         emit PlayStart();
     }
@@ -151,7 +151,7 @@ void MoveControlWidget::startMove()
 
 void MoveControlWidget::startMoveOnline()
 {
-    mMover->StartMoveOnline();
+    mMover->startMoveOnline();
 }
 
 void MoveControlWidget::StartPlayFile(bool mode)
@@ -159,7 +159,7 @@ void MoveControlWidget::StartPlayFile(bool mode)
     if(!mode)
     {
         isMoveFile = true;
-        mMover->StartGoToPos(false);
+        mMover->startGoToPos(false);
         emit PlayStart();
     }
 }
@@ -169,13 +169,13 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
     if (!fileName.isEmpty())
     {
         ui->FilePathTextBox->setText(fileName);
-        bool isOk = MoveController::Inst()->OpenFile(fileName.toStdString());
+        bool isOk = MoveController::Inst()->openFile(fileName.toStdString());
         if(isOk)
         {
             qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
             qDebug() << "Команды успешно прочитаны" <<endl;
-            int CountRows = MovesStorage::Inst()->GetCountRows();
-            int Duration = MovesStorage::Inst()->GetDuration();
+            int CountRows = MovesStorage::Inst()->getRowsNumber();
+            int Duration = MovesStorage::Inst()->getDuration();
 
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
@@ -195,13 +195,13 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
 void MoveControlWidget::on_cBoxUseUserStiff_clicked(bool checked)
 {
     MoveController::Inst()->useUserStiff = checked;
-    MoveController::Inst()->UserStiff = ui->sBoxUserStiffValue->value();
+    MoveController::Inst()->userStiff = ui->sBoxUserStiffValue->value();
 }
 
 void MoveControlWidget::on_cBoxUseUserDump_clicked(bool checked)
 {
     MoveController::Inst()->useUserDump = checked;
-    MoveController::Inst()->UserDump = ui->sBoxUserDumpValue->value();
+    MoveController::Inst()->userDump = ui->sBoxUserDumpValue->value();
 }
 
 void MoveControlWidget::startStdMove()

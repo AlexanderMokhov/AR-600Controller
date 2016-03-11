@@ -4,13 +4,16 @@
 #include <QDebug>
 
 
+void BufferSend::writeInt16(uint16_t address, int16_t value)
+{
+    m_RAW[address + 1] = (BYTE)(value >> 8);
+    m_RAW[address] = value;
+}
+
 BufferSend::BufferSend(void)
 {
-    for(int i=0;i<1472;i++)
-    {
-        mRAW[i]=0;
-    }
-    PowerOn12();
+    for(int i = 0; i < bufferSize; i++) m_RAW[i] = 0;
+    onPower12();
 }
 
 
@@ -20,342 +23,310 @@ BufferSend::~BufferSend(void)
 }
 
 //инициализируем (читаем)
-void BufferSend::Init(unsigned char RAW_other[])
+void BufferSend::initialize(unsigned char RAW_other[])
 {
-    mLocker.lock();
-    for(int i=0;i<1472;i++)
-	{
-        mRAW[i]=RAW_other[i];
-	}
-    mLocker.unlock();
+    m_locker.lock();
+    for(int i = 0; i < bufferSize; i++)  m_RAW[i] = RAW_other[i];
+    m_locker.unlock();
 }
 
 //инициализируем (установка 12 В)
-void BufferSend::Init(void)
+void BufferSend::initialize(void)
 {
-    mLocker.lock();
-    for(int i=0;i<1472;i++)
-	{
-        mRAW[i]=0;
-	}
-    PowerOn12();
-    mLocker.unlock();
+    m_locker.lock();
+    for(int i = 0; i < bufferSize; i++) m_RAW[i] = 0;
+    onPower12();
+    m_locker.unlock();
 }
 
-const char *BufferSend::GetRAW()
+const char *BufferSend::getRAW()
 {
-    return mRAW;
+    return m_RAW;
 }
 
 //установка питания
 
 //включить 6 В (1)
-void BufferSend::PowerOn61(void)
+void BufferSend::onPower6_1(void)
 {
-    mLocker.lock();
-    mRAW[1409] |= 1;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] |= 1;
+    m_locker.unlock();
 }
 
 //включить 6 В (2)
-void BufferSend::PowerOn62(void)
+void BufferSend::onPower6_2(void)
 {
-    mLocker.lock();
-    mRAW[1409] |= 2;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] |= 2;
+    m_locker.unlock();
 }
 
 //включить 8 В (1)
-void BufferSend::PowerOn81(void)
+void BufferSend::onPower8_1(void)
 {
-    mLocker.lock();
-    mRAW[1409] |= 4;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] |= 4;
+    m_locker.unlock();
 }
 
 //включить 8 В (2)
-void BufferSend::PowerOn82(void)
+void BufferSend::onPower8_2(void)
 {
-    mLocker.lock();
-    mRAW[1409] |= 8;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] |= 8;
+    m_locker.unlock();
 }
 
 //включить 12 В
-void BufferSend::PowerOn12(void)
+void BufferSend::onPower12(void)
 {
-    mLocker.lock();
-    mRAW[1409] |= 16;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] |= 16;
+    m_locker.unlock();
 }
 
 //включить 48 В
-void BufferSend::PowerOn48(void)
+void BufferSend::onPower48(void)
 {
-    mLocker.lock();
-    mRAW[1409] |= 32;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] |= 32;
+    m_locker.unlock();
 }
 
 //выключить 6 В (1)
-void BufferSend::PowerOff61(void)
+void BufferSend::offPower6_1(void)
 {
-    mLocker.lock();
-    mRAW[1409] &= (255-1);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] &= (255-1);
+    m_locker.unlock();
 }
 
 //выключить 6 В (2)
-void BufferSend::PowerOff62(void)
+void BufferSend::offPower6_2(void)
 {
-    mLocker.lock();
-    mRAW[1409] &= (255-2);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] &= (255-2);
+    m_locker.unlock();
 }
 
 //выключить 8 В (1)
-void BufferSend::PowerOff81(void)
+void BufferSend::offPower8_1(void)
 {
-    mLocker.lock();
-    mRAW[1409] &= (255-4);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] &= (255-4);
+    m_locker.unlock();
 }
 
 //выключить 8 В (2)
-void BufferSend::PowerOff82(void)
+void BufferSend::offPower8_2(void)
 {
-    mLocker.lock();
-    mRAW[1409] &= (255-8);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] &= (255-8);
+    m_locker.unlock();
 }
 
 //выключить 12 В
-void BufferSend::PowerOff12(void)
+void BufferSend::offPower12(void)
 {
-    mLocker.lock();
-    mRAW[1409] &= (255-16);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] &= (255-16);
+    m_locker.unlock();
 }
 
 //выключить 48 В
-void BufferSend::PowerOff48(void)
+void BufferSend::offPower48(void)
 {
-    mLocker.lock();
-    mRAW[1409] &= (255-32);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] &= (255-32);
+    m_locker.unlock();
 }
 
 //включить беззвучный режим
-void BufferSend::MuteOn(void)
+void BufferSend::onMute(void)
 {
-    mLocker.lock();
-    mRAW[1409] |= 128;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] |= 128;
+    m_locker.unlock();
 }
 
 //выключить беззвучный режим
-void BufferSend::MuteOff(void)
+void BufferSend::offMute(void)
 {
-    mLocker.lock();
-    mRAW[1409] &= (255-128);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[POWER_ADDRESS + 1] &= (255-128);
+    m_locker.unlock();
 }
 
-void BufferSend::SetDeviceChannel(short NumberDevice, short NumberChannel)
+void BufferSend::setDeviceChannel(short NumberDevice, short NumberChannel)
 {
-    mMotorData[NumberDevice].Channel = NumberChannel;
-    mLocker.lock();
-    mRAW[NumberChannel * 16] = NumberDevice;
-    mLocker.unlock();
+    m_motorsData[NumberDevice].channel = NumberChannel;
+    m_locker.lock();
+    writeInt16(NumberChannel * 16, NumberDevice);
+    m_locker.unlock();
 }
 
-std::mutex *BufferSend::GetLocker()
+std::mutex *BufferSend::getLocker()
 {
-    return &mLocker;
+    return &m_locker;
 }
 
 //установка значений сенсоров
 
-void BufferSend::SetSensorUCH0(short Number, short value)
+void BufferSend::setSensorUCH0(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 8] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 9] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH0, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetSensorUCH1(short Number, short value)
+void BufferSend::setSensorUCH1(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 10] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 11] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH1, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetSensorUCH2(short Number, short value)
+void BufferSend::setSensorUCH2(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 12] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 13] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH2, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetSensorUCH3(short Number, short value)
+void BufferSend::setSensorUCH3(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 14] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 15] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH3, value);
+    m_locker.unlock();
 }
 //установка значений моторов
 
 //повернуть мотор на угол
-void BufferSend::SetMotorAngle(short Number, short value)
+void BufferSend::setMotorAngle(short Number, short value)
 {
-    short MinPos = mMotorData[Number].MinAngle;
-    short MaxPos = mMotorData[Number].MaxAngle;
-    if(value < MinPos)
+    short minAngle = m_motorsData[Number].minAngle;
+    short maxAngle = m_motorsData[Number].maxAngle;
+    if(value < minAngle)
     {
         qDebug() << QString::number(Number) << " !!!Значение" << QString::number(value)
-                 << "ниже минимума" << QString::number(MinPos) << endl;
-        value = MinPos;
+                 << "ниже минимума" << QString::number(minAngle) << endl;
+        value = minAngle;
 
     }
-    else if(value > MaxPos)
+    else if(value > maxAngle)
     {
         qDebug() << QString::number(Number) << " !!!Значение" << QString::number(value)
-                 << "выше максимума" << QString::number(MaxPos) << endl;
-        value = MaxPos;
+                 << "выше максимума" << QString::number(maxAngle) << endl;
+        value = maxAngle;
 
     }
-    if(mMotorData[Number].isReverce)
-    {
-        value = -1*value;
-    }
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 3] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 2] = value;
-    mLocker.unlock();
+    if(m_motorsData[Number].isReverce) value = -1 * value;
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + MOTOR_ANGLE, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetMotorCalibration(short Number, short value)
+void BufferSend::setMotorShiftValue(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 7] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 6] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + MOTOR_SHIFT, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetMotorStiff(short Number, short value)
+void BufferSend::setMotorPGate(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 9] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 8] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + MOTOR_P_GATE, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetMotorDump(short Number, short value)
+void BufferSend::setMotorIGate(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 11] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 10] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel *16 + MOTOR_I_GATE, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetMotorTorque(short Number, short value)
+void BufferSend::setMotorDGate(short Number, short value)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 5] = (value>>8);
-    mRAW[mMotorData[Number].Channel * 16 + 4] = value;
-    mLocker.unlock();
+    m_locker.lock();
+    writeInt16(m_motorsData[Number].channel * 16 + MOTOR_P_GATE, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetMotorMinAngle(short Number, short value)
+void BufferSend::setMotorMinAngle(short Number, short value)
 {
-    mMotorData[Number].MinAngle = value;//запоминаем отображаемое значение
-    mLocker.lock();
-    if(mMotorData[Number].isReverce)
-    {
-        mRAW[mMotorData[Number].Channel * 16 + 15] = (-1*value>>8);
-        mRAW[mMotorData[Number].Channel * 16 + 14] = -1*value;
-    }
+    m_motorsData[Number].minAngle = value;//запоминаем отображаемое значение
+    m_locker.lock();
+    if(m_motorsData[Number].isReverce)
+        writeInt16(m_motorsData[Number].channel * 16 + MOTOR_MAX_ANGLE, -1 * value);
     else
-    {
-        mRAW[mMotorData[Number].Channel * 16 + 13] = (value>>8);
-        mRAW[mMotorData[Number].Channel * 16 + 12] = value;
-    }
-    mLocker.unlock();
+        writeInt16(m_motorsData[Number].channel * 16 + MOTOR_MIN_ANGLE, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetMotorMaxAngle(short Number, short value)
+void BufferSend::setMotorMaxAngle(short Number, short value)
 {
-    mMotorData[Number].MaxAngle = value;//запоминаем отображаемое значение
-    mLocker.lock();
-    if(mMotorData[Number].isReverce)
-    {
-        mRAW[mMotorData[Number].Channel * 16 + 13] = (-1*value>>8);
-        mRAW[mMotorData[Number].Channel * 16 + 12] = -1*value;
-    }
+    m_motorsData[Number].maxAngle = value;//запоминаем отображаемое значение
+    m_locker.lock();
+    if(m_motorsData[Number].isReverce)
+        writeInt16(m_motorsData[Number].channel * 16 + MOTOR_MIN_ANGLE, -1 * value);
     else
-    {
-        mRAW[mMotorData[Number].Channel * 16 + 15] = (value>>8);
-        mRAW[mMotorData[Number].Channel * 16 + 14] = value;
-    }
-    mLocker.unlock();
+        writeInt16(m_motorsData[Number].channel * 16 + MOTOR_MAX_ANGLE, value);
+    m_locker.unlock();
 }
 
-void BufferSend::SetMotorEnable(short Number, bool value)
+void BufferSend::setMotorEnable(short Number, bool value)
 {
-    mMotorData[Number].isEnable = value;
+    m_motorsData[Number].isEnable = value;
 }
 
-void BufferSend::SetMotorReverce(short Number, bool value)
+void BufferSend::setMotorReverceState(short Number, bool value)
 {
-    mMotorData[Number].isReverce = value;
+    m_motorsData[Number].isReverce = value;
 }
 
 //остановить мотор
-void BufferSend::MotorStop(short Number)
+void BufferSend::motorStop(short Number)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 1] &= (255 - 3);
-    mRAW[mMotorData[Number].Channel * 16 + 1] |= 1;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[m_motorsData[Number].channel * 16 + 1] &= (255 - 3);
+    m_RAW[m_motorsData[Number].channel * 16 + 1] |= 1;
+    m_locker.unlock();
 }
 
 //зафиксировать мотор
-void BufferSend::MotorTrace(short Number)
+void BufferSend::motorTrace(short Number)
 {
-    mLocker.lock();
-    if(mMotorData[Number].isEnable)
-    {
-        mRAW[mMotorData[Number].Channel * 16 + 1] |= 3;
-    }
-    mLocker.unlock();
+    m_locker.lock();
+    if(m_motorsData[Number].isEnable)
+        m_RAW[m_motorsData[Number].channel * 16 + 1] |= 3;
+    m_locker.unlock();
 }
 
 //ослабить мотор
-void BufferSend::MotorRelax(short Number)
+void BufferSend::motorRelax(short Number)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 1] &= (255 - 3);
-    mRAW[mMotorData[Number].Channel * 16 + 1] |= 2;
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[m_motorsData[Number].channel * 16 + 1] &= (255 - 3);
+    m_RAW[m_motorsData[Number].channel * 16 + 1] |= 2;
+    m_locker.unlock();
 }
 
 //отменить остановку мотора
-void BufferSend::MotorStopBrake(short Number)
+void BufferSend::motorStopBrake(short Number)
 {
-    mLocker.lock();
-    mRAW[mMotorData[Number].Channel * 16 + 1] &= (255 - 3);
-    mLocker.unlock();
+    m_locker.lock();
+    m_RAW[m_motorsData[Number].channel * 16 + 1] &= (255 - 3);
+    m_locker.unlock();
 }
 
-short BufferSend::GetMotorTorque(short Number)
+short BufferSend::getMotorDGate(short Number)
 {
-    mLocker.lock();
-    short motor_torque=(mRAW[mMotorData[Number].Channel*16+5] << 8) +
-            (BYTE)mRAW[mMotorData[Number].Channel*16+4];
-    mLocker.unlock();
+    m_locker.lock();
+    short motor_torque=(m_RAW[m_motorsData[Number].channel*16+5] << 8) +
+            (BYTE)m_RAW[m_motorsData[Number].channel*16+4];
+    m_locker.unlock();
     return motor_torque;
 }

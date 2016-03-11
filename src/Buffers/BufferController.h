@@ -6,7 +6,7 @@
 
 #include "Management/SettingsStorage.h"
 #include "BufferSend.h"
-#include "BufferReceive.h"
+#include "BufferRecv.h"
 
 using namespace std;
 class BufferController
@@ -16,17 +16,17 @@ private:
     ~BufferController(){}
     BufferController( BufferController const& );
 
-    static BufferController* mInst;
+    static BufferController* m_inst;
 
-    BufferReceive mBufferReceive;
-    BufferSend mBufferSend;
+    BufferRecv m_bufferRecv;
+    BufferSend m_bufferSend;
 public:
-    static BufferController* Inst() { return mInst; }
-    static void Init(){ delete mInst; mInst = new BufferController; }
+    static BufferController* Inst() { return m_inst; }
+    static void Init(){ delete m_inst; m_inst = new BufferController; }
 
-    BufferReceive *GetBufferR(){ return &mBufferReceive; }
-    BufferSend *GetBufferS(){ return &mBufferSend; }
-    void InitBuffers();
+    BufferRecv *getBufferRecv(){ return &m_bufferRecv; }
+    BufferSend *getBufferSend(){ return &m_bufferSend; }
+    void buffersInitialize();
 };
 
 #endif // BUFFERCONTROLLER_H

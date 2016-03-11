@@ -45,36 +45,36 @@ private:
     ~MovesStorage(){}
     MovesStorage(MovesStorage const&);
 
-    static MovesStorage* mInst;
-    std::map<int,Motor> * mMotors;
+    static MovesStorage* m_inst;
+    std::map<int,Motor> * m_motors;
 public:
-    std::vector<MoveCommand> mMoves;
-    int mMoveID;
-    int mDuration;
-    int mCountRows;
+    std::vector<MoveCommand> m_moves;
+    int m_moveID;
+    int m_duration;
+    int m_rowsNumber;
 
-    int mForwardDuration;
-    int mForwardCountRows;
-    std::vector<MoveCommand> mForwardMoves;
-    int mBackDuration;
-    int mBackCountRows;
-    std::vector<MoveCommand> mBackMoves;
+    int m_forwardDuration;
+    int m_forwardRowsNumber;
+    std::vector<MoveCommand> m_forwardMoves;
+    int m_backDuration;
+    int m_backRowsNumber;
+    std::vector<MoveCommand> m_backMoves;
 
-    void SkipSpace(std::locale loc, std::string str, int *pos);
-    void ReadValue(std::string *temp, std::locale loc, int *pos, std::string str);
+    void skipSpace(std::locale loc, std::string str, int *pos);
+    void readValue(std::string *temp, std::locale loc, int *pos, std::string str);
 
 public:
-    static MovesStorage* Inst(){ return mInst; }
-    static void Init(){ delete mInst; mInst = new MovesStorage; }
+    static MovesStorage* Inst(){ return m_inst; }
+    static void initialize(){ delete m_inst; m_inst = new MovesStorage; }
 
-    bool OpenFile(std::string fileName);
-    int GetCountRows(){ return mCountRows; }
-    int GetDuration(){ return mDuration; }
-    std::vector<MoveCommand> * GetMoves(){return &mMoves;}
+    bool openFile(std::string fileName);
+    int getRowsNumber(){ return m_rowsNumber; }
+    int getDuration(){ return m_duration; }
+    std::vector<MoveCommand> * getMoves(){return &m_moves;}
 
-    bool LoadFile(string filename);
-    bool LoadForwardMoves();
-    bool LoadBackMoves();
+    bool loadFile(string filename);
+    bool loadForwardMoves();
+    bool loadBackMoves();
     void setForwardMoves();
     void setBackMoves();
 };

@@ -2,14 +2,13 @@
 
 Receiver::Receiver(QObject *parent) : QThread(parent)
 {
-    mTime = new QTime;
-    mReceiveBuffer = BufferController::Inst()->GetBufferR();
+    m_time = new QTime;
     isRunning = false;
 }
 
-void Receiver::PrintConnectionState()
+void Receiver::printConnectionState()
 {
-    if (mUdpSocketResiver->state() == QUdpSocket::BoundState)
+    if (m_udpSocketResiver->state() == QUdpSocket::BoundState)
     {
         qDebug() << "Receiver - bounded";
     }
@@ -27,63 +26,28 @@ Receiver::~Receiver()
 void Receiver::run()
 {
     //нить создана
-    mUdpSocketResiver = new QUdpSocket;
-
-    //New initialisation
-//    WORD wVersionRequested; // 01.02.2016
-//    WSADATA wsaData; // 01.02.2016
-//    wVersionRequested = MAKEWORD(2, 2); // 01.02.2016
-//    WSAStartup(wVersionRequested, &wsaData); // 01.02.2016
-
+    m_udpSocketResiver = new QUdpSocket;
     int ReceivePort = SettingsStorage::Inst()->GetReceivePort();
 
-    //Prepare the sockaddr_in structure
-//    sockaddr_in local; // 01.02.2016
-//    local.sin_family = AF_INET; // 01.02.2016
-//    local.sin_addr.s_addr = INADDR_ANY; // 01.02.2016
-//    local.sin_port = htons(ReceivePort); // 01.02.2016
-
-//    ReceiveSocket = socket(AF_INET, SOCK_DGRAM, 0); // 01.02.2016
-//    if( ReceiveSocket == INVALID_SOCKET ) { return; } // 01.02.2016
-//    if( bind(ReceiveSocket, (sockaddr*) &local, sizeof(local)) != 0 ) { return; } // 01.02.2016
-
-//    char buffer[BufferSize]; // 01.02.2016
-
-    connect(mUdpSocketResiver, SIGNAL(readyRead()), SLOT(ProcessPendingDatagrams()),Qt::DirectConnection);
+    connect(m_udpSocketResiver, SIGNAL(readyRead()), SLOT(processPendingDatagrams()),Qt::DirectConnection);
 
     qDebug() << "Receiver - binding..." << endl;
 
-
-
-    if (!mUdpSocketResiver->bind(ReceivePort,QUdpSocket::ShareAddress))
-    {
+    if (!m_udpSocketResiver->bind(ReceivePort,QUdpSocket::ShareAddress))
         qDebug()<< "Receiver - Not Bind!";
-    }
 
-    PrintConnectionState();
-
-//    while (isRunning) {
-//        if( recv(ReceiveSocket, buffer, BufferSize , 0) < 0 )
-//                    cout << "recv failed" << endl;
-//        mReceiveBuffer->Init(buffer);
-//        //Отправляем пакет на обработку
-//        emit ReadyData();
-//        //qDebug() << "Receiver - recv..." << endl;
-//    }
+    printConnectionState();
 
     //Запускаем цикл обработки событий
     exec();
     //Завершился цикл обработки событий
 
-    //closesocket(ReceiveSocket); // 01.02.2016
-    //WSACleanup(); // 01.02.2016
-
     qDebug() << "Receiver - unbinding..." << endl;
 
-    disconnect(mUdpSocketResiver, SIGNAL(readyRead()));
-    mUdpSocketResiver->close();
+    disconnect(m_udpSocketResiver, SIGNAL(readyRead()));
+    m_udpSocketResiver->close();
 
-    PrintConnectionState();
+    printConnectionState();
     //нить удалена
 }
 
@@ -105,17 +69,17 @@ void Receiver::Disconnect()
     }
 }
 
-void Receiver::ProcessPendingDatagrams()
+void Receiver::processPendingDatagrams()
 {
-    while (mUdpSocketResiver->hasPendingDatagrams())
+    while (m_udpSocketResiver->hasPendingDatagrams())
     {
         QByteArray datagram;
-        datagram.resize(mUdpSocketResiver->pendingDatagramSize());
+        datagram.resize(m_udpSocketResiver->pendingDatagramSize());
         QHostAddress Host;
         quint16 Port;
 
-        mUdpSocketResiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
-        mReceiveBuffer->Init(datagram.data());
+        m_udpSocketResiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
+        BufferController::Inst()->getBufferRecv()->initialize(datagram.data());
         //Отправляем пакет на обработку
         emit ReadyData();
      }

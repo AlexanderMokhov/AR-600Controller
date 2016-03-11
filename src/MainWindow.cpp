@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         mUpdateDelay = SettingsStorage::Inst()->GetReceiveDelay();
 
-        BufferController::Inst()->InitBuffers();
+        BufferController::Inst()->buffersInitialize();
         MoveController::Inst()->Init();
         RecordController::Inst()->Init();
 
@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mReceiver = new Receiver;
     mConsoleReceiver = new ConsoleReceiver;
 
-    MoveCorrector::Inst()->Init();
+    MoveCorrector::Inst()->initialize();
 }
 
 MainWindow::~MainWindow()
@@ -243,11 +243,11 @@ void MainWindow::Connect()
 void MainWindow::Disconnect()
 {
     //выключаем напряжения
-    BufferController::Inst()->GetBufferS()->PowerOff61();
-    BufferController::Inst()->GetBufferS()->PowerOff62();
-    BufferController::Inst()->GetBufferS()->PowerOff81();
-    BufferController::Inst()->GetBufferS()->PowerOff82();
-    BufferController::Inst()->GetBufferS()->PowerOff48();
+    BufferController::Inst()->getBufferSend()->offPower6_1();
+    BufferController::Inst()->getBufferSend()->offPower6_2();
+    BufferController::Inst()->getBufferSend()->offPower8_1();
+    BufferController::Inst()->getBufferSend()->offPower8_2();
+    BufferController::Inst()->getBufferSend()->offPower48();
 
     mReceiver->Disconnect();
     mSender->Disconnect();
@@ -261,7 +261,6 @@ void MainWindow::ActivateActions()
 {
     TBactionPlay->setEnabled(true);
     TBactionStop->setEnabled(true);
-    TBactionNext->setEnabled(true);
     mCommandControllerStatusLabel->setText("Файл команд загружен");
 }
 
@@ -322,7 +321,7 @@ void MainWindow::OpenXML()
         if(isOk)
         {
             //загоняем в отправляемый массив
-            BufferController::Inst()->InitBuffers();
+            BufferController::Inst()->buffersInitialize();
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
         }
@@ -339,7 +338,7 @@ void MainWindow::OpenCorrectionFile()
     QString fileName = QFileDialog::getOpenFileName(0,"Open Correction File Dialog","","*.TXT *.txt");
     if (!fileName.isEmpty())
     {
-        bool isOk = MoveCorrector::Inst()->OpenFile(fileName.toStdString());
+        bool isOk = MoveCorrector::Inst()->openFile(fileName.toStdString());
 
         if(isOk)
         {
@@ -361,7 +360,7 @@ void MainWindow::OpenDRIVEMATFile()
 
     if ( !fileName.isEmpty() )
     {
-        bool isOk = MoveCorrector::Inst()->OpenDriveMatFile(fileName.toStdString());
+        bool isOk = MoveCorrector::Inst()->openDriveMatFile(fileName.toStdString());
 
         if(isOk)
         {

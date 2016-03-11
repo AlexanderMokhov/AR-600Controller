@@ -13,15 +13,15 @@ ConsoleReceiver::~ConsoleReceiver()
 void ConsoleReceiver::run()
 {
     //нить создана
-    mUdpSocketReceiver = new QUdpSocket;
+    m_udpSocketReceiver = new QUdpSocket;
     int ReceivePort = 55555;
 
-    connect(mUdpSocketReceiver, SIGNAL(readyRead()), SLOT(ProcessPendingDatagrams()), Qt::DirectConnection);
+    connect(m_udpSocketReceiver, SIGNAL(readyRead()), SLOT(processPendingDatagrams()), Qt::DirectConnection);
 
     qDebug() << "ConsoleReceiver - binding..." << endl;
 
 
-    if (!mUdpSocketReceiver->bind(ReceivePort, QUdpSocket::ShareAddress))
+    if (!m_udpSocketReceiver->bind(ReceivePort, QUdpSocket::ShareAddress))
     {
         qDebug()<< "ConsoleReceiver - Not Bind!";
     }
@@ -32,8 +32,8 @@ void ConsoleReceiver::run()
 
     qDebug() << "ConsoleReceiver - unbinding..." << endl;
 
-    disconnect(mUdpSocketReceiver, SIGNAL(readyRead()));
-    mUdpSocketReceiver->close();
+    disconnect(m_udpSocketReceiver, SIGNAL(readyRead()));
+    m_udpSocketReceiver->close();
 }
 
 void ConsoleReceiver::Connect()
@@ -54,21 +54,21 @@ void ConsoleReceiver::Disconnect()
     }
 }
 
-void ConsoleReceiver::ProcessPendingDatagrams()
+void ConsoleReceiver::processPendingDatagrams()
 {
-    while (mUdpSocketReceiver->hasPendingDatagrams())
+    while (m_udpSocketReceiver->hasPendingDatagrams())
     {
         QByteArray datagram;
-        datagram.resize(mUdpSocketReceiver->pendingDatagramSize());
+        datagram.resize(m_udpSocketReceiver->pendingDatagramSize());
         QHostAddress Host;
         quint16 Port;
 
-        mUdpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
+        m_udpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
         qDebug() << "ConsoleReceiver data: " << datagram.data() <<"size"<< QString::number(datagram.size()) << endl;
 
         if(datagram.data() == "0")
         {
-            mUdpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
+            m_udpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
             qDebug() << "ConsoleReceiver data: " << datagram.data() <<"size"<< QString::number(datagram.size()) << endl;
             writeToFile(datagram);
         }

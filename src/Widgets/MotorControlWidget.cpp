@@ -7,8 +7,8 @@ MotorControlWidget::MotorControlWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mReadBuffer = BufferController::Inst()->GetBufferR();
-    mWriteBuffer = BufferController::Inst()->GetBufferS();
+    mReadBuffer = BufferController::Inst()->getBufferRecv();
+    mWriteBuffer = BufferController::Inst()->getBufferSend();
 
     state = States::STOPBRAKE;
 }
@@ -28,7 +28,7 @@ void MotorControlWidget::RowChanged(int cRow)
     state = States::STOPBRAKE;
 
     //останавливаем предыдущий мотор
-    mWriteBuffer->MotorStopBrake(CurrentNumber);
+    mWriteBuffer->motorStopBrake(CurrentNumber);
     //отключаем режим калибрации и управление слайдером
     on_checkBoxTrace_clicked(false);
 
@@ -58,7 +58,7 @@ void MotorControlWidget::RowChanged(int cRow)
 void MotorControlWidget::UpdateData()
 {
     //обновляем текущую позицию
-    int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
+    int CurrentPos = mReadBuffer->getMotorAngle(CurrentNumber);
     if(Reverce && state == States::CALIBRATE)
     {
         ui->lineCurrentAngle->setText(QString::number(-1*CurrentPos));
@@ -75,11 +75,11 @@ void MotorControlWidget::UpdateData()
     }
 
     //обновляем информацию о токе и напряжении на моторах
-    ui->lineStatusI->setText(QString::number(-1*mReadBuffer->GetMotorI(CurrentNumber)/100.0,'g',6));
-    ui->lineStatusU->setText(QString::number(mReadBuffer->GetMotorU(CurrentNumber)/100.0,'g',6));
+    ui->lineStatusI->setText(QString::number(-1*mReadBuffer->getMotorCurrent(CurrentNumber)/100.0,'g',6));
+    ui->lineStatusU->setText(QString::number(mReadBuffer->getMotorVoltage(CurrentNumber)/100.0,'g',6));
 
     //начало чтения статуса
-    unsigned char status = mReadBuffer->GetMotorState(CurrentNumber);
+    unsigned char status = mReadBuffer->getMotorState(CurrentNumber);
     QString statusString;
 
     if((unsigned char)(status & 0) == 0)
@@ -97,7 +97,7 @@ void MotorControlWidget::UpdateData()
 
 void MotorControlWidget::on_ButtonSTOP_clicked()
 {
-    mWriteBuffer->MotorStopBrake(CurrentNumber);
+    mWriteBuffer->motorStopBrake(CurrentNumber);
     ui->checkBoxTrace->setChecked(false);
     ui->groupBoxCalibration->setEnabled(true);
     state = States::STOP;
@@ -105,7 +105,7 @@ void MotorControlWidget::on_ButtonSTOP_clicked()
 
 void MotorControlWidget::on_ButtonBRAKE_clicked()
 {
-    mWriteBuffer->MotorStop(CurrentNumber);
+    mWriteBuffer->motorStop(CurrentNumber);
     ui->checkBoxTrace->setChecked(false);
     ui->groupBoxCalibration->setEnabled(true);
     state = States::STOPBRAKE;
@@ -114,7 +114,7 @@ void MotorControlWidget::on_ButtonBRAKE_clicked()
 
 void MotorControlWidget::on_ButtonRELAX_clicked()
 {
-    mWriteBuffer->MotorRelax(CurrentNumber);
+    mWriteBuffer->motorRelax(CurrentNumber);
     ui->checkBoxTrace->setChecked(false);
     ui->groupBoxCalibration->setEnabled(true);
     state = States::RELAX;
@@ -126,11 +126,11 @@ void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
     if(!checked)
     {
         //выходим из режима калибровки
-        mWriteBuffer->SetMotorCalibration(CurrentNumber, SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).getShiftValue());
-        mWriteBuffer->SetMotorAngle(CurrentNumber, mReadBuffer->GetMotorAngle(CurrentNumber));
+        mWriteBuffer->setMotorShiftValue(CurrentNumber, SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).getShiftValue());
+        mWriteBuffer->setMotorAngle(CurrentNumber, mReadBuffer->getMotorAngle(CurrentNumber));
 
         //разрешаем вход в режим управления слайдером
-        mWriteBuffer->MotorStopBrake(CurrentNumber);
+        mWriteBuffer->motorStopBrake(CurrentNumber);
 
         ui->checkBoxTrace->setEnabled(true);
 
@@ -139,8 +139,8 @@ void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
     else
     {
         //входим в режим калибровки
-        mWriteBuffer->MotorStopBrake(CurrentNumber);
-        mWriteBuffer->SetMotorCalibration(CurrentNumber,0);
+        mWriteBuffer->motorStopBrake(CurrentNumber);
+        mWriteBuffer->setMotorShiftValue(CurrentNumber,0);
 
         //запрещаем вход в режим управления слайдером
         ui->checkBoxTrace->setEnabled(false);
@@ -153,15 +153,15 @@ void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
 void MotorControlWidget::on_ButtonSaveZero_clicked()
 {
     //записываем в файл настроек новые калибровочные коэффициенты
-    int CurrentPos = mReadBuffer->GetMotorAngle(CurrentNumber);
+    int CurrentPos = mReadBuffer->getMotorAngle(CurrentNumber);
     int NewCalibration=ReverceCoeff*CurrentPos;
     SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).setShiftValue(NewCalibration);
     mModel->setData(mModel->index(currentRow,10),QString::number(NewCalibration));
     SettingsStorage::Inst()->SaveFile("config.xml");
 
     //записываем в мотор калибровочные коэффициенты
-    mWriteBuffer->SetMotorCalibration(CurrentNumber,NewCalibration);
-    mWriteBuffer->SetMotorAngle(CurrentNumber, CurrentPos);
+    mWriteBuffer->setMotorShiftValue(CurrentNumber,NewCalibration);
+    mWriteBuffer->setMotorAngle(CurrentNumber, CurrentPos);
 
     //разрешаем вход в режим управления слайдером
     ui->groupBoxCalibration->setChecked(false);
@@ -175,7 +175,7 @@ void MotorControlWidget::on_SliderAngle_sliderMoved(int position)
 {
     if(state == States::TRACE)
     {
-        mWriteBuffer->SetMotorAngle(CurrentNumber, position);
+        mWriteBuffer->setMotorAngle(CurrentNumber, position);
     }
 }
 
@@ -189,7 +189,7 @@ void MotorControlWidget::on_checkBoxTrace_clicked(bool checked)
     {
         //входим в режим управления
         SliderInit();
-        mWriteBuffer->MotorTrace(CurrentNumber);
+        mWriteBuffer->motorTrace(CurrentNumber);
 
         //запрещаем вход в режим калибровки
         ui->groupBoxCalibration->setEnabled(false);
@@ -197,7 +197,7 @@ void MotorControlWidget::on_checkBoxTrace_clicked(bool checked)
     else
     {
         //выходим из режима управления
-        mWriteBuffer->MotorStopBrake(CurrentNumber);
+        mWriteBuffer->motorStopBrake(CurrentNumber);
 
         //разрешаем вход в режим калибровки
         ui->groupBoxCalibration->setEnabled(true);
@@ -207,29 +207,29 @@ void MotorControlWidget::on_checkBoxTrace_clicked(bool checked)
 //инициализация слайдера и мин макс
 void MotorControlWidget::SliderInit()
 {
-    int MinPos = mReadBuffer->GetMotorMinAngle(CurrentNumber);
-    int MaxPos = mReadBuffer->GetMotorMaxAngle(CurrentNumber);
-    int cAngle = mReadBuffer->GetMotorAngle(CurrentNumber);
+    int MinPos = mReadBuffer->getMotorMinAngle(CurrentNumber);
+    int MaxPos = mReadBuffer->getMotorMaxAngle(CurrentNumber);
+    int cAngle = mReadBuffer->getMotorAngle(CurrentNumber);
     ui->SliderAngle->setMinimum(MinPos);
     ui->SliderAngle->setMaximum(MaxPos);
 
     ui->lineMinAngle->setText(QString::number(MinPos));
     ui->lineMaxAngle->setText(QString::number(MaxPos));
 
-    ui->spinDump->setValue(mReadBuffer->GetMotorDamp(CurrentNumber));
-    ui->spinStiff->setValue(mReadBuffer->GetMotorStiff(CurrentNumber));
-    ui->spinTorque->setValue(mWriteBuffer->GetMotorTorque(CurrentNumber));
+    ui->spinDump->setValue(mReadBuffer->getMotorIGate(CurrentNumber));
+    ui->spinStiff->setValue(mReadBuffer->getMotorPGate(CurrentNumber));
+    ui->spinTorque->setValue(mWriteBuffer->getMotorDGate(CurrentNumber));
     ui->spinPosToGo->setMinimum(MinPos);
     ui->spinPosToGo->setMaximum(MaxPos);
 
     ui->SliderAngle->setValue(cAngle);
-    mWriteBuffer->SetMotorAngle(CurrentNumber, cAngle);
+    mWriteBuffer->setMotorAngle(CurrentNumber, cAngle);
 
 }
 
 void MotorControlWidget::on_ButtonStiffWrite_clicked()
 {
-    mWriteBuffer->SetMotorStiff(CurrentNumber,ui->spinStiff->value());
+    mWriteBuffer->setMotorPGate(CurrentNumber,ui->spinStiff->value());
 }
 
 void MotorControlWidget::on_ButtonStiffSave_clicked()
@@ -245,12 +245,12 @@ void MotorControlWidget::on_ButtonDumpSave_clicked()
 
 void MotorControlWidget::on_ButtonDumpWrite_clicked()
 {
-    mWriteBuffer->SetMotorDump(CurrentNumber, ui->spinDump->value());
+    mWriteBuffer->setMotorIGate(CurrentNumber, ui->spinDump->value());
 }
 
 void MotorControlWidget::on_ButtonGoToPos_clicked()
 {
-    MoveController::Inst()->StartGoToAngle(CurrentNumber,
+    MoveController::Inst()->startGoToAngle(CurrentNumber,
                                               ui->spinPosToGo->value(),
                                               ui->spinTimeToGo->value());
 }
@@ -258,6 +258,6 @@ void MotorControlWidget::on_ButtonGoToPos_clicked()
 void MotorControlWidget::on_ButtonStopGoToPos_clicked()
 {
 
-    MoveController::Inst()->StopGoToAngle();
+    MoveController::Inst()->stopGoToAngle();
 }
 

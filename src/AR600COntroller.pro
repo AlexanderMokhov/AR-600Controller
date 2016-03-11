@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     Models/MotorTableModel.cpp \
     Models/SensorTableModel.cpp \
     Buffers/BufferController.cpp \
-    Buffers/BufferReceive.cpp \
     Buffers/BufferSend.cpp \
     Connection/Receiver.cpp \
     Connection/Sender.cpp \
@@ -51,7 +50,8 @@ SOURCES += main.cpp\
     Connection/ConsoleReceiver.cpp \
     Management/SettingsStorage.cpp \
     Management/MovesStorage.cpp \
-    Devices/PIDGates.cpp
+    Devices/PIDGates.cpp \
+    Buffers/BufferRecv.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -62,7 +62,6 @@ HEADERS  += \
     Models/MotorTableModel.h \
     Models/SensorTableModel.h \
     Buffers/BufferController.h \
-    Buffers/BufferReceive.h \
     Buffers/BufferSend.h \
     Connection/Receiver.h \
     Connection/Sender.h \
@@ -88,7 +87,8 @@ HEADERS  += \
     Connection/ConsoleReceiver.h \
     Management/SettingsStorage.h \
     Management/MovesStorage.h \
-    Devices/PIDGates.h
+    Devices/PIDGates.h \
+    Buffers/BufferRecv.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
