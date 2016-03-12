@@ -26,6 +26,7 @@
 #include "MoveCorrector.h"
 #include "MovesStorage.h"
 
+//!!!
 struct Command
 {
     int Time = 0;
@@ -33,7 +34,7 @@ struct Command
     int Angle = 0;
     PID PIDs;
 };
-
+//!!!
 struct PosData
 {
     double CurrentPos;
@@ -42,7 +43,7 @@ struct PosData
     double Step;
     bool isEndPos;
 };
-
+//!!!
 enum States {MovePlay, MovePlayOnline, MoveStarting, MoveStopping,
              GoToAngleStarting, GoToAngle, GoToAngleStopping,
              GoPosStarting, GoToPos, GoToPosEnding, GoPosStopping,
@@ -53,30 +54,8 @@ enum States {MovePlay, MovePlayOnline, MoveStarting, MoveStopping,
 class MoveController: public QObject
 {
     Q_OBJECT
-private:
-    MoveController();
-    ~MoveController(){}
-    MoveController(MoveController const&);
-
-    static MoveController* m_inst;
-    States m_state; //текущее состояние
-    std::mutex m_locker; //мьютекс
-    QTime m_time;
-    std::map<int,Motor> * m_motors;
-
-    //для перехода в заданный угол
-    int mTimeToGo, NewTimeToGo;
-    int mDestAngle, NewDestAngle;
-    int mStartAngle, NewStartAngle;
-    double mCurrentAngle;
-    double mStep;
-    int mMotorNumber, NewMotorNumber;
-
-    //для перехода в начальную позицию
-    std::map<int,PosData> mGoToPosData;
-    bool mGoPosMode;
-    int mMotorExistCount;
 public:
+    //public methods
     static MoveController* Inst(){return m_inst;}
     static void Init(){delete m_inst; m_inst = new MoveController;}
 
@@ -112,17 +91,43 @@ public:
     void stopGoPos();
     void stoppingGoPos();
 
-    int userStiff = 0;
-    int userDump = 0;
+    int userStiff = 0;//!!!
+    int userDump = 0;//!!!
 
-    bool useUserStiff = false;
-    bool useUserDump = false;
+    bool useUserStiff = false;//!!!
+    bool useUserDump = false;//!!!
 
 signals:
     void InitStart();
     void InitEnd();
-
     void PlayEnd();
+
+private:
+    //private methods
+    MoveController();
+    ~MoveController(){}
+    MoveController(MoveController const&);
+
+    //private variable
+    static MoveController* m_inst;
+    States m_state; //текущее состояние
+    std::mutex m_locker; //мьютекс
+    QTime m_time;
+    std::map<int,Motor> * m_motors;
+
+    //для перехода в заданный угол
+    int mTimeToGo, NewTimeToGo;
+    int mDestAngle, NewDestAngle;
+    int mStartAngle, NewStartAngle;
+    double mCurrentAngle;
+    double mStep;
+    int mMotorNumber, NewMotorNumber;
+
+    //для перехода в начальную позицию
+    std::map<int,PosData> mGoToPosData;
+    bool mGoPosMode;
+    int mMotorExistCount;
+
 };
 
 

@@ -2,7 +2,7 @@
 
 BufferController * BufferController::m_inst = 0;
 
-void BufferController::buffersInitialize()
+void BufferController::Initialize()
 {
     for(auto it = SettingsStorage::Inst()->GetMotors()->begin();
         it != SettingsStorage::Inst()->GetMotors()->end();++it)

@@ -18,27 +18,29 @@
 class Sender : public QThread
 {
     Q_OBJECT
-private:
+public:
+    //public methods
+    explicit Sender( QObject *parent = 0 );
+    ~Sender();
 
-//    SOCKET SendSocket; // 01.02.2016
-//    sockaddr_in dest_addr;
+    void run();
+    void Connect();
+    void Disconnect();
+private:
+    //private variable
     QUdpSocket *m_udpSocketSender;
     QTimer *m_timerSend;
-    std::mutex *m_locker;
     QTime *m_time;
+
+    std::mutex *m_locker;
 
     QString         m_host;
     int             m_sendPort;
     int             m_sendDelay;
 
     volatile bool isRunning;
+    //private methods
     void printConnectionState();
-public:
-    explicit Sender( QObject *parent = 0 );
-    ~Sender();
-    void run();
-    void Connect();
-    void Disconnect();
 private slots:
     void sendDatagram();
 };

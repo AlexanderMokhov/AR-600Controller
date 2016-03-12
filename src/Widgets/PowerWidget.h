@@ -13,14 +13,8 @@ class PowerWidget;
 class PowerWidget : public QWidget
 {
     Q_OBJECT
-private:
-    Ui::PowerWidget *ui;
-
-    QTimer *mTimer;
-    int mTime;
-    int mInterval;
-    bool isOn;
 public:
+    //public methods
     explicit PowerWidget(QWidget *parent = 0);
     ~PowerWidget();
     void UpdatePowerLabel();
@@ -38,6 +32,14 @@ private slots:
     void on_checkBox6V1_clicked(bool checked);
 
 private:
+    //private variable
+    Ui::PowerWidget *ui;
+    QTimer *mTimer;
+    int mTime;
+    int mInterval;
+    bool isOn;
+
+    //private methods
     void ChechBoxSetEnable(bool enable);
 };
 

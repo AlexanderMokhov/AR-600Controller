@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         mUpdateDelay = SettingsStorage::Inst()->GetReceiveDelay();
 
-        BufferController::Inst()->buffersInitialize();
+        BufferController::Inst()->Initialize();
         MoveController::Inst()->Init();
         RecordController::Inst()->Init();
 
@@ -295,7 +295,7 @@ void MainWindow::ProcessTheDatagram()
 {
     mPowerWidget->UpdatePowerLabel();
     mMotorControlWidget->UpdateData();
-    mMotorTableWidget->UpdatePos();
+    mMotorTableWidget->UpdateAngle();
     mSensorTableWidget->UpdatePos();
 }
 
@@ -321,7 +321,7 @@ void MainWindow::OpenXML()
         if(isOk)
         {
             //загоняем в отправляемый массив
-            BufferController::Inst()->buffersInitialize();
+            BufferController::Inst()->Initialize();
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
         }

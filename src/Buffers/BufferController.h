@@ -9,24 +9,28 @@
 #include "BufferRecv.h"
 
 using namespace std;
+
 class BufferController
 {
-private:
-    BufferController(){}
-    ~BufferController(){}
-    BufferController( BufferController const& );
-
-    static BufferController* m_inst;
-
-    BufferRecv m_bufferRecv;
-    BufferSend m_bufferSend;
 public:
+    // public methods
     static BufferController* Inst() { return m_inst; }
     static void Init(){ delete m_inst; m_inst = new BufferController; }
 
     BufferRecv *getBufferRecv(){ return &m_bufferRecv; }
     BufferSend *getBufferSend(){ return &m_bufferSend; }
-    void buffersInitialize();
+    void Initialize();
+
+private:
+    // private variable
+    static BufferController* m_inst;
+    BufferRecv m_bufferRecv;
+    BufferSend m_bufferSend;
+
+    // private methods
+    BufferController(){}
+    BufferController( BufferController const& );
+    ~BufferController(){}
 };
 
 #endif // BUFFERCONTROLLER_H

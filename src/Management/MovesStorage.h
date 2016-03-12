@@ -40,14 +40,8 @@ struct MoveCommand
 //для работы с файлами движений
 class MovesStorage
 {
-private:
-    MovesStorage();
-    ~MovesStorage(){}
-    MovesStorage(MovesStorage const&);
-
-    static MovesStorage* m_inst;
-    std::map<int,Motor> * m_motors;
 public:
+    //public variable
     std::vector<MoveCommand> m_moves;
     int m_moveID;
     int m_duration;
@@ -60,10 +54,10 @@ public:
     int m_backRowsNumber;
     std::vector<MoveCommand> m_backMoves;
 
+    //public methods
     void skipSpace(std::locale loc, std::string str, int *pos);
     void readValue(std::string *temp, std::locale loc, int *pos, std::string str);
 
-public:
     static MovesStorage* Inst(){ return m_inst; }
     static void initialize(){ delete m_inst; m_inst = new MovesStorage; }
 
@@ -77,6 +71,16 @@ public:
     bool loadBackMoves();
     void setForwardMoves();
     void setBackMoves();
+
+private:
+    //private variable
+    static MovesStorage* m_inst;
+    std::map<int,Motor> * m_motors;
+
+    //private methods
+    MovesStorage();
+    ~MovesStorage(){}
+    MovesStorage(MovesStorage const&);
 };
 
 #endif // MOVESSTORAGE_H

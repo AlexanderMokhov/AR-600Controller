@@ -5,11 +5,8 @@
 
 class Sensor : public Device
 {
-private:
-    std::string     m_nameLog;
-    int             m_param;
-    int             m_value;
 public:
+    //public methods
     Sensor();
     ~Sensor(){;}
     Sensor( int number,
@@ -25,6 +22,13 @@ public:
     void setValue( int value ){ m_value = value; }
     void setNameLog( std::string nameLog ){ m_nameLog = nameLog; }
     void setParam( int param ){ m_param = param; }
+
+private:
+    //private variable
+    std::string     m_nameLog;
+    int             m_param;
+    int             m_value;
+
 };
 
 #endif // SENSOR_H

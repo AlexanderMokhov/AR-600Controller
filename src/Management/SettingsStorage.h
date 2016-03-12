@@ -13,39 +13,8 @@ using namespace std;
 //загрузка и хранение основных параметров приложения
 class SettingsStorage
 {
-private:
-    static SettingsStorage* mInst;
-    SettingsStorage();
-    SettingsStorage( SettingsStorage const& );
-    ~SettingsStorage(){}
-
-    TiXmlDocument * mXMLConfigFile;
-
-    //настройки двигателей и сенсоров
-    std::map<int, Motor> mMotors;   //Карта двигателей
-    std::map<int, Sensor> mSensors; //Карта сенсоров
-
-    //накстроки подключения
-    std::string mHost;              //адрес назначения
-    int mSendPort;                  //порт для записи
-    int mReceivePort;               //порт для чтения
-    int mSendDelay;                 //интервал записи
-    int mReceiveDelay;              //интервал чтения
-
-    //настройки контроллера команд
-    int mDefaultStiff;              //Пропорциональный коэффициент по умолчанию
-    int mDefaultDump;               //Интегральный коэффициент по умолчанию
-    int mDefaultTorque;             //Диффиренциальный коэффициент по умолчанию
-
-    double mDefaultStiffFactor;     //Пропорциональный коэффициент по умолчанию (доля)
-    double mDefaultDumpFactor;      //Интегральный коэффициент по умолчанию (доля)
-    double mDefaultTorqueFactor;    //Диффиренциальный коэффициент по умолчанию (доля)
-    int mDefaultSpeed;              //Скорость перехода в позицию (град за сек)
-
-    //настройки файлов стандартных движений
-    std::string mFileForward, mFileBack;
-
 public:
+    //public methods
     static SettingsStorage* Inst(){ return mInst; }
     static void Init(){ delete mInst; mInst = new SettingsStorage; }
 
@@ -74,6 +43,40 @@ public:
 
     std::string GetFileForward() { return mFileForward; }
     std::string GetFileBack() { return mFileBack; }
+
+private:
+    //private variable
+    static SettingsStorage* mInst;
+    TiXmlDocument * mXMLConfigFile;
+
+    //настройки двигателей и сенсоров
+    std::map<int, Motor> mMotors;   //Карта двигателей
+    std::map<int, Sensor> mSensors; //Карта сенсоров
+
+    //накстроки подключения
+    std::string mHost;              //адрес назначения
+    int mSendPort;                  //порт для записи
+    int mReceivePort;               //порт для чтения
+    int mSendDelay;                 //интервал записи
+    int mReceiveDelay;              //интервал чтения
+
+    //настройки контроллера команд
+    int mDefaultStiff;              //Пропорциональный коэффициент по умолчанию
+    int mDefaultDump;               //Интегральный коэффициент по умолчанию
+    int mDefaultTorque;             //Диффиренциальный коэффициент по умолчанию
+
+    double mDefaultStiffFactor;     //Пропорциональный коэффициент по умолчанию (доля)
+    double mDefaultDumpFactor;      //Интегральный коэффициент по умолчанию (доля)
+    double mDefaultTorqueFactor;    //Диффиренциальный коэффициент по умолчанию (доля)
+    int mDefaultSpeed;              //Скорость перехода в позицию (град за сек)
+
+    //настройки файлов стандартных движений
+    std::string mFileForward, mFileBack;
+
+    //private methods
+    SettingsStorage();
+    SettingsStorage( SettingsStorage const& );
+    ~SettingsStorage(){}
 };
 
 

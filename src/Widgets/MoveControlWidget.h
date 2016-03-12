@@ -24,12 +24,26 @@ class MoveControlWidget;
 class MoveControlWidget : public QWidget
 {
     Q_OBJECT
-
 public:
+    //public methods
     explicit MoveControlWidget(QWidget *parent = 0);
     ~MoveControlWidget();
 
     void StartPlayFile(bool mode);
+
+signals:
+    StartWriteRecord(int LogTime);
+    StopWriteRecord();
+    FileLoaded(QString FileName,int CountRows, int Duration, bool Mode);
+    PlayStart();
+    PlayStop();
+
+public slots:
+    void startMove();
+    void startMoveOnline();
+    void openFile(QString fileName, bool mode);
+    void startStdMove();
+
 private slots:
     void on_ButtonLoadFile_clicked();
     void on_ButtonLoadDRIVEMAT_clicked();
@@ -41,8 +55,8 @@ private slots:
     void on_cBoxUseUserStiff_clicked(bool checked);
     void on_cBoxUseUserDump_clicked(bool checked);
 
-
 private:
+    //private variable
     Ui::MoveControlWidget *ui;
     QString DefaultText;
     bool IsLog;
@@ -53,18 +67,6 @@ private:
     QState        *stateNotOpenFile;
     bool          isMoveFile;
     Mover         *mMover;
-
-signals:
-    StartWriteRecord(int LogTime);
-    StopWriteRecord();
-    FileLoaded(QString FileName,int CountRows, int Duration, bool Mode);
-    PlayStart();
-    PlayStop();
-public slots:
-    void startMove();
-    void startMoveOnline();
-    void openFile(QString fileName, bool mode);
-    void startStdMove();
 };
 
 #endif // MOVECONTROLWIDGET_H

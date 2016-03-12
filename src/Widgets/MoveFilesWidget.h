@@ -19,24 +19,18 @@ class MoveFilesWidget;
 class MoveFilesWidget : public QWidget
 {
     Q_OBJECT
-
 public:
+    //public methods
     explicit MoveFilesWidget(QWidget *parent = 0);
     ~MoveFilesWidget();
 
-private:
-    Ui::MoveFilesWidget *ui;
-    CommandTableModel *mModel;
-    QItemSelectionModel *mSelectionModel;
-    QInputDialog *mSetNameDialog;
-
-    CommandTableModel *getModel();
-    void ShowConfigData();
-public slots:
-    void AddFile(QString fileName,int RowsCount, int Duration, bool mode);
 signals:
     void RowChanged(int cRow);
     void fileChosen(QString file, bool mode);
+
+public slots:
+    void AddFile(QString fileName,int RowsCount, int Duration, bool mode);
+
 private slots:
     void OnRowChanged();
     void on_FilesTable_doubleClicked(const QModelIndex &index);
@@ -44,6 +38,17 @@ private slots:
     void onDeleteAction();
     void onSetNameAction();
     void onDialogAccepted();
+
+private:
+    //private variable
+    Ui::MoveFilesWidget *ui;
+    CommandTableModel *mModel;
+    QItemSelectionModel *mSelectionModel;
+    QInputDialog *mSetNameDialog;
+
+    //private methods
+    CommandTableModel *getModel();
+    void ShowConfigData();
 };
 
 #endif // MOVEFILESWIDGET_H

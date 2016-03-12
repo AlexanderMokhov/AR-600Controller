@@ -13,17 +13,9 @@
 
 class Mover : public QThread
 {
-
     Q_OBJECT
-private:
-    QTimer *m_timer;
-    int m_delay;
-    bool isRunning;
-    bool isRestart;
-
-    bool isPrep;
-
 public:
+    //public methods
     explicit Mover(QObject *parent = 0);
     ~Mover();
     void run();
@@ -35,13 +27,21 @@ public:
     void startGoToPos( bool isNullPos );
     void stopGoToPos();
 
-private slots:
-    void Move();
-
 signals:
     void PrepStart(); //Подготовка начата
     void PrepEnd(); //Подготовка закончена
     void MoveEnd(); //Движение закончено
+
+private:
+    //private variable
+    QTimer *m_timer;
+    int m_delay;
+    bool isRunning;
+    bool isRestart;
+    bool isPrep;
+
+private slots:
+    void Move();
 };
 
 #endif // MOVER_H

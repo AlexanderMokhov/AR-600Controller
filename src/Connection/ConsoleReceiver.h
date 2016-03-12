@@ -14,20 +14,25 @@
 class ConsoleReceiver : public QThread
 {
     Q_OBJECT
-private:
-    QUdpSocket *m_udpSocketReceiver;
-    volatile bool isRunning;
-    void writeToFile(QByteArray data);
 public:
+    //public methods
     explicit ConsoleReceiver(QObject *parent = 0);
     ~ConsoleReceiver();
+
     void run();
     void Connect();
     void Disconnect();
-private slots:
-    void processPendingDatagrams();
 signals:
     void ReadyData();
+private:
+    //private variable
+    QUdpSocket *m_udpSocketReceiver;
+    volatile bool isRunning;
+
+    //private methods
+    void writeToFile(QByteArray data);
+private slots:
+    void processPendingDatagrams();
 };
 
 #endif // CONSOLERECEIVER_H

@@ -10,9 +10,9 @@
 
 class MotorTableModel : public QAbstractTableModel
 {
-
     Q_OBJECT
 public:
+    //public methods
     explicit MotorTableModel(QObject *parent = 0);
     ~MotorTableModel();
 
@@ -49,9 +49,6 @@ public:
 
 signals:
     void editCompleted(const QString &);
-public slots:
-
-private:
 };
 
 #endif // MOTORTABLEMODEL_H

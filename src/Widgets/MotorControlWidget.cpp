@@ -83,13 +83,13 @@ void MotorControlWidget::UpdateData()
     QString statusString;
 
     if((unsigned char)(status & 0) == 0)
-    {statusString="BRAKE";}
+    {statusString = "Фиксация";}
     if((unsigned char)(status & 1) == 1)
-    {statusString+="-DT";}
+    {statusString = "Выключен";}
     if((unsigned char)(status & 2) == 2)
-    {statusString="RELAX";}
+    {statusString = "Свободен";}
     if((unsigned char)(status & 3) == 3)
-    {statusString="TRACE";}
+    {statusString = "Слежение";}
 
     ui->lineStatus->setText(statusString);
     //конец чтения статуса

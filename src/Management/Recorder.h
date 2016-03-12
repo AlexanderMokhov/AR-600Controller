@@ -14,27 +14,32 @@
 class Recorder : public QThread
 {
     Q_OBJECT
-private:
-    QTimer *mTimer;
-    int mDelay;
-    int mDuration;
-    bool isRunning;
-    bool isRestart;
-    void SaveData();
-
 public:
+    //public methods
     explicit Recorder(QObject *parent = 0);
     ~Recorder();
+
     void run();
     void StartWriting();
     void StopWriting();
     void SetParam(int delay, long duration);
 
-private slots:
-    void WriteRecord();
 signals:
     void UpdateTime(long time);
 
+private:
+    //private variable
+    QTimer *mTimer;
+    int mDelay;
+    int mDuration;
+    bool isRunning;
+    bool isRestart;
+
+    //private methods
+    void SaveData();
+
+private slots:
+    void WriteRecord();
 };
 
 #endif // RECORDER_H

@@ -15,12 +15,18 @@ class MotorControlWidget;
 class MotorControlWidget : public QWidget
 {
     Q_OBJECT
-
 public:
+    //public methods
     explicit MotorControlWidget(QWidget *parent = 0);
     ~MotorControlWidget();
     void setModel(MotorTableModel *model);
     void UpdateData();
+
+signals:
+    void PropertyChanged(int Number);
+
+public slots:
+    void RowChanged(int cRow);
 
 private slots:
     void on_ButtonSTOP_clicked();
@@ -44,6 +50,7 @@ private slots:
     void SliderInit();
 
 private:
+    //private variable
     enum States {TRACE, STOP, STOPBRAKE, RELAX, CALIBRATE};
     States state;
 
@@ -51,15 +58,11 @@ private:
     MotorTableModel * mModel;
     BufferRecv *mReadBuffer;
     BufferSend *mWriteBuffer;
+
     int currentRow;
     int CurrentNumber;
     bool Reverce;
     int ReverceCoeff;
-signals:
-    void PropertyChanged(int Number);
-public slots:
-    void RowChanged(int cRow);
-
 };
 
 #endif // MOTORCONTROLWIDGET_H

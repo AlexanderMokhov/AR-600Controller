@@ -12,6 +12,7 @@ class SensorTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
+    //public methods
     explicit SensorTableModel(QObject *parent = 0);
     ~SensorTableModel();
 

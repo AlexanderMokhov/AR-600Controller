@@ -70,7 +70,7 @@ MotorTableModel *MotorTableWidget::getModel()
     return mModel;
 }
 
-void MotorTableWidget::UpdatePos()
+void MotorTableWidget::UpdateAngle()
 {
     std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
     int i=0;
@@ -85,13 +85,13 @@ void MotorTableWidget::UpdatePos()
         QString statusString;
 
         if((unsigned char)(status & 0) == 0)
-        {statusString="BRAKE";}
+        {statusString = "Фиксация";}
         if((unsigned char)(status & 1) == 1)
-        {statusString+="-DT";}
+        {statusString = "Выключен";}
         if((unsigned char)(status & 2) == 2)
-        {statusString="RELAX";}
+        {statusString = "Свободен";}
         if((unsigned char)(status & 3) == 3)
-        {statusString="TRACE";}
+        {statusString = "Слежение";}
 
         mModel->setData(mModel->index(i,2),statusString);
         i++;

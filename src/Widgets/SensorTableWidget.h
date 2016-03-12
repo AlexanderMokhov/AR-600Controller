@@ -15,22 +15,26 @@ class SensorTableWidget;
 class SensorTableWidget : public QWidget
 {
     Q_OBJECT
-
 public:
+    //public methods
     explicit SensorTableWidget(QWidget *parent = 0);
     ~SensorTableWidget();
+
     void ShowConfigData();
     SensorTableModel *getModel();
     void UpdatePos();
-private:
-    Ui::SensorTableWidget *ui;
-    SensorTableModel *mModel;
-    QItemSelectionModel *mSelectionModel;
+
 signals:
     void RowChanged(int cRow);
+
 private slots:
     void OnRowChanged();
 
+private:
+    //private variable
+    Ui::SensorTableWidget *ui;
+    SensorTableModel *mModel;
+    QItemSelectionModel *mSelectionModel;
 };
 
 #endif // SENSORSWIDGET_H

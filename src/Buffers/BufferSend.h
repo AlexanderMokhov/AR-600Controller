@@ -9,14 +9,8 @@
 
 class BufferSend
 {
-private:
-    char m_RAW [bufferSize];//массив сырых данных
-    std::mutex m_locker;//мьютекс
-    deviceData m_motorsData[channelsNumber];
-
-    void writeInt16(uint16_t address, int16_t value);
-
 public:
+    // public methods
     BufferSend(void);
     ~BufferSend(void);
 
@@ -26,7 +20,7 @@ public:
     const char *getRAW();
     int getSize(){ return bufferSize; }
 
-	//датчик усилия
+    //датчик усилия
     void setSensorUCH0( short Number, short value );
     void setSensorUCH1( short Number, short value );
     void setSensorUCH2( short Number, short value );
@@ -73,5 +67,13 @@ public:
     void setDeviceChannel( short NumberDevice, short NumberChannel );
 
     std::mutex *getLocker();
+private:
+    // private variable
+    char m_RAW [bufferSize];
+    std::mutex m_locker;
+    deviceData m_motorsData[channelsNumber];
+
+    // private methods
+    void writeInt16(uint16_t address, int16_t value);
 };
 

@@ -9,15 +9,8 @@
 
 class BufferRecv
 {
-private:
-    char m_RAW [bufferSize];
-    std::mutex m_locker;
-    deviceData m_motorsData[channelsNumber];
-
-    int16_t readInt16(uint16_t address);
-    float readFloat(uint16_t address);
-
 public:
+    // public methods
     BufferRecv(void);
     ~BufferRecv(void);
 
@@ -63,5 +56,15 @@ public:
 
     const char *getRAW();
     std::mutex *getLocker();
+
+private:
+    // private variable
+    char m_RAW [bufferSize];
+    std::mutex m_locker;
+    deviceData m_motorsData[channelsNumber];
+
+    // private methods
+    int16_t readInt16(uint16_t address);
+    float readFloat(uint16_t address);
 };
 

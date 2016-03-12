@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>257</width>
-    <height>493</height>
+    <height>496</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -152,14 +152,14 @@
         <item row="2" column="0">
          <widget class="QPushButton" name="ButtonGoToPos">
           <property name="text">
-           <string>Go</string>
+           <string>Запуск</string>
           </property>
          </widget>
         </item>
         <item row="2" column="1">
          <widget class="QPushButton" name="ButtonStopGoToPos">
           <property name="text">
-           <string>Stop</string>
+           <string>Остановка</string>
           </property>
          </widget>
         </item>
@@ -173,7 +173,7 @@
      <item>
       <widget class="QPushButton" name="ButtonSTOP">
        <property name="text">
-        <string>BRAKE</string>
+        <string>Фиксация</string>
        </property>
        <property name="checkable">
         <bool>false</bool>
@@ -183,14 +183,14 @@
      <item>
       <widget class="QPushButton" name="ButtonBRAKE">
        <property name="text">
-        <string>BRAKE-DT</string>
+        <string>Выключен</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="ButtonRELAX">
        <property name="text">
-        <string>RELAX</string>
+        <string>Свободно</string>
        </property>
       </widget>
      </item>
@@ -336,7 +336,7 @@
      <item>
       <widget class="QCheckBox" name="checkBoxTrace">
        <property name="text">
-        <string>TRACE</string>
+        <string>Ручное управление</string>
        </property>
       </widget>
      </item>
@@ -347,7 +347,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_11">
        <property name="text">
-        <string>KP</string>
+        <string>(П) ид</string>
        </property>
       </widget>
      </item>
@@ -367,21 +367,21 @@
      <item row="0" column="2">
       <widget class="QPushButton" name="ButtonStiffWrite">
        <property name="text">
-        <string>WR</string>
+        <string>Отправить</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="QPushButton" name="ButtonStiffSave">
        <property name="text">
-        <string>Save</string>
+        <string>Сохранить</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_12">
        <property name="text">
-        <string>KI</string>
+        <string>п (И) д</string>
        </property>
       </widget>
      </item>
@@ -398,21 +398,21 @@
      <item row="1" column="2">
       <widget class="QPushButton" name="ButtonDumpWrite">
        <property name="text">
-        <string>WR</string>
+        <string>Отправить</string>
        </property>
       </widget>
      </item>
      <item row="1" column="3">
       <widget class="QPushButton" name="ButtonDumpSave">
        <property name="text">
-        <string>Save</string>
+        <string>Сохранить</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_14">
        <property name="text">
-        <string>KD</string>
+        <string>пи (Д)</string>
        </property>
       </widget>
      </item>
@@ -429,14 +429,14 @@
      <item row="2" column="2">
       <widget class="QPushButton" name="ButtonTorqueWrite">
        <property name="text">
-        <string>WR</string>
+        <string>Отправить</string>
        </property>
       </widget>
      </item>
      <item row="2" column="3">
       <widget class="QPushButton" name="ButtonTorqueSave">
        <property name="text">
-        <string>Save</string>
+        <string>Сохранить</string>
        </property>
       </widget>
      </item>

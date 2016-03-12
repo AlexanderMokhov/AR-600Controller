@@ -13,21 +13,26 @@
 class Receiver : public QThread
 {
     Q_OBJECT
-private:
-    QUdpSocket *m_udpSocketResiver;
-    QTime *m_time;
-    void printConnectionState();
-    volatile bool isRunning;
 public:
+    //public methods
     explicit Receiver( QObject *parent = 0 );
     ~Receiver();
+
     void run();
     void Connect();
     void Disconnect();
-private slots:
-    void processPendingDatagrams();
 signals:
     void ReadyData();
+private:
+    //private variable
+    QUdpSocket *m_udpSocketResiver;
+    QTime *m_time;
+    volatile bool isRunning;
+    //private methods
+    void printConnectionState();
+private slots:
+    void processPendingDatagrams();
+
 };
 
 #endif // RECEIVER_H

@@ -54,9 +54,9 @@ QVariant MotorTableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 1 )
             return QString::fromStdString(mDataList.at(index.row())->getName());
         if (index.column() == 2 )
-            return QString::fromStdString(mDataList.at(index.row())->m_status);
+            return QString::fromStdString(mDataList.at(index.row())->getState());
         if (index.column() == 3 )
-            return QString::number(mDataList.at(index.row())->m_angle);
+            return QString::number(mDataList.at(index.row())->getAngle());
         if (index.column() == 4 )
             return QString::number(mDataList.at(index.row())->getMinAngle());
         if (index.column() == 5 )
@@ -94,10 +94,10 @@ bool MotorTableModel::setData(const QModelIndex &index, const QVariant &value, i
             mDataList.at(index.row())->setName(value.toString().toStdString());
         }
         if(index.column()==2){
-            mDataList.at(index.row())->m_status = value.toString().toStdString();
+            mDataList.at(index.row())->setState(value.toString().toStdString());
         }
         if(index.column()==3){
-            mDataList.at(index.row())->m_angle = value.toString().toInt();
+            mDataList.at(index.row())->setAngle(value.toString().toInt());
         }
         if(index.column()==4){
             mDataList.at(index.row())->setMinAngle(value.toString().toInt());
@@ -106,7 +106,7 @@ bool MotorTableModel::setData(const QModelIndex &index, const QVariant &value, i
             mDataList.at(index.row())->setMaxAngle(value.toString().toInt());
         }
         if(index.column()==6){
-            mDataList.at(index.row())->m_reverceState = value.toString().toInt();
+            mDataList.at(index.row())->setReverceState(value.toString().toInt());
         }
         if(index.column()==7){
             mDataList.at(index.row())->getPIDGates()->setPGate(value.toString().toInt());

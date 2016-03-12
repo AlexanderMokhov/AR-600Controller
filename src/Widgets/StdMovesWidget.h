@@ -13,10 +13,14 @@ class StdMovesWidget;
 class StdMovesWidget : public QWidget
 {
     Q_OBJECT
-
 public:
+    //public methods
     explicit StdMovesWidget(QWidget *parent = 0);
     ~StdMovesWidget();
+
+signals:
+    void startStdMove();
+    void stopStdMove();
 
 private slots:
     void on_ButtonForward_clicked();
@@ -24,11 +28,8 @@ private slots:
     void on_pushButton_clicked();
 
 private:
+    //private variable
     Ui::StdMovesWidget *ui;
-
-signals:
-    void startStdMove();
-    void stopStdMove();
 };
 
 #endif // STDMOVESWIDGET_H

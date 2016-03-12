@@ -61,6 +61,16 @@ bool Motor::getEnable()
     return m_enable;
 }
 
+string Motor::getState()
+{
+    return m_state;
+}
+
+int Motor::getAngle()
+{
+    return m_angle;
+}
+
 void Motor::setMinAngle(int angle)
 {
     m_minAngle = angle;
@@ -83,5 +93,20 @@ void Motor::setPIDGates(PIDGates *gates)
 void Motor::setEnable(bool enable)
 {
     m_enable = enable;
+}
+
+void Motor::setAngle(int angle)
+{
+    m_angle = angle;
+}
+
+void Motor::setState(string state)
+{
+    m_state = state;
+}
+
+void Motor::setReverceState(bool state)
+{
+    m_reverceState = state;
 }
 

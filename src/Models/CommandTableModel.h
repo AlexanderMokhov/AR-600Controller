@@ -18,9 +18,9 @@ struct Move_File
 
 class CommandTableModel : public QAbstractTableModel
 {
-
     Q_OBJECT
 public:
+    //public methods
     explicit CommandTableModel(QObject *parent = 0);
     ~CommandTableModel();
 
@@ -50,9 +50,6 @@ public:
 
 signals:
     void editCompleted(const QString &);
-public slots:
-
-private:
 };
 
 #endif // COMMANDTABLEMODEL_H

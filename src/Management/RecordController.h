@@ -30,13 +30,8 @@ struct RecordData
 
 class RecordController
 {
-
-private:
-    RecordController();
-    ~RecordController(){}
-    RecordController(RecordController const&);
-    static RecordController* mInst;
 public:
+    //public variable
     BufferRecv *mReadBuffer;
 
     std::map<int,int> mDriversMap;
@@ -48,6 +43,7 @@ public:
     std::map<int,Sensor> * mSensMap;
     QTime mTime;
 
+    //public methods
     static RecordController* Inst(){return mInst;}
     static void Init(){delete mInst; mInst = new RecordController;}
 
@@ -55,6 +51,15 @@ public:
     bool SaveData(std::string fileName);
     bool SaveCurData(std::string fileName);
     void StartWrite();
+
+private:
+    //private variable
+    static RecordController* mInst;
+
+    //private methods
+    RecordController();
+    ~RecordController(){}
+    RecordController(RecordController const&);
 };
 
 #endif // RECORDCONTROLLER_H

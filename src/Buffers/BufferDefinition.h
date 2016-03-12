@@ -1,6 +1,8 @@
 #ifndef ADEFINITION
 #define ADEFINITION
+
 #include <iostream>
+
 typedef unsigned char BYTE;
 
 struct deviceData

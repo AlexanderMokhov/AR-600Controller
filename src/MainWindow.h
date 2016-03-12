@@ -47,10 +47,28 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    //public methods
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void Connect();
+    void Disconnect();
+    void ActivateActions();
+    void OpenConnectConfig();
+    void StartPlayOnline();
+    void StartFrund();
+
+private slots:
+    void ProcessTheDatagram();
+    void SaveXML();
+    void OpenXML();
+
+    void OpenCorrectionFile();
+    void OpenDRIVEMATFile();
+
 private:
+    //private variable
     Ui::MainWindow *ui;
 
     QTimer*                 mTimerUpdate;
@@ -89,29 +107,13 @@ private:
     Sender                  *mSender;
     ConsoleReceiver         *mConsoleReceiver;
 
+    //private methods
     void ActionsLoad();
     void WidgetsInit();
     void ConnectionsInit();
     void ToolBarInit();
 
     void closeEvent(QCloseEvent *event);
-
-private slots:
-    void ProcessTheDatagram();
-    void SaveXML();
-    void OpenXML();
-
-    void OpenCorrectionFile();
-    void OpenDRIVEMATFile();
-
-public slots:
-    void Connect();
-    void Disconnect();
-    void ActivateActions();
-    void OpenConnectConfig();
-    void StartPlayOnline();
-    void StartFrund();
-
 };
 
 #endif // MAINWINDOW_H
