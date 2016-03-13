@@ -48,7 +48,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tabDriver">
          <attribute name="title">
@@ -85,6 +85,20 @@
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="MoveFilesWidgetLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tabPlot">
+         <attribute name="title">
+          <string>Графики</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="plotLayout">
             <property name="sizeConstraint">
              <enum>QLayout::SetFixedSize</enum>
             </property>

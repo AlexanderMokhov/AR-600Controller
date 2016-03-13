@@ -39,6 +39,7 @@ const uint16_t MOTOR_CURRENT =   6;
 const uint16_t MOTOR_SHIFT  =    6;
 const uint16_t MOTOR_P_GATE =    8;
 const uint16_t MOTOR_I_GATE =    10;
+const uint16_t MOTOR_D_GATE =    4;
 const uint16_t MOTOR_MIN_ANGLE = 12;
 const uint16_t MOTOR_MAX_ANGLE = 14;
 

@@ -251,7 +251,7 @@ void BufferSend::setMotorIGate(short Number, short value)
 void BufferSend::setMotorDGate(short Number, short value)
 {
     m_locker.lock();
-    writeInt16(m_motorsData[Number].channel * 16 + MOTOR_P_GATE, value);
+    writeInt16(m_motorsData[Number].channel * 16 + MOTOR_D_GATE, value);
     m_locker.unlock();
 }
 

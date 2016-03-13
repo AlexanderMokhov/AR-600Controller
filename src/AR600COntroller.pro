@@ -51,7 +51,9 @@ SOURCES += main.cpp\
     Management/SettingsStorage.cpp \
     Management/MovesStorage.cpp \
     Devices/PIDGates.cpp \
-    Buffers/BufferRecv.cpp
+    Buffers/BufferRecv.cpp \
+    Libs/QCustomPlot/qcustomplot.cpp \
+    Widgets/PlotWidget.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -88,7 +90,9 @@ HEADERS  += \
     Management/SettingsStorage.h \
     Management/MovesStorage.h \
     Devices/PIDGates.h \
-    Buffers/BufferRecv.h
+    Buffers/BufferRecv.h \
+    Libs/QCustomPlot/qcustomplot.h \
+    Widgets/PlotWidget.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -101,7 +105,8 @@ FORMS    += \
     Widgets/MoveFilesWidget.ui \
     Widgets/PowerWidget.ui \
     Widgets/SetLimitsDialog.ui \
-    Widgets/StdMovesWidget.ui
+    Widgets/StdMovesWidget.ui \
+    Widgets/PlotWidget.ui
 
 win32 {
     RC_FILE += resource.rc

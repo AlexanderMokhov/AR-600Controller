@@ -171,6 +171,8 @@ void MainWindow::WidgetsInit()
     ui->MoveFilesWidgetLayout->addWidget(mMoveFilesWidget);
     mStdMovesWidget = new StdMovesWidget();
     mStdMovesWidget->show();
+    mPlotWidget = new PlotWidget();
+    ui->plotLayout->addWidget(mPlotWidget);
 }
 
 void MainWindow::ConnectionsInit()
