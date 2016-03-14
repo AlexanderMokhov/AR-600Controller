@@ -298,11 +298,20 @@ bool SettingsStorage::SaveFile(string FileName)
     WriteValue=new TiXmlText(itoa((int)mDefaultTorqueFactor*100,buffer,10));
     xml_DefaultTorqueFactor->LinkEndChild(WriteValue);
 
-
     TiXmlElement * xml_DefaultSpeed = new TiXmlElement("DefaultSpeed");
     xml_CommandControllerSettings->LinkEndChild(xml_DefaultSpeed);
     WriteValue=new TiXmlText(itoa(mDefaultSpeed,buffer,10));
     xml_DefaultSpeed->LinkEndChild(WriteValue);
+
+    TiXmlElement * xml_FileForward = new TiXmlElement("FileForward");
+    xml_CommandControllerSettings->LinkEndChild(xml_FileForward);
+    WriteValue=new TiXmlText(mFileForward.c_str());
+    xml_FileForward->LinkEndChild(WriteValue);
+
+    TiXmlElement * xml_FileBack = new TiXmlElement("FileBack");
+    xml_CommandControllerSettings->LinkEndChild(xml_FileBack);
+    WriteValue=new TiXmlText(mFileBack.c_str());
+    xml_FileBack->LinkEndChild(WriteValue);
 
     //Сохраняем файл
     mXMLConfigFile->SaveFile(FileName.c_str());

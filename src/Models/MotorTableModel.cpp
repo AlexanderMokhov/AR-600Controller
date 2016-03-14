@@ -6,15 +6,15 @@ MotorTableModel::MotorTableModel(QObject *parent) : QAbstractTableModel(parent)
     mHeaderData << QString::fromUtf8(" № ")
                 << QString::fromUtf8(" Описание ")
                 << QString::fromUtf8(" Статус ")
-                << QString::fromUtf8(" Позиция ")
-                << QString::fromUtf8(" МинПоз ")
-                << QString::fromUtf8(" МаксПоз ")
+                << QString::fromUtf8(" Угол ")
+                << QString::fromUtf8(" Мин Угол ")
+                << QString::fromUtf8(" Макс Угол ")
                 << QString::fromUtf8(" Реверс ")
-                << QString::fromUtf8(" K_P ")
-                << QString::fromUtf8(" K_I ")
-                << QString::fromUtf8(" K_D ")
-                << QString::fromUtf8(" КалибПол ")
-                << QString::fromUtf8(" Enable ");
+                << QString::fromUtf8(" П ")
+                << QString::fromUtf8(" И ")
+                << QString::fromUtf8(" Д ")
+                << QString::fromUtf8(" Смещение ")
+                << QString::fromUtf8(" Доступ ");
 
     //заполняем пустыми ячейками/*
         for(int i = 0; i < 20; i++){

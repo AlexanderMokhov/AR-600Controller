@@ -20,6 +20,7 @@
 #include <cmath>
 #include <mutex>
 #include <regex>
+#include <unistd.h>
 
 #include "Buffers/BufferController.h"
 #include "SettingsStorage.h"

@@ -7,11 +7,11 @@ PlotWidget::PlotWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->customPlot->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
+    ui->customPlot->setInteraction(QCP::iRangeZoom, true);   // Включаем взаимодействие удаления/приближения
     ui->customPlot->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
 
-    ui->customPlot->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
-    ui->customPlot->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+    ui->customPlot->axisRect()->setRangeDrag(Qt::Horizontal | Qt::Vertical);   // Включаем перетаскивание только по горизонтальной оси
+    ui->customPlot->axisRect()->setRangeZoom(Qt::Horizontal | Qt::Vertical);   // Включаем удаление/приближение только по горизонтальной оси
 
     ui->customPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);   // Подпись координат по Оси X в качестве Даты и Времени
     ui->customPlot->xAxis->setDateTimeFormat("hh:mm:ss");  // Устанавливаем формат даты и времени
@@ -40,88 +40,82 @@ PlotWidget::PlotWidget(QWidget *parent) :
     ui->customPlot->legend->setFont(QFont("Helvetica", 9));
 
     // Устанавливаем Легенду в левый верхний угол графика
-    ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight | Qt::AlignTop);
+    ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft | Qt::AlignTop);
 
     // Будем строить график с сегодняшнего дни и текущей секунды в будущее
     double now = QDateTime::currentDateTime().toTime_t();
 
-    // Объявляем вектора времени и доходов
-    QVector <double> time(400), income(400);
-
-    srand(15); // Инициализируем генератор псевдослучайных чисел
-
-    // Заполняем график значениями
-    for (int i = 0; i < 400; i++)
+    for(auto it = SettingsStorage::Inst()->GetMotors()->begin();
+        it != SettingsStorage::Inst()->GetMotors()->end(); ++it )
     {
-        time[i] = now + i;
-        income[i] = i;
+        addGraph((*it).first,(*it).second.getName());
     }
-    QPen pen;
-    pen.setColor(QColor(qSin(1*1+1.2)*80+80, qSin(1*0.3+0)*80+80, qSin(1*0.3+1.5)*80+80));
-
-    ui->customPlot->addGraph();
-    ui->customPlot->graph()->setPen(pen);
-    ui->customPlot->graph()->setName("Напряжение");
-    ui->customPlot->graph()->setLineStyle(QCPGraph::lsLine);
-    ui->customPlot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-
-    // generate data:
-    ui->customPlot->graph()->setData(time, income); // Устанавливаем данные
-    ui->customPlot->graph()->rescaleAxes(true);      // Масштабируем график по данным
-    ui->customPlot->replot();           // Отрисовываем график
-
-//    QPen pen;
-//    QStringList lineNames;
-//    lineNames << "Линия";
-
-//    ui->_QCustomPlotWidget->addGraph();
-//    pen.setColor(QColor(qSin(1*1+1.2)*80+80, qSin(1*0.3+0)*80+80, qSin(1*0.3+1.5)*80+80));
-//    ui->_QCustomPlotWidget->graph()->setPen(pen);
-//    ui->_QCustomPlotWidget->graph()->setName(lineNames.at(0));
-//    ui->_QCustomPlotWidget->graph()->setLineStyle(QCPGraph::lsLine);
-//    ui->_QCustomPlotWidget->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-//    // generate data:
-//    QVector<double> x(200), y(200);
-//    for (int j=0; j<200; ++j)
-//    {
-//    x[j] = j/15.0 * 5*3.14 + 0.01;
-//    y[j] = 7*qSin(x[j])/x[j] + (QCPGraph::lsImpulse)*5 + 2;
-//    }
-//    ui->_QCustomPlotWidget->graph()->setData(x, y);
-//    ui->_QCustomPlotWidget->graph()->rescaleAxes(true);
-
-//    // zoom out a bit:
-    ui->customPlot->yAxis->scaleRange(1.1, ui->customPlot->yAxis->range().center());
-    ui->customPlot->xAxis->scaleRange(1.1, ui->customPlot->xAxis->range().center());
-//    // set blank axis lines:
 
     ui->customPlot->xAxis->setTickStep(2);//шаг между рисками (мс)
     ui->customPlot->axisRect()->setupFullAxesBox();
 
-//    // make top right axes clones of bottom left axes:
-//    ui->_QCustomPlotWidget->axisRect()->setupFullAxesBox();
+    setRange(10);
+
+    m_timer = new QTimer;
+    m_timer->setInterval(10);
+    connect(m_timer,SIGNAL(timeout()),SLOT(drawGraphSlot()),Qt::DirectConnection);
+    m_timer->start(10);
 }
 
 PlotWidget::~PlotWidget()
 {
     delete ui;
-
-
 }
 
 void PlotWidget::addGraph(uint id, std::string name)
 {
-    //GraphItem item;
+    QPen pen;
+    pen.setColor(QColor(qSin(id + 1.2)*80+80, qSin(id*0.3+0)*80+80, qSin(id*0.3+1.5)*80+80));
 
-    //item.graph = QCPGraph();
-    //item.name = name;
+    QCPGraph *graphic = new QCPGraph(ui->customPlot->xAxis, ui->customPlot->yAxis);
+    graphic->setName(QString::fromLocal8Bit(name.c_str()));       // Устанавливаем
+    graphic->setPen(pen); // Устанавливаем цвет графика
+    graphic->setAntialiased(false);         // Отключаем сглаживание, по умолчанию включено
+    graphic->setLineStyle(QCPGraph::lsLine);
 
-    //m_Graphs[id] = item;
+    ui->customPlot->addPlottable(graphic);  // Устанавливаем график на полотно
+
+    GraphItem item;
+    item.graphic = graphic;
+    item.name = name;
+    m_Graphs[id] = item;
 }
 
 void PlotWidget::removeGraph(uint id)
 {
     m_Graphs.erase(id);
+}
+
+void PlotWidget::setRange(int range)
+{
+    this->rangeSize = range;
+}
+
+void PlotWidget::drawPlot()
+{
+    // вычислить две новых точки данных:
+    double key = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+    static double lastPointKey = 0;
+
+    if (key - lastPointKey > 0.05) // добавляем точку каждые 10 мс
+    {
+        for(auto it = m_Graphs.begin(); it != m_Graphs.end(); ++it)
+        {
+            double value = BufferController::Inst()->getBufferRecv()->getMotorAngle((*it).first);
+            (*it).second.graphic->addData(key, value);
+            (*it).second.graphic->removeDataBefore(key - rangeSize);
+            (*it).second.graphic->rescaleValueAxis(true);
+        }
+        lastPointKey = key;
+    }
+    //ui->customPlot->rescaleAxes();      // Масштабируем график по данным
+    ui->customPlot->xAxis->setRange(key + 0.25, rangeSize, Qt::AlignRight);
+    ui->customPlot->replot();
 }
 
 void PlotWidget::slotRangeChanged(const QCPRange &newRange)
@@ -131,4 +125,9 @@ void PlotWidget::slotRangeChanged(const QCPRange &newRange)
     * в противном случае отображаем дату "День Месяц Год"
     * */
     ui->customPlot->xAxis->setDateTimeFormat((newRange.size() <= 3600)? "mm:ss" : "hh:mm:ss");
+}
+
+void PlotWidget::drawGraphSlot()
+{
+    drawPlot();
 }

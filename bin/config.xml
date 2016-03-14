@@ -19,7 +19,7 @@
             <Channel>2</Channel>
             <Name>Стопа X (R)</Name>
             <MinPos>-4000</MinPos>
-            <MaxPos>4000</MaxPos>
+            <MaxPos>8000</MaxPos>
             <Reverce>false</Reverce>
             <Stiff>900</Stiff>
             <Dump>2</Dump>
@@ -31,7 +31,7 @@
             <Number>3</Number>
             <Channel>3</Channel>
             <Name>Колено (R)</Name>
-            <MinPos>-9000</MinPos>
+            <MinPos>-10000</MinPos>
             <MaxPos>700</MaxPos>
             <Reverce>false</Reverce>
             <Stiff>900</Stiff>
@@ -45,7 +45,7 @@
             <Channel>4</Channel>
             <Name>Бедро X (R)</Name>
             <MinPos>-1000</MinPos>
-            <MaxPos>4000</MaxPos>
+            <MaxPos>7500</MaxPos>
             <Reverce>true</Reverce>
             <Stiff>900</Stiff>
             <Dump>2</Dump>
@@ -97,7 +97,7 @@
             <Channel>8</Channel>
             <Name>Стопа X (L)</Name>
             <MinPos>-4000</MinPos>
-            <MaxPos>4000</MaxPos>
+            <MaxPos>8000</MaxPos>
             <Reverce>true</Reverce>
             <Stiff>900</Stiff>
             <Dump>2</Dump>
@@ -109,7 +109,7 @@
             <Number>9</Number>
             <Channel>9</Channel>
             <Name>Колено (L)</Name>
-            <MinPos>-9000</MinPos>
+            <MinPos>-10000</MinPos>
             <MaxPos>700</MaxPos>
             <Reverce>true</Reverce>
             <Stiff>900</Stiff>
@@ -123,7 +123,7 @@
             <Channel>10</Channel>
             <Name>Бедро X (L)</Name>
             <MinPos>-1000</MinPos>
-            <MaxPos>4000</MaxPos>
+            <MaxPos>7500</MaxPos>
             <Reverce>false</Reverce>
             <Stiff>900</Stiff>
             <Dump>2</Dump>
@@ -390,7 +390,7 @@
         <DefaultDumpFactor>100</DefaultDumpFactor>
         <DefaultTorqueFactor>100</DefaultTorqueFactor>
         <DefaultSpeed>20</DefaultSpeed>
-	<FileForward>STDFORWARD.TXT</FileForward>
-	<FileBack>STDBACK.TXT</FileBack>
+        <FileForward>STDFORWARD.TXT</FileForward>
+        <FileBack>STDBACK.TXT</FileBack>
     </CommandControllerSettings>
 </AR600ControllerConf>

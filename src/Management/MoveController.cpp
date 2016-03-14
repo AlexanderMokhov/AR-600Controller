@@ -141,7 +141,11 @@ void MoveController::stoppingPlay()
 
 void MoveController::stepPlayOnline()
 {
-    MovesStorage::Inst()->loadFile("DRIVEMAR.txt");
+    const char *filename = "sinhron/DRIVEMAR.CNT";
+
+    while(!access (filename, F_OK)) ;
+
+    MovesStorage::Inst()->loadFile("sinhron/DRIVEMAR.txt");
 
     if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
@@ -176,6 +180,10 @@ void MoveController::stepPlayOnline()
 StopPlay:
         MovesStorage::Inst()->m_moveID = 0;
         qDebug() << "Выполнен очередной файл"  << endl;
+
+        std::ofstream file;
+        file.open(filename, ios_base::out | ios_base::trunc);
+        file.close();
 }
 
 bool MoveController::openFile(std::string fileName)

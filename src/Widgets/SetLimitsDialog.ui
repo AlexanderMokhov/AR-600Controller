@@ -68,10 +68,10 @@
         </sizepolicy>
        </property>
        <property name="minimum">
-        <number>-10000</number>
+        <number>-100000</number>
        </property>
        <property name="maximum">
-        <number>10000</number>
+        <number>100000</number>
        </property>
       </widget>
      </item>
@@ -107,10 +107,10 @@
         </sizepolicy>
        </property>
        <property name="minimum">
-        <number>-10000</number>
+        <number>-100000</number>
        </property>
        <property name="maximum">
-        <number>10000</number>
+        <number>100000</number>
        </property>
       </widget>
      </item>
