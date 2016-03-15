@@ -107,6 +107,11 @@ void MoveControlWidget::on_ButtonPlayPause_clicked()
 
 void MoveControlWidget::on_ButtonStop_clicked()
 {
+    stopMoveAction();
+}
+
+void MoveControlWidget::stopMoveAction()
+{
     isMoveFile = false;
     mMover->stopMove();
 
@@ -117,6 +122,7 @@ void MoveControlWidget::on_ButtonStop_clicked()
 
     emit PlayStop();
 }
+
 
 void MoveControlWidget::on_checkBoxLog_clicked(bool checked)
 {

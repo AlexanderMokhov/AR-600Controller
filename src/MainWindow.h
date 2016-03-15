@@ -29,6 +29,7 @@
 #include "Widgets/MoveFilesWidget.h"
 #include "Widgets/StdMovesWidget.h"
 #include "Widgets/PlotWidget.h"
+#include "Widgets/modelWidget.h"
 
 #include "Buffers/BufferController.h"
 
@@ -53,12 +54,7 @@ public:
     ~MainWindow();
 
 public slots:
-    void Connect();
-    void Disconnect();
     void ActivateActions();
-    void OpenConnectConfig();
-    void StartPlayOnline();
-    void StartFrund();
 
 private slots:
     void ProcessTheDatagram();
@@ -67,6 +63,16 @@ private slots:
 
     void OpenCorrectionFile();
     void OpenDRIVEMATFile();
+
+    void StartPlayOnline();
+    void StopPlayOnline();
+
+    void StartFrund();
+
+    void Connect();
+    void Disconnect();
+
+    void OpenConnectConfig();
 
 private:
     //private variable
@@ -88,7 +94,7 @@ private:
     MoveFilesWidget         *mMoveFilesWidget;
     StdMovesWidget          *mStdMovesWidget;
     PlotWidget              *mPlotWidget;
-
+    modelWidget              *mModelWidget;
 
     //действия
     QAction *TBactionOpenCF;
@@ -104,6 +110,7 @@ private:
     QAction *TBactionOpenMoveFile;
     QAction *TBactionStartFrund;
     QAction *TBactionStartPlayOnline;
+    QAction *TBactionStopPlayOnline;
 
     //потоки
     Receiver                *mReceiver;

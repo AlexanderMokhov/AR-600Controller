@@ -26,6 +26,7 @@ struct RecordData
     std::map<int, int> DriversData;
     std::map<int, int> SensorsData;
     std::map<int, float> DriversCurrent;
+    double DriversPower;
 };
 
 class RecordController
@@ -42,6 +43,7 @@ public:
     std::map<int,Motor> * mConfigMap;
     std::map<int,Sensor> * mSensMap;
     QTime mTime;
+    double driverPower;
 
     //public methods
     static RecordController* Inst(){return mInst;}

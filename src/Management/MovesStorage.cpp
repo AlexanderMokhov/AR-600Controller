@@ -77,9 +77,16 @@ bool MovesStorage::loadBackMoves()
 
 bool MovesStorage::loadFile(std::string filename)
 {
+    qDebug() << "Load file begin" << endl;
+
     std::ifstream file(filename.c_str());
+
+    qDebug() << "File is open" << endl;
+
     if( file.is_open() )
     {
+        qDebug() << "File is reading..." << endl;
+
         //очищаем список команд
         m_moves.clear();
         m_rowsNumber = 0;
@@ -99,16 +106,16 @@ bool MovesStorage::loadFile(std::string filename)
 
         while( std::getline(file, line) )
         {
-            const char * s = line.c_str();
-            char * ptr = 0;
-            errno = 0;
-            int Number_ = strtol(s, &ptr, 10);
-            if (!(errno != ERANGE && ptr > s))
-                break;
-
-            double Time_ = strtod(ptr, &ptr);
-            if (!(errno != ERANGE && ptr > s))
-                break;
+            //const char * s = line.c_str();
+            //char * ptr = 0;
+            //errno = 0;
+            //int Number_ = strtol(s, &ptr, 10);
+            //if (!(errno != ERANGE && ptr > s))
+            //    break;
+            //
+            //double Time_ = strtod(ptr, &ptr);
+            //if (!(errno != ERANGE && ptr > s))
+            //    break;
 
             //читаем очередную строку из файла
             std::locale loc;

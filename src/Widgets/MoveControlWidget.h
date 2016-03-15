@@ -30,6 +30,7 @@ public:
     ~MoveControlWidget();
 
     void StartPlayFile(bool mode);
+    void stopMoveAction();
 
 signals:
     StartWriteRecord(int LogTime);

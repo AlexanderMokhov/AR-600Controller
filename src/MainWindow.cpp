@@ -149,6 +149,11 @@ void MainWindow::ActionsLoad()
     TBactionStartPlayOnline->setIcon(QIcon(":/MyIcons/Icons/play.ico"));
     connect(TBactionStartPlayOnline, SIGNAL(triggered()),this, SLOT(StartPlayOnline()));
 
+    TBactionStopPlayOnline = new QAction("Остановка движения онлайн",0);
+    TBactionStopPlayOnline->setToolTip("Остановка движения онлайн");
+    TBactionStopPlayOnline->setIcon(QIcon(":/MyIcons/Icons/stop.ico"));
+    connect(TBactionStopPlayOnline, SIGNAL(triggered()),this, SLOT(StopPlayOnline()));
+
     TBactionStartFrund = new QAction("Запустить RASHET32.EXE",0);
     TBactionStartFrund->setToolTip("Запустить RASHET32.EXE");
     TBactionStartFrund->setIcon(QIcon(":/MyIcons/Icons/forward.ico"));
@@ -171,8 +176,12 @@ void MainWindow::WidgetsInit()
     ui->MoveFilesWidgetLayout->addWidget(mMoveFilesWidget);
     mStdMovesWidget = new StdMovesWidget();
     mStdMovesWidget->show();
+
     mPlotWidget = new PlotWidget();
     ui->plotLayout->addWidget(mPlotWidget);
+
+    mModelWidget = new modelWidget();
+    ui->GLWidgetLayout->addWidget(mModelWidget);
 }
 
 void MainWindow::ConnectionsInit()
@@ -227,6 +236,7 @@ void MainWindow::ToolBarInit()
     ui->MainToolBar->addAction(TBactionStop);
     ui->MainToolBar->addSeparator();
     ui->MainToolBar->addAction(TBactionStartPlayOnline);
+    ui->MainToolBar->addAction(TBactionStopPlayOnline);
     ui->MainToolBar->addAction(TBactionStartFrund);
     //конец добавление кнопок на тулбар
 }
@@ -277,6 +287,11 @@ void MainWindow::OpenConnectConfig()
 void MainWindow::StartPlayOnline()
 {
     mMoveControlWidget->startMoveOnline();
+}
+
+void MainWindow::StopPlayOnline()
+{
+    mMoveControlWidget->stopMoveAction();
 }
 
 void MainWindow::StartFrund()

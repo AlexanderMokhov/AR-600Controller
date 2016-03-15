@@ -143,7 +143,15 @@ void MoveController::stepPlayOnline()
 {
     const char *filename = "sinhron/DRIVEMAR.CNT";
 
-    while(!access (filename, F_OK)) ;
+    qDebug() << "waiting when DRIVEMAR.CNT will be deleted..."  << endl;
+
+    // ждем удаления файла DRIVEMAR.CNT
+
+    while(!access (filename, F_OK) && this->m_state == States::MovePlayOnline) ;
+        if (this->m_state != States::MovePlayOnline) return;
+    qDebug() << "file DRIVEMAR.CNT was deleted, FRUND has written DRIVEMAR.TXT"  << endl;
+
+    // файл DRIVEMAR.CNT удален, ФРУНД записал DRIVEMAR.TXT
 
     MovesStorage::Inst()->loadFile("sinhron/DRIVEMAR.txt");
 
@@ -173,17 +181,29 @@ void MoveController::stepPlayOnline()
         BufferController::Inst()->getBufferSend()->setMotorIGate( Number, Dump );
         BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
         BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle);
+        BufferController::Inst()->getBufferSend()->motorTrace(Number);
         MovesStorage::Inst()->m_moveID++;
 
         if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
+
+        qDebug() << "String number " << QString::number(MovesStorage::Inst()->m_moveID) << "have been read"  << endl;
     }
 StopPlay:
         MovesStorage::Inst()->m_moveID = 0;
         qDebug() << "Выполнен очередной файл"  << endl;
 
+        // Отправка движений из файла DRIVEMAR.TXT завершена, переходим к следующей итерации решения
+
+        // Создаем файл DRIVEMAR.CNT, ФРУНД начинает следующую итерацию решения
+        // после чего удаляет файл DRIVEMAR.CNT
+
+        qDebug() << "start create file DRIVEMAR.CNT"  << endl;
+
         std::ofstream file;
         file.open(filename, ios_base::out | ios_base::trunc);
         file.close();
+
+        qDebug() << "file DRIVEMAR.CNT was created, FRUND should delete DRIVEMAR.CNT"  << endl;
 }
 
 bool MoveController::openFile(std::string fileName)

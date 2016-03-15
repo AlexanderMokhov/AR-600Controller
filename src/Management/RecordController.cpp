@@ -38,10 +38,14 @@ void RecordController::AddRawData()
         (*it).second=Value;
     }
 
+    driverPower = 0;
+
     for(auto it = mDrivsCurMap.begin(); it != mDrivsCurMap.end(); ++it)
     {
         (*it).second = -1 * mReadBuffer->getMotorCurrent((*it).first) / 100.0;
+        driverPower += fabs((*it).second - 1) * fabs(mReadBuffer->getMotorVoltage((*it).first)/100.0);
     }
+
 
     //создаем элемент вектора с данными моторов
     RecordData Data;
@@ -49,6 +53,7 @@ void RecordController::AddRawData()
     Data.DriversData = mDriversMap;
     Data.SensorsData = mSensorsMap;
     Data.DriversCurrent = mDrivsCurMap;
+    Data.DriversPower = driverPower;
     //окончание создания
 
     mRecordVector.push_back(Data);
@@ -85,6 +90,8 @@ bool RecordController::SaveData(string fileName)
             file << (*it2).second.getNameLog();
         }
 
+        file << "\t" << "POWER";
+
         file << "\n";
 
         //теперь можно писать время и значения
@@ -113,6 +120,8 @@ bool RecordController::SaveData(string fileName)
                 file << "\t" << buffer;
             }
 
+            std::sprintf(buffer,"%f", data.DriversPower);
+            file << "\t" << buffer;
             file << "\n";
         }
 

@@ -7,7 +7,8 @@
 QT       += core\
             gui \
             network \
-            printsupport
+            printsupport \
+            opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -53,7 +54,9 @@ SOURCES += main.cpp\
     Devices/PIDGates.cpp \
     Buffers/BufferRecv.cpp \
     Libs/QCustomPlot/qcustomplot.cpp \
-    Widgets/PlotWidget.cpp
+    Widgets/PlotWidget.cpp \
+    Widgets/modelWidget.cpp \
+    Widgets/GLWidget.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -92,7 +95,9 @@ HEADERS  += \
     Devices/PIDGates.h \
     Buffers/BufferRecv.h \
     Libs/QCustomPlot/qcustomplot.h \
-    Widgets/PlotWidget.h
+    Widgets/PlotWidget.h \
+    Widgets/modelWidget.h \
+    Widgets/GLWidget.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -106,12 +111,14 @@ FORMS    += \
     Widgets/PowerWidget.ui \
     Widgets/SetLimitsDialog.ui \
     Widgets/StdMovesWidget.ui \
-    Widgets/PlotWidget.ui
+    Widgets/PlotWidget.ui \
+    Widgets/modelWidget.ui
 
 win32 {
     RC_FILE += resource.rc
     OTHER_FILES += resource.rc
     LIBS += -lws2_32
+    LIBS += -lglut32
 }
 
 RESOURCES += \
