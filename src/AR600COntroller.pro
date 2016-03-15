@@ -118,7 +118,7 @@ win32 {
     RC_FILE += resource.rc
     OTHER_FILES += resource.rc
     LIBS += -lws2_32
-    LIBS += -lglut32
+    LIBS += -lglu32 -lopengl32
 }
 
 RESOURCES += \

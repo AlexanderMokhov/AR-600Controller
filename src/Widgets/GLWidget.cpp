@@ -103,18 +103,6 @@ void GLWidget::timerEvent(QTimerEvent *event)
 
 void GLWidget::resizeGL(int width, int height)
 {
-    //proces resize keep good aspect ratio for 3D scene
 
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    int side = qMin(width, height);
-    glViewport((width - side) / 2, (height - side) / 2, side, side);
-
-    // glViewport(0, 0, width, height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0, (GLfloat)width/(GLfloat)height, 0.01f, 1000.0f);
-    glMatrixMode(GL_MODELVIEW);
 }
 
