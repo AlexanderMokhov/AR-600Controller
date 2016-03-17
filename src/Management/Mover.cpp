@@ -45,6 +45,7 @@ void Mover::startMoveOnline()
     MoveController::Inst()->startPlayOnline();
     if( !isRunning ) start();
     emit playOnlineStart();
+    RecordController::Inst()->StartWrite();
 }
 
 void Mover::stopMove()

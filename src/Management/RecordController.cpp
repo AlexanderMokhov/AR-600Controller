@@ -28,7 +28,7 @@ void RecordController::saveRow(string fileName)
 {
     mRecordVector.clear();
     AddRawData();
-    SaveData(fileName);
+    SaveData(fileName, false);
 }
 
 
@@ -68,7 +68,7 @@ void RecordController::AddRawData()
     mRecordVector.push_back(Data);
 }
 
-bool RecordController::SaveData(string fileName)
+bool RecordController::SaveData(string fileName, bool mode)
 {
     std::ofstream file;
     file.open(fileName.c_str(),ios_base::out | ios_base::trunc);
@@ -83,25 +83,28 @@ bool RecordController::SaveData(string fileName)
         char * buffer ;
         buffer = (char*)malloc(15*sizeof(char));
 
-        file << "\t" << "TIME";
-
-        //записываем номера приводов
-        for(auto it = mDriversMap.begin();it != mDriversMap.end(); ++it)
+        if(mode == true)
         {
-            file << "\t";
-            file << itoa((*it).first, buffer,10);
+            file << "\t" << "TIME";
+
+            //записываем номера приводов
+            for(auto it = mDriversMap.begin();it != mDriversMap.end(); ++it)
+            {
+                file << "\t";
+                file << itoa((*it).first, buffer,10);
+            }
+
+            //записываем номера сенсоров
+            for(auto it2 = mSensMap->begin();it2 != mSensMap->end(); ++it2)
+            {
+                file << "\t";
+                file << (*it2).second.getNameLog();
+            }
+
+            file << "\t" << "POWER";
+
+            file << "\n";
         }
-
-        //записываем номера сенсоров
-        for(auto it2 = mSensMap->begin();it2 != mSensMap->end(); ++it2)
-        {
-            file << "\t";
-            file << (*it2).second.getNameLog();
-        }
-
-        file << "\t" << "POWER";
-
-        file << "\n";
 
         //теперь можно писать время и значения
         for(auto itv = mRecordVector.begin(); itv != mRecordVector.end(); ++itv)
@@ -109,7 +112,7 @@ bool RecordController::SaveData(string fileName)
             RecordData data = (*itv);
             double Time = data.Time / 1000.0;
             std::sprintf(buffer, "%f", Time);
-            file << "\t" << buffer;
+            file << " " << buffer;
 
             //записываем позиции приводов
             for(auto it = data.DriversData.begin(); it != data.DriversData.end(); ++it)
@@ -118,7 +121,7 @@ bool RecordController::SaveData(string fileName)
                 double pi = 4 * std::atan(1);
                 Pos = (pi*Pos)/(180*100);
                 std::sprintf(buffer,"%f",Pos);
-                file << "\t" << buffer;
+                file << " " << buffer;
             }
 
             //записываем значения сенсоров
@@ -126,12 +129,14 @@ bool RecordController::SaveData(string fileName)
             {
                 double Value = (*it).second;
                 std::sprintf(buffer,"%f",Value);
-                file << "\t" << buffer;
+                file << " " << buffer;
             }
 
             std::sprintf(buffer,"%f", data.DriversPower);
-            file << "\t" << buffer;
-            file << "\n";
+            file << " " << buffer;
+
+            if(mode == true)
+                file << "\n";
         }
 
         file.close();

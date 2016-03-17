@@ -50,7 +50,7 @@ public:
     static void Init(){delete mInst; mInst = new RecordController;}
 
     void AddRawData();
-    bool SaveData(std::string fileName);
+    bool SaveData(std::string fileName, bool mode);
     bool SaveCurData(std::string fileName);
     void StartWrite();
     void saveRow(string fileName);

@@ -199,11 +199,13 @@ StopPlay:
 
         qDebug() << "start create file DRIVEMAR.CNT"  << endl;
 
-//        std::ofstream file;
-//        file.open(filename, ios_base::out | ios_base::trunc);
-//        file.close();
-        RecordController::Inst()->saveRow(std::string(filename));
-        qDebug() << "file DRIVEMAR.CNT was created, FRUND should delete DRIVEMAR.CNT"  << endl;
+        RecordController::Inst()->saveRow(std::string("sinhron/DRIVELGT.txt"));
+
+        std::ofstream file;
+        file.open(filename, ios_base::out | ios_base::trunc);
+        file.close();
+
+        qDebug() << "file DRIVEMAR.CNT was created, FRUND should delete DRIVEMAR.CNT" << endl;
 }
 
 bool MoveController::openFile(std::string fileName)
