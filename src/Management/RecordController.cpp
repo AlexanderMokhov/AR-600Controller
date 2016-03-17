@@ -24,6 +24,15 @@ RecordController::RecordController()
 
 }
 
+void RecordController::saveRow(string fileName)
+{
+    mRecordVector.clear();
+    AddRawData();
+    SaveData(fileName);
+}
+
+
+
 void RecordController::AddRawData()
 {
     for(auto it = mDriversMap.begin(); it != mDriversMap.end(); ++it)

@@ -58,6 +58,11 @@ MainWindow::MainWindow(QWidget *parent) :
     mCommandControllerStatusLabel->setText("Файл команд не загружен");
     ui->statusbar->addWidget(mCommandControllerStatusLabel);
 
+    //создание потоков на отправку и прием буфера
+    mSender = new Sender;
+    mReceiver = new Receiver;
+    mConsoleReceiver = new ConsoleReceiver;
+
     ConnectionsInit();
 
     //заполнение таблицы приводов
@@ -67,12 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
     mTimerUpdate = new QTimer();
     mTimerUpdate->setInterval(mUpdateDelay);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
-
-    //создание потоков на отправку и прием буфера
-
-    mSender = new Sender;
-    mReceiver = new Receiver;
-    mConsoleReceiver = new ConsoleReceiver;
 
     MoveCorrector::Inst()->initialize();
 }
@@ -215,6 +214,9 @@ void MainWindow::ConnectionsInit()
 
     connect(mStdMovesWidget,SIGNAL(startStdMove()),mMoveControlWidget,SLOT(startStdMove()));
     connect(mStdMovesWidget,SIGNAL(stopStdMove()),mMoveControlWidget,SLOT(on_ButtonStop_clicked()));
+
+    connect(mConsoleReceiver, SIGNAL(startPlayOnline()), this, SLOT(StartPlayOnline()));
+    connect(mConsoleReceiver, SIGNAL(stopPlayOnline()), this, SLOT(StopPlayOnline()));
 }
 
 void MainWindow::ToolBarInit()

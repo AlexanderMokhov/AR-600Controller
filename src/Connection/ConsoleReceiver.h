@@ -10,6 +10,7 @@
 
 #include "Buffers/BufferController.h"
 #include "Management/SettingsStorage.h"
+#include "Management/MoveController.h"
 
 class ConsoleReceiver : public QThread
 {
@@ -24,13 +25,18 @@ public:
     void Disconnect();
 signals:
     void ReadyData();
+    void startPlayOnline();
+    void stopPlayOnline();
 private:
     //private variable
     QUdpSocket *m_udpSocketReceiver;
     volatile bool isRunning;
+    QHostAddress host = QHostAddress::LocalHost;
+    int port = 55555;
 
     //private methods
     void writeToFile(QByteArray data);
+    void sendFile();
 private slots:
     void processPendingDatagrams();
 };

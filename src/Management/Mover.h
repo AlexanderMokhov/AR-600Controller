@@ -31,6 +31,7 @@ signals:
     void PrepStart(); //Подготовка начата
     void PrepEnd(); //Подготовка закончена
     void MoveEnd(); //Движение закончено
+    void playOnlineStart();
 
 private:
     //private variable

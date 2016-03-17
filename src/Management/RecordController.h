@@ -53,6 +53,7 @@ public:
     bool SaveData(std::string fileName);
     bool SaveCurData(std::string fileName);
     void StartWrite();
+    void saveRow(string fileName);
 
 private:
     //private variable

@@ -52,6 +52,8 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
 
     connect(mMover, SIGNAL(MoveEnd()),this, SLOT(on_ButtonStop_clicked()));
 
+    //connect(mMover, SIGNAL(playOnlineStart()),this, SLOT(on_ButtonStop_clicked()));
+
 }
 
 MoveControlWidget::~MoveControlWidget()
@@ -108,6 +110,7 @@ void MoveControlWidget::on_ButtonPlayPause_clicked()
 void MoveControlWidget::on_ButtonStop_clicked()
 {
     stopMoveAction();
+    qDebug() << "Движение остановлено" << endl;
 }
 
 void MoveControlWidget::stopMoveAction()
@@ -157,7 +160,14 @@ void MoveControlWidget::startMove()
 
 void MoveControlWidget::startMoveOnline()
 {
+    openFile("sinhron/DRIVEMAR.TXT", true);
+
     mMover->startMoveOnline();
+
+    if(IsLog)
+    {
+        emit StartWriteRecord(2e5);
+    }
 }
 
 void MoveControlWidget::StartPlayFile(bool mode)

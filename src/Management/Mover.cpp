@@ -42,9 +42,9 @@ void Mover::startMove()
 
 void Mover::startMoveOnline()
 {
-
     MoveController::Inst()->startPlayOnline();
     if( !isRunning ) start();
+    emit playOnlineStart();
 }
 
 void Mover::stopMove()

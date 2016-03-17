@@ -26,6 +26,7 @@
 #include "SettingsStorage.h"
 #include "MoveCorrector.h"
 #include "MovesStorage.h"
+#include "RecordController.h"
 
 //!!!
 struct Command

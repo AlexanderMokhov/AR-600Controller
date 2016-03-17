@@ -14,7 +14,7 @@ void ConsoleReceiver::run()
 {
     //нить создана
     m_udpSocketReceiver = new QUdpSocket;
-    int ReceivePort = 55555;
+    int ReceivePort = port;
 
     connect(m_udpSocketReceiver, SIGNAL(readyRead()), SLOT(processPendingDatagrams()), Qt::DirectConnection);
 
@@ -66,21 +66,44 @@ void ConsoleReceiver::processPendingDatagrams()
         m_udpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
         qDebug() << "ConsoleReceiver data: " << datagram.data() <<"size"<< QString::number(datagram.size()) << endl;
 
-        if(datagram.data() == "0")
+        if(datagram == "0")         // записать файл
         {
+            datagram.resize(m_udpSocketReceiver->pendingDatagramSize());
             m_udpSocketReceiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
             qDebug() << "ConsoleReceiver data: " << datagram.data() <<"size"<< QString::number(datagram.size()) << endl;
             writeToFile(datagram);
+        }
+        else if(datagram == "1")    // запустить решение
+        {
+            // отправить файл
+            //sendFile();
+
+            emit startPlayOnline();
+        }
+        else if(datagram == "2")    // остановить решение
+        {
+            emit stopPlayOnline();
         }
      }
 }
 
 void ConsoleReceiver::writeToFile(QByteArray data)
 {
-    QFile file("controlFile.txt");
+    QFile file("sinhron/CONTROLFILE.TXT");
     if(file.open(QIODevice::WriteOnly))
     {
         file.write(data);
         file.close();
     }
+}
+
+void ConsoleReceiver::sendFile()
+{
+    QFile file("controlFile.txt");
+    QByteArray datagram;
+    if(!file.open(QIODevice::WriteOnly))
+        return;
+    datagram = file.readAll();
+    file.close();
+    m_udpSocketReceiver->writeDatagram(datagram.data(), datagram.size(), host, port);
 }
