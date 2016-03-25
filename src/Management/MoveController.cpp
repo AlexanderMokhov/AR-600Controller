@@ -27,6 +27,8 @@ MoveController::MoveController()
 
     useUserStiff = false;
     useUserDump = false;
+
+    this->isLog = false;
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
@@ -141,25 +143,13 @@ void MoveController::stoppingPlay()
 
 void MoveController::stepPlayOnline()
 {
-    QByteArray recvData = FrundTransiver::Inst()->readData();
+    //char* recvPacket = new char(2400);
+    //int size = 0;
+    QByteArray datagram;
+    while(!FrundTransiver::Inst()->recvData(datagram) && this->m_state == States::MovePlayOnline) ;
+    if (this->m_state != States::MovePlayOnline) return;
 
-    MovesStorage::Inst()->loadDataFromArray(recvData.data(), recvData.size());
-
-    FrundTransiver::Inst()->sendData(recvData);
-
-    /*const char *filename = "sinhron/DRIVEMAR.CNT";
-
-    qDebug() << "waiting when DRIVEMAR.CNT will be deleted..."  << endl;
-
-    // ждем удаления файла DRIVEMAR.CNT
-
-    while(!access (filename, F_OK) && this->m_state == States::MovePlayOnline) ;
-        if (this->m_state != States::MovePlayOnline) return;
-    qDebug() << "file DRIVEMAR.CNT was deleted, FRUND has written DRIVEMAR.TXT"  << endl;
-
-    // файл DRIVEMAR.CNT удален, ФРУНД записал DRIVEMAR.TXT*/
-
-    //MovesStorage::Inst()->loadFile("sinhron/DRIVEMAR.txt");
+    MovesStorage::Inst()->loadDataFromArray(datagram.data(), datagram.size());
 
     if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
@@ -192,26 +182,18 @@ void MoveController::stepPlayOnline()
 
         if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
-        qDebug() << "String number " << QString::number(MovesStorage::Inst()->m_moveID) << "have been read"  << endl;
+        //qDebug() << "String number " << QString::number(MovesStorage::Inst()->m_moveID) << "have been read"  << endl;
     }
 StopPlay:
         MovesStorage::Inst()->m_moveID = 0;
-        qDebug() << "Выполнен очередной файл"  << endl;
+        //qDebug() << "Выполнен очередной шаг"  << endl;
 
-        // Отправка движений из файла DRIVEMAR.TXT завершена, переходим к следующей итерации решения
+        //if(!this->isLog)
+            //RecordController::Inst()->AddRawData();
 
-        // Создаем файл DRIVEMAR.CNT, ФРУНД начинает следующую итерацию решения
-        // после чего удаляет файл DRIVEMAR.CNT
+        RecordController::Inst()->getLastData(datagram.data());
 
-        //qDebug() << "start create file DRIVEMAR.CNT"  << endl;
-
-        RecordController::Inst()->saveRow(std::string("sinhron/DRIVELGT.txt"));
-
-        /*std::ofstream file;
-        file.open(filename, ios_base::out | ios_base::trunc);
-        file.close();
-
-        qDebug() << "file DRIVEMAR.CNT was created, FRUND should delete DRIVEMAR.CNT" << endl;*/
+        FrundTransiver::Inst()->sendData(datagram);
 }
 
 bool MoveController::openFile(std::string fileName)
@@ -392,6 +374,11 @@ void MoveController::stoppingGoPos()
     }
 
     m_state = States::NotWork;
+}
+
+void MoveController::setIsLog(bool value)
+{
+    this->isLog = value;
 }
 
 //Конец команд для перехода в исходную позицию

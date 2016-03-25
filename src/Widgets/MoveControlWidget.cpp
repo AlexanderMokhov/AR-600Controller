@@ -130,6 +130,7 @@ void MoveControlWidget::stopMoveAction()
 void MoveControlWidget::on_checkBoxLog_clicked(bool checked)
 {
     IsLog = checked;
+    MoveController::Inst()->setIsLog(checked);
 }
 
 void MoveControlWidget::on_ButtonGoStartPos_clicked()
@@ -160,7 +161,7 @@ void MoveControlWidget::startMove()
 
 void MoveControlWidget::startMoveOnline()
 {
-    openFile("sinhron/DRIVEMAR.TXT", true);
+    //openFile("sinhron/DRIVEMAR.TXT", true);
 
     mMover->startMoveOnline();
 

@@ -77,21 +77,10 @@ bool MovesStorage::loadBackMoves()
 
 bool MovesStorage::loadFile(std::string filename)
 {
-    qDebug() << "Load file begin" << endl;
-
     std::ifstream file(filename.c_str());
-
-    qDebug() << "File is open" << endl;
-
-    //while(access(filename.c_str(), F_OK));
-
-
-    qDebug() << "File accessible read..." << endl;
 
     if( file.is_open() )
     {
-        qDebug() << "File is reading..." << endl;
-
         //очищаем список команд
         m_moves.clear();
         m_rowsNumber = 0;
@@ -111,25 +100,11 @@ bool MovesStorage::loadFile(std::string filename)
 
         while( std::getline(file, line) )
         {
-            qDebug() << "read line " << QString::fromStdString(line) << endl;
-
             if(line.length() < 5)
             {
-                //qDebug() << "Line Length < 5 !!!" << endl;
                 countErrors++;
-                //qDebug()
                 continue;
             }
-            //const char * s = line.c_str();
-            //char * ptr = 0;
-            //errno = 0;
-            //int Number_ = strtol(s, &ptr, 10);
-            //if (!(errno != ERANGE && ptr > s))
-            //    break;
-            //
-            //double Time_ = strtod(ptr, &ptr);
-            //if (!(errno != ERANGE && ptr > s))
-            //    break;
 
             //читаем очередную строку из файла
             std::locale loc;
@@ -234,8 +209,6 @@ bool MovesStorage::loadFile(std::string filename)
             m_moves.push_back(nextCommand);
             m_rowsNumber++;
             m_duration = Time;//в микросекундах
-
-            qDebug() << "channel " << Number << "was read" << endl;
         }
 
         m_moveID = 0;
@@ -278,7 +251,9 @@ int MovesStorage::getCountErrors()
 
 void MovesStorage::loadDataFromArray(char *array, uint size)
 {
-    qDebug() << "Load from array begin" << endl;
+    //qDebug() << "Load from array begin" << endl;
+
+    //FILE *f = fopen("DRIVEMAG1.txt","at");
 
     //очищаем список команд
     m_moves.clear();
@@ -317,9 +292,13 @@ void MovesStorage::loadDataFromArray(char *array, uint size)
         double DGateProp;
         memcpy(&DGateProp, array + i + 64, sizeof(double));
 
-        mPID.StiffFactor = PGate;
-        mPID.DumpFactor = IGate;
-        mPID.TorqueFactor = DGate;
+        mPID.Stiff = PGate;
+        mPID.Dump = IGate;
+        mPID.Torque = DGate;
+
+        mPID.StiffFactor = PGateProp;
+        mPID.DumpFactor = IGateProp;
+        mPID.TorqueFactor = DGateProp;
 
         mPID.Stiff *= mPID.StiffFactor;
         mPID.Dump *= mPID.DumpFactor;
@@ -329,7 +308,7 @@ void MovesStorage::loadDataFromArray(char *array, uint size)
         Angle = (180.0 / M_PI) * Angle * 100.0;
 
         //заполняем команду
-        nextCommand.Time = (int)Time;
+        nextCommand.Time = (int)(Time*10e6);
         nextCommand.NumberChannel = Number;
         nextCommand.Angle = (int)Angle;
         nextCommand.PIDs = mPID;
@@ -339,12 +318,24 @@ void MovesStorage::loadDataFromArray(char *array, uint size)
         m_rowsNumber++;
         m_duration = Time;//в микросекундах
 
-        qDebug() << "LDFA channel " << Number << "was read" << endl;
-    }
+        //fprintf(f,"%4d", nextCommand.NumberChannel);
+        //fprintf(f," %12.6f ", (double)(nextCommand.Time)/10e6);
+        //fprintf(f," %12.6f ", (double)nextCommand.Angle);
+        //fprintf(f," %12.6f ", (double)nextCommand.PIDs.Stiff);
+        //fprintf(f," %12.6f ", (double)nextCommand.PIDs.Dump);
+        //fprintf(f," %12.6f ", (double)nextCommand.PIDs.Torque);
+        //fprintf(f," %12.6f ", (double)nextCommand.PIDs.StiffFactor);
+        //fprintf(f," %12.6f ", (double)nextCommand.PIDs.DumpFactor);
+        //fprintf(f," %12.6f ", (double)nextCommand.PIDs.TorqueFactor);
+        //fprintf(f, "\n");
 
+
+        //qDebug() << "LDFA channel " << Number << "was read" << endl;
+    }
+    //fclose(f);
     m_moveID = 0;
-    qDebug() << "LDFA считано " << QString::number(m_rowsNumber) << " строк" << endl;
-    qDebug() << "LDFA Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
+   // qDebug() << "LDFA считано " << QString::number(m_rowsNumber) << " строк" << endl;
+    //qDebug() << "LDFA Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
 
     return;
 }

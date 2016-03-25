@@ -42,11 +42,13 @@ void Mover::startMove()
 
 void Mover::startMoveOnline()
 {
+    unlink("DRIVEMAG1.txt");
     MoveController::Inst()->startPlayOnline();
     if( !isRunning ) start();
     emit playOnlineStart();
     RecordController::Inst()->StartWrite();
     MovesStorage::Inst()->resetErrors();
+
 }
 
 void Mover::stopMove()

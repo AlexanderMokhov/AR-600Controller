@@ -14,8 +14,8 @@ public:
     explicit FrundTransiver(QObject *parent = 0);
     ~FrundTransiver();
     static FrundTransiver* Inst() { if(m_inst == NULL) m_inst = new FrundTransiver; return m_inst; }
-    QByteArray readData();
-    void sendData(QByteArray datagram);
+    bool recvData(QByteArray &datagram);
+    void sendData(QByteArray &datagram);
 
 private:
     static FrundTransiver* m_inst;
@@ -23,6 +23,7 @@ private:
     int m_port = 55556;
     QHostAddress Host;
     quint16 Port;
+    //QByteArray datagram;
 
 signals:
 

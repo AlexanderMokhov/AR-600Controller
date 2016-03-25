@@ -24,15 +24,6 @@ RecordController::RecordController()
 
 }
 
-void RecordController::saveRow(string fileName)
-{
-    mRecordVector.clear();
-    AddRawData();
-    SaveData(fileName, false);
-}
-
-
-
 void RecordController::AddRawData()
 {
     for(auto it = mDriversMap.begin(); it != mDriversMap.end(); ++it)
@@ -199,5 +190,27 @@ void RecordController::StartWrite()
 {
     mRecordVector.clear();
     mTime.start();
+}
+
+void RecordController::getLastData(char* retData)
+{
+    RecordData data = mRecordVector[mRecordVector.size()-1];
+    int sizeOfData = data.DriversData.size() + data.SensorsData.size();
+
+    // начало заполнения массива данных
+    double Data[sizeOfData];
+
+    int i = 0;
+    for(auto it = data.DriversData.begin(); it != data.DriversData.end(); ++it)
+        Data[i++] = (*it).second;
+
+    for(auto it = data.SensorsData.begin(); it != data.SensorsData.end(); ++it)
+        Data[i++] = (*it).second;
+
+    Data[i] = data.DriversPower;
+    // конец заполенения массива данных
+
+    for(int i = 0; i < sizeOfData*sizeof(double); i += sizeof(double))
+        memcpy(retData, &Data[i/sizeof(double)], sizeof(double));
 }
 

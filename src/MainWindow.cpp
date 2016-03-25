@@ -176,10 +176,10 @@ void MainWindow::WidgetsInit()
     mMoveFilesWidget = new MoveFilesWidget();
     ui->MoveFilesWidgetLayout->addWidget(mMoveFilesWidget);
     mStdMovesWidget = new StdMovesWidget();
-    mStdMovesWidget->show();
+    //mStdMovesWidget->show();
 
-    mPlotWidget = new PlotWidget();
-    ui->plotLayout->addWidget(mPlotWidget);
+    //mPlotWidget = new PlotWidget();
+    //ui->plotLayout->addWidget(mPlotWidget);
 
     mModelWidget = new modelWidget();
     ui->GLWidgetLayout->addWidget(mModelWidget);

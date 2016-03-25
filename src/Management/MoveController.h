@@ -100,6 +100,8 @@ public:
     bool useUserStiff = false;//!!!
     bool useUserDump = false;//!!!
 
+    void setIsLog(bool value);
+
 signals:
     void InitStart();
     void InitEnd();
@@ -130,6 +132,8 @@ private:
     std::map<int,PosData> mGoToPosData;
     bool mGoPosMode;
     int mMotorExistCount;
+
+    bool isLog;
 
 };
 

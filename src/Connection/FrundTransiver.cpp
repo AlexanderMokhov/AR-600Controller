@@ -17,17 +17,21 @@ FrundTransiver::~FrundTransiver()
     delete m_inst;
 }
 
-QByteArray FrundTransiver::readData()
+bool FrundTransiver::recvData(QByteArray &datagram)
 {
-    QByteArray datagram;
-    while(!sock->hasPendingDatagrams());
+    if(!sock->hasPendingDatagrams())
+        return false;
     datagram.resize(sock->pendingDatagramSize());
     sock->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
-    return datagram;
+    //size = datagram.size();
+    //for(int i = 0; i < size; i++)
+        //data[i] = datagram.data()[i];
+    return true;
 }
 
-void FrundTransiver::sendData(QByteArray datagram)
+void FrundTransiver::sendData(QByteArray &datagram)
 {
+    //datagram.setRawData(data, size);
     sock->writeDatagram(datagram, Host, Port);
 }
 
