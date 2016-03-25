@@ -36,6 +36,7 @@
 #include "Connection/Receiver.h"
 #include "Connection/Sender.h"
 #include "Connection/ConsoleReceiver.h"
+#include "Connection/FrundTransiver.h"
 
 #include <Windows.h>
 

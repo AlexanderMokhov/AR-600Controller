@@ -16,6 +16,7 @@
 #include <cmath>
 #include <mutex>
 #include <regex>
+#include <unistd.h>
 
 #include "SettingsStorage.h"
 
@@ -72,10 +73,16 @@ public:
     void setForwardMoves();
     void setBackMoves();
 
+    void resetErrors();
+    int getCountErrors();
+
+    void loadDataFromArray(char* array, uint size);
+
 private:
     //private variable
     static MovesStorage* m_inst;
     std::map<int,Motor> * m_motors;
+    volatile unsigned int countErrors;
 
     //private methods
     MovesStorage();

@@ -122,7 +122,7 @@
         <item row="0" column="1">
          <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>Позиция (deg*100)</string>
+           <string>Угол (градус*100)</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>

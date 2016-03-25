@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mReceiver = new Receiver;
     mConsoleReceiver = new ConsoleReceiver;
 
+    FrundTransiver::Inst()->Inst();
+
     ConnectionsInit();
 
     //заполнение таблицы приводов

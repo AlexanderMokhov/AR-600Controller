@@ -27,6 +27,7 @@
 #include "MoveCorrector.h"
 #include "MovesStorage.h"
 #include "RecordController.h"
+#include "Connection/FrundTransiver.h"
 
 //!!!
 struct Command

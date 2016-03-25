@@ -56,7 +56,8 @@ SOURCES += main.cpp\
     Libs/QCustomPlot/qcustomplot.cpp \
     Widgets/PlotWidget.cpp \
     Widgets/modelWidget.cpp \
-    Widgets/GLWidget.cpp
+    Widgets/GLWidget.cpp \
+    Connection/FrundTransiver.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -97,7 +98,8 @@ HEADERS  += \
     Libs/QCustomPlot/qcustomplot.h \
     Widgets/PlotWidget.h \
     Widgets/modelWidget.h \
-    Widgets/GLWidget.h
+    Widgets/GLWidget.h \
+    Connection/FrundTransiver.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

@@ -46,11 +46,13 @@ void Mover::startMoveOnline()
     if( !isRunning ) start();
     emit playOnlineStart();
     RecordController::Inst()->StartWrite();
+    MovesStorage::Inst()->resetErrors();
 }
 
 void Mover::stopMove()
 {
     MoveController::Inst()->stopPlay();
+    qDebug() << "Count Errors = " << QString::number(MovesStorage::Inst()->getCountErrors()) << endl;
     isPrep = false;
 }
 

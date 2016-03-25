@@ -141,7 +141,13 @@ void MoveController::stoppingPlay()
 
 void MoveController::stepPlayOnline()
 {
-    const char *filename = "sinhron/DRIVEMAR.CNT";
+    QByteArray recvData = FrundTransiver::Inst()->readData();
+
+    MovesStorage::Inst()->loadDataFromArray(recvData.data(), recvData.size());
+
+    FrundTransiver::Inst()->sendData(recvData);
+
+    /*const char *filename = "sinhron/DRIVEMAR.CNT";
 
     qDebug() << "waiting when DRIVEMAR.CNT will be deleted..."  << endl;
 
@@ -151,9 +157,9 @@ void MoveController::stepPlayOnline()
         if (this->m_state != States::MovePlayOnline) return;
     qDebug() << "file DRIVEMAR.CNT was deleted, FRUND has written DRIVEMAR.TXT"  << endl;
 
-    // файл DRIVEMAR.CNT удален, ФРУНД записал DRIVEMAR.TXT
+    // файл DRIVEMAR.CNT удален, ФРУНД записал DRIVEMAR.TXT*/
 
-    MovesStorage::Inst()->loadFile("sinhron/DRIVEMAR.txt");
+    //MovesStorage::Inst()->loadFile("sinhron/DRIVEMAR.txt");
 
     if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
@@ -197,15 +203,15 @@ StopPlay:
         // Создаем файл DRIVEMAR.CNT, ФРУНД начинает следующую итерацию решения
         // после чего удаляет файл DRIVEMAR.CNT
 
-        qDebug() << "start create file DRIVEMAR.CNT"  << endl;
+        //qDebug() << "start create file DRIVEMAR.CNT"  << endl;
 
         RecordController::Inst()->saveRow(std::string("sinhron/DRIVELGT.txt"));
 
-        std::ofstream file;
+        /*std::ofstream file;
         file.open(filename, ios_base::out | ios_base::trunc);
         file.close();
 
-        qDebug() << "file DRIVEMAR.CNT was created, FRUND should delete DRIVEMAR.CNT" << endl;
+        qDebug() << "file DRIVEMAR.CNT was created, FRUND should delete DRIVEMAR.CNT" << endl;*/
 }
 
 bool MoveController::openFile(std::string fileName)

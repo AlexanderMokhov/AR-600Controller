@@ -6,8 +6,8 @@ MovesStorage::MovesStorage()
 {
     m_moveID = 0;
     m_motors = SettingsStorage::Inst()->GetMotors();
-    loadForwardMoves();
-    loadBackMoves();
+    //loadForwardMoves();
+    //loadBackMoves();
 }
 
 void MovesStorage::skipSpace(locale loc, string str, int *pos)
@@ -83,6 +83,11 @@ bool MovesStorage::loadFile(std::string filename)
 
     qDebug() << "File is open" << endl;
 
+    //while(access(filename.c_str(), F_OK));
+
+
+    qDebug() << "File accessible read..." << endl;
+
     if( file.is_open() )
     {
         qDebug() << "File is reading..." << endl;
@@ -106,6 +111,15 @@ bool MovesStorage::loadFile(std::string filename)
 
         while( std::getline(file, line) )
         {
+            qDebug() << "read line " << QString::fromStdString(line) << endl;
+
+            if(line.length() < 5)
+            {
+                //qDebug() << "Line Length < 5 !!!" << endl;
+                countErrors++;
+                //qDebug()
+                continue;
+            }
             //const char * s = line.c_str();
             //char * ptr = 0;
             //errno = 0;
@@ -220,6 +234,8 @@ bool MovesStorage::loadFile(std::string filename)
             m_moves.push_back(nextCommand);
             m_rowsNumber++;
             m_duration = Time;//в микросекундах
+
+            qDebug() << "channel " << Number << "was read" << endl;
         }
 
         m_moveID = 0;
@@ -250,4 +266,85 @@ void MovesStorage::setBackMoves()
     m_rowsNumber = m_backRowsNumber;
 }
 
+void MovesStorage::resetErrors()
+{
+    countErrors = 0;
+}
 
+int MovesStorage::getCountErrors()
+{
+    return countErrors;
+}
+
+void MovesStorage::loadDataFromArray(char *array, uint size)
+{
+    qDebug() << "Load from array begin" << endl;
+
+    //очищаем список команд
+    m_moves.clear();
+    m_rowsNumber = 0;
+
+    MoveCommand nextCommand;
+    PID mPID;
+
+    //по умолчанию заполняем значениями из файла настроек
+    mPID.Stiff = SettingsStorage::Inst()->GetDefaultStiff();
+    mPID.Dump = SettingsStorage::Inst()->GetDefaultDump();
+    mPID.Torque = SettingsStorage::Inst()->GetDefaultTorque();
+
+    mPID.StiffFactor = SettingsStorage::Inst()->GetDefaultStiffFactor();
+    mPID.DumpFactor = SettingsStorage::Inst()->GetDefaultDumpFactor();
+    mPID.TorqueFactor = SettingsStorage::Inst()->GetDefaultTorqueFactor();
+
+    for(int i = 0; i < 21*72; i += 72)
+    {
+        double Number;
+        memcpy(&Number, array + i, sizeof(double));
+        double Time;
+        memcpy(&Time, array + i + 8, sizeof(double));
+        double Angle;
+        memcpy(&Angle, array + i + 16, sizeof(double));
+        double PGate;
+        memcpy(&PGate, array + i + 24, sizeof(double));
+        double IGate;
+        memcpy(&IGate, array + i + 32, sizeof(double));
+        double DGate;
+        memcpy(&DGate, array + i + 40, sizeof(double));
+        double PGateProp;
+        memcpy(&PGateProp, array + i + 48, sizeof(double));
+        double IGateProp;
+        memcpy(&IGateProp, array + i + 56, sizeof(double));
+        double DGateProp;
+        memcpy(&DGateProp, array + i + 64, sizeof(double));
+
+        mPID.StiffFactor = PGate;
+        mPID.DumpFactor = IGate;
+        mPID.TorqueFactor = DGate;
+
+        mPID.Stiff *= mPID.StiffFactor;
+        mPID.Dump *= mPID.DumpFactor;
+        mPID.Torque *= mPID.TorqueFactor;
+
+        //Переводим угол в градусы*100
+        Angle = (180.0 / M_PI) * Angle * 100.0;
+
+        //заполняем команду
+        nextCommand.Time = (int)Time;
+        nextCommand.NumberChannel = Number;
+        nextCommand.Angle = (int)Angle;
+        nextCommand.PIDs = mPID;
+
+        //добавляем команду в список
+        m_moves.push_back(nextCommand);
+        m_rowsNumber++;
+        m_duration = Time;//в микросекундах
+
+        qDebug() << "LDFA channel " << Number << "was read" << endl;
+    }
+
+    m_moveID = 0;
+    qDebug() << "LDFA считано " << QString::number(m_rowsNumber) << " строк" << endl;
+    qDebug() << "LDFA Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
+
+    return;
+}
