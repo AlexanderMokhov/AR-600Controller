@@ -5,7 +5,8 @@
 *.pydevproject
 .project
 .metadata
-# bin/
+bin/sinhron/
+bin/Records/
 tmp/
 *.tmp
 *.bak
