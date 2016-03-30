@@ -53,6 +53,7 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     connect(mMover, SIGNAL(MoveEnd()),this, SLOT(on_ButtonStop_clicked()));
 
     //connect(mMover, SIGNAL(playOnlineStart()),this, SLOT(on_ButtonStop_clicked()));
+    ui->ButtonStartFile->setEnabled(false);
 
 }
 
@@ -196,6 +197,8 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
 
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
+
+            ui->ButtonStartFile->setEnabled(true);
 
             emit FileLoaded(fileName, CountRows, Duration, mode);
         }

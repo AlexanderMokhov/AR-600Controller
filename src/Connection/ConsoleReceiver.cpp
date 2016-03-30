@@ -77,7 +77,6 @@ void ConsoleReceiver::processPendingDatagrams()
         {
             // отправить файл
             //sendFile();
-
             emit startPlayOnline();
         }
         else if(datagram == "2")    // остановить решение

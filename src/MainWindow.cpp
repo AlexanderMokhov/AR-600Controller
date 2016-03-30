@@ -307,8 +307,37 @@ void MainWindow::StartFrund()
 //    if(m_process->isOpen())
 //        qDebug() << "RASHET32.exe успешно запущен" << endl;
 //    m_process->waitForFinished();
+    STARTUPINFO startin;
+    startin.cb=sizeof(STARTUPINFO);
+    startin.lpReserved=NULL;
+    startin.lpDesktop=NULL;
+    startin.lpTitle=NULL;//strdup("window1");
+    startin.dwX=30;
+    startin.dwY=3;
+    startin.dwXSize=220;
+    startin.dwYSize=220;
+    startin.dwXCountChars=30;
+    startin.dwYCountChars=10;
+    startin.dwFillAttribute=0;
+    startin.dwFlags=STARTF_USESHOWWINDOW;
+    startin.cbReserved2=NULL;
+    startin.lpReserved2=NULL;
+    startin.wShowWindow=SW_HIDE;
+    startin.hStdInput=NULL;
+    startin.hStdOutput=NULL;
+    startin.hStdError=NULL;
 
-    WinExec("H:\\Mokhov\\Dev\\AR-600Controller\\bin\\forw125\\rashet32.exe", 1);
+    SECURITY_ATTRIBUTES sa;
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.lpSecurityDescriptor=NULL;
+    sa.bInheritHandle=TRUE;
+
+   PROCESS_INFORMATION pinfo;
+
+    CreateProcess(NULL,LPWSTR("H:\\Mokhov\\Dev\\AR-600Controller\\bin\\sinhron\\fmodelxp.bat"),&sa,NULL,TRUE,CREATE_NO_WINDOW+CREATE_SUSPENDED+CREATE_NEW_PROCESS_GROUP,
+        NULL,NULL,&startin,&pinfo);
+
+    //WinExec("H:\\Mokhov\\Dev\\AR-600Controller\\bin\\sinhron\\rashet32.exe", 1);
 }
 
 //обработка принятого пакета от робота

@@ -194,6 +194,8 @@ void RecordController::StartWrite()
 
 void RecordController::getLastData(char* retData)
 {
+    if(mRecordVector.size() == 0)
+        return;
     RecordData data = mRecordVector[mRecordVector.size()-1];
     int sizeOfData = data.DriversData.size() + data.SensorsData.size();
 

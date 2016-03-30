@@ -188,8 +188,8 @@ StopPlay:
         MovesStorage::Inst()->m_moveID = 0;
         //qDebug() << "Выполнен очередной шаг"  << endl;
 
-        //if(!this->isLog)
-            //RecordController::Inst()->AddRawData();
+        if(!this->isLog)
+            RecordController::Inst()->AddRawData();
 
         RecordController::Inst()->getLastData(datagram.data());
 
