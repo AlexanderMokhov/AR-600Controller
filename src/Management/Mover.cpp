@@ -4,7 +4,7 @@ Mover::Mover(QObject *parent) : QThread(parent)
 {
     isRunning = false;
     isRestart = false;
-    m_delay = 5;
+    m_delay = SettingsStorage::Inst()->GetSendDelay();
     isPrep = false;
 }
 

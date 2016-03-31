@@ -194,8 +194,8 @@ void RecordController::StartWrite()
 
 void RecordController::getLastData(char* retData)
 {
-    if(mRecordVector.size() == 0)
-        return;
+    //if(mRecordVector.size() == 0)
+        //return;
     RecordData data = mRecordVector[mRecordVector.size()-1];
     int sizeOfData = data.DriversData.size() + data.SensorsData.size();
 
@@ -213,6 +213,6 @@ void RecordController::getLastData(char* retData)
     // конец заполенения массива данных
 
     for(int i = 0; i < sizeOfData*sizeof(double); i += sizeof(double))
-        memcpy(retData, &Data[i/sizeof(double)], sizeof(double));
+        memcpy(retData+i, &Data[i/sizeof(double)], sizeof(double));
 }
 

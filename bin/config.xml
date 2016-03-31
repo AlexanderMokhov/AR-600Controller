@@ -272,7 +272,7 @@
             <Dump>1</Dump>
             <Torque>1</Torque>
             <Calibration>-15477</Calibration>
-            <Enable>false</Enable>
+            <Enable>true</Enable>
         </Motor>
     </MotorSettings>
     <SensorSettings>
@@ -389,7 +389,7 @@
         <DefaultStiffFactor>100</DefaultStiffFactor>
         <DefaultDumpFactor>100</DefaultDumpFactor>
         <DefaultTorqueFactor>100</DefaultTorqueFactor>
-        <DefaultSpeed>20</DefaultSpeed>
+        <DefaultSpeed>10</DefaultSpeed>
         <FileForward>STDFORWARD.TXT</FileForward>
         <FileBack>STDBACK.TXT</FileBack>
     </CommandControllerSettings>
