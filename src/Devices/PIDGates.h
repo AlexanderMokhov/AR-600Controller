@@ -15,6 +15,7 @@ public:
     void setPGate( int PGate ) { this->PGate = PGate; }
     void setIGate( int IGate ) { this->IGate = IGate; }
     void setDGate( int DGate ) { this->DGate = DGate; }
+
 private:
     //private variable
     int PGate;

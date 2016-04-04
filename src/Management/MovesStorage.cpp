@@ -207,7 +207,11 @@ bool MovesStorage::loadFile(std::string filename)
 
             //добавляем команду в список
             m_moves.push_back(nextCommand);
+
+            m_locker.lock();
             m_rowsNumber++;
+            m_locker.unlock();
+
             m_duration = Time;//в микросекундах
         }
 
@@ -315,7 +319,9 @@ void MovesStorage::loadDataFromArray(char *array, uint size)
 
         //добавляем команду в список
         m_moves.push_back(nextCommand);
+
         m_rowsNumber++;
+
         m_duration = Time;//в микросекундах
 
         //fprintf(f,"%4d", nextCommand.NumberChannel);
@@ -338,4 +344,11 @@ void MovesStorage::loadDataFromArray(char *array, uint size)
     //qDebug() << "LDFA Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
 
     return;
+}
+
+int MovesStorage::getCurrentRow()
+{
+    m_locker.lock();
+    return m_rowsNumber;
+    m_locker.unlock();
 }

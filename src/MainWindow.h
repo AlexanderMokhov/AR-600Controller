@@ -28,8 +28,7 @@
 #include "Widgets/SensorTableWidget.h"
 #include "Widgets/MoveFilesWidget.h"
 #include "Widgets/StdMovesWidget.h"
-//#include "Widgets/PlotWidget.h"
-#include "Widgets/modelWidget.h"
+#include "Widgets/LogWidget.h"
 
 #include "Buffers/BufferController.h"
 
@@ -94,8 +93,7 @@ private:
     SensorTableWidget       *mSensorTableWidget;
     MoveFilesWidget         *mMoveFilesWidget;
     StdMovesWidget          *mStdMovesWidget;
-    //PlotWidget              *mPlotWidget;
-    modelWidget              *mModelWidget;
+    LogWidget               *mLogWidget;
 
     //действия
     QAction *TBactionOpenCF;

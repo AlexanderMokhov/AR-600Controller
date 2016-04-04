@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //настраиваем виджеты
     WidgetsInit();
-
+    mLogWidget->addMessage(" Настройки успешно прочитаны");
     mConnectDialog = new ConnectConfigDialog();
     mMotorControlWidget->setModel(mMotorTableWidget->getModel());
     connect(mMotorTableWidget, SIGNAL(RowChanged(int)), mMotorControlWidget, SLOT(RowChanged(int)));
@@ -177,12 +177,8 @@ void MainWindow::WidgetsInit()
     ui->MoveFilesWidgetLayout->addWidget(mMoveFilesWidget);
     mStdMovesWidget = new StdMovesWidget();
     //mStdMovesWidget->show();
-
-    //mPlotWidget = new PlotWidget();
-    //ui->plotLayout->addWidget(mPlotWidget);
-
-    mModelWidget = new modelWidget();
-    ui->GLWidgetLayout->addWidget(mModelWidget);
+    mLogWidget = new LogWidget();
+    ui->LayoutLog->addWidget(mLogWidget);
 }
 
 void MainWindow::ConnectionsInit()
@@ -271,6 +267,7 @@ void MainWindow::Disconnect()
 
     mTimerUpdate->stop();
     mConnectStatusLabel->setText("Соединение не установлено");
+    mLogWidget->addMessage("Соединение было прервано");
 }
 
 void MainWindow::ActivateActions()
@@ -278,6 +275,7 @@ void MainWindow::ActivateActions()
     TBactionPlay->setEnabled(true);
     TBactionStop->setEnabled(true);
     mCommandControllerStatusLabel->setText("Файл команд загружен");
+    mLogWidget->addMessage("Файл команд был загружен");
 }
 
 //открытие диалога настроек подключения
@@ -374,11 +372,17 @@ void MainWindow::OpenXML()
             BufferController::Inst()->Initialize();
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
+
+            mLogWidget->addMessage("Файл настроек успешно загружен из " +
+            fileName + "\nНастройки успешно прочитаны");
         }
         else
         {
             qDebug() << "Файл настроек не был загружен из " << fileName << endl;
             qDebug() << "Возможно, имя или формат файла заданы неверно" <<endl;
+
+            mLogWidget->addMessage("Файл настроек не был загружен из " +
+            fileName + "\nВозможно, имя или формат файла заданы неверно");
         }
     }
 }

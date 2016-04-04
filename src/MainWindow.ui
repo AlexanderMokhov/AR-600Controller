@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>AR600E - интерфейс управления</string>
+   <string>AR600E - Интерфейс управления</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -120,6 +120,9 @@
       </item>
      </layout>
     </item>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="LayoutLog"/>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -155,9 +158,17 @@
     <addaction name="actionOn"/>
     <addaction name="actionOff"/>
    </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>Движение</string>
+    </property>
+    <addaction name="actionGoToStartPos"/>
+    <addaction name="actionGoToFilePos"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="MainToolBar">
@@ -221,6 +232,16 @@
   <action name="action_Open_DRIVEMAT">
    <property name="text">
     <string>Открыть файл DRIVEMAT</string>
+   </property>
+  </action>
+  <action name="actionGoToStartPos">
+   <property name="text">
+    <string>Начальное положение</string>
+   </property>
+  </action>
+  <action name="actionGoToFilePos">
+   <property name="text">
+    <string>Положение из файла</string>
    </property>
   </action>
  </widget>

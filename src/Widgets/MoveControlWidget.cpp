@@ -65,7 +65,17 @@ MoveControlWidget::~MoveControlWidget()
 void MoveControlWidget::on_ButtonLoadFile_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(0,"Загрузка файла движений","","*.txt");
+
+    QProgressDialog progress("Выполняется загрузка файла движений...", "Прервать", 0, 100, this);
+    progress.setWindowTitle("Загрузка файла движений");
+    progress.setFixedWidth(300);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+    progress.setValue(50);
+    QCoreApplication::processEvents();
     openFile(fileName, true);
+    progress.setValue(100);
+    QCoreApplication::processEvents();
 }
 
 void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
@@ -190,8 +200,8 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
         bool isOk = MoveController::Inst()->openFile(fileName.toStdString());
         if(isOk)
         {
-            qDebug() << "Файл списка команд успешно загружен из " << fileName << endl;
-            qDebug() << "Команды успешно прочитаны" <<endl;
+            qDebug() << "Файл движений успешно загружен из " << fileName << endl;
+            qDebug() << "Движения успешно прочитаны" <<endl;
             int CountRows = MovesStorage::Inst()->getRowsNumber();
             int Duration = MovesStorage::Inst()->getDuration();
 
@@ -204,7 +214,7 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
         }
         else
         {
-            qDebug() << "Файл списка команд не был загружен из " << fileName << endl;
+            qDebug() << "Файл движения не был загружен из " << fileName << endl;
             qDebug() << "Возможно имя, или формат файла заданы неверно" <<endl;
         }
     }

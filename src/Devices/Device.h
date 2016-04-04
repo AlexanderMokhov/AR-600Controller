@@ -21,6 +21,7 @@ public:
     void setNumber( int number );
     void setChannel( int channel );
     void setName( string name );
+
 private:
     //private variable
     int m_number;//номер

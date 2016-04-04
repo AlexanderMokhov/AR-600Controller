@@ -26,6 +26,7 @@ public:
     void run();
     void Connect();
     void Disconnect();
+
 private:
     //private variable
     QUdpSocket *m_udpSocketSender;
@@ -39,8 +40,10 @@ private:
     int             m_sendDelay;
 
     volatile bool isRunning;
+
     //private methods
     void printConnectionState();
+
 private slots:
     void sendDatagram();
 };

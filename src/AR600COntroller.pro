@@ -57,7 +57,9 @@ SOURCES += main.cpp\
     Widgets/PlotWidget.cpp \
     Widgets/modelWidget.cpp \
     Widgets/GLWidget.cpp \
-    Connection/FrundTransiver.cpp
+    Connection/FrundTransiver.cpp \
+    Widgets/LogWidget.cpp \
+    Management/FileLoader.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -99,7 +101,9 @@ HEADERS  += \
     Widgets/PlotWidget.h \
     Widgets/modelWidget.h \
     Widgets/GLWidget.h \
-    Connection/FrundTransiver.h
+    Connection/FrundTransiver.h \
+    Widgets/LogWidget.h \
+    Management/FileLoader.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -114,9 +118,11 @@ FORMS    += \
     Widgets/SetLimitsDialog.ui \
     Widgets/StdMovesWidget.ui \
     Widgets/PlotWidget.ui \
-    Widgets/modelWidget.ui
+    Widgets/modelWidget.ui \
+    Widgets/LogWidget.ui
 
-win32 {
+win32
+{
     RC_FILE += resource.rc
     OTHER_FILES += resource.rc
     LIBS += -lws2_32

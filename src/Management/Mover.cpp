@@ -69,6 +69,11 @@ void Mover::stopGoToPos()
     isPrep = false;
 }
 
+void Mover::openFile(QString fileName, bool mode)
+{
+
+}
+
 void Mover::Move()
 {
     MoveController::Inst()->doStepWork();

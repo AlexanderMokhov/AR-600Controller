@@ -7,6 +7,9 @@
 #include <QState>
 #include <QPropertyAnimation>
 #include <QSignalTransition>
+#include <QProgressDialog>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 #include "Management/SettingsStorage.h"
 #include "Buffers/BufferController.h"

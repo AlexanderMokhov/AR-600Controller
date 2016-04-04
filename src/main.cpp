@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 
     Q_INIT_RESOURCE(MyResources);
     MainWindow w;
-	w.show();
+    w.show();
 	
 	return a.exec();
 }

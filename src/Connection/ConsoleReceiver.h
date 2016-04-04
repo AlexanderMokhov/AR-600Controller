@@ -23,10 +23,12 @@ public:
     void run();
     void Connect();
     void Disconnect();
+
 signals:
     void ReadyData();
     void startPlayOnline();
     void stopPlayOnline();
+
 private:
     //private variable
     QUdpSocket *m_udpSocketReceiver;
@@ -37,6 +39,7 @@ private:
     //private methods
     void writeToFile(QByteArray data);
     void sendFile();
+
 private slots:
     void processPendingDatagrams();
 };

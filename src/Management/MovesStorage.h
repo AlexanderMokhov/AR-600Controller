@@ -77,12 +77,14 @@ public:
     int getCountErrors();
 
     void loadDataFromArray(char* array, uint size);
+    int getCurrentRow();
 
 private:
     //private variable
     static MovesStorage* m_inst;
     std::map<int,Motor> * m_motors;
     volatile unsigned int countErrors;
+    std::mutex m_locker;
 
     //private methods
     MovesStorage();

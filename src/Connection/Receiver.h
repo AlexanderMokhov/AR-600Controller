@@ -21,8 +21,10 @@ public:
     void run();
     void Connect();
     void Disconnect();
+
 signals:
     void ReadyData();
+
 private:
     //private variable
     QUdpSocket *m_udpSocketResiver;
@@ -30,6 +32,7 @@ private:
     volatile bool isRunning;
     //private methods
     void printConnectionState();
+
 private slots:
     void processPendingDatagrams();
 

@@ -27,11 +27,14 @@ public:
     void startGoToPos( bool isNullPos );
     void stopGoToPos();
 
+    void openFile(QString fileName, bool mode);
+
 signals:
     void PrepStart(); //Подготовка начата
     void PrepEnd(); //Подготовка закончена
     void MoveEnd(); //Движение закончено
     void playOnlineStart();
+    void fileLoadStep(int percent);
 
 private:
     //private variable

@@ -67,6 +67,7 @@ public:
     void setDeviceChannel( short NumberDevice, short NumberChannel );
 
     std::mutex *getLocker();
+
 private:
     // private variable
     char m_RAW [bufferSize];
