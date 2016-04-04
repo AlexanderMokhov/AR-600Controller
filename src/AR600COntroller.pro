@@ -59,7 +59,8 @@ SOURCES += main.cpp\
     Widgets/GLWidget.cpp \
     Connection/FrundTransiver.cpp \
     Widgets/LogWidget.cpp \
-    Management/FileLoader.cpp
+    Management/FileLoader.cpp \
+    Management/LogMaster.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -103,7 +104,8 @@ HEADERS  += \
     Widgets/GLWidget.h \
     Connection/FrundTransiver.h \
     Widgets/LogWidget.h \
-    Management/FileLoader.h
+    Management/FileLoader.h \
+    Management/LogMaster.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

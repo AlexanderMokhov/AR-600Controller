@@ -204,7 +204,12 @@ void RecordController::getLastData(char* retData)
 
     int i = 0;
     for(auto it = data.DriversData.begin(); it != data.DriversData.end(); ++it)
-        Data[i++] = (*it).second;
+    {
+        double angleRad = (*it).second;
+        double pi = 4 * std::atan(1);
+        angleRad = (pi*angleRad)/(180*100);
+        Data[i++] = angleRad;
+    }
 
     for(auto it = data.SensorsData.begin(); it != data.SensorsData.end(); ++it)
         Data[i++] = (*it).second;

@@ -16,6 +16,7 @@
 #include "Management/MoveController.h"
 #include "Management/MoveCorrector.h"
 #include "Management/RecordController.h"
+#include "Management/LogMaster.h"
 
 #include "Models/MotorTableModel.h"
 

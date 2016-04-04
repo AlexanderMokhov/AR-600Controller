@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //инициализация контроллеров
+    LogMaster::Inst()->Init();
     SettingsStorage::Inst()->Init();
     BufferController::Inst()->Init();
 
@@ -24,24 +25,26 @@ MainWindow::MainWindow(QWidget *parent) :
 
         mMoveControlWidget = new MoveControlWidget();
         ui->MoveControlLayout->addWidget(mMoveControlWidget);
-        qDebug() << "Настройки успешно прочитаны";
+        LogMaster::Inst()->addLine("Конфигурация успешно прочитана");
     }
     else
     {
         QMessageBox::warning(this,"Ошибка при чтении файла настроек","Возможно указан не верный путь или файл содержит ошибки");
-        qDebug() << "Error loading config file...";
+        LogMaster::Inst()->addLine("Ошибка при чтении конфигурации");
         exit(0);
     }
     //конец чтения настроек
 
     //настраиваем виджеты
+    LogMaster::Inst()->addLine("Настройка виджетов запущена");
     WidgetsInit();
-    mLogWidget->addMessage(" Настройки успешно прочитаны");
+    mLogWidget->addMessage(" Настройки успешно прочитаны");//!!!!
     mConnectDialog = new ConnectConfigDialog();
     mMotorControlWidget->setModel(mMotorTableWidget->getModel());
     connect(mMotorTableWidget, SIGNAL(RowChanged(int)), mMotorControlWidget, SLOT(RowChanged(int)));
     //конец настройки виджетов
 
+    LogMaster::Inst()->addLine("Настройка виджетов завершена");
     //настройка кнопок тулбара
     ActionsLoad();
 
@@ -65,7 +68,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     FrundTransiver::Inst()->Inst();
 
+    LogMaster::Inst()->addLine("Настройка connect(...) начата");
     ConnectionsInit();
+    LogMaster::Inst()->addLine("Настройка connect(...) завершена");
 
     //заполнение таблицы приводов
     mMotorTableWidget->ShowConfigData();
@@ -87,6 +92,7 @@ MainWindow::~MainWindow()
     delete ui;
     mStdMovesWidget->close();
     delete mStdMovesWidget;
+    LogMaster::Inst()->addLine("Работа программы успешно завершена");
 }
 
 //Настройка кнопок тулбара
@@ -249,6 +255,8 @@ void MainWindow::Connect()
     mConsoleReceiver->Connect();
     mTimerUpdate->start();
     mConnectStatusLabel->setText("Соединение установлено");
+
+    LogMaster::Inst()->addLine("Соединение установлено...");
 }
 
 //вызывается при запуске остановки подключения к роботу
@@ -268,6 +276,8 @@ void MainWindow::Disconnect()
     mTimerUpdate->stop();
     mConnectStatusLabel->setText("Соединение не установлено");
     mLogWidget->addMessage("Соединение было прервано");
+
+    LogMaster::Inst()->addLine("Соединение прервано...");
 }
 
 void MainWindow::ActivateActions()
@@ -289,11 +299,13 @@ void MainWindow::OpenConnectConfig()
 void MainWindow::StartPlayOnline()
 {
     mMoveControlWidget->startMoveOnline();
+    LogMaster::Inst()->addLine("Запущено решение онлайн");
 }
 
 void MainWindow::StopPlayOnline()
 {
     mMoveControlWidget->stopMoveAction();
+    LogMaster::Inst()->addLine("Запрос остановки решения онлайн");
 }
 
 void MainWindow::StartFrund()

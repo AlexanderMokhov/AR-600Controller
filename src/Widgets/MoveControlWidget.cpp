@@ -172,10 +172,9 @@ void MoveControlWidget::startMove()
 
 void MoveControlWidget::startMoveOnline()
 {
-    //openFile("sinhron/DRIVEMAR.TXT", true);
+    // openFile("sinhron/DRIVEMAR.TXT", true);
 
     mMover->startMoveOnline();
-
     if(IsLog)
     {
         emit StartWriteRecord(2e5);
