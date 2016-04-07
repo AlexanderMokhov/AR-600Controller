@@ -64,7 +64,7 @@ void MoveController::stepPlay()
         BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
 
         int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time);
-        qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
+        //qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
 
         BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle + CorrectionValue);
         MovesStorage::Inst()->m_moveID++;
@@ -79,7 +79,9 @@ StopPlay:
     if(time > MovesStorage::Inst()->m_duration)
     {
         MovesStorage::Inst()->m_moveID = 0;
-        qDebug() << "Выполнена последняя строка"  << endl;
+        //qDebug() << "Выполнена последняя строка"  << endl;
+
+        LogMaster::Inst()->addLine("Выполнена последняя строка");
         emit PlayEnd();
         m_state = States::MoveStopping;
     }
@@ -92,6 +94,7 @@ void MoveController::startPlay()
 
 void MoveController::startingPlay()
 {
+    LogMaster::Inst()->addLine("MoveController::StartingPlay()");
     m_motors = SettingsStorage::Inst()->GetMotors();
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {

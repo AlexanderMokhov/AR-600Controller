@@ -3,6 +3,12 @@
 
 #include <QWidget>
 #include <QTime>
+#include <QTimer>
+
+#include <string>
+#include <vector>
+
+#include "Management/LogMaster.h"
 
 namespace Ui {
 class LogWidget;
@@ -17,9 +23,21 @@ public:
     ~LogWidget();
 
     void addMessage(QString message);
+    void startWrite();
+
+private slots:
+    void OnTimerTick();
 
 private:
+    //private variable
     Ui::LogWidget *ui;
+    QTimer *mTimer;
+    int mTime;
+    int mInterval;
+
+    //private methods
+    void updateData();
+
 };
 
 #endif // LOGWIDGET_H

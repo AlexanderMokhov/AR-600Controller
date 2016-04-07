@@ -11,10 +11,11 @@ LogMaster::LogMaster()
     char* format = "%d_%b_%Y_%H_%M_%S";
     strftime(buffer, 80, format, timeInfo);
 
-    fileName = "log_" + std::string(buffer) + ".txt";
+    fileName = "Logs/log_" + std::string(buffer) + ".txt";
     m_vector.clear();
+    numberLastStrings = 0;
 
-    addLine("Запись началась");
+    addLine("Запись работы системы начата");
 }
 
 std::vector<std::string> LogMaster::getLastStrings()
@@ -22,10 +23,11 @@ std::vector<std::string> LogMaster::getLastStrings()
     m_locker.lock();
 
     std::vector<std::string> retVector;
-    for(int i = m_vector.size() - numberLastStrings - 1; i < m_vector.size() - 1; i++)
+    for(int i = m_vector.size() - numberLastStrings; i < m_vector.size(); i++)
         retVector.push_back(m_vector.at(i));
 
     m_vector.clear();
+    numberLastStrings = 0;
 
     m_locker.unlock();
     return retVector;

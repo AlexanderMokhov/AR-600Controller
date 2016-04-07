@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //инициализация контроллеров
     LogMaster::Inst()->Init();
+
     SettingsStorage::Inst()->Init();
     BufferController::Inst()->Init();
 
@@ -36,15 +37,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //конец чтения настроек
 
     //настраиваем виджеты
-    LogMaster::Inst()->addLine("Настройка виджетов запущена");
     WidgetsInit();
-    mLogWidget->addMessage(" Настройки успешно прочитаны");//!!!!
-    mConnectDialog = new ConnectConfigDialog();
-    mMotorControlWidget->setModel(mMotorTableWidget->getModel());
-    connect(mMotorTableWidget, SIGNAL(RowChanged(int)), mMotorControlWidget, SLOT(RowChanged(int)));
     //конец настройки виджетов
+    mLogWidget->startWrite();
+    //mLogWidget->addMessage(" Настройки успешно прочитаны");//!!!!
 
-    LogMaster::Inst()->addLine("Настройка виджетов завершена");
     //настройка кнопок тулбара
     ActionsLoad();
 
@@ -68,9 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     FrundTransiver::Inst()->Inst();
 
-    LogMaster::Inst()->addLine("Настройка connect(...) начата");
     ConnectionsInit();
-    LogMaster::Inst()->addLine("Настройка connect(...) завершена");
 
     //заполнение таблицы приводов
     mMotorTableWidget->ShowConfigData();
@@ -92,12 +87,15 @@ MainWindow::~MainWindow()
     delete ui;
     mStdMovesWidget->close();
     delete mStdMovesWidget;
+
     LogMaster::Inst()->addLine("Работа программы успешно завершена");
 }
 
 //Настройка кнопок тулбара
 void MainWindow::ActionsLoad()
 {
+    LogMaster::Inst()->addLine("Настройка Actions начата");
+
     TBactionOpenCF = new QAction("Открыть файл настроек",0);
     TBactionOpenCF->setToolTip("Открыть файл настроек");
     TBactionOpenCF->setIcon(QIcon(":/MyIcons/Icons/open.ico"));
@@ -165,10 +163,14 @@ void MainWindow::ActionsLoad()
     TBactionStartFrund->setToolTip("Запустить RASHET32.EXE");
     TBactionStartFrund->setIcon(QIcon(":/MyIcons/Icons/forward.ico"));
     connect(TBactionStartFrund, SIGNAL(triggered()),this,SLOT(StartFrund()));
+
+    LogMaster::Inst()->addLine("Настройка Actions завершена");
 }
 
 void MainWindow::WidgetsInit()
 {
+    LogMaster::Inst()->addLine("Настройка Widgets начата");
+
     mMotorControlWidget = new MotorControlWidget();
     ui->MotorControlLayout->addWidget(mMotorControlWidget);
     mMotorTableWidget = new MotorTableWidget();
@@ -185,10 +187,19 @@ void MainWindow::WidgetsInit()
     //mStdMovesWidget->show();
     mLogWidget = new LogWidget();
     ui->LayoutLog->addWidget(mLogWidget);
+
+
+    mConnectDialog = new ConnectConfigDialog();
+    mMotorControlWidget->setModel(mMotorTableWidget->getModel());
+    connect(mMotorTableWidget, SIGNAL(RowChanged(int)), mMotorControlWidget, SLOT(RowChanged(int)));
+
+    LogMaster::Inst()->addLine("Настройка Widgets завершена");
 }
 
 void MainWindow::ConnectionsInit()
 {
+    LogMaster::Inst()->addLine("Настройка connect(...) начата");
+
     //настройка кнопок меню
     connect(ui->actionOpenConfigFile,SIGNAL(triggered()),this,SLOT(OpenXML()));
     connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
@@ -209,9 +220,6 @@ void MainWindow::ConnectionsInit()
 
     connect(mMoveControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(Disactivate()));
     connect(mMoveControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    //connect(MoveController::Inst(),SIGNAL(InitStart()),mMotorTableWidget,SLOT(Disactivate()));
-    //connect(MoveController::Inst(),SIGNAL(PlayEnd()),mMotorTableWidget,SLOT(Activate()));
-    //connect(MoveController::Inst(),SIGNAL(InitEnd()),mMotorTableWidget,SLOT(Activate()));
     connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mMoveFilesWidget,SLOT(AddFile(QString,int,int,bool)));
 
     connect(mMoveFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));
@@ -221,10 +229,14 @@ void MainWindow::ConnectionsInit()
 
     connect(mConsoleReceiver, SIGNAL(startPlayOnline()), this, SLOT(StartPlayOnline()));
     connect(mConsoleReceiver, SIGNAL(stopPlayOnline()), this, SLOT(StopPlayOnline()));
+
+    LogMaster::Inst()->addLine("Настройка connect(...) завершена");
 }
 
 void MainWindow::ToolBarInit()
 {
+    LogMaster::Inst()->addLine("Настройка ToolBar начата");
+
     //добавление кнопок на тулбар
     ui->MainToolBar->addAction(TBactionOpenCF);
     ui->MainToolBar->addAction(TBactionSaveCF);
@@ -245,6 +257,8 @@ void MainWindow::ToolBarInit()
     ui->MainToolBar->addAction(TBactionStopPlayOnline);
     ui->MainToolBar->addAction(TBactionStartFrund);
     //конец добавление кнопок на тулбар
+
+    LogMaster::Inst()->addLine("Настройка ToolBar завершена");
 }
 
 //вызывается при запуске подключения к роботу
@@ -256,7 +270,7 @@ void MainWindow::Connect()
     mTimerUpdate->start();
     mConnectStatusLabel->setText("Соединение установлено");
 
-    LogMaster::Inst()->addLine("Соединение установлено...");
+    LogMaster::Inst()->addLine("Соединение с роботом установлено");
 }
 
 //вызывается при запуске остановки подключения к роботу
@@ -277,7 +291,7 @@ void MainWindow::Disconnect()
     mConnectStatusLabel->setText("Соединение не установлено");
     mLogWidget->addMessage("Соединение было прервано");
 
-    LogMaster::Inst()->addLine("Соединение прервано...");
+    LogMaster::Inst()->addLine("Соединение с роботом прервано");
 }
 
 void MainWindow::ActivateActions()
@@ -299,6 +313,7 @@ void MainWindow::OpenConnectConfig()
 void MainWindow::StartPlayOnline()
 {
     mMoveControlWidget->startMoveOnline();
+
     LogMaster::Inst()->addLine("Запущено решение онлайн");
 }
 
@@ -367,6 +382,8 @@ void MainWindow::SaveXML()
     {
         SettingsStorage::Inst()->SaveFile(fileName.toStdString());
         qDebug() << "Файл настроек успешно сохранен в " << fileName << endl;
+
+        LogMaster::Inst()->addLine("Файл настроек успешно сохранен в " + fileName.toStdString());
     }
 }
 

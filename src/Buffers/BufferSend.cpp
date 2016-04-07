@@ -14,6 +14,7 @@ BufferSend::BufferSend(void)
 {
     for(int i = 0; i < bufferSize; i++) m_RAW[i] = 0;
     onPower12();
+    offMute();
 }
 
 

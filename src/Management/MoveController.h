@@ -28,6 +28,7 @@
 #include "MovesStorage.h"
 #include "RecordController.h"
 #include "Connection/FrundTransiver.h"
+#include "LogMaster.h"
 
 //!!!
 struct Command
