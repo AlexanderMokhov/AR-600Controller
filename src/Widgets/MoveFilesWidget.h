@@ -8,7 +8,7 @@
 #include <QInputDialog>
 
 #include "Models/CommandTableModel.h"
-#include "Management/SettingsStorage.h"
+#include "Management/ARCore.h"
 #include "Buffers/BufferController.h"
 #include "Management/MoveController.h"
 

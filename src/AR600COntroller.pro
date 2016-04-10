@@ -60,7 +60,11 @@ SOURCES += main.cpp\
     Connection/FrundTransiver.cpp \
     Widgets/LogWidget.cpp \
     Management/FileLoader.cpp \
-    Management/LogMaster.cpp
+    Management/LogMaster.cpp \
+    Management/ARCore.cpp \
+    Management/ICoreClass.cpp \
+    Management/CoreRegistry.cpp \
+    Management/MoveControllerFrund.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -105,7 +109,11 @@ HEADERS  += \
     Connection/FrundTransiver.h \
     Widgets/LogWidget.h \
     Management/FileLoader.h \
-    Management/LogMaster.h
+    Management/LogMaster.h \
+    Management/ARCore.h \
+    Management/ICoreClass.h \
+    Management/CoreRegistry.h \
+    Management/MoveControllerFrund.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

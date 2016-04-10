@@ -9,14 +9,19 @@
 #include "Devices/Motor.h"
 #include "Devices/Sensor.h"
 
+#include "ICoreClass.h"
+#include "CoreRegistry.h"
+
 using namespace std;
 //загрузка и хранение основных параметров приложения
-class SettingsStorage
+class SettingsStorage : public ICoreClass
 {
 public:
     //public methods
-    static SettingsStorage* Inst(){ return mInst; }
-    static void Init(){ delete mInst; mInst = new SettingsStorage; }
+    SettingsStorage();
+    ~SettingsStorage(){}
+    //static SettingsStorage* Inst(){ return mInst; }
+    //static void Init(){ delete mInst; mInst = new SettingsStorage; }
 
     bool OpenFile( std::string FileName );//Открыть файл настроек
     bool SaveFile( std::string FileName );//Сохранить файл настроек
@@ -46,7 +51,7 @@ public:
 
 private:
     //private variable
-    static SettingsStorage* mInst;
+    //static SettingsStorage* mInst;
     TiXmlDocument * mXMLConfigFile;
 
     //настройки двигателей и сенсоров
@@ -74,9 +79,7 @@ private:
     std::string mFileForward, mFileBack;
 
     //private methods
-    SettingsStorage();
-    SettingsStorage( SettingsStorage const& );
-    ~SettingsStorage(){}
+
 };
 
 

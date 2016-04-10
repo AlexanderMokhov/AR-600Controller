@@ -17,12 +17,12 @@ void Sender::run()
     //нить создана
     m_udpSocketSender = new QUdpSocket();
 
-    m_sendPort = SettingsStorage::Inst()->GetSendPort();
-    m_host = QString::fromStdString(SettingsStorage::Inst()->GetHost());
+    m_sendPort = ARCore::Inst()->getSettingStore()->GetSendPort();
+    m_host = QString::fromStdString(ARCore::Inst()->getSettingStore()->GetHost());
 
     qDebug() << "Sender - connecting..." << endl;
 
-    m_sendDelay = SettingsStorage::Inst()->GetSendDelay();
+    m_sendDelay = ARCore::Inst()->getSettingStore()->GetSendDelay();
 
     m_udpSocketSender->connectToHost(m_host, m_sendPort);
     m_udpSocketSender->waitForConnected(1000);

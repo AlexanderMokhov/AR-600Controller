@@ -30,7 +30,7 @@ SensorTableWidget::~SensorTableWidget()
 
 void SensorTableWidget::ShowConfigData()
 {
-    std::map<int,Sensor> * mMap = SettingsStorage::Inst()->GetSensors();
+    std::map<int,Sensor> * mMap = ARCore::Inst()->getSettingStore()->GetSensors();
     mModel->removeRows(0,mModel->rowCount());
 
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
@@ -51,7 +51,7 @@ SensorTableModel *SensorTableWidget::getModel()
 
 void SensorTableWidget::UpdatePos()
 {
-    std::map<int,Sensor> * mMap = SettingsStorage::Inst()->GetSensors();
+    std::map<int,Sensor> * mMap = ARCore::Inst()->getSettingStore()->GetSensors();
     int i=0;
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {

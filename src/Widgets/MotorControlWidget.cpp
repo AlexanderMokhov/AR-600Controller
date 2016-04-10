@@ -39,9 +39,9 @@ void MotorControlWidget::RowChanged(int cRow)
     //Считываем номер мотра, адрес буфера, реверс
     currentRow = cRow;
     CurrentNumber = mModel->data(mModel->index(currentRow,0),Qt::EditRole).toInt();
-    QString name = QString::fromLocal8Bit(SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).getName().c_str());
+    QString name = QString::fromLocal8Bit(ARCore::Inst()->getSettingStore()->GetMotors()->at(CurrentNumber).getName().c_str());
     ui->lineName->setText(name);
-    Reverce = SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).getReverceState();
+    Reverce = ARCore::Inst()->getSettingStore()->GetMotors()->at(CurrentNumber).getReverceState();
     if(Reverce)
         ReverceCoeff = -1;
     else
@@ -126,7 +126,7 @@ void MotorControlWidget::on_groupBoxCalibration_clicked(bool checked)
     if(!checked)
     {
         //выходим из режима калибровки
-        mWriteBuffer->setMotorShiftValue(CurrentNumber, SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).getShiftValue());
+        mWriteBuffer->setMotorShiftValue(CurrentNumber, ARCore::Inst()->getSettingStore()->GetMotors()->at(CurrentNumber).getShiftValue());
         mWriteBuffer->setMotorAngle(CurrentNumber, mReadBuffer->getMotorAngle(CurrentNumber));
 
         //разрешаем вход в режим управления слайдером
@@ -155,9 +155,9 @@ void MotorControlWidget::on_ButtonSaveZero_clicked()
     //записываем в файл настроек новые калибровочные коэффициенты
     int CurrentPos = mReadBuffer->getMotorAngle(CurrentNumber);
     int NewCalibration=ReverceCoeff*CurrentPos;
-    SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).setShiftValue(NewCalibration);
+    ARCore::Inst()->getSettingStore()->GetMotors()->at(CurrentNumber).setShiftValue(NewCalibration);
     mModel->setData(mModel->index(currentRow,10),QString::number(NewCalibration));
-    SettingsStorage::Inst()->SaveFile("config.xml");
+    ARCore::Inst()->getSettingStore()->SaveFile("config.xml");
 
     //записываем в мотор калибровочные коэффициенты
     mWriteBuffer->setMotorShiftValue(CurrentNumber,NewCalibration);
@@ -234,12 +234,12 @@ void MotorControlWidget::on_ButtonStiffWrite_clicked()
 
 void MotorControlWidget::on_ButtonStiffSave_clicked()
 {
-    SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).getPIDGates()->setPGate(ui->spinStiff->value());
+    ARCore::Inst()->getSettingStore()->GetMotors()->at(CurrentNumber).getPIDGates()->setPGate(ui->spinStiff->value());
 }
 
 void MotorControlWidget::on_ButtonDumpSave_clicked()
 {
-    SettingsStorage::Inst()->GetMotors()->at(CurrentNumber).getPIDGates()->setIGate(ui->spinDump->value());
+    ARCore::Inst()->getSettingStore()->GetMotors()->at(CurrentNumber).getPIDGates()->setIGate(ui->spinDump->value());
 }
 
 

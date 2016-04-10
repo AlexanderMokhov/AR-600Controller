@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 #include "Buffers/BufferController.h"
-#include "SettingsStorage.h"
+#include "ARCore.h"
 
 using namespace std;
 

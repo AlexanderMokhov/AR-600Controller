@@ -4,7 +4,7 @@
 #include <iostream>
 #include "stdlib.h"
 
-#include "Management/SettingsStorage.h"
+#include "Management/ARCore.h"
 #include "BufferSend.h"
 #include "BufferRecv.h"
 

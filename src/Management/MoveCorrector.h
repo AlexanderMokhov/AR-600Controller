@@ -16,7 +16,7 @@
 #include <mutex>
 
 #include "Buffers/BufferController.h"
-#include "SettingsStorage.h"
+#include "ARCore.h"
 
 struct Amend //поправка
 {

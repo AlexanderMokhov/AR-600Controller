@@ -23,7 +23,7 @@
 #include <unistd.h>
 
 #include "Buffers/BufferController.h"
-#include "SettingsStorage.h"
+#include "ARCore.h"
 #include "MoveCorrector.h"
 #include "MovesStorage.h"
 #include "RecordController.h"

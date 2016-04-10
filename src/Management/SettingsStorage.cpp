@@ -1,8 +1,8 @@
 #include "SettingsStorage.h"
 
-SettingsStorage * SettingsStorage::mInst = 0;
+//SettingsStorage * SettingsStorage::mInst = 0;
 
-SettingsStorage::SettingsStorage()
+SettingsStorage::SettingsStorage() : ICoreClass()
 {
     mXMLConfigFile = NULL;
 }

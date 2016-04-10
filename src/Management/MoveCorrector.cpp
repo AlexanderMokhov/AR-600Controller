@@ -4,10 +4,10 @@ MoveCorrector * MoveCorrector::m_inst = 0;
 
 MoveCorrector::MoveCorrector()
 {
-    m_sensors = SettingsStorage::Inst()->GetSensors();
+    m_sensors = ARCore::Inst()->getSettingStore()->GetSensors();
 
     m_amends.clear();
-    m_motors = SettingsStorage::Inst()->GetMotors();
+    m_motors = ARCore::Inst()->getSettingStore()->GetMotors();
 
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {

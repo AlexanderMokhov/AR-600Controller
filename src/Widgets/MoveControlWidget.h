@@ -11,7 +11,7 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 
-#include "Management/SettingsStorage.h"
+#include "Management/ARCore.h"
 #include "Buffers/BufferController.h"
 #include "Models/MotorTableModel.h"
 

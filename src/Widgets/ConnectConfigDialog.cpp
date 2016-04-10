@@ -22,9 +22,9 @@ ConnectConfigDialog::~ConnectConfigDialog()
 
 void ConnectConfigDialog::Update()
 {
-    mHost = QString::fromStdString(SettingsStorage::Inst()->GetHost());
-    mSendPort = SettingsStorage::Inst()->GetSendPort();
-    mReceivePort = SettingsStorage::Inst()->GetReceivePort();
+    mHost = QString::fromStdString(ARCore::Inst()->getSettingStore()->GetHost());
+    mSendPort = ARCore::Inst()->getSettingStore()->GetSendPort();
+    mReceivePort = ARCore::Inst()->getSettingStore()->GetReceivePort();
 
     ui->lineEditHost->setText(mHost);
     ui->lineEditSendPort->setText(QString::number(mSendPort));
@@ -33,7 +33,7 @@ void ConnectConfigDialog::Update()
 
 void ConnectConfigDialog::accepted()
 {
-    SettingsStorage::Inst()->SetHost(ui->lineEditHost->text().toStdString());
-    SettingsStorage::Inst()->SetReceivePort(ui->lineEditReceivePort->text().toInt());
-    SettingsStorage::Inst()->SetSendPort(ui->lineEditSendPort->text().toInt());
+    ARCore::Inst()->getSettingStore()->SetHost(ui->lineEditHost->text().toStdString());
+    ARCore::Inst()->getSettingStore()->SetReceivePort(ui->lineEditReceivePort->text().toInt());
+    ARCore::Inst()->getSettingStore()->SetSendPort(ui->lineEditSendPort->text().toInt());
 }

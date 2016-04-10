@@ -4,8 +4,8 @@ BufferController * BufferController::m_inst = 0;
 
 void BufferController::Initialize()
 {
-    for(auto it = SettingsStorage::Inst()->GetMotors()->begin();
-        it != SettingsStorage::Inst()->GetMotors()->end();++it)
+    for(auto it = ARCore::Inst()->getSettingStore()->GetMotors()->begin();
+        it != ARCore::Inst()->getSettingStore()->GetMotors()->end();++it)
     {
         m_bufferSend.setDeviceChannel((*it).first,(*it).second.getChannel());
         m_bufferRecv.setDeviceChannel((*it).first,(*it).second.getChannel());
@@ -24,8 +24,8 @@ void BufferController::Initialize()
         m_bufferSend.motorStopBrake((*it).first);
     }
 
-    for(auto it = SettingsStorage::Inst()->GetSensors()->begin();
-        it != SettingsStorage::Inst()->GetSensors()->end();++it)
+    for(auto it = ARCore::Inst()->getSettingStore()->GetSensors()->begin();
+        it != ARCore::Inst()->getSettingStore()->GetSensors()->end();++it)
     {
         int Channel = (*it).second.getChannel();
         m_bufferSend.setDeviceChannel(Channel,Channel);

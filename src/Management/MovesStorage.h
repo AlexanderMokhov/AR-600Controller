@@ -18,7 +18,13 @@
 #include <regex>
 #include <unistd.h>
 
+//#include "ARCore.h"
+#include "LogMaster.h"
+
+
 #include "SettingsStorage.h"
+#include "ICoreClass.h"
+#include "CoreRegistry.h"
 
 struct PID
 {
@@ -39,7 +45,7 @@ struct MoveCommand
 };
 
 //для работы с файлами движений
-class MovesStorage
+class MovesStorage : public ICoreClass
 {
 public:
     //public variable
@@ -56,11 +62,14 @@ public:
     std::vector<MoveCommand> m_backMoves;
 
     //public methods
+    MovesStorage();
+    ~MovesStorage(){}
+
     void skipSpace(std::locale loc, std::string str, int *pos);
     void readValue(std::string *temp, std::locale loc, int *pos, std::string str);
 
-    static MovesStorage* Inst(){ return m_inst; }
-    static void initialize(){ delete m_inst; m_inst = new MovesStorage; }
+    //static MovesStorage* Inst(){ return m_inst; }
+    //static void initialize(){ delete m_inst; m_inst = new MovesStorage; }
 
     bool openFile(std::string fileName);
     int getRowsNumber(){ return m_rowsNumber; }
@@ -79,17 +88,20 @@ public:
     void loadDataFromArray(char* array, uint size);
     int getCurrentRow();
 
+    void addRegistry(CoreRegistry* reg) { m_Registry = reg; }
+
 private:
     //private variable
-    static MovesStorage* m_inst;
-    std::map<int,Motor> * m_motors;
+    //static MovesStorage* m_inst;
     volatile unsigned int countErrors;
     std::mutex m_locker;
 
+    CoreRegistry * m_Registry;
+
     //private methods
-    MovesStorage();
-    ~MovesStorage(){}
-    MovesStorage(MovesStorage const&);
+    //MovesStorage();
+    //~MovesStorage(){}
+    //MovesStorage(MovesStorage const&);
 };
 
 #endif // MOVESSTORAGE_H

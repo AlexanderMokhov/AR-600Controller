@@ -6,7 +6,7 @@
 #include <QTime>
 
 #include "Buffers/BufferController.h"
-#include "Management/SettingsStorage.h"
+#include "Management/ARCore.h"
 
 #include "Libs/QCustomPlot/qcustomplot.h"
 

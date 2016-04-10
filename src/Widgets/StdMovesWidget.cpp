@@ -20,13 +20,13 @@ StdMovesWidget::~StdMovesWidget()
 
 void StdMovesWidget::on_ButtonForward_clicked()
 {
-    MovesStorage::Inst()->setForwardMoves();
+    ARCore::Inst()->getMovesStore()->setForwardMoves();
     emit startStdMove();
 }
 
 void StdMovesWidget::on_ButtonBack_clicked()
 {
-    MovesStorage::Inst()->setBackMoves();
+    ARCore::Inst()->getMovesStore()->setBackMoves();
     emit startStdMove();
 }
 

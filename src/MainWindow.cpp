@@ -7,20 +7,26 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ARCore::Inst()->Init();
+
     //инициализация контроллеров
     LogMaster::Inst()->Init();
 
-    SettingsStorage::Inst()->Init();
+    //ARCore::Inst()->getSettingStore()->Init();
     BufferController::Inst()->Init();
 
     //чтение настроек их XML файла
-    bool isOk = SettingsStorage::Inst()->OpenFile("config.xml");
+    bool isOk = ARCore::Inst()->getSettingStore()->OpenFile("config.xml");
+    //SettingsStorage::Inst()->OpenFile("config.xml");
 
     if(isOk)
     {
-        mUpdateDelay = SettingsStorage::Inst()->GetReceiveDelay();
+        mUpdateDelay = ARCore::Inst()->getSettingStore()->GetReceiveDelay();
+                //SettingsStorage::Inst()->GetReceiveDelay();
 
         BufferController::Inst()->Initialize();
+
+        ARCore::Inst()->movesStoreInit();
         MoveController::Inst()->Init();
         RecordController::Inst()->Init();
 
@@ -76,6 +82,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
 
     MoveCorrector::Inst()->initialize();
+
+
 }
 
 MainWindow::~MainWindow()
@@ -380,7 +388,7 @@ void MainWindow::SaveXML()
     QString fileName = QFileDialog::getSaveFileName(0,"Save XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        SettingsStorage::Inst()->SaveFile(fileName.toStdString());
+        ARCore::Inst()->getSettingStore()->SaveFile(fileName.toStdString());
         qDebug() << "Файл настроек успешно сохранен в " << fileName << endl;
 
         LogMaster::Inst()->addLine("Файл настроек успешно сохранен в " + fileName.toStdString());
@@ -393,7 +401,7 @@ void MainWindow::OpenXML()
     QString fileName = QFileDialog::getOpenFileName(0,"Open XML Dialog","","*.XML *.xml");
     if (!fileName.isEmpty())
     {
-        bool isOk = SettingsStorage::Inst()->OpenFile(fileName.toStdString());
+        bool isOk = ARCore::Inst()->getSettingStore()->OpenFile(fileName.toStdString());
 
         if(isOk)
         {

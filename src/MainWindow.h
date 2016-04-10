@@ -12,7 +12,7 @@
 #include <QMessageBox>
 #include <QProcess>
 
-#include "Management/SettingsStorage.h"
+//#include "Management/SettingsStorage.h"
 #include "Management/MoveController.h"
 #include "Management/MoveCorrector.h"
 #include "Management/RecordController.h"
@@ -39,6 +39,8 @@
 #include "Connection/FrundTransiver.h"
 
 #include <Windows.h>
+
+#include "Management/ARCore.h"
 
 
 namespace Ui {
@@ -124,6 +126,8 @@ private:
     void ToolBarInit();
 
     void closeEvent(QCloseEvent *event);
+
+    ARCore* mARCore;
 };
 
 #endif // MAINWINDOW_H

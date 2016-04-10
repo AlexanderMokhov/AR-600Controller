@@ -1,11 +1,10 @@
 #include "MovesStorage.h"
 
-MovesStorage * MovesStorage::m_inst = 0;
+//MovesStorage * MovesStorage::m_inst = 0;
 
-MovesStorage::MovesStorage()
+MovesStorage::MovesStorage(): ICoreClass()
 {
     m_moveID = 0;
-    m_motors = SettingsStorage::Inst()->GetMotors();
     //loadForwardMoves();
     //loadBackMoves();
 }
@@ -39,7 +38,7 @@ bool MovesStorage::openFile(string fileName)
 
 bool MovesStorage::loadForwardMoves()
 {
-    if(loadFile(SettingsStorage::Inst()->GetFileForward()))
+    if(loadFile(static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetFileForward()))
     {
         m_forwardMoves = m_moves;
         m_forwardDuration = m_duration;
@@ -58,7 +57,7 @@ bool MovesStorage::loadForwardMoves()
 
 bool MovesStorage::loadBackMoves()
 {
-    if(loadFile(SettingsStorage::Inst()->GetFileBack()))
+    if(loadFile(static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetFileBack()))
     {
         m_backMoves = m_moves;
         m_backDuration = m_duration;
@@ -90,13 +89,13 @@ bool MovesStorage::loadFile(std::string filename)
         PID mPID;
 
         //по умолчанию заполняем значениями из файла настроек
-        mPID.Stiff = SettingsStorage::Inst()->GetDefaultStiff();
-        mPID.Dump = SettingsStorage::Inst()->GetDefaultDump();
-        mPID.Torque = SettingsStorage::Inst()->GetDefaultTorque();
+        mPID.Stiff = (static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultStiff());
+        mPID.Dump = (static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultDump());
+        mPID.Torque = (static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultTorque());
 
-        mPID.StiffFactor = SettingsStorage::Inst()->GetDefaultStiffFactor();
-        mPID.DumpFactor = SettingsStorage::Inst()->GetDefaultDumpFactor();
-        mPID.TorqueFactor = SettingsStorage::Inst()->GetDefaultTorqueFactor();
+        mPID.StiffFactor = (static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultStiffFactor());
+        mPID.DumpFactor = (static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultDumpFactor());
+        mPID.TorqueFactor = (static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultTorqueFactor());
 
         while( std::getline(file, line) )
         {
@@ -106,98 +105,190 @@ bool MovesStorage::loadFile(std::string filename)
                 continue;
             }
 
-            //читаем очередную строку из файла
-            std::locale loc;
-            std::string temp;
-            int pos = 0;
+            const char * str = line.c_str();
+            char * ptr = 0;
+            char* ptrOld = 0;
+            errno = 0;
 
-            //читаем номер привода
-            skipSpace(loc, line, &pos);
-            readValue(&temp, loc, &pos, line);
+            int Number = strtol(str, &ptr, 10);
+            if (!(errno != ERANGE && ptr > str)) return false;
 
-            //записываем номер привода
-            int Number = atoi( temp.c_str() );
-            temp.clear();
+            long Time = strtol(ptr, &ptr, 10);
+            if (!(errno != ERANGE && ptr > str)) return false;
 
-            //читаем время (как целое число)
-            skipSpace(loc, line, &pos);
-            while( line[pos] != '.' ){ temp += line.at(pos); pos++; } pos++;
-            readValue(&temp, loc, &pos, line);
+            ptr++;
+            long TimeMs = strtol(ptr, &ptr, 10);
+            if (!(errno != ERANGE && ptr > str)) return false;
 
-            //записываем время
-            int Time = atoi( temp.c_str() );
-            temp.clear();
+            Time *= 1e6;
+            Time += TimeMs;
 
-            //читаем угол
-            skipSpace(loc, line, &pos);
-            readValue(&temp, loc, &pos, line);
+            double Angle = strtod(ptr, &ptr);
+            if (!(errno != ERANGE && ptr > str)) return false;
 
-            //записываем угол
-            double Angle = atof( temp.c_str() );
-            temp.clear();
-
-            //Переводим угол в градусы*100
-            Angle = (180.0 / M_PI) * Angle * 100.0;
-
-            skipSpace(loc, line, &pos);
-
-            if(line[pos] != '\0') //проверяем есть ли коэффициэнты PID
+            while(isspace(*(++ptr)));
+            if(*ptr != '\0')
             {
-                //значит здесь записаны коэффициенты PID
-                //читаем KP
-                readValue(&temp, loc, &pos, line);
-                double KP = atof( temp.c_str() );
-                temp.clear();
+                ptrOld = ptr;
+                double PGate = strtod(ptr, &ptr);
+                if (!(errno != ERANGE && ptr > str)) return false;
+                if(*ptrOld == *ptr)
+                {
+                }
 
-                //читаем KI
-                skipSpace(loc, line, &pos);
-                readValue(&temp, loc, &pos, line);
-                double KI = atof( temp.c_str() );
-                temp.clear();
+                ptrOld = ptr;
+                double IGate = strtod(ptr, &ptr);
+                if (!(errno != ERANGE && ptr > str)) return false;
+                if(*ptrOld == *ptr)
+                {
+                }
 
-                //читаем KD
-                skipSpace(loc, line, &pos);
-                readValue(&temp, loc, &pos, line);
-                double KD = atof( temp.c_str() );
-                temp.clear();
+                ptrOld = ptr;
+                double DGate = strtod(ptr, &ptr);
+                if (!(errno != ERANGE && ptr > str)) return false;
+                if(*ptrOld == *ptr)
+                {
+                }
 
                 //заполняем PID
-                mPID.Stiff = KP;
-                mPID.Dump = KI;
-                mPID.Torque = KD;
+                mPID.Stiff = PGate;
+                mPID.Dump = IGate;
+                mPID.Torque = DGate;
 
-                skipSpace(loc, line, &pos);
-
-                if(line[pos] != '\0') //проверяем есть ли коэффициэнты проп. PID
+                while(isspace(*(ptr)) && *ptr != '\0'){ptr++;}
+                if(*ptr != '\0')
                 {
-                    //значит здесь записаны коэффициенты проп. PID
-                    //читаем KP
-                    readValue(&temp, loc, &pos, line);
-                    double KPFactor = atof( temp.c_str() );
-                    temp.clear();
+                    ptrOld = ptr;
+                    double PGateFactor = strtod(ptr, &ptr);
+                    if (!(errno != ERANGE && ptr > str)) return false;
+                    if(*ptrOld == *ptr)
+                    {
+                    }
 
-                    //читаем KI
-                    skipSpace(loc, line, &pos);
-                    readValue(&temp, loc, &pos, line);
-                    double KIFactor = atof( temp.c_str() );
-                    temp.clear();
+                    ptrOld = ptr;
+                    double IGateFactor = strtod(ptr, &ptr);
+                    if (!(errno != ERANGE && ptr > str)) return false;
+                    if(*ptrOld == *ptr)
+                    {
+                    }
 
-                    //читаем KD
-                    skipSpace(loc, line, &pos);
-                    readValue(&temp, loc, &pos, line);
-                    double KDFactor = atof( temp.c_str() );
-                    temp.clear();
+                    ptrOld = ptr;
+                    double DGateFactor = strtod(ptr, &ptr);
+                    if (!(errno != ERANGE && ptr > str)) return false;
+                    if(*ptrOld == *ptr)
+                    {
+                    }
 
                     //заполняем коэффициенты проп. PID
-                    mPID.StiffFactor = KPFactor;
-                    mPID.DumpFactor = KIFactor;
-                    mPID.TorqueFactor = KDFactor;
+                    mPID.StiffFactor = PGateFactor;
+                    mPID.DumpFactor = IGateFactor;
+                    mPID.TorqueFactor = DGateFactor;
 
                     mPID.Stiff *= mPID.StiffFactor;
                     mPID.Dump *= mPID.DumpFactor;
                     mPID.Torque *= mPID.TorqueFactor;
+
                 }
             }
+
+
+
+
+
+
+{
+            //читаем очередную строку из файла
+//            std::locale loc;
+//            std::string temp;
+//            int pos = 0;
+
+//            //читаем номер привода
+//            skipSpace(loc, line, &pos);
+//            readValue(&temp, loc, &pos, line);
+
+//            //записываем номер привода
+//            int Number = atoi( temp.c_str() );
+//            temp.clear();
+
+//            //читаем время (как целое число)
+//            skipSpace(loc, line, &pos);
+//            while( line[pos] != '.' ){ temp += line.at(pos); pos++; } pos++;
+//            readValue(&temp, loc, &pos, line);
+
+//            //записываем время
+//            int Time = atoi( temp.c_str() );
+//            temp.clear();
+
+//            //читаем угол
+//            skipSpace(loc, line, &pos);
+//            readValue(&temp, loc, &pos, line);
+
+//            //записываем угол
+//            double Angle = atof( temp.c_str() );
+//            temp.clear();
+
+//            //Переводим угол в градусы*100
+//            Angle = (180.0 / M_PI) * Angle * 100.0;
+
+//            skipSpace(loc, line, &pos);
+}
+//            if(line[pos] != '\0') //проверяем есть ли коэффициэнты PID
+//            {
+//                //значит здесь записаны коэффициенты PID
+//                //читаем KP
+//                readValue(&temp, loc, &pos, line);
+//                double KP = atof( temp.c_str() );
+//                temp.clear();
+
+//                //читаем KI
+//                skipSpace(loc, line, &pos);
+//                readValue(&temp, loc, &pos, line);
+//                double KI = atof( temp.c_str() );
+//                temp.clear();
+
+//                //читаем KD
+//                skipSpace(loc, line, &pos);
+//                readValue(&temp, loc, &pos, line);
+//                double KD = atof( temp.c_str() );
+//                temp.clear();
+
+//                //заполняем PID
+//                mPID.Stiff = KP;
+//                mPID.Dump = KI;
+//                mPID.Torque = KD;
+
+//                skipSpace(loc, line, &pos);
+
+//                if(line[pos] != '\0') //проверяем есть ли коэффициэнты проп. PID
+//                {
+//                    //значит здесь записаны коэффициенты проп. PID
+//                    //читаем KP
+//                    readValue(&temp, loc, &pos, line);
+//                    double KPFactor = atof( temp.c_str() );
+//                    temp.clear();
+
+//                    //читаем KI
+//                    skipSpace(loc, line, &pos);
+//                    readValue(&temp, loc, &pos, line);
+//                    double KIFactor = atof( temp.c_str() );
+//                    temp.clear();
+
+//                    //читаем KD
+//                    skipSpace(loc, line, &pos);
+//                    readValue(&temp, loc, &pos, line);
+//                    double KDFactor = atof( temp.c_str() );
+//                    temp.clear();
+
+//                    //заполняем коэффициенты проп. PID
+//                    mPID.StiffFactor = KPFactor;
+//                    mPID.DumpFactor = KIFactor;
+//                    mPID.TorqueFactor = KDFactor;
+
+//                    mPID.Stiff *= mPID.StiffFactor;
+//                    mPID.Dump *= mPID.DumpFactor;
+//                    mPID.Torque *= mPID.TorqueFactor;
+//                }
+//            }
 
             //заполняем команду
             nextCommand.Time = (int)Time;
@@ -267,13 +358,13 @@ void MovesStorage::loadDataFromArray(char *array, uint size)
     PID mPID;
 
     //по умолчанию заполняем значениями из файла настроек
-    mPID.Stiff = SettingsStorage::Inst()->GetDefaultStiff();
-    mPID.Dump = SettingsStorage::Inst()->GetDefaultDump();
-    mPID.Torque = SettingsStorage::Inst()->GetDefaultTorque();
+    mPID.Stiff = static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultStiff();
+    mPID.Dump = static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultDump();
+    mPID.Torque = static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultTorque();
 
-    mPID.StiffFactor = SettingsStorage::Inst()->GetDefaultStiffFactor();
-    mPID.DumpFactor = SettingsStorage::Inst()->GetDefaultDumpFactor();
-    mPID.TorqueFactor = SettingsStorage::Inst()->GetDefaultTorqueFactor();
+    mPID.StiffFactor = static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultStiffFactor();
+    mPID.DumpFactor = static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultDumpFactor();
+    mPID.TorqueFactor = static_cast<SettingsStorage*>(m_Registry->getClass(0))->GetDefaultTorqueFactor();
 
     for(int i = 0; i < 21*72; i += 72)
     {

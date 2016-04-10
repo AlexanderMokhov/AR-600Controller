@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QItemSelectionModel>
 
-#include "Management/SettingsStorage.h"
+#include "Management/ARCore.h"
 #include "Models/SensorTableModel.h"
 #include "Buffers/BufferController.h"
 

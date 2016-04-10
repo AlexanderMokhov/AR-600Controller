@@ -34,7 +34,7 @@ MotorTableWidget::~MotorTableWidget()
 
 void MotorTableWidget::ShowConfigData()
 {
-    std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
+    std::map<int,Motor> * mMap = ARCore::Inst()->getSettingStore()->GetMotors();
     mModel->removeRows(0,mModel->rowCount());
 
     for(auto it = mMap->begin();it!=mMap->end();++it)
@@ -72,7 +72,7 @@ MotorTableModel *MotorTableWidget::getModel()
 
 void MotorTableWidget::UpdateAngle()
 {
-    std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
+    std::map<int,Motor> * mMap = ARCore::Inst()->getSettingStore()->GetMotors();
     int i=0;
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
@@ -118,7 +118,7 @@ void MotorTableWidget::ShowContextMenu(const QPoint &pos)
 
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->getNumber();
-    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).getEnable();
+    bool isEnable = ARCore::Inst()->getSettingStore()->GetMotors()->at(Number).getEnable();
 
     string text = "Выключить";
     if(!isEnable) text = "Включить";
@@ -138,9 +138,9 @@ void MotorTableWidget::onSetEnableAction()
 {
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->getNumber();
-    bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).getEnable();
+    bool isEnable = ARCore::Inst()->getSettingStore()->GetMotors()->at(Number).getEnable();
     BufferController::Inst()->getBufferSend()->setMotorEnable(Number, !isEnable);
-    SettingsStorage::Inst()->GetMotors()->at(Number).setEnable(!isEnable);
+    ARCore::Inst()->getSettingStore()->GetMotors()->at(Number).setEnable(!isEnable);
     mModel->setData(mModel->index(cRow,11), QString::number(!isEnable));
 }
 
@@ -159,6 +159,6 @@ void MotorTableWidget::onSetLimitsAccepted()
 {
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->getNumber();
-    mModel->mDataList.at(cRow)->setMinAngle(SettingsStorage::Inst()->GetMotors()->at(Number).getMinAngle());
-    mModel->mDataList.at(cRow)->setMaxAngle(SettingsStorage::Inst()->GetMotors()->at(Number).getMaxAngle());
+    mModel->mDataList.at(cRow)->setMinAngle(ARCore::Inst()->getSettingStore()->GetMotors()->at(Number).getMinAngle());
+    mModel->mDataList.at(cRow)->setMaxAngle(ARCore::Inst()->getSettingStore()->GetMotors()->at(Number).getMaxAngle());
 }

@@ -27,7 +27,7 @@ void Receiver::run()
 {
     //нить создана
     m_udpSocketResiver = new QUdpSocket;
-    int ReceivePort = SettingsStorage::Inst()->GetReceivePort();
+    int ReceivePort = ARCore::Inst()->getSettingStore()->GetReceivePort();
 
     connect(m_udpSocketResiver, SIGNAL(readyRead()), SLOT(processPendingDatagrams()),Qt::DirectConnection);
 

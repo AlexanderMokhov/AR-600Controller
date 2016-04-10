@@ -5,7 +5,7 @@
 #include <QItemSelectionModel>
 #include <QMenu>
 
-#include "Management/SettingsStorage.h"
+#include "Management/ARCore.h"
 #include "Models/MotorTableModel.h"
 #include "Buffers/BufferController.h"
 #include "SetLimitsDialog.h"

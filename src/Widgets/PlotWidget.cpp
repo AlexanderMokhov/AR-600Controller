@@ -45,8 +45,8 @@ PlotWidget::PlotWidget(QWidget *parent) :
     // Будем строить график с сегодняшнего дни и текущей секунды в будущее
     double now = QDateTime::currentDateTime().toTime_t();
 
-    for(auto it = SettingsStorage::Inst()->GetMotors()->begin();
-        it != SettingsStorage::Inst()->GetMotors()->end(); ++it )
+    for(auto it = ARCore::Inst()->getSettingStore()->GetMotors()->begin();
+        it != ARCore::Inst()->getSettingStore()->GetMotors()->end(); ++it )
     {
         addGraph((*it).first,(*it).second.getName());
     }

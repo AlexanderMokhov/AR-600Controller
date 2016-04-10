@@ -4,7 +4,7 @@ Mover::Mover(QObject *parent) : QThread(parent)
 {
     isRunning = false;
     isRestart = false;
-    m_delay = SettingsStorage::Inst()->GetSendDelay();
+    m_delay = ARCore::Inst()->getSettingStore()->GetSendDelay();
     isPrep = false;
 }
 
@@ -46,13 +46,13 @@ void Mover::startMoveOnline()
     if( !isRunning ) start();
     emit playOnlineStart();
     RecordController::Inst()->StartWrite();
-    MovesStorage::Inst()->resetErrors();
+    ARCore::Inst()->getMovesStore()->resetErrors();
 }
 
 void Mover::stopMove()
 {
     MoveController::Inst()->stopPlay();
-    qDebug() << "Count Errors = " << QString::number(MovesStorage::Inst()->getCountErrors()) << endl;
+    qDebug() << "Count Errors = " << QString::number(ARCore::Inst()->getMovesStore()->getCountErrors()) << endl;
     isPrep = false;
 }
 

@@ -8,7 +8,7 @@ MoveController::MoveController()
 
     mGoToPosData.clear();
 
-    m_motors = SettingsStorage::Inst()->GetMotors();
+    m_motors = ARCore::Inst()->getSettingStore()->GetMotors();
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {
         PosData item;
@@ -20,7 +20,7 @@ MoveController::MoveController()
         mGoToPosData[(*it).first] = item;
     }
 
-    MovesStorage::Inst()->initialize();
+    //ARCore::Inst()->getMovesStore()->initialize();
 
     userStiff = 0;
     userDump = 0;
@@ -39,46 +39,46 @@ void MoveController::stepPlay()
     QTime t;
     t.start();
 
-    if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
+    if(ARCore::Inst()->getMovesStore()->m_moveID >= ARCore::Inst()->getMovesStore()->m_rowsNumber){goto StopPlay;}
 
-    while(MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time <= time)
+    while(ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].Time <= time)
     {
-        if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
+        if(ARCore::Inst()->getMovesStore()->m_moveID >= ARCore::Inst()->getMovesStore()->m_rowsNumber){goto StopPlay;}
 
         //записываем значение в мотор и проверяем следующую команду
-        int Number = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].NumberChannel;
-        int Angle = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Angle;
+        int Number = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].NumberChannel;
+        int Angle = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].Angle;
 
         int Stiff = 0;
         if(useUserStiff) Stiff = userStiff;
-        else Stiff = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Stiff;
+        else Stiff = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].PIDs.Stiff;
 
         int Dump = 0;
         if(useUserDump) Dump = userDump;
-        else Dump = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Dump;
+        else Dump = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].PIDs.Dump;
 
-        int Torque = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Torque;
+        int Torque = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].PIDs.Torque;
 
         BufferController::Inst()->getBufferSend()->setMotorPGate( Number, Stiff );
         BufferController::Inst()->getBufferSend()->setMotorIGate( Number, Dump );
         BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
 
-        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time);
+        int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].Time);
         //qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
 
         BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle + CorrectionValue);
-        MovesStorage::Inst()->m_moveID++;
+        ARCore::Inst()->getMovesStore()->m_moveID++;
 
-        if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
+        if(ARCore::Inst()->getMovesStore()->m_moveID >= ARCore::Inst()->getMovesStore()->m_rowsNumber){goto StopPlay;}
     }
 
 StopPlay:
     //qDebug() << "Time elapsed: " << QString::number(t.elapsed()) << "ms\n";
 
     //если время закончилось - останавливаем, переводим индекс команды на начало списка
-    if(time > MovesStorage::Inst()->m_duration)
+    if(time > ARCore::Inst()->getMovesStore()->m_duration)
     {
-        MovesStorage::Inst()->m_moveID = 0;
+        ARCore::Inst()->getMovesStore()->m_moveID = 0;
         //qDebug() << "Выполнена последняя строка"  << endl;
 
         LogMaster::Inst()->addLine("Выполнена последняя строка");
@@ -95,7 +95,7 @@ void MoveController::startPlay()
 void MoveController::startingPlay()
 {
     LogMaster::Inst()->addLine("MoveController::StartingPlay()");
-    m_motors = SettingsStorage::Inst()->GetMotors();
+    m_motors = ARCore::Inst()->getSettingStore()->GetMotors();
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {
         int Number = (*it).second.getNumber();
@@ -110,7 +110,7 @@ void MoveController::startingPlay()
         BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle );
         BufferController::Inst()->getBufferSend()->motorTrace( Number );
     }
-    MovesStorage::Inst()->m_moveID = 0;
+    ARCore::Inst()->getMovesStore()->m_moveID = 0;
     MoveCorrector::Inst()->setCurLine(0);
 
     m_state = States::MovePlay;
@@ -125,7 +125,7 @@ void MoveController::stopPlay()
 void MoveController::stoppingPlay()
 {
     //переход в состояние после отправки последовательности
-    m_motors = SettingsStorage::Inst()->GetMotors();
+    m_motors = ARCore::Inst()->getSettingStore()->GetMotors();
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {
         int Number = (*it).second.getNumber();
@@ -140,7 +140,7 @@ void MoveController::stoppingPlay()
         BufferController::Inst()->getBufferSend()->setMotorAngle( Number, MotorAngle );
         BufferController::Inst()->getBufferSend()->motorStopBrake( Number);
     }
-    MovesStorage::Inst()->m_moveID = 0;
+    ARCore::Inst()->getMovesStore()->m_moveID = 0;
     m_state = States::NotWork;
 }
 
@@ -152,43 +152,43 @@ void MoveController::stepPlayOnline()
     while(!FrundTransiver::Inst()->recvData(datagram) && this->m_state == States::MovePlayOnline) ;
     if (this->m_state != States::MovePlayOnline) return;
 
-    MovesStorage::Inst()->loadDataFromArray(datagram.data(), datagram.size());
+    ARCore::Inst()->getMovesStore()->loadDataFromArray(datagram.data(), datagram.size());
 
-    if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
+    if(ARCore::Inst()->getMovesStore()->m_moveID >= ARCore::Inst()->getMovesStore()->m_rowsNumber){goto StopPlay;}
 
-    while(MovesStorage::Inst()->m_moveID < MovesStorage::Inst()->m_rowsNumber)
+    while(ARCore::Inst()->getMovesStore()->m_moveID < ARCore::Inst()->getMovesStore()->m_rowsNumber)
     {
         //записываем значение в мотор и проверяем следующую команду
-        int Number = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].NumberChannel;
-        int Angle = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Angle;
+        int Number = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].NumberChannel;
+        int Angle = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].Angle;
 
         int Stiff = 0;
         if(useUserStiff)
             Stiff = userStiff;
         else
-            Stiff = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Stiff;
+            Stiff = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].PIDs.Stiff;
 
         int Dump = 0;
         if(useUserDump)
             Dump = userDump;
         else
-            Dump = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Dump;
+            Dump = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].PIDs.Dump;
 
-        int Torque = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Torque;
+        int Torque = ARCore::Inst()->getMovesStore()->m_moves[ARCore::Inst()->getMovesStore()->m_moveID].PIDs.Torque;
 
         BufferController::Inst()->getBufferSend()->setMotorPGate( Number, Stiff );
         BufferController::Inst()->getBufferSend()->setMotorIGate( Number, Dump );
         BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
         BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle);
         BufferController::Inst()->getBufferSend()->motorTrace(Number);
-        MovesStorage::Inst()->m_moveID++;
+        ARCore::Inst()->getMovesStore()->m_moveID++;
 
-        if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
+        if(ARCore::Inst()->getMovesStore()->m_moveID >= ARCore::Inst()->getMovesStore()->m_rowsNumber){goto StopPlay;}
 
         //qDebug() << "String number " << QString::number(MovesStorage::Inst()->m_moveID) << "have been read"  << endl;
     }
 StopPlay:
-        MovesStorage::Inst()->m_moveID = 0;
+        ARCore::Inst()->getMovesStore()->m_moveID = 0;
         //qDebug() << "Выполнен очередной шаг"  << endl;
 
         if(!this->isLog)
@@ -201,7 +201,7 @@ StopPlay:
 
 bool MoveController::openFile(std::string fileName)
 {
-    return MovesStorage::Inst()->openFile(fileName);
+    return ARCore::Inst()->getMovesStore()->openFile(fileName);
 }
 
 void MoveController::doStepWork()
@@ -281,12 +281,12 @@ void MoveController::startingGoPos()
     int MaxDiff = 0;
     int i=0;
 
-    m_motors = SettingsStorage::Inst()->GetMotors();
+    m_motors = ARCore::Inst()->getSettingStore()->GetMotors();
     for(auto it = m_motors->begin();it != m_motors->end();++it)
     {
         int Number = (*it).first;
         int StartAngle = BufferController::Inst()->getBufferRecv()->getMotorAngle(Number);
-        int DestAngle = mGoPosMode == true ? MovesStorage::Inst()->m_moves[i].Angle : 0;
+        int DestAngle = mGoPosMode == true ? ARCore::Inst()->getMovesStore()->m_moves[i].Angle : 0;
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.getEnable()) ? DiffAngle : MaxDiff;
 
@@ -297,7 +297,7 @@ void MoveController::startingGoPos()
         i++;
     }
 
-    long TimeMs = MaxDiff * 1000 / (SettingsStorage::Inst()->GetDefaultSpeed()*100);
+    long TimeMs = MaxDiff * 1000 / (ARCore::Inst()->getSettingStore()->GetDefaultSpeed()*100);
     TimeMs = TimeMs < 1000 ? 1000 : TimeMs;
     setupGoPos(TimeMs);
     mMotorExistCount = 21;
@@ -306,7 +306,7 @@ void MoveController::startingGoPos()
 
 void MoveController::setupGoPos(long TimeToGo)
 {
-    int SendDelay = SettingsStorage::Inst()->GetSendDelay();
+    int SendDelay = ARCore::Inst()->getSettingStore()->GetSendDelay();
 
     for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
     {
@@ -402,7 +402,7 @@ void MoveController::startingGoToAngle()
     mDestAngle = NewDestAngle;
     mStartAngle = BufferController::Inst()->getBufferRecv()->getMotorAngle(mMotorNumber);
 
-    int SendDelay = SettingsStorage::Inst()->GetSendDelay();
+    int SendDelay = ARCore::Inst()->getSettingStore()->GetSendDelay();
     int diffAngle = mDestAngle - mStartAngle;//разница в градус*100
     mStep = (double)diffAngle / ((double)mTimeToGo/(double)SendDelay);//шаг в градус*100
     mCurrentAngle = mStartAngle;
