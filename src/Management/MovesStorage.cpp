@@ -16,13 +16,30 @@ void MovesStorage::skipSpace(locale loc, string str, int *pos)
         (*pos)++;
 }
 
-void MovesStorage::readValue(string *temp, locale loc, int *pos, string str)
+bool MovesStorage::readValue(string *temp, locale loc, int *pos, string str, bool isDouble)
 {
-    while( !std::isspace(str[*pos], loc) && *pos < str.length() )
-    {
-        *temp += str.at(*pos);
-        (*pos)++;
+    if(str[*pos] == '-') {
+        *temp += str.at(*pos); (*pos)++;
     }
+    while(std::isdigit(str[*pos], loc) && isDouble) {
+        *temp += str.at(*pos); (*pos)++;
+    }
+    if(str[*pos] == '.' && isDouble) {
+        *temp += str.at(*pos); (*pos)++;
+    }
+    else if(isDouble) return false;
+    int i = 0;
+    while(std::isdigit(str[*pos], loc)) {
+        *temp += str.at(*pos); (*pos)++; i++;
+    }
+    if(i == 0 && !isDouble) return false;
+    return true;
+//    while( !std::isspace(str[*pos], loc) && *pos < str.length() )
+//    {
+//        if(std::isdigit(str[*pos], loc))
+//            *temp += str.at(*pos);
+//        (*pos)++;
+//    }
 }
 
 bool MovesStorage::openFile(string fileName)
@@ -98,7 +115,9 @@ bool MovesStorage::loadFile(std::string filename)
         mPID.DumpFactor = SettingsStorage::Inst()->GetDefaultDumpFactor();
         mPID.TorqueFactor = SettingsStorage::Inst()->GetDefaultTorqueFactor();
 
-        while( std::getline(file, line) )
+        bool isError = false;
+
+        while( std::getline(file, line) && !isError)
         {
             if(line.length() < 5)
             {
@@ -113,7 +132,10 @@ bool MovesStorage::loadFile(std::string filename)
 
             //читаем номер привода
             skipSpace(loc, line, &pos);
-            readValue(&temp, loc, &pos, line);
+            if(!readValue(&temp, loc, &pos, line, false))
+            {
+                isError = true; continue;
+            }
 
             //записываем номер привода
             int Number = atoi( temp.c_str() );
@@ -122,15 +144,20 @@ bool MovesStorage::loadFile(std::string filename)
             //читаем время (как целое число)
             skipSpace(loc, line, &pos);
             while( line[pos] != '.' ){ temp += line.at(pos); pos++; } pos++;
-            readValue(&temp, loc, &pos, line);
-
+            if(!readValue(&temp, loc, &pos, line, false))
+            {
+                isError = true; continue;
+            }
             //записываем время
             int Time = atoi( temp.c_str() );
             temp.clear();
 
             //читаем угол
             skipSpace(loc, line, &pos);
-            readValue(&temp, loc, &pos, line);
+            if(!readValue(&temp, loc, &pos, line, true))
+            {
+                isError = true; continue;
+            }
 
             //записываем угол
             double Angle = atof( temp.c_str() );
@@ -145,19 +172,28 @@ bool MovesStorage::loadFile(std::string filename)
             {
                 //значит здесь записаны коэффициенты PID
                 //читаем KP
-                readValue(&temp, loc, &pos, line);
+                if(!readValue(&temp, loc, &pos, line, true))
+                {
+                    isError = true; continue;
+                }
                 double KP = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KI
                 skipSpace(loc, line, &pos);
-                readValue(&temp, loc, &pos, line);
+                if(!readValue(&temp, loc, &pos, line, true))
+                {
+                    isError = true; continue;
+                }
                 double KI = atof( temp.c_str() );
                 temp.clear();
 
                 //читаем KD
                 skipSpace(loc, line, &pos);
-                readValue(&temp, loc, &pos, line);
+                if(!readValue(&temp, loc, &pos, line, true))
+                {
+                    isError = true; continue;
+                }
                 double KD = atof( temp.c_str() );
                 temp.clear();
 
@@ -172,19 +208,28 @@ bool MovesStorage::loadFile(std::string filename)
                 {
                     //значит здесь записаны коэффициенты проп. PID
                     //читаем KP
-                    readValue(&temp, loc, &pos, line);
+                    if(!readValue(&temp, loc, &pos, line, true))
+                    {
+                        isError = true; continue;
+                    }
                     double KPFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KI
                     skipSpace(loc, line, &pos);
-                    readValue(&temp, loc, &pos, line);
+                    if(!readValue(&temp, loc, &pos, line, true))
+                    {
+                        isError = true; continue;
+                    }
                     double KIFactor = atof( temp.c_str() );
                     temp.clear();
 
                     //читаем KD
                     skipSpace(loc, line, &pos);
-                    readValue(&temp, loc, &pos, line);
+                    if(!readValue(&temp, loc, &pos, line, true))
+                    {
+                        isError = true; continue;
+                    }
                     double KDFactor = atof( temp.c_str() );
                     temp.clear();
 
@@ -220,13 +265,71 @@ bool MovesStorage::loadFile(std::string filename)
         qDebug() << "Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
 
         file.close();
-        return true;
+        return !isError;
     }
     else
     {
         file.close();
         return false;
     }
+}
+
+bool MovesStorage::loadFile2(string fileName)
+{
+//    std::ifstream file(fileName.c_str());
+
+//    if( file.is_open() )
+//    {
+//        //очищаем список команд
+//        m_moves.clear();
+//        m_rowsNumber = 0;
+
+//        std::string line;
+//        MoveCommand nextCommand;
+//        PID mPID;
+
+//        //по умолчанию заполняем значениями из файла настроек
+//        mPID.Stiff = SettingsStorage::Inst()->GetDefaultStiff();
+//        mPID.Dump = SettingsStorage::Inst()->GetDefaultDump();
+//        mPID.Torque = SettingsStorage::Inst()->GetDefaultTorque();
+
+//        mPID.StiffFactor = SettingsStorage::Inst()->GetDefaultStiffFactor();
+//        mPID.DumpFactor = SettingsStorage::Inst()->GetDefaultDumpFactor();
+//        mPID.TorqueFactor = SettingsStorage::Inst()->GetDefaultTorqueFactor();
+
+//        while( std::getline(file, line) )
+//        {
+
+
+
+//            //заполняем команду
+//            nextCommand.Time = (int)Time;
+//            nextCommand.NumberChannel = Number;
+//            nextCommand.Angle = (int)Angle;
+//            nextCommand.PIDs = mPID;
+
+//            //добавляем команду в список
+//            m_moves.push_back(nextCommand);
+
+//            m_locker.lock();
+//            m_rowsNumber++;
+//            m_locker.unlock();
+
+//            m_duration = Time;//в микросекундах
+//        }
+
+//        m_moveID = 0;
+//        qDebug() << "считано " << QString::number(m_rowsNumber) << " строк" << endl;
+//        qDebug() << "Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
+
+//        file.close();
+//        return true;
+//    }
+//    else
+//    {
+//        file.close();
+        return false;
+//    }
 }
 
 void MovesStorage::setForwardMoves()

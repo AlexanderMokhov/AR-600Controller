@@ -57,7 +57,7 @@ public:
 
     //public methods
     void skipSpace(std::locale loc, std::string str, int *pos);
-    void readValue(std::string *temp, std::locale loc, int *pos, std::string str);
+    bool readValue(std::string *temp, std::locale loc, int *pos, std::string str, bool isDouble);
 
     static MovesStorage* Inst(){ return m_inst; }
     static void initialize(){ delete m_inst; m_inst = new MovesStorage; }
@@ -68,6 +68,7 @@ public:
     std::vector<MoveCommand> * getMoves(){return &m_moves;}
 
     bool loadFile(string filename);
+    bool loadFile2(string fileName);
     bool loadForwardMoves();
     bool loadBackMoves();
     void setForwardMoves();
