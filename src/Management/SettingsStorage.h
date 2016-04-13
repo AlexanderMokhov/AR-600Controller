@@ -44,6 +44,9 @@ public:
     std::string GetFileForward() { return mFileForward; }
     std::string GetFileBack() { return mFileBack; }
 
+    std::string getModelsPath() { return mModelsPath; }
+    std::map<int, std::string> *getFrundModels() { return &mFrundModels; }
+
 private:
     //private variable
     static SettingsStorage* mInst;
@@ -72,6 +75,10 @@ private:
 
     //настройки файлов стандартных движений
     std::string mFileForward, mFileBack;
+
+    //настройки моделей
+    std::string mModelsPath;
+    std::map<int, std::string> mFrundModels;   //Карта моделей ФРУНДа
 
     //private methods
     SettingsStorage();

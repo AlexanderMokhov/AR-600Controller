@@ -16,8 +16,7 @@ PowerWidget::PowerWidget(QWidget *parent) :
 }
 
 PowerWidget::~PowerWidget()
-{
-    delete ui;
+{    delete ui;
 }
 
 void PowerWidget::UpdatePowerLabel()
@@ -58,6 +57,12 @@ void PowerWidget::on_ButtonOffAll_clicked()
    {
        mTimer->start();
    }
+}
+
+void PowerWidget::onReboot()
+{
+    on_ButtonOffAll_clicked();
+    on_ButtonOnAll_clicked();
 }
 
 void PowerWidget::OnTimerTick()

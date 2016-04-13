@@ -393,4 +393,9 @@
         <FileForward>STDFORWARD.TXT</FileForward>
         <FileBack>STDBACK.TXT</FileBack>
     </CommandControllerSettings>
+	<FrundModelsSettings>
+		<ModelsPath>Models</ModelsPath>
+		<FrundModel>sinhron</FrundModel>
+		<FrundModel>sinhron2</FrundModel>		
+	</FrundModelsSettings>
 </AR600ControllerConf>

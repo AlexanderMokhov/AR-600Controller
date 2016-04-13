@@ -50,9 +50,9 @@ void RecordController::AddRawData()
     //создаем элемент вектора с данными моторов
     RecordData Data;
     Data.Time = mTime.elapsed();
-    Data.DriversData = mDriversMap;
+    Data.MotorsData = mDriversMap;
     Data.SensorsData = mSensorsMap;
-    Data.DriversCurrent = mDrivsCurMap;
+    Data.MotorsCurrent = mDrivsCurMap;
     Data.DriversPower = driverPower;
     //окончание создания
 
@@ -106,7 +106,7 @@ bool RecordController::SaveData(string fileName, bool mode)
             file << " " << buffer;
 
             //записываем позиции приводов
-            for(auto it = data.DriversData.begin(); it != data.DriversData.end(); ++it)
+            for(auto it = data.MotorsData.begin(); it != data.MotorsData.end(); ++it)
             {
                 double Pos = (*it).second;
                 double pi = 4 * std::atan(1);
@@ -171,7 +171,7 @@ bool RecordController::SaveCurData(string fileName)
             file << "\t" << buffer;
 
             //записываем Токи приводов
-            for(auto it = data.DriversCurrent.begin(); it != data.DriversCurrent.end(); ++it)
+            for(auto it = data.MotorsCurrent.begin(); it != data.MotorsCurrent.end(); ++it)
             {
                 float Pos = (*it).second;
                 std::sprintf(buffer,"%f",Pos);
@@ -197,13 +197,13 @@ void RecordController::getLastData(char* retData)
     //if(mRecordVector.size() == 0)
         //return;
     RecordData data = mRecordVector[mRecordVector.size()-1];
-    int sizeOfData = data.DriversData.size() + data.SensorsData.size();
+    int sizeOfData = data.MotorsData.size() + data.SensorsData.size() + data.MotorsCurrent.size();
 
     // начало заполнения массива данных
     double Data[sizeOfData];
 
     int i = 0;
-    for(auto it = data.DriversData.begin(); it != data.DriversData.end(); ++it)
+    for(auto it = data.MotorsData.begin(); it != data.MotorsData.end(); ++it)
     {
         double angleRad = (*it).second;
         double pi = 4 * std::atan(1);
@@ -215,9 +215,13 @@ void RecordController::getLastData(char* retData)
         Data[i++] = (*it).second;
 
     Data[i] = data.DriversPower;
+
+    for(auto it = data.MotorsCurrent.begin(); it != data.MotorsCurrent.end(); ++it)
+        Data[i++] = (*it).second;
     // конец заполенения массива данных
 
     for(int i = 0; i < sizeOfData*sizeof(double); i += sizeof(double))
         memcpy(retData+i, &Data[i/sizeof(double)], sizeof(double));
+
 }
 

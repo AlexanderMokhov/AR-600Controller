@@ -9,6 +9,8 @@ FrundTransiver::FrundTransiver(QObject *parent) : QObject(parent)
     if(!sock->bind(m_port, QUdpSocket::ShareAddress))
         qDebug()<< "FrundTransiver - Not Bind!";
 
+    currentModelId = 0;
+    m_state = ModelStates::isPaused;
 }
 
 FrundTransiver::~FrundTransiver()

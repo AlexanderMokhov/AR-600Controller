@@ -60,7 +60,9 @@ SOURCES += main.cpp\
     Connection/FrundTransiver.cpp \
     Widgets/LogWidget.cpp \
     Management/FileLoader.cpp \
-    Management/LogMaster.cpp
+    Management/LogMaster.cpp \
+    Buffers/FrundPacketRecv.cpp \
+    Buffers/FrundPacketSend.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -105,7 +107,9 @@ HEADERS  += \
     Connection/FrundTransiver.h \
     Widgets/LogWidget.h \
     Management/FileLoader.h \
-    Management/LogMaster.h
+    Management/LogMaster.h \
+    Buffers/FrundPacketRecv.h \
+    Buffers/FrundPacketSend.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \

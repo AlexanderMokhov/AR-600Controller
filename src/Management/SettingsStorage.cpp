@@ -112,6 +112,20 @@ bool SettingsStorage::OpenFile(string FileName)
         mFileForward = xml_CommandControllerSettings->FirstChildElement("FileForward")->GetText();
         mFileBack = xml_CommandControllerSettings->FirstChildElement("FileBack")->GetText();
 
+        //Читаем информацию по моделям Фрунда
+        TiXmlElement *xml_FrundModelsSettings = 0;
+        xml_FrundModelsSettings = xml_root->FirstChildElement("FrundModelsSettings");
+        mModelsPath = std::string(xml_FrundModelsSettings->FirstChildElement("ModelsPath")->GetText());
+        TiXmlElement *xml_FrundModel = 0;
+        xml_FrundModel = xml_FrundModelsSettings->FirstChildElement("FrundModel");
+        mFrundModels.clear();
+        int i = 0;
+        while(xml_FrundModel != NULL)
+        {
+            mFrundModels[i++] = std::string(xml_FrundModel->GetText());
+            xml_FrundModel = xml_FrundModelsSettings->NextSiblingElement("FrundModel");
+        }
+
         return true;
     }
 }
@@ -313,7 +327,26 @@ bool SettingsStorage::SaveFile(string FileName)
     WriteValue=new TiXmlText(mFileBack.c_str());
     xml_FileBack->LinkEndChild(WriteValue);
 
+    //Записываем настройки моделей ФРУНДа
+    TiXmlElement * xml_FrundModelsSettings = new TiXmlElement("FrundModelsSettings");
+    xml_root->LinkEndChild(xml_FrundModelsSettings);
+
+    TiXmlElement * xml_ModelsPath = new TiXmlElement("ModelsPath");
+    xml_FrundModelsSettings->LinkEndChild(xml_ModelsPath);
+    WriteValue = new TiXmlText(mModelsPath.c_str());
+    xml_ModelsPath->LinkEndChild(WriteValue);
+
+    for(auto it3 = mFrundModels.begin(); it3 != mFrundModels.end(); ++it3)
+    {
+        TiXmlElement * xml_FrundModel = new TiXmlElement("FrundModel");
+        xml_FrundModelsSettings->LinkEndChild(xml_FrundModel);
+        WriteValue = new TiXmlText((*it3).second.c_str());
+        xml_FrundModel->LinkEndChild(WriteValue);
+    }
+
     //Сохраняем файл
     mXMLConfigFile->SaveFile(FileName.c_str());
     return true;
 }
+
+

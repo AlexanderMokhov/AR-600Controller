@@ -157,6 +157,7 @@
     </property>
     <addaction name="actionOn"/>
     <addaction name="actionOff"/>
+    <addaction name="actionReboot"/>
    </widget>
    <widget class="QMenu" name="menu_4">
     <property name="title">
@@ -242,6 +243,11 @@
   <action name="actionGoToFilePos">
    <property name="text">
     <string>Положение из файла</string>
+   </property>
+  </action>
+  <action name="actionReboot">
+   <property name="text">
+    <string>Перезагрузка</string>
    </property>
   </action>
  </widget>

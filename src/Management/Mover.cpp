@@ -71,7 +71,7 @@ void Mover::stopGoToPos()
 
 void Mover::openFile(QString fileName, bool mode)
 {
-
+    //TODO: дописать MoveController::OpenFile();...
 }
 
 void Mover::Move()

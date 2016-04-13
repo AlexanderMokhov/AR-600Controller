@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QUdpSocket>
 
+#include "Management/SettingsStorage.h"
+
 #define KDRIVE 21
 #define BUFLEN KDRIVE*9  //Max length of buffer
 
@@ -26,6 +28,13 @@ private:
     int m_port = 55556;
     QHostAddress Host;
     quint16 Port;
+
+    //Для работы с несколькими моделями
+    int currentModelId; // идентификатор текущей модели
+    int nextModelId; // идентификатор модели, на которую мы желаем перейти с текущей
+    enum ModelStates {isGo, isStopWaiting, isGoWaiting, isPaused};
+    ModelStates m_state;
+
 };
 
 #endif // FRUNDTRANSIVER_H

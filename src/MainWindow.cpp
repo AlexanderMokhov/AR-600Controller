@@ -211,6 +211,7 @@ void MainWindow::ConnectionsInit()
     connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
     connect(ui->actionOn,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
     connect(ui->actionOff,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+    connect(ui->actionReboot,SIGNAL(triggered()),mPowerWidget,SLOT(onReboot()));
     connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
     //конец настройки кнопок меню
 

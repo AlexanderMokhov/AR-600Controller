@@ -23,9 +23,9 @@ using namespace std;
 struct RecordData
 {
     int Time;
-    std::map<int, int> DriversData;
+    std::map<int, int> MotorsData;
     std::map<int, int> SensorsData;
-    std::map<int, float> DriversCurrent;
+    std::map<int, float> MotorsCurrent;
     double DriversPower;
 };
 

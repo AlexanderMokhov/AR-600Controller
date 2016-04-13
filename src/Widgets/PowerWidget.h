@@ -22,7 +22,7 @@ public:
 private slots:
     void on_ButtonOnAll_clicked();
     void on_ButtonOffAll_clicked();
-
+    void onReboot();
     void OnTimerTick();
 
     void on_checkBox48V_clicked(bool checked);
