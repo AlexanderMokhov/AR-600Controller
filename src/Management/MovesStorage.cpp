@@ -10,13 +10,13 @@ MovesStorage::MovesStorage()
     //loadBackMoves();
 }
 
-void MovesStorage::skipSpace(locale loc, string str, int *pos)
+void MovesStorage::skipSpace(locale loc, const std::string &str, int *pos)
 {
-    while( std::isspace(str[(*pos)], loc) )
+    while( std::isspace((str[(*pos)]), loc) )
         (*pos)++;
 }
 
-bool MovesStorage::readValue(string *temp, locale loc, int *pos, string str, bool isDouble)
+bool MovesStorage::readValue(string *temp, locale loc, int *pos, const std::string &str, bool isDouble)
 {
     if(str[*pos] == '-') {
         *temp += str.at(*pos); (*pos)++;

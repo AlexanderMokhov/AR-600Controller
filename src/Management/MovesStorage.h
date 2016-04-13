@@ -56,8 +56,8 @@ public:
     std::vector<MoveCommand> m_backMoves;
 
     //public methods
-    void skipSpace(std::locale loc, std::string str, int *pos);
-    bool readValue(std::string *temp, std::locale loc, int *pos, std::string str, bool isDouble);
+    void skipSpace(std::locale loc, const std::string &str, int *pos);
+    bool readValue(std::string *temp, std::locale loc, int *pos, const std::string &str, bool isDouble);
 
     static MovesStorage* Inst(){ return m_inst; }
     static void initialize(){ delete m_inst; m_inst = new MovesStorage; }
