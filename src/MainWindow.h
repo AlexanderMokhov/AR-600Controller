@@ -17,6 +17,7 @@
 #include "Management/MoveCorrector.h"
 #include "Management/RecordController.h"
 #include "Management/LogMaster.h"
+#include "Management/Mover.h"
 
 #include "Models/MotorTableModel.h"
 
@@ -24,14 +25,15 @@
 #include "Widgets/MoveControlWidget.h"
 #include "Widgets/MotorTableWidget.h"
 #include "Widgets/RecordWidget.h"
-#include "Widgets/PowerWidget.h"
 #include "Widgets/ConnectConfigDialog.h"
 #include "Widgets/SensorTableWidget.h"
 #include "Widgets/MoveFilesWidget.h"
 #include "Widgets/StdMovesWidget.h"
 #include "Widgets/LogWidget.h"
+#include "Widgets/PowerControlW.h"
+#include "Widgets/ConnectionControlW.h"
 
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 
 #include "Connection/Receiver.h"
 #include "Connection/Sender.h"
@@ -87,7 +89,6 @@ private:
     MoveControlWidget       *mMoveControlWidget;
     MotorTableWidget        *mMotorTableWidget;
     RecordWidget            *mRecordWidget;
-    PowerWidget             *mPowerWidget;
     QLabel                  *mConnectStatusLabel;
     QLabel                  *mCommandControllerStatusLabel;
     ConnectConfigDialog     *mConnectDialog;
@@ -95,6 +96,8 @@ private:
     MoveFilesWidget         *mMoveFilesWidget;
     StdMovesWidget          *mStdMovesWidget;
     LogWidget               *mLogWidget;
+    PowerControlW           *mPowerCW;
+    ConnectionControlW      *mConnectionCW;
 
     //действия
     QAction *TBactionOpenCF;
@@ -116,6 +119,8 @@ private:
     Receiver                *mReceiver;
     Sender                  *mSender;
     ConsoleReceiver         *mConsoleReceiver;
+
+    Mover         *mMover;
 
     //private methods
     void ActionsLoad();

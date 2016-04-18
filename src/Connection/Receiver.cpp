@@ -79,7 +79,7 @@ void Receiver::processPendingDatagrams()
         quint16 Port;
 
         m_udpSocketResiver->readDatagram(datagram.data(), datagram.size(), &Host, &Port);
-        BufferController::Inst()->getBufferRecv()->initialize(datagram.data());
+        ARPacketManager::Inst()->getPacketRecv()->initialize(datagram.data());
         //Отправляем пакет на обработку
         emit ReadyData();
      }

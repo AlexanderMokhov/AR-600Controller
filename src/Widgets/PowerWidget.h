@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QTimer>
 
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 
 namespace Ui {
 class PowerWidget;

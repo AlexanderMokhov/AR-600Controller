@@ -15,7 +15,7 @@
 #include <sstream>
 #include <stdlib.h>
 
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 #include "SettingsStorage.h"
 
 using namespace std;
@@ -33,7 +33,7 @@ class RecordController
 {
 public:
     //public variable
-    BufferRecv *mReadBuffer;
+    ARPacketRecv *mReadBuffer;
 
     std::map<int,int> mDriversMap;
     std::map<int,int> mSensorsMap;
@@ -47,7 +47,7 @@ public:
 
     //public methods
     static RecordController* Inst(){return mInst;}
-    static void Init(){delete mInst; mInst = new RecordController;}
+    static void Initialize(){delete mInst; mInst = new RecordController;}
 
     void AddRawData();
     bool SaveData(std::string fileName, bool mode);

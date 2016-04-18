@@ -12,7 +12,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 #include "Management/SettingsStorage.h"
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 #include "Models/MotorTableModel.h"
 
 #include "Management/MoveController.h"
@@ -32,8 +32,11 @@ public:
     explicit MoveControlWidget(QWidget *parent = 0);
     ~MoveControlWidget();
 
+    void Initialize();
     void StartPlayFile(bool mode);
     void stopMoveAction();
+
+    void setMover(Mover * mover){ m_mover = mover; }
 
 signals:
     StartWriteRecord(int LogTime);
@@ -49,15 +52,15 @@ public slots:
     void startStdMove();
 
 private slots:
-    void on_ButtonLoadFile_clicked();
+    void on_LoadFileB_clicked();
     void on_ButtonLoadDRIVEMAT_clicked();
-    void on_ButtonPlayPause_clicked();
-    void on_ButtonStop_clicked();
+    void on_StartB_clicked();
+    void on_StopB_clicked();
     void on_checkBoxLog_clicked(bool checked);
-    void on_ButtonGoStartPos_clicked();
-    void on_ButtonStartFile_clicked();
-    void on_cBoxUseUserStiff_clicked(bool checked);
-    void on_cBoxUseUserDump_clicked(bool checked);
+    void on_GoStartPosB_clicked();
+    void on_StartFileB_clicked();
+    void on_UseUserPGateB_clicked(bool checked);
+    void on_UseUserIGateB_clicked(bool checked);
 
 private:
     //private variable
@@ -70,7 +73,7 @@ private:
     QState        *stateStop;
     QState        *stateNotOpenFile;
     bool          isMoveFile;
-    Mover         *mMover;
+    Mover         *m_mover;
 };
 
 #endif // MOVECONTROLWIDGET_H

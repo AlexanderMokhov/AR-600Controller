@@ -1,49 +1,49 @@
-﻿#include "BufferRecv.h"
+﻿#include "ARPacketRecv.h"
 
 
-int16_t BufferRecv::readInt16(uint16_t address)
+int16_t ARPacketRecv::readInt16(uint16_t address)
 {
     int16_t value = (m_RAW[address + 1] << 8) + (BYTE)m_RAW[address];
     return value;
 }
 
-float BufferRecv::readFloat(uint16_t address)
+float ARPacketRecv::readFloat(uint16_t address)
 {
     float value = static_cast<float>((m_RAW[address + 1] << 8) + (BYTE)m_RAW[address]);
     return value;
 }
 
-BufferRecv::BufferRecv(void)
+ARPacketRecv::ARPacketRecv(void)
 {
 
 }
 
 
-BufferRecv::~BufferRecv(void)
+ARPacketRecv::~ARPacketRecv(void)
 {
 
 }
 
 //инициализируем (читаем)
-void BufferRecv::initialize(const char RAW_other[])
+void ARPacketRecv::initialize(const char RAW_other[])
 {
     m_locker.lock();
     for(int i = 0; i < bufferSize; i++) m_RAW[i] = RAW_other[i];
     m_locker.unlock();
 }
 
-void BufferRecv::setDeviceChannel(short NumberDevice, short NumberChannel)
+void ARPacketRecv::setDeviceChannel(short NumberDevice, short NumberChannel)
 {
     m_motorsData[NumberDevice].channel = NumberChannel;
 }
 
-void BufferRecv::setMotorReverce(short Number, bool value)
+void ARPacketRecv::setMotorReverce(short Number, bool value)
 {
     m_motorsData[Number].isReverce = value;
 
 }
 
-short BufferRecv::getSensorYaw(short Number)
+short ARPacketRecv::getSensorYaw(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_YAW);
@@ -51,7 +51,7 @@ short BufferRecv::getSensorYaw(short Number)
     return value;
 }
 
-short BufferRecv::getSensorPitch(short Number)
+short ARPacketRecv::getSensorPitch(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_PITCH);
@@ -59,7 +59,7 @@ short BufferRecv::getSensorPitch(short Number)
     return value;
 }
 
-short BufferRecv::getSensorRoll(short Number)
+short ARPacketRecv::getSensorRoll(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_ROLL);
@@ -67,7 +67,7 @@ short BufferRecv::getSensorRoll(short Number)
     return value;
 }
 
-short BufferRecv::getSensorUCH0(short Number)
+short ARPacketRecv::getSensorUCH0(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH0);
@@ -75,7 +75,7 @@ short BufferRecv::getSensorUCH0(short Number)
     return value;
 }
 
-short BufferRecv::getSensorUCH1(short Number)
+short ARPacketRecv::getSensorUCH1(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH1);
@@ -83,7 +83,7 @@ short BufferRecv::getSensorUCH1(short Number)
     return value;
 }
 
-short BufferRecv::getSensorUCH2(short Number)
+short ARPacketRecv::getSensorUCH2(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH2);
@@ -91,7 +91,7 @@ short BufferRecv::getSensorUCH2(short Number)
     return value;
 }
 
-short BufferRecv::getSensorUCH3(short Number)
+short ARPacketRecv::getSensorUCH3(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH3);
@@ -99,7 +99,7 @@ short BufferRecv::getSensorUCH3(short Number)
     return value;
 }
 
-short BufferRecv::getSensorTX(short Number)
+short ARPacketRecv::getSensorTX(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_TX);
@@ -107,7 +107,7 @@ short BufferRecv::getSensorTX(short Number)
     return value;
 }
 
-short BufferRecv::getSensorTY(short Number)
+short ARPacketRecv::getSensorTY(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_TY);
@@ -115,7 +115,7 @@ short BufferRecv::getSensorTY(short Number)
     return value;
 }
 
-short BufferRecv::getSensorFZ(short Number)
+short ARPacketRecv::getSensorFZ(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + SENSOR_FZ);
@@ -123,7 +123,7 @@ short BufferRecv::getSensorFZ(short Number)
     return value;
 }
 
-short BufferRecv::getSensorValue(short Number, int Param)
+short ARPacketRecv::getSensorValue(short Number, int Param)
 {
     switch(Number)
     {
@@ -190,7 +190,7 @@ short BufferRecv::getSensorValue(short Number, int Param)
     }
 }
 
-short BufferRecv::getMotorVoltage(short Number)
+short ARPacketRecv::getMotorVoltage(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + MOTOR_VOLTAGE);
@@ -198,7 +198,7 @@ short BufferRecv::getMotorVoltage(short Number)
     return value;
 }
 
-short BufferRecv::getMotorCurrent(short Number)
+short ARPacketRecv::getMotorCurrent(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + MOTOR_CURRENT);
@@ -206,7 +206,7 @@ short BufferRecv::getMotorCurrent(short Number)
     return value;
 }
 
-short BufferRecv::getMotorAngle(short Number)
+short ARPacketRecv::getMotorAngle(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + MOTOR_ANGLE);
@@ -215,7 +215,7 @@ short BufferRecv::getMotorAngle(short Number)
     return value;
 }
 
-short BufferRecv::getMotorPGate(short Number)
+short ARPacketRecv::getMotorPGate(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + MOTOR_P_GATE);
@@ -223,7 +223,7 @@ short BufferRecv::getMotorPGate(short Number)
     return value;
 }
 
-short BufferRecv::getMotorIGate(short Number)
+short ARPacketRecv::getMotorIGate(short Number)
 {
     m_locker.lock();
     int16_t value = readInt16(m_motorsData[Number].channel * 16 + MOTOR_I_GATE);
@@ -231,7 +231,7 @@ short BufferRecv::getMotorIGate(short Number)
     return value;
 }
 
-short BufferRecv::getMotorState(short Number)
+short ARPacketRecv::getMotorState(short Number)
 {
     m_locker.lock();
     int16_t value = (BYTE)m_RAW[m_motorsData[Number].channel*16+1];
@@ -239,7 +239,7 @@ short BufferRecv::getMotorState(short Number)
     return value;
 }
 
-short BufferRecv::getMotorMinAngle(short Number)
+short ARPacketRecv::getMotorMinAngle(short Number)
 {
     int16_t value;
     m_locker.lock();
@@ -251,7 +251,7 @@ short BufferRecv::getMotorMinAngle(short Number)
     return value;
 }
 
-short BufferRecv::getMotorMaxAngle(short Number)
+short ARPacketRecv::getMotorMaxAngle(short Number)
 {
     int16_t value;
     m_locker.lock();
@@ -263,7 +263,7 @@ short BufferRecv::getMotorMaxAngle(short Number)
     return value;
 }
 
-float BufferRecv::getPowerVoltage6_1()
+float ARPacketRecv::getPowerVoltage6_1()
 {
     m_locker.lock();
     float value = readFloat(POWER_VOLTAGE_6_1) / 1000;
@@ -271,7 +271,7 @@ float BufferRecv::getPowerVoltage6_1()
     return value;
 }
 
-float BufferRecv::getPowerVoltage6_2()
+float ARPacketRecv::getPowerVoltage6_2()
 {
     m_locker.lock();
     float value = readFloat(POWER_VOLTAGE_6_2) / 1000;
@@ -279,7 +279,7 @@ float BufferRecv::getPowerVoltage6_2()
     return value;
 }
 
-float BufferRecv::getPowerVoltage8_1()
+float ARPacketRecv::getPowerVoltage8_1()
 {
     m_locker.lock();
     float value = readFloat(POWER_VOLTAGE_8_1) / 1000;
@@ -287,7 +287,7 @@ float BufferRecv::getPowerVoltage8_1()
     return value;
 }
 
-float BufferRecv::getPowerVoltage8_2()
+float ARPacketRecv::getPowerVoltage8_2()
 {
     m_locker.lock();
     float value = readFloat(POWER_VOLTAGE_8_2) / 1000;
@@ -295,7 +295,7 @@ float BufferRecv::getPowerVoltage8_2()
     return value;
 }
 
-float BufferRecv::getPowerVoltage12()
+float ARPacketRecv::getPowerVoltage12()
 {
     m_locker.lock();
     float value = readFloat(POWER_VOLTAGE_12) / 1000;
@@ -303,7 +303,7 @@ float BufferRecv::getPowerVoltage12()
     return value;
 }
 
-float BufferRecv::getPowerVoltage48()
+float ARPacketRecv::getPowerVoltage48()
 {
     m_locker.lock();
     float value = readFloat(POWER_VOLTAGE_48) / 100;
@@ -311,7 +311,7 @@ float BufferRecv::getPowerVoltage48()
     return value;
 }
 
-float BufferRecv::getPowerCurrent6_1()
+float ARPacketRecv::getPowerCurrent6_1()
 {
     m_locker.lock();
     float value = readFloat(POWER_CURRENT_6_1) / 1000;
@@ -319,7 +319,7 @@ float BufferRecv::getPowerCurrent6_1()
     return value;
 }
 
-float BufferRecv::getPowerCurrent6_2()
+float ARPacketRecv::getPowerCurrent6_2()
 {
     m_locker.lock();
     float value = readFloat(POWER_CURRENT_6_2) / 1000;
@@ -327,7 +327,7 @@ float BufferRecv::getPowerCurrent6_2()
     return value;
 }
 
-float BufferRecv::getPowerCurrent8_1()
+float ARPacketRecv::getPowerCurrent8_1()
 {
     m_locker.lock();
     float value = readFloat(POWER_CURRENT_8_1) / 1000;
@@ -335,7 +335,7 @@ float BufferRecv::getPowerCurrent8_1()
     return value;
 }
 
-float BufferRecv::getPowerCurrent8_2()
+float ARPacketRecv::getPowerCurrent8_2()
 {
     m_locker.lock();
     float value = readFloat(POWER_CURRENT_8_2) / 1000;
@@ -343,7 +343,7 @@ float BufferRecv::getPowerCurrent8_2()
     return value;
 }
 
-float BufferRecv::getPowerCurrent48()
+float ARPacketRecv::getPowerCurrent48()
 {
     m_locker.lock();
     float value = readFloat(POWER_CURRENT_48) / 100;
@@ -351,7 +351,7 @@ float BufferRecv::getPowerCurrent48()
     return value;
 }
 
-float BufferRecv::getPowerCurrent12()
+float ARPacketRecv::getPowerCurrent12()
 {
     m_locker.lock();
     float value = readFloat(POWER_CURRENT_12) / 1000;
@@ -359,12 +359,12 @@ float BufferRecv::getPowerCurrent12()
     return value;
 }
 
-const char *BufferRecv::getRAW()
+const char *ARPacketRecv::getRAW()
 {
     return m_RAW;
 }
 
-std::mutex *BufferRecv::getLocker()
+std::mutex *ARPacketRecv::getLocker()
 {
     return &m_locker;
 }

@@ -15,7 +15,7 @@
 #include <cmath>
 #include <mutex>
 
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 #include "SettingsStorage.h"
 
 struct Amend //поправка
@@ -40,7 +40,7 @@ class MoveCorrector
 public:
     //public methods
     static MoveCorrector* Inst(){ return m_inst; }
-    void initialize();
+    void Initialize();
 
     bool openFile( std::string fileName );
     bool openDriveMatFile( std::string fileName );

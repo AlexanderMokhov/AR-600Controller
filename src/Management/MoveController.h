@@ -3,11 +3,7 @@
 
 #define _USE_MATH_DEFINES
 
-#include <QStateMachine>
-#include <QState>
 #include <QTime>
-#include <QVector>
-#include <QDebug>
 
 #include <iostream>
 #include <fstream>
@@ -22,7 +18,7 @@
 #include <regex>
 #include <unistd.h>
 
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 #include "SettingsStorage.h"
 #include "MoveCorrector.h"
 #include "MovesStorage.h"
@@ -61,7 +57,7 @@ class MoveController: public QObject
 public:
     //public methods
     static MoveController* Inst(){return m_inst;}
-    static void Init(){delete m_inst; m_inst = new MoveController;}
+    static void Initialize(){delete m_inst; m_inst = new MoveController;}
 
     void doStepWork();
 

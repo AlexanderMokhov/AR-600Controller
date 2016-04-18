@@ -1,18 +1,19 @@
-﻿#pragma once
+﻿#ifndef ARPACKETRECV_H
+#define ARPACKETRECV_H
 
 #include <iostream>
 #include <map>
 #include <mutex>
 #include <stdlib.h>
 
-#include "BufferDefinition.h"
+#include "ARPacketDefinition.h"
 
-class BufferRecv
+class ARPacketRecv
 {
 public:
     // public methods
-    BufferRecv(void);
-    ~BufferRecv(void);
+    ARPacketRecv(void);
+    ~ARPacketRecv(void);
 
     void initialize( const char RAW_other[] );
     //добавить номер номер устройства в отправляемый буфер
@@ -67,4 +68,6 @@ private:
     int16_t readInt16(uint16_t address);
     float readFloat(uint16_t address);
 };
+
+#endif // ARPACKETRECV_H
 

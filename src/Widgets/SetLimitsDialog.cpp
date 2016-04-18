@@ -41,6 +41,6 @@ void SetLimitsDialog::accepted()
     SettingsStorage::Inst()->GetMotors()->at(cNumber).setMinAngle(MinAngle);
     SettingsStorage::Inst()->GetMotors()->at(cNumber).setMaxAngle(MaxAngle);
 
-    BufferController::Inst()->getBufferSend()->setMotorMinAngle(cNumber, MinAngle);
-    BufferController::Inst()->getBufferSend()->setMotorMaxAngle(cNumber, MaxAngle);
+    ARPacketManager::Inst()->getPacketSend()->setMotorMinAngle(cNumber, MinAngle);
+    ARPacketManager::Inst()->getPacketSend()->setMotorMaxAngle(cNumber, MaxAngle);
 }

@@ -1,5 +1,5 @@
-#ifndef ADEFINITION
-#define ADEFINITION
+#ifndef ARPACKETDEFINITION
+#define ARPACKETDEFINITION
 
 #include <iostream>
 
@@ -59,5 +59,5 @@ const uint16_t POWER_CURRENT_8_2 =   3 * 2 + 12 + POWER_ADDRESS;
 const uint16_t POWER_CURRENT_12 =    4 * 2 + 12 + POWER_ADDRESS;
 const uint16_t POWER_CURRENT_48 =    5 * 2 + 12 + POWER_ADDRESS;
 
-#endif // ADEFINITION
+#endif // ARPACKETDEFINITION
 

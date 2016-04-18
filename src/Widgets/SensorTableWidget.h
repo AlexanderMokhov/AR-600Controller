@@ -6,7 +6,7 @@
 
 #include "Management/SettingsStorage.h"
 #include "Models/SensorTableModel.h"
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 
 namespace Ui {
 class SensorTableWidget;

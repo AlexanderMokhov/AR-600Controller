@@ -1,15 +1,15 @@
-#ifndef FRUNDPACKETRECV_H
-#define FRUNDPACKETRECV_H
+#ifndef FPACKETRECV_H
+#define FPACKETRECV_H
 
 #include <iostream>
 
 //
-class FrundPacketRecv
+class FPacketRecv
 {
 public:
     // public methods
-    FrundPacketRecv();
-    ~FrundPacketRecv();
+    FPacketRecv();
+    ~FPacketRecv();
 
 private:
     // private variable
@@ -24,4 +24,4 @@ private:
     const uint16_t D_GATE_FACTOR = 64;
 };
 
-#endif // FRUNDPACKETRECV_H
+#endif // FPACKETRECV_H

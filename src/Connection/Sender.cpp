@@ -3,7 +3,7 @@
 Sender::Sender(QObject *parent) : QThread(parent)
 {
     m_time = new QTime;
-    m_locker = BufferController::Inst()->getBufferSend()->getLocker();
+    m_locker = ARPacketManager::Inst()->getPacketSend()->getLocker();
     isRunning = false;
 }
 
@@ -69,7 +69,7 @@ void Sender::sendDatagram()
 {
     QHostAddress address = QHostAddress(m_host);
     m_locker->lock();
-    m_udpSocketSender->writeDatagram(BufferController::Inst()->getBufferSend()->getRAW(), BufferController::Inst()->getBufferSend()->getSize()* sizeof(char), address, m_sendPort);
+    m_udpSocketSender->writeDatagram(ARPacketManager::Inst()->getPacketSend()->getRAW(), ARPacketManager::Inst()->getPacketSend()->getSize()* sizeof(char), address, m_sendPort);
     m_udpSocketSender->waitForBytesWritten();
     m_locker->unlock();
 }

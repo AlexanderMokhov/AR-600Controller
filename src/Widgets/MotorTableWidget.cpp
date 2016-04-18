@@ -15,9 +15,9 @@ MotorTableWidget::MotorTableWidget(QWidget *parent) :
 
     ui->MotorTableView->verticalHeader()->hide();
     ui->MotorTableView->verticalHeader()->resizeSections(QHeaderView::Fixed);
+
     ui->MotorTableView->resizeColumnsToContents();
-    ui->MotorTableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
-    ui->MotorTableView->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Stretch);
+    ui->MotorTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->MotorTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->MotorTableView,SIGNAL(clicked(QModelIndex)),this,SLOT(OnRowChanged()));
@@ -37,22 +37,17 @@ void MotorTableWidget::ShowConfigData()
     std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
     mModel->removeRows(0,mModel->rowCount());
 
-    for(auto it = mMap->begin();it!=mMap->end();++it)
+    for(auto it = mMap->begin();it != mMap->end(); ++it)
     {
         QString Number = QString::number((*it).first);
         QString Name = QString::fromLocal8Bit((*it).second.getName().c_str());
         QString Status = "0";
-        bool Reverce = (*it).second.getReverceState();
-        QString sReverce = QString::number(Reverce);
-        QString MinPos = QString::number((*it).second.getMinAngle());
-        QString MaxPos = QString::number((*it).second.getMaxAngle());
+        QString MinAngle = QString::number((*it).second.getMinAngle());
+        QString MaxAngle = QString::number((*it).second.getMaxAngle());
         QString KP = QString::number((*it).second.getPIDGates()->getPGate());
         QString KI = QString::number((*it).second.getPIDGates()->getIGate());
         QString KD = QString::number((*it).second.getPIDGates()->getDGate());
-        QString Calibration = QString::number((*it).second.getShiftValue());
-        bool Enable = (*it).second.getEnable();
-        QString sEnable = QString::number(Enable);
-        mModel->insertRow(Number,Name,Status,"0",MinPos,MaxPos,sReverce,KP,KI,KD,Calibration,sEnable);
+        mModel->insertRow(Number,Name,"0",MinAngle,MaxAngle,KP,KI,KD,Status);
     }
     ui->MotorTableView->selectRow(0);
     emit RowChanged(0);
@@ -72,16 +67,19 @@ MotorTableModel *MotorTableWidget::getModel()
 
 void MotorTableWidget::UpdateAngle()
 {
+    ui->MotorTableView->resizeColumnsToContents();
+    ui->MotorTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
     std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
     int i=0;
     for(auto it = mMap->begin(); it != mMap->end(); ++it)
     {
         int Number = (*it).second.getNumber();
-        QString cPos = QString::number(BufferController::Inst()->getBufferRecv()->getMotorAngle(Number));
-        mModel->setData(mModel->index(i,3),cPos,Qt::EditRole);
+        QString cPos = QString::number(ARPacketManager::Inst()->getPacketRecv()->getMotorAngle(Number));
+        mModel->setData(mModel->index(i,2),cPos,Qt::EditRole);
 
         //начало чтения статуса
-        unsigned char status = BufferController::Inst()->getBufferRecv()->getMotorState(Number);
+        unsigned char status = ARPacketManager::Inst()->getPacketRecv()->getMotorState(Number);
         QString statusString;
 
         if((unsigned char)(status & 0) == 0)
@@ -93,7 +91,7 @@ void MotorTableWidget::UpdateAngle()
         if((unsigned char)(status & 3) == 3)
         {statusString = "Слежение";}
 
-        mModel->setData(mModel->index(i,2),statusString);
+        mModel->setData(mModel->index(i,8),statusString);
         i++;
     }
 }
@@ -139,7 +137,7 @@ void MotorTableWidget::onSetEnableAction()
     int cRow = mSelectionModel->currentIndex().row();
     int Number = mModel->mDataList.at(cRow)->getNumber();
     bool isEnable = SettingsStorage::Inst()->GetMotors()->at(Number).getEnable();
-    BufferController::Inst()->getBufferSend()->setMotorEnable(Number, !isEnable);
+    ARPacketManager::Inst()->getPacketSend()->setMotorEnable(Number, !isEnable);
     SettingsStorage::Inst()->GetMotors()->at(Number).setEnable(!isEnable);
     mModel->setData(mModel->index(cRow,11), QString::number(!isEnable));
 }

@@ -9,7 +9,6 @@
 
 #include <stdlib.h>
 #include "MoveController.h"
-#include "MoveControllerFrund.h"
 
 class Mover : public QThread
 {
@@ -26,6 +25,9 @@ public:
 
     void startGoToPos( bool isNullPos );
     void stopGoToPos();
+
+    void startGoToAngle(int number, int destAngle, int time);
+    void stopGoToAngle();
 
     void openFile(QString fileName, bool mode);
 

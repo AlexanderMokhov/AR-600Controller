@@ -25,7 +25,7 @@ MoveCorrector::MoveCorrector()
     m_duration = 0;
 }
 
-void MoveCorrector::initialize()
+void MoveCorrector::Initialize()
 {
     delete m_inst; m_inst = new MoveCorrector;
 }
@@ -246,7 +246,7 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
         int sZeroValue = m_amends[NumberChannel][i].sZeroValue;
         int sNumber = m_amends[NumberChannel][i].sNumber;
 
-        int sValue = BufferController::Inst()->getBufferRecv()->getSensorValue(
+        int sValue = ARPacketManager::Inst()->getPacketRecv()->getSensorValue(
                     m_sensors->at(sNumber).getChannel(), m_sensors->at(sNumber).getParam() ) ;
 
         int spNumber = m_amends[NumberChannel][i].spNumber;

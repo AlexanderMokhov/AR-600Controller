@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>312</width>
+    <width>276</width>
     <height>296</height>
    </rect>
   </property>
@@ -19,39 +19,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>18</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="5" column="1">
-        <widget class="QSpinBox" name="sBoxUserStiffValue">
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-         <property name="value">
-          <number>1200</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLineEdit" name="FilePathTextBox">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLineEdit" name="FilePathT">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -60,8 +34,8 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="ButtonLoadFile">
+       <item>
+        <widget class="QPushButton" name="LoadFileB">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -73,65 +47,129 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="3">
-        <widget class="QTextEdit" name="MessageTextBox">
-         <property name="enabled">
-          <bool>true</bool>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Информация по загруженному файлу:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="MessageTextBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="StartB">
+         <property name="text">
+          <string>Запуск</string>
          </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="StopB">
+         <property name="text">
+          <string>Остановка</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Использовать KP</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="UserPGateValueT">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="readOnly">
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+         <property name="value">
+          <number>1200</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="UseUserPGateB">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton:checked { background-color: rgb(240,240,240);; border: 0; border-style: outset; }</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../MyResources.qrc">
+           <normaloff>:/MyIcons/Icons/off.png</normaloff>
+           <normalon>:/MyIcons/Icons/on.png</normalon>:/MyIcons/Icons/off.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>16</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="7" column="0" colspan="2">
-        <widget class="QPushButton" name="ButtonGoStartPos">
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Стартовое положение</string>
+          <string>Использовать KI</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="2">
-        <widget class="QPushButton" name="ButtonStartFile">
-         <property name="text">
-          <string>Из файла</string>
+       <item>
+        <widget class="QSpinBox" name="UserIGateValueT">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="ButtonLoadDRIVEMAT">
-         <property name="text">
-          <string>Open DRIVEMAT</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QLineEdit" name="DRIVEMATPathTextBox"/>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Информация по загруженному файлу:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QCheckBox" name="checkBoxLog">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>Вести запись</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QSpinBox" name="sBoxUserDumpValue">
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
@@ -143,67 +181,65 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Использовать KP</string>
+       <item>
+        <widget class="QPushButton" name="UseUserIGateB">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Использовать KI</string>
+         <property name="styleSheet">
+          <string notr="true">QPushButton:checked { background-color: rgb(240,240,240);; border: 0; border-style: outset; }</string>
          </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QCheckBox" name="cBoxUseUserStiff">
          <property name="text">
-          <string>Применить</string>
+          <string/>
          </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QCheckBox" name="cBoxUseUserDump">
-         <property name="text">
-          <string>Применить</string>
+         <property name="icon">
+          <iconset resource="../MyResources.qrc">
+           <normaloff>:/MyIcons/Icons/off.png</normaloff>
+           <normalon>:/MyIcons/Icons/on.png</normalon>:/MyIcons/Icons/off.png</iconset>
          </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QPushButton" name="ButtonPlayPause">
-         <property name="text">
-          <string>Запуск</string>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>16</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="4" column="1" colspan="2">
-        <widget class="QPushButton" name="ButtonStop">
-         <property name="text">
-          <string>Остановка</string>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>18</height>
-        </size>
-       </property>
-      </spacer>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="GoStartPosB">
+         <property name="text">
+          <string>Стартовое положение</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="StartFileB">
+         <property name="text">
+          <string>Из файла</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../MyResources.qrc"/>
+ </resources>
  <connections/>
 </ui>

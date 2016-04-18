@@ -16,7 +16,7 @@ class SettingsStorage
 public:
     //public methods
     static SettingsStorage* Inst(){ return mInst; }
-    static void Init(){ delete mInst; mInst = new SettingsStorage; }
+    static void Initialize(){ delete mInst; mInst = new SettingsStorage; }
 
     bool OpenFile( std::string FileName );//Открыть файл настроек
     bool SaveFile( std::string FileName );//Сохранить файл настроек

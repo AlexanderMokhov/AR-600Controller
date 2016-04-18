@@ -8,10 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //инициализация контроллеров
-    LogMaster::Inst()->Init();
+    LogMaster::Inst()->Initialize();
 
-    SettingsStorage::Inst()->Init();
-    BufferController::Inst()->Init();
+    SettingsStorage::Inst()->Initialize();
+    ARPacketManager::Inst()->Initialize();
 
     //чтение настроек их XML файла
     bool isOk = SettingsStorage::Inst()->OpenFile("config.xml");
@@ -20,12 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         mUpdateDelay = SettingsStorage::Inst()->GetReceiveDelay();
 
-        BufferController::Inst()->Initialize();
-        MoveController::Inst()->Init();
-        RecordController::Inst()->Init();
+        ARPacketManager::Inst()->initPackets();
+        MoveController::Inst()->Initialize();
+        RecordController::Inst()->Initialize();
 
-        mMoveControlWidget = new MoveControlWidget();
-        ui->MoveControlLayout->addWidget(mMoveControlWidget);
         LogMaster::Inst()->addLine("Конфигурация успешно прочитана");
     }
     else
@@ -36,11 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     //конец чтения настроек
 
+    mMover = new Mover;
+
     //настраиваем виджеты
     WidgetsInit();
     //конец настройки виджетов
     mLogWidget->startWrite();
-    //mLogWidget->addMessage(" Настройки успешно прочитаны");//!!!!
 
     //настройка кнопок тулбара
     ActionsLoad();
@@ -75,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mTimerUpdate->setInterval(mUpdateDelay);
     connect(mTimerUpdate,SIGNAL(timeout()),this,SLOT(ProcessTheDatagram()));
 
-    MoveCorrector::Inst()->initialize();
+    MoveCorrector::Inst()->Initialize();
 }
 
 MainWindow::~MainWindow()
@@ -109,27 +108,27 @@ void MainWindow::ActionsLoad()
     TBactionPlay = new QAction("Начать выполнение",0);
     TBactionPlay->setToolTip("Начать выполнение");
     TBactionPlay->setIcon(QIcon(":/MyIcons/Icons/play.ico"));
-    connect(TBactionPlay, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonPlayPause_clicked()));
+    connect(TBactionPlay, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_StartB_clicked()));
 
     TBactionStop = new QAction("Остановить выполнение",0);
     TBactionStop->setToolTip("Остановить выполнение");
     TBactionStop->setIcon(QIcon(":/MyIcons/Icons/stop.ico"));
-    connect(TBactionStop, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonStop_clicked()));
+    connect(TBactionStop, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_StopB_clicked()));
 
     TBactionOpenMoveFile = new QAction("Загрузить файл команд",0);
     TBactionOpenMoveFile->setToolTip("Загрузить файл команд");
     TBactionOpenMoveFile->setIcon(QIcon(":/MyIcons/Icons/folder.ico"));
-    connect(TBactionOpenMoveFile, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_ButtonLoadFile_clicked()));
+    connect(TBactionOpenMoveFile, SIGNAL(triggered()),mMoveControlWidget,SLOT(on_LoadFileB_clicked()));
 
     TBactionOnPower = new QAction("Включить все",0);
     TBactionOnPower->setToolTip("Включить все");
     TBactionOnPower->setIcon(QIcon(":/MyIcons/Icons/on.ico"));
-    connect(TBactionOnPower, SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
+    //connect(TBactionOnPower, SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
 
     TBactionOffPower = new QAction("Выключить все",0);
     TBactionOffPower->setToolTip("Выключить все");
     TBactionOffPower->setIcon(QIcon(":/MyIcons/Icons/off.ico"));
-    connect(TBactionOffPower, SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+    //connect(TBactionOffPower, SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
 
     TBactionOpenConnectSettings = new QAction("Настройки соединения",0);
     TBactionOpenConnectSettings->setToolTip("Настройки соединения");
@@ -172,22 +171,30 @@ void MainWindow::WidgetsInit()
     LogMaster::Inst()->addLine("Настройка Widgets начата");
 
     mMotorControlWidget = new MotorControlWidget();
-    ui->MotorControlLayout->addWidget(mMotorControlWidget);
-    mMotorTableWidget = new MotorTableWidget();
-    ui->MotorTableLayout->addWidget(mMotorTableWidget);
-    mRecordWidget = new RecordWidget();
-    ui->RecordWidgetLayout->addWidget(mRecordWidget);
-    mPowerWidget = new PowerWidget();
-    ui->PowerWidgetLayout->addWidget(mPowerWidget);
-    mSensorTableWidget = new SensorTableWidget();
-    ui->SensorTableLayout->addWidget(mSensorTableWidget);
-    mMoveFilesWidget = new MoveFilesWidget();
-    ui->MoveFilesWidgetLayout->addWidget(mMoveFilesWidget);
-    mStdMovesWidget = new StdMovesWidget();
-    //mStdMovesWidget->show();
-    mLogWidget = new LogWidget();
-    ui->LayoutLog->addWidget(mLogWidget);
+    mMotorControlWidget->setMover(mMover);
+    ui->MotorLayout->addWidget(mMotorControlWidget);
+    mMoveControlWidget = new MoveControlWidget();
+    mMoveControlWidget->setMover(mMover);
+    mMoveControlWidget->Initialize();
+    ui->MoveLayout->addWidget(mMoveControlWidget);
 
+    mMotorTableWidget = new MotorTableWidget();
+    ui->MotorsLayout->addWidget(mMotorTableWidget);
+    mRecordWidget = new RecordWidget();
+    ui->RecordLayout->addWidget(mRecordWidget);
+    mSensorTableWidget = new SensorTableWidget();
+    ui->SensorsLayout->addWidget(mSensorTableWidget);
+    mMoveFilesWidget = new MoveFilesWidget();
+    ui->MoveFilesLayout->addWidget(mMoveFilesWidget);
+    mStdMovesWidget = new StdMovesWidget();
+    mLogWidget = new LogWidget();
+    ui->LogLayout->addWidget(mLogWidget);
+
+    mConnectionCW = new ConnectionControlW();
+    ui->ConnectionLayout->addWidget(mConnectionCW);
+
+    mPowerCW = new PowerControlW();
+    ui->PowerLayout->addWidget(mPowerCW);
 
     mConnectDialog = new ConnectConfigDialog();
     mMotorControlWidget->setModel(mMotorTableWidget->getModel());
@@ -209,9 +216,9 @@ void MainWindow::ConnectionsInit()
 
     connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
     connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
-    connect(ui->actionOn,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
-    connect(ui->actionOff,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
-    connect(ui->actionReboot,SIGNAL(triggered()),mPowerWidget,SLOT(onReboot()));
+    //connect(ui->actionOn,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
+    //connect(ui->actionOff,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
+    //connect(ui->actionReboot,SIGNAL(triggered()),mPowerWidget,SLOT(onReboot()));
     connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
     //конец настройки кнопок меню
 
@@ -226,7 +233,7 @@ void MainWindow::ConnectionsInit()
     connect(mMoveFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));
 
     connect(mStdMovesWidget,SIGNAL(startStdMove()),mMoveControlWidget,SLOT(startStdMove()));
-    connect(mStdMovesWidget,SIGNAL(stopStdMove()),mMoveControlWidget,SLOT(on_ButtonStop_clicked()));
+    connect(mStdMovesWidget,SIGNAL(stopStdMove()),mMoveControlWidget,SLOT(on_StopB_clicked()));
 
     connect(mConsoleReceiver, SIGNAL(startPlayOnline()), this, SLOT(StartPlayOnline()));
     connect(mConsoleReceiver, SIGNAL(stopPlayOnline()), this, SLOT(StopPlayOnline()));
@@ -278,11 +285,11 @@ void MainWindow::Connect()
 void MainWindow::Disconnect()
 {
     //выключаем напряжения
-    BufferController::Inst()->getBufferSend()->offPower6_1();
-    BufferController::Inst()->getBufferSend()->offPower6_2();
-    BufferController::Inst()->getBufferSend()->offPower8_1();
-    BufferController::Inst()->getBufferSend()->offPower8_2();
-    BufferController::Inst()->getBufferSend()->offPower48();
+    ARPacketManager::Inst()->getPacketSend()->offPower6_1();
+    ARPacketManager::Inst()->getPacketSend()->offPower6_2();
+    ARPacketManager::Inst()->getPacketSend()->offPower8_1();
+    ARPacketManager::Inst()->getPacketSend()->offPower8_2();
+    ARPacketManager::Inst()->getPacketSend()->offPower48();
 
     mReceiver->Disconnect();
     mSender->Disconnect();
@@ -326,50 +333,13 @@ void MainWindow::StopPlayOnline()
 
 void MainWindow::StartFrund()
 {
-//    QProcess* m_process;
-//    m_process = new QProcess(this);
-//    QString strCommand = "forw125/rashet32.exe";
-//    m_process->start(strCommand);
-//    if(m_process->isOpen())
-//        qDebug() << "RASHET32.exe успешно запущен" << endl;
-//    m_process->waitForFinished();
-    STARTUPINFO startin;
-    startin.cb=sizeof(STARTUPINFO);
-    startin.lpReserved=NULL;
-    startin.lpDesktop=NULL;
-    startin.lpTitle=NULL;//strdup("window1");
-    startin.dwX=30;
-    startin.dwY=3;
-    startin.dwXSize=220;
-    startin.dwYSize=220;
-    startin.dwXCountChars=30;
-    startin.dwYCountChars=10;
-    startin.dwFillAttribute=0;
-    startin.dwFlags=STARTF_USESHOWWINDOW;
-    startin.cbReserved2=NULL;
-    startin.lpReserved2=NULL;
-    startin.wShowWindow=SW_HIDE;
-    startin.hStdInput=NULL;
-    startin.hStdOutput=NULL;
-    startin.hStdError=NULL;
 
-    SECURITY_ATTRIBUTES sa;
-    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-    sa.lpSecurityDescriptor=NULL;
-    sa.bInheritHandle=TRUE;
-
-   PROCESS_INFORMATION pinfo;
-
-    CreateProcess(NULL,LPWSTR("H:\\Mokhov\\Dev\\AR-600Controller\\bin\\sinhron\\fmodelxp.bat"),&sa,NULL,TRUE,CREATE_NO_WINDOW+CREATE_SUSPENDED+CREATE_NEW_PROCESS_GROUP,
-        NULL,NULL,&startin,&pinfo);
-
-    //WinExec("H:\\Mokhov\\Dev\\AR-600Controller\\bin\\sinhron\\rashet32.exe", 1);
 }
 
 //обработка принятого пакета от робота
 void MainWindow::ProcessTheDatagram()
 {
-    mPowerWidget->UpdatePowerLabel();
+    mPowerCW->updateInfo();
     mMotorControlWidget->UpdateData();
     mMotorTableWidget->UpdateAngle();
     mSensorTableWidget->UpdatePos();
@@ -399,7 +369,7 @@ void MainWindow::OpenXML()
         if(isOk)
         {
             //загоняем в отправляемый массив
-            BufferController::Inst()->Initialize();
+            ARPacketManager::Inst()->initPackets();
             qDebug() << "Файл настроек успешно загружен из " << fileName << endl;
             qDebug() << "Настройки успешно прочитаны" <<endl;
 

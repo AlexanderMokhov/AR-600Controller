@@ -20,7 +20,7 @@ MoveController::MoveController()
         mGoToPosData[(*it).first] = item;
     }
 
-    MovesStorage::Inst()->initialize();
+    MovesStorage::Inst()->Initialize();
 
     userStiff = 0;
     userDump = 0;
@@ -35,9 +35,6 @@ MoveController::MoveController()
 void MoveController::stepPlay()
 {
     long time = m_time.elapsed()*1e3;
-
-    QTime t;
-    t.start();
 
     if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
@@ -59,27 +56,24 @@ void MoveController::stepPlay()
 
         int Torque = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Torque;
 
-        BufferController::Inst()->getBufferSend()->setMotorPGate( Number, Stiff );
-        BufferController::Inst()->getBufferSend()->setMotorIGate( Number, Dump );
-        BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
+        ARPacketManager::Inst()->getPacketSend()->setMotorPGate( Number, Stiff );
+        ARPacketManager::Inst()->getPacketSend()->setMotorIGate( Number, Dump );
+        ARPacketManager::Inst()->getPacketSend()->setMotorDGate( Number, Torque );
 
         int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time);
-        //qDebug() << "Корректирующее "  << QString::number(CorrectionValue) << endl;
+        //LogMaster::Inst()->addLine("Корректирующее " + std::to_string(CorrectionValue));
 
-        BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle + CorrectionValue);
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle( Number, Angle + CorrectionValue);
         MovesStorage::Inst()->m_moveID++;
 
         if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
     }
 
 StopPlay:
-    //qDebug() << "Time elapsed: " << QString::number(t.elapsed()) << "ms\n";
-
     //если время закончилось - останавливаем, переводим индекс команды на начало списка
     if(time > MovesStorage::Inst()->m_duration)
     {
         MovesStorage::Inst()->m_moveID = 0;
-        //qDebug() << "Выполнена последняя строка"  << endl;
 
         LogMaster::Inst()->addLine("Выполнена последняя строка");
         emit PlayEnd();
@@ -99,16 +93,16 @@ void MoveController::startingPlay()
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {
         int Number = (*it).second.getNumber();
-        int Angle = BufferController::Inst()->getBufferRecv()->getMotorAngle( Number );
+        int Angle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle( Number );
         int Stiff = (*it).second.getPIDGates()->getPGate();
         int Dump = (*it).second.getPIDGates()->getIGate();
         int Torque = (*it).second.getPIDGates()->getDGate();
 
-        BufferController::Inst()->getBufferSend()->setMotorPGate( Number, Stiff );
-        BufferController::Inst()->getBufferSend()->setMotorIGate( Number, Dump );
-        BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
-        BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle );
-        BufferController::Inst()->getBufferSend()->motorTrace( Number );
+        ARPacketManager::Inst()->getPacketSend()->setMotorPGate( Number, Stiff );
+        ARPacketManager::Inst()->getPacketSend()->setMotorIGate( Number, Dump );
+        ARPacketManager::Inst()->getPacketSend()->setMotorDGate( Number, Torque );
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle( Number, Angle );
+        ARPacketManager::Inst()->getPacketSend()->motorTrace( Number );
     }
     MovesStorage::Inst()->m_moveID = 0;
     MoveCorrector::Inst()->setCurLine(0);
@@ -129,16 +123,16 @@ void MoveController::stoppingPlay()
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
     {
         int Number = (*it).second.getNumber();
-        int MotorAngle = BufferController::Inst()->getBufferRecv()->getMotorAngle( Number );
+        int MotorAngle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle( Number );
         int Stiff = (*it).second.getPIDGates()->getPGate();
         int Dump = (*it).second.getPIDGates()->getIGate();
         int Torque = (*it).second.getPIDGates()->getDGate();
 
-        BufferController::Inst()->getBufferSend()->setMotorPGate( Number, Stiff );
-        BufferController::Inst()->getBufferSend()->setMotorIGate( Number, Dump );
-        BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
-        BufferController::Inst()->getBufferSend()->setMotorAngle( Number, MotorAngle );
-        BufferController::Inst()->getBufferSend()->motorStopBrake( Number);
+        ARPacketManager::Inst()->getPacketSend()->setMotorPGate( Number, Stiff );
+        ARPacketManager::Inst()->getPacketSend()->setMotorIGate( Number, Dump );
+        ARPacketManager::Inst()->getPacketSend()->setMotorDGate( Number, Torque );
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle( Number, MotorAngle );
+        ARPacketManager::Inst()->getPacketSend()->motorStopBrake( Number);
     }
     MovesStorage::Inst()->m_moveID = 0;
     m_state = States::NotWork;
@@ -176,20 +170,20 @@ void MoveController::stepPlayOnline()
 
         int Torque = MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].PIDs.Torque;
 
-        BufferController::Inst()->getBufferSend()->setMotorPGate( Number, Stiff );
-        BufferController::Inst()->getBufferSend()->setMotorIGate( Number, Dump );
-        BufferController::Inst()->getBufferSend()->setMotorDGate( Number, Torque );
-        BufferController::Inst()->getBufferSend()->setMotorAngle( Number, Angle);
-        BufferController::Inst()->getBufferSend()->motorTrace(Number);
+        ARPacketManager::Inst()->getPacketSend()->setMotorPGate( Number, Stiff );
+        ARPacketManager::Inst()->getPacketSend()->setMotorIGate( Number, Dump );
+        ARPacketManager::Inst()->getPacketSend()->setMotorDGate( Number, Torque );
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle( Number, Angle);
+        ARPacketManager::Inst()->getPacketSend()->motorTrace(Number);
         MovesStorage::Inst()->m_moveID++;
 
         if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
-        //qDebug() << "String number " << QString::number(MovesStorage::Inst()->m_moveID) << "have been read"  << endl;
+        //LogMaster::Inst()->addLine("Строка [х]" + std::to_string(MovesStorage::Inst()->m_moveID) + "] была прочитана");
     }
 StopPlay:
         MovesStorage::Inst()->m_moveID = 0;
-        //qDebug() << "Выполнен очередной шаг"  << endl;
+        //LogMaster::Inst()->addLine("Выполнен очередной шаг");
 
         if(!this->isLog)
             RecordController::Inst()->AddRawData();
@@ -285,15 +279,15 @@ void MoveController::startingGoPos()
     for(auto it = m_motors->begin();it != m_motors->end();++it)
     {
         int Number = (*it).first;
-        int StartAngle = BufferController::Inst()->getBufferRecv()->getMotorAngle(Number);
+        int StartAngle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle(Number);
         int DestAngle = mGoPosMode == true ? MovesStorage::Inst()->m_moves[i].Angle : 0;
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.getEnable()) ? DiffAngle : MaxDiff;
 
         setPosData(Number,DestAngle,StartAngle);
 
-        BufferController::Inst()->getBufferSend()->setMotorAngle(Number, StartAngle);
-        BufferController::Inst()->getBufferSend()->motorTrace(Number);
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle(Number, StartAngle);
+        ARPacketManager::Inst()->getPacketSend()->motorTrace(Number);
         i++;
     }
 
@@ -334,20 +328,20 @@ void MoveController::stepGoPos()
 
         if(IsFirst || IsSecond)
         {
-            BufferController::Inst()->getBufferSend()->setMotorAngle((*it).first,(short)(*it).second.DestPos);
-            BufferController::Inst()->getBufferSend()->motorStopBrake((*it).first);
+            ARPacketManager::Inst()->getPacketSend()->setMotorAngle((*it).first,(short)(*it).second.DestPos);
+            ARPacketManager::Inst()->getPacketSend()->motorStopBrake((*it).first);
 
             if(!(*it).second.isEndPos)
             {
                 mMotorExistCount--;
                 (*it).second.isEndPos = true;
             }
-            qDebug() << QString::number((*it).first) << " Отправлено конечное положение " << QString::number((*it).second.DestPos) << endl;
+            //LogMaster::Inst()->addLine("Отправлено конечное положение " + std::to_string((*it).second.DestPos));
         }
         else
         {
-            BufferController::Inst()->getBufferSend()->setMotorAngle((*it).first,(short)(*it).second.CurrentPos);
-            qDebug() << "Отправлено положение " << QString::number((*it).second.CurrentPos) << endl;
+            ARPacketManager::Inst()->getPacketSend()->setMotorAngle((*it).first,(short)(*it).second.CurrentPos);
+            //LogMaster::Inst()->addLine("Отправлено положение " + std::to_string((*it).second.CurrentPos));
             (*it).second.CurrentPos += (*it).second.Step;
         }
     }
@@ -355,9 +349,8 @@ void MoveController::stepGoPos()
     //Если равно 0 то конец
     if(mMotorExistCount == 0)
     {
-        qDebug() << "Достигнуто стартовое положение " << endl;
+        LogMaster::Inst()->addLine("Достигнуто стартовое положение ");
         m_state = States::GoPosStopping;
-        //emit InitEnd();
     }
 }
 
@@ -370,10 +363,10 @@ void MoveController::stoppingGoPos()
 {
     for(auto it = m_motors->begin();it != m_motors->end();++it)
     {
-        int Angle = BufferController::Inst()->getBufferRecv()->getMotorAngle((*it).first);
+        int Angle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle((*it).first);
 
-        BufferController::Inst()->getBufferSend()->setMotorAngle((*it).first, Angle);
-        BufferController::Inst()->getBufferSend()->motorStopBrake((*it).first);
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle((*it).first, Angle);
+        ARPacketManager::Inst()->getPacketSend()->motorStopBrake((*it).first);
     }
 
     m_state = States::NotWork;
@@ -389,6 +382,7 @@ void MoveController::setIsLog(bool value)
 //Команды для перехода в заданный угол (один двигатель)
 void MoveController::startGoToAngle(int Number, int DestAngle, int Time)
 {
+    LogMaster::Inst()->addLine("MoveController::startGoToAngle()");
     NewMotorNumber = Number;
     NewTimeToGo = Time;
     NewDestAngle = DestAngle;
@@ -397,10 +391,12 @@ void MoveController::startGoToAngle(int Number, int DestAngle, int Time)
 
 void MoveController::startingGoToAngle()
 {
+    LogMaster::Inst()->addLine("MoveController::startingGoToAngle()");
+
     mMotorNumber = NewMotorNumber;
     mTimeToGo = NewTimeToGo;
     mDestAngle = NewDestAngle;
-    mStartAngle = BufferController::Inst()->getBufferRecv()->getMotorAngle(mMotorNumber);
+    mStartAngle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle(mMotorNumber);
 
     int SendDelay = SettingsStorage::Inst()->GetSendDelay();
     int diffAngle = mDestAngle - mStartAngle;//разница в градус*100
@@ -408,40 +404,43 @@ void MoveController::startingGoToAngle()
     mCurrentAngle = mStartAngle;
 
     //включаем мотор
-    BufferController::Inst()->getBufferSend()->setMotorAngle(mMotorNumber, mStartAngle);
-    BufferController::Inst()->getBufferSend()->motorTrace(mMotorNumber);
+    ARPacketManager::Inst()->getPacketSend()->setMotorAngle(mMotorNumber, mStartAngle);
+    ARPacketManager::Inst()->getPacketSend()->motorTrace(mMotorNumber);
 
     m_state = States::GoToAngle;
 }
 
 void MoveController::stepGoToAngle()
 {
+    LogMaster::Inst()->addLine("MoveController::stepGoToAngle()");
+
     bool IsFirst = mDestAngle <= mCurrentAngle && mDestAngle >= mStartAngle;
     bool IsSecond = mDestAngle >= mCurrentAngle && mDestAngle <= mStartAngle;
 
     if(IsFirst || IsSecond)
     {
-        BufferController::Inst()->getBufferSend()->setMotorAngle(mMotorNumber,mDestAngle);
-        BufferController::Inst()->getBufferSend()->motorStopBrake(mMotorNumber);
-        qDebug() << "Отправлено конечное положение " << QString::number(mDestAngle) << endl;
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle(mMotorNumber,mDestAngle);
+        ARPacketManager::Inst()->getPacketSend()->motorStopBrake(mMotorNumber);
+        LogMaster::Inst()->addLine("Отправлено конечное положение " + std::to_string(mDestAngle));
         m_state = States::NotWork;
     }
     else
     {
-        BufferController::Inst()->getBufferSend()->setMotorAngle(mMotorNumber,(short)mCurrentAngle);
-        qDebug() << "Отправлено положение " << QString::number(mCurrentAngle) << endl;
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle(mMotorNumber,(short)mCurrentAngle);
+        LogMaster::Inst()->addLine("Отправлено положение " + std::to_string(mCurrentAngle));
         mCurrentAngle += mStep;
     }
 }
 
 void MoveController::stopGoToAngle()
 {
+    LogMaster::Inst()->addLine("MoveController::stopGoToAngle()");
     m_state = States::GoToAngleStopping;
 }
 
 void MoveController::stoppingGoToAngle()
 {
-    BufferController::Inst()->getBufferSend()->motorStop(mMotorNumber);
+    ARPacketManager::Inst()->getPacketSend()->motorStop(mMotorNumber);
     m_state = States::NotWork;
 }
 //Конец команд для перехода в заданный угол (один двигатель)

@@ -14,5 +14,7 @@
         <file>Icons/settings.ico</file>
         <file>Icons/stop.ico</file>
         <file>Icons/forward.ico</file>
+        <file>Icons/off.png</file>
+        <file>Icons/on.png</file>
     </qresource>
 </RCC>

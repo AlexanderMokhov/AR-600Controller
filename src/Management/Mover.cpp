@@ -69,6 +69,12 @@ void Mover::stopGoToPos()
     isPrep = false;
 }
 
+void Mover::startGoToAngle(int number, int destAngle, int time)
+{
+    MoveController::Inst()->startGoToAngle(number, destAngle, time);
+    if( !isRunning ) start();
+}
+
 void Mover::openFile(QString fileName, bool mode)
 {
     //TODO: дописать MoveController::OpenFile();...

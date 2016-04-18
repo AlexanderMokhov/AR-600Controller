@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QTime>
 
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 #include "Management/SettingsStorage.h"
 
 class Receiver : public QThread

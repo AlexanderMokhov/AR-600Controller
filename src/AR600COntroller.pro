@@ -24,8 +24,6 @@ SOURCES += main.cpp\
     Models/CommandTableModel.cpp \
     Models/MotorTableModel.cpp \
     Models/SensorTableModel.cpp \
-    Buffers/BufferController.cpp \
-    Buffers/BufferSend.cpp \
     Connection/Receiver.cpp \
     Connection/Sender.cpp \
     Devices/Device.cpp \
@@ -52,17 +50,19 @@ SOURCES += main.cpp\
     Management/SettingsStorage.cpp \
     Management/MovesStorage.cpp \
     Devices/PIDGates.cpp \
-    Buffers/BufferRecv.cpp \
     Libs/QCustomPlot/qcustomplot.cpp \
     Widgets/PlotWidget.cpp \
-    Widgets/modelWidget.cpp \
-    Widgets/GLWidget.cpp \
     Connection/FrundTransiver.cpp \
     Widgets/LogWidget.cpp \
     Management/FileLoader.cpp \
     Management/LogMaster.cpp \
-    Buffers/FrundPacketRecv.cpp \
-    Buffers/FrundPacketSend.cpp
+    Buffers/FPacketRecv.cpp \
+    Buffers/FPacketSend.cpp \
+    Buffers/ARPacketSend.cpp \
+    Buffers/ARPacketRecv.cpp \
+    Buffers/ARPacketManager.cpp \
+    Widgets/PowerControlW.cpp \
+    Widgets/ConnectionControlW.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -72,8 +72,6 @@ HEADERS  += \
     Models/CommandTableModel.h \
     Models/MotorTableModel.h \
     Models/SensorTableModel.h \
-    Buffers/BufferController.h \
-    Buffers/BufferSend.h \
     Connection/Receiver.h \
     Connection/Sender.h \
     Devices/Device.h \
@@ -84,7 +82,6 @@ HEADERS  += \
     Management/MoveController.h \
     Management/Mover.h \
     MainWindow.h \
-    Buffers/BufferDefinition.h \
     Management/MoveCorrector.h \
     Widgets/MoveControlWidget.h \
     Management/RecordController.h \
@@ -99,17 +96,20 @@ HEADERS  += \
     Management/SettingsStorage.h \
     Management/MovesStorage.h \
     Devices/PIDGates.h \
-    Buffers/BufferRecv.h \
     Libs/QCustomPlot/qcustomplot.h \
     Widgets/PlotWidget.h \
-    Widgets/modelWidget.h \
-    Widgets/GLWidget.h \
     Connection/FrundTransiver.h \
     Widgets/LogWidget.h \
     Management/FileLoader.h \
     Management/LogMaster.h \
-    Buffers/FrundPacketRecv.h \
-    Buffers/FrundPacketSend.h
+    Buffers/ARPacketDefinition.h \
+    Buffers/ARPacketRecv.h \
+    Buffers/ARPacketSend.h \
+    Buffers/ARPacketManager.h \
+    Buffers/FPacketRecv.h \
+    Buffers/FPacketSend.h \
+    Widgets/PowerControlW.h \
+    Widgets/ConnectionControlW.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -124,8 +124,9 @@ FORMS    += \
     Widgets/SetLimitsDialog.ui \
     Widgets/StdMovesWidget.ui \
     Widgets/PlotWidget.ui \
-    Widgets/modelWidget.ui \
-    Widgets/LogWidget.ui
+    Widgets/LogWidget.ui \
+    Widgets/PowerControlW.ui \
+    Widgets/ConnectionControlW.ui
 
 win32
 {

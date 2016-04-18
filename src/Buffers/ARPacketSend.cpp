@@ -1,16 +1,16 @@
-﻿#include "BufferSend.h"
+﻿#include "ARPacketSend.h"
 
 #include <stdio.h>
 #include <QDebug>
 
 
-void BufferSend::writeInt16(uint16_t address, int16_t value)
+void ARPacketSend::writeInt16(uint16_t address, int16_t value)
 {
     m_RAW[address + 1] = (BYTE)(value >> 8);
     m_RAW[address] = value;
 }
 
-BufferSend::BufferSend(void)
+ARPacketSend::ARPacketSend(void)
 {
     for(int i = 0; i < bufferSize; i++) m_RAW[i] = 0;
     onPower12();
@@ -18,13 +18,13 @@ BufferSend::BufferSend(void)
 }
 
 
-BufferSend::~BufferSend(void)
+ARPacketSend::~ARPacketSend(void)
 {
 
 }
 
 //инициализируем (читаем)
-void BufferSend::initialize(unsigned char RAW_other[])
+void ARPacketSend::initialize(unsigned char RAW_other[])
 {
     m_locker.lock();
     for(int i = 0; i < bufferSize; i++)  m_RAW[i] = RAW_other[i];
@@ -32,7 +32,7 @@ void BufferSend::initialize(unsigned char RAW_other[])
 }
 
 //инициализируем (установка 12 В)
-void BufferSend::initialize(void)
+void ARPacketSend::initialize(void)
 {
     m_locker.lock();
     for(int i = 0; i < bufferSize; i++) m_RAW[i] = 0;
@@ -40,7 +40,7 @@ void BufferSend::initialize(void)
     m_locker.unlock();
 }
 
-const char *BufferSend::getRAW()
+const char *ARPacketSend::getRAW()
 {
     return m_RAW;
 }
@@ -48,7 +48,7 @@ const char *BufferSend::getRAW()
 //установка питания
 
 //включить 6 В (1)
-void BufferSend::onPower6_1(void)
+void ARPacketSend::onPower6_1(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] |= 1;
@@ -56,7 +56,7 @@ void BufferSend::onPower6_1(void)
 }
 
 //включить 6 В (2)
-void BufferSend::onPower6_2(void)
+void ARPacketSend::onPower6_2(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] |= 2;
@@ -64,7 +64,7 @@ void BufferSend::onPower6_2(void)
 }
 
 //включить 8 В (1)
-void BufferSend::onPower8_1(void)
+void ARPacketSend::onPower8_1(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] |= 4;
@@ -72,7 +72,7 @@ void BufferSend::onPower8_1(void)
 }
 
 //включить 8 В (2)
-void BufferSend::onPower8_2(void)
+void ARPacketSend::onPower8_2(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] |= 8;
@@ -80,7 +80,7 @@ void BufferSend::onPower8_2(void)
 }
 
 //включить 12 В
-void BufferSend::onPower12(void)
+void ARPacketSend::onPower12(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] |= 16;
@@ -88,7 +88,7 @@ void BufferSend::onPower12(void)
 }
 
 //включить 48 В
-void BufferSend::onPower48(void)
+void ARPacketSend::onPower48(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] |= 32;
@@ -96,7 +96,7 @@ void BufferSend::onPower48(void)
 }
 
 //выключить 6 В (1)
-void BufferSend::offPower6_1(void)
+void ARPacketSend::offPower6_1(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] &= (255-1);
@@ -104,7 +104,7 @@ void BufferSend::offPower6_1(void)
 }
 
 //выключить 6 В (2)
-void BufferSend::offPower6_2(void)
+void ARPacketSend::offPower6_2(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] &= (255-2);
@@ -112,7 +112,7 @@ void BufferSend::offPower6_2(void)
 }
 
 //выключить 8 В (1)
-void BufferSend::offPower8_1(void)
+void ARPacketSend::offPower8_1(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] &= (255-4);
@@ -120,7 +120,7 @@ void BufferSend::offPower8_1(void)
 }
 
 //выключить 8 В (2)
-void BufferSend::offPower8_2(void)
+void ARPacketSend::offPower8_2(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] &= (255-8);
@@ -128,7 +128,7 @@ void BufferSend::offPower8_2(void)
 }
 
 //выключить 12 В
-void BufferSend::offPower12(void)
+void ARPacketSend::offPower12(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] &= (255-16);
@@ -136,7 +136,7 @@ void BufferSend::offPower12(void)
 }
 
 //выключить 48 В
-void BufferSend::offPower48(void)
+void ARPacketSend::offPower48(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] &= (255-32);
@@ -144,7 +144,7 @@ void BufferSend::offPower48(void)
 }
 
 //включить беззвучный режим
-void BufferSend::onMute(void)
+void ARPacketSend::onMute(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] |= 128;
@@ -152,14 +152,14 @@ void BufferSend::onMute(void)
 }
 
 //выключить беззвучный режим
-void BufferSend::offMute(void)
+void ARPacketSend::offMute(void)
 {
     m_locker.lock();
     m_RAW[POWER_ADDRESS + 1] &= (255-128);
     m_locker.unlock();
 }
 
-void BufferSend::setDeviceChannel(short NumberDevice, short NumberChannel)
+void ARPacketSend::setDeviceChannel(short NumberDevice, short NumberChannel)
 {
     m_motorsData[NumberDevice].channel = NumberChannel;
     m_locker.lock();
@@ -167,35 +167,35 @@ void BufferSend::setDeviceChannel(short NumberDevice, short NumberChannel)
     m_locker.unlock();
 }
 
-std::mutex *BufferSend::getLocker()
+std::mutex *ARPacketSend::getLocker()
 {
     return &m_locker;
 }
 
 //установка значений сенсоров
 
-void BufferSend::setSensorUCH0(short Number, short value)
+void ARPacketSend::setSensorUCH0(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH0, value);
     m_locker.unlock();
 }
 
-void BufferSend::setSensorUCH1(short Number, short value)
+void ARPacketSend::setSensorUCH1(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH1, value);
     m_locker.unlock();
 }
 
-void BufferSend::setSensorUCH2(short Number, short value)
+void ARPacketSend::setSensorUCH2(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH2, value);
     m_locker.unlock();
 }
 
-void BufferSend::setSensorUCH3(short Number, short value)
+void ARPacketSend::setSensorUCH3(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel * 16 + SENSOR_UCH3, value);
@@ -204,7 +204,7 @@ void BufferSend::setSensorUCH3(short Number, short value)
 //установка значений моторов
 
 //повернуть мотор на угол
-void BufferSend::setMotorAngle(short Number, short value)
+void ARPacketSend::setMotorAngle(short Number, short value)
 {
     short minAngle = m_motorsData[Number].minAngle;
     short maxAngle = m_motorsData[Number].maxAngle;
@@ -228,35 +228,35 @@ void BufferSend::setMotorAngle(short Number, short value)
     m_locker.unlock();
 }
 
-void BufferSend::setMotorShiftValue(short Number, short value)
+void ARPacketSend::setMotorShiftValue(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel * 16 + MOTOR_SHIFT, value);
     m_locker.unlock();
 }
 
-void BufferSend::setMotorPGate(short Number, short value)
+void ARPacketSend::setMotorPGate(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel * 16 + MOTOR_P_GATE, value);
     m_locker.unlock();
 }
 
-void BufferSend::setMotorIGate(short Number, short value)
+void ARPacketSend::setMotorIGate(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel *16 + MOTOR_I_GATE, value);
     m_locker.unlock();
 }
 
-void BufferSend::setMotorDGate(short Number, short value)
+void ARPacketSend::setMotorDGate(short Number, short value)
 {
     m_locker.lock();
     writeInt16(m_motorsData[Number].channel * 16 + MOTOR_D_GATE, value);
     m_locker.unlock();
 }
 
-void BufferSend::setMotorMinAngle(short Number, short value)
+void ARPacketSend::setMotorMinAngle(short Number, short value)
 {
     m_motorsData[Number].minAngle = value;//запоминаем отображаемое значение
     m_locker.lock();
@@ -267,7 +267,7 @@ void BufferSend::setMotorMinAngle(short Number, short value)
     m_locker.unlock();
 }
 
-void BufferSend::setMotorMaxAngle(short Number, short value)
+void ARPacketSend::setMotorMaxAngle(short Number, short value)
 {
     m_motorsData[Number].maxAngle = value;//запоминаем отображаемое значение
     m_locker.lock();
@@ -278,18 +278,18 @@ void BufferSend::setMotorMaxAngle(short Number, short value)
     m_locker.unlock();
 }
 
-void BufferSend::setMotorEnable(short Number, bool value)
+void ARPacketSend::setMotorEnable(short Number, bool value)
 {
     m_motorsData[Number].isEnable = value;
 }
 
-void BufferSend::setMotorReverceState(short Number, bool value)
+void ARPacketSend::setMotorReverceState(short Number, bool value)
 {
     m_motorsData[Number].isReverce = value;
 }
 
 //остановить мотор
-void BufferSend::motorStop(short Number)
+void ARPacketSend::motorStop(short Number)
 {
     m_locker.lock();
     m_RAW[m_motorsData[Number].channel * 16 + 1] &= (255 - 3);
@@ -298,7 +298,7 @@ void BufferSend::motorStop(short Number)
 }
 
 //зафиксировать мотор
-void BufferSend::motorTrace(short Number)
+void ARPacketSend::motorTrace(short Number)
 {
     m_locker.lock();
     if(m_motorsData[Number].isEnable)
@@ -307,7 +307,7 @@ void BufferSend::motorTrace(short Number)
 }
 
 //ослабить мотор
-void BufferSend::motorRelax(short Number)
+void ARPacketSend::motorRelax(short Number)
 {
     m_locker.lock();
     m_RAW[m_motorsData[Number].channel * 16 + 1] &= (255 - 3);
@@ -316,14 +316,14 @@ void BufferSend::motorRelax(short Number)
 }
 
 //отменить остановку мотора
-void BufferSend::motorStopBrake(short Number)
+void ARPacketSend::motorStopBrake(short Number)
 {
     m_locker.lock();
     m_RAW[m_motorsData[Number].channel * 16 + 1] &= (255 - 3);
     m_locker.unlock();
 }
 
-short BufferSend::getMotorDGate(short Number)
+short ARPacketSend::getMotorDGate(short Number)
 {
     m_locker.lock();
     short motor_torque=(m_RAW[m_motorsData[Number].channel*16+5] << 8) +

@@ -14,7 +14,7 @@ class LogMaster
 public:
     //public methods
     static LogMaster* Inst(){return m_inst;}
-    static void Init(){delete m_inst; m_inst = new LogMaster;}
+    static void Initialize(){delete m_inst; m_inst = new LogMaster;}
 
 
     std::vector<std::string> getLastStrings();

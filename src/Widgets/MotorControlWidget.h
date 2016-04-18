@@ -4,9 +4,10 @@
 #include <QWidget>
 
 #include "Management/SettingsStorage.h"
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 #include "Models/MotorTableModel.h"
 #include "Management/MoveController.h"
+#include "Management/Mover.h"
 
 namespace Ui {
 class MotorControlWidget;
@@ -21,6 +22,8 @@ public:
     ~MotorControlWidget();
     void setModel(MotorTableModel *model);
     void UpdateData();
+
+    void setMover(Mover * mover){ m_mover = mover; }
 
 signals:
     void PropertyChanged(int Number);
@@ -56,13 +59,14 @@ private:
 
     Ui::MotorControlWidget *ui;
     MotorTableModel * mModel;
-    BufferRecv *mReadBuffer;
-    BufferSend *mWriteBuffer;
+    ARPacketRecv *mReadBuffer;
+    ARPacketSend *mWriteBuffer;
 
     int currentRow;
     int CurrentNumber;
     bool Reverce;
     int ReverceCoeff;
+    Mover * m_mover;
 };
 
 #endif // MOTORCONTROLWIDGET_H

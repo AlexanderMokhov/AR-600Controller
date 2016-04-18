@@ -1,18 +1,19 @@
-﻿#pragma once
+﻿#ifndef ARPACKETSEND_H
+#define ARPACKETSEND_H
 
 #include <iostream>
 #include <map>
 #include <mutex>
 #include <stdlib.h>
 
-#include "BufferDefinition.h"
+#include "ARPacketDefinition.h"
 
-class BufferSend
+class ARPacketSend
 {
 public:
     // public methods
-    BufferSend(void);
-    ~BufferSend(void);
+    ARPacketSend(void);
+    ~ARPacketSend(void);
 
     //инициализация
     void initialize( unsigned char RAW_other[] );
@@ -78,3 +79,4 @@ private:
     void writeInt16(uint16_t address, int16_t value);
 };
 
+#endif // ARPACKETSEND_H

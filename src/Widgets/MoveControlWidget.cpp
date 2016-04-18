@@ -11,50 +11,6 @@ MoveControlWidget::MoveControlWidget(QWidget *parent) :
     ui->MessageTextBox->setText(DefaultText);
 
     IsLog = false;
-    mMover = new Mover;
-
-    machine = new QStateMachine(this);
-
-    stateStop = new QState(machine);
-    statePlay = new QState(machine);
-    stateNotOpenFile = new QState(machine);
-
-    stateNotOpenFile->assignProperty(ui->ButtonLoadFile,"enabled",true);
-    stateNotOpenFile->assignProperty(ui->ButtonPlayPause,"enabled",false);
-    stateNotOpenFile->assignProperty(ui->ButtonStop,"enabled",false);
-
-    stateNotOpenFile->addTransition(this, SIGNAL(FileLoaded(QString,int,int,bool)), stateStop);
-
-    stateStop->assignProperty(ui->ButtonLoadFile,"enabled",true);
-    stateStop->assignProperty(ui->ButtonPlayPause,"enabled",true);
-    stateStop->assignProperty(ui->ButtonStop,"enabled",false);
-
-    stateStop->addTransition(ui->ButtonPlayPause, SIGNAL(clicked()), statePlay);
-    stateStop->addTransition(this, SIGNAL(PlayStart()), statePlay);
-
-    statePlay->assignProperty(ui->ButtonLoadFile,"enabled",false);
-    statePlay->assignProperty(ui->ButtonPlayPause,"enabled",true);
-    statePlay->assignProperty(ui->ButtonStop,"enabled",true);
-
-    statePlay->addTransition(ui->ButtonStop, SIGNAL(clicked()), stateStop);
-    statePlay->addTransition(mMover, SIGNAL(MoveEnd()), stateStop);
-
-    machine->setInitialState(stateNotOpenFile);
-    machine->start();
-
-    isMoveFile = false;
-
-
-
-    connect(ui->ButtonLoadDRIVEMAT, SIGNAL(toggled(bool)), this, SLOT(on_ButtonLoadDRIVEMAT_clicked()));
-
-    connect(mMover, SIGNAL(PrepEnd()), this, SLOT(startMove()));
-
-    connect(mMover, SIGNAL(MoveEnd()),this, SLOT(on_ButtonStop_clicked()));
-
-    //connect(mMover, SIGNAL(playOnlineStart()),this, SLOT(on_ButtonStop_clicked()));
-    ui->ButtonStartFile->setEnabled(false);
-
 }
 
 MoveControlWidget::~MoveControlWidget()
@@ -62,7 +18,48 @@ MoveControlWidget::~MoveControlWidget()
     delete ui;
 }
 
-void MoveControlWidget::on_ButtonLoadFile_clicked()
+void MoveControlWidget::Initialize()
+{
+    machine = new QStateMachine(this);
+
+    stateStop = new QState(machine);
+    statePlay = new QState(machine);
+    stateNotOpenFile = new QState(machine);
+
+    stateNotOpenFile->assignProperty(ui->LoadFileB,"enabled",true);
+    stateNotOpenFile->assignProperty(ui->StartB,"enabled",false);
+    stateNotOpenFile->assignProperty(ui->StopB,"enabled",false);
+
+    stateNotOpenFile->addTransition(this, SIGNAL(FileLoaded(QString,int,int,bool)), stateStop);
+
+    stateStop->assignProperty(ui->LoadFileB,"enabled",true);
+    stateStop->assignProperty(ui->StartB,"enabled",true);
+    stateStop->assignProperty(ui->StopB,"enabled",false);
+
+    stateStop->addTransition(ui->StartB, SIGNAL(clicked()), statePlay);
+    stateStop->addTransition(this, SIGNAL(PlayStart()), statePlay);
+
+    statePlay->assignProperty(ui->LoadFileB,"enabled",false);
+    statePlay->assignProperty(ui->StartB,"enabled",true);
+    statePlay->assignProperty(ui->StopB,"enabled",true);
+
+    statePlay->addTransition(ui->StopB, SIGNAL(clicked()), stateStop);
+    statePlay->addTransition(m_mover, SIGNAL(MoveEnd()), stateStop);
+
+    machine->setInitialState(stateNotOpenFile);
+    machine->start();
+
+    isMoveFile = false;
+
+    //connect(ui->ButtonLoadDRIVEMAT, SIGNAL(toggled(bool)), this, SLOT(on_ButtonLoadDRIVEMAT_clicked()));
+    connect(m_mover, SIGNAL(PrepEnd()), this, SLOT(startMove()));
+    connect(m_mover, SIGNAL(MoveEnd()),this, SLOT(on_StopB_clicked()));
+
+    //connect(mMover, SIGNAL(playOnlineStart()),this, SLOT(on_ButtonStop_clicked()));
+    ui->StartFileB->setEnabled(false);
+}
+
+void MoveControlWidget::on_LoadFileB_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(0,"Загрузка файла движений","","*.txt");
 
@@ -88,7 +85,7 @@ void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
 
         if(isOk)
         {
-            ui->DRIVEMATPathTextBox->setText(fileName);
+            //ui->DRIVEMATPathTextBox->setText(fileName);
             ui->MessageTextBox->append( "Прочитан DRIVEMAT.TXT \n");
 
             ui->MessageTextBox->append( "Прочитано " + QString::number(MoveCorrector::Inst()->m_RowsNumber) +
@@ -108,17 +105,17 @@ void MoveControlWidget::on_ButtonLoadDRIVEMAT_clicked()
     }
 }
 
-void MoveControlWidget::on_ButtonPlayPause_clicked()
+void MoveControlWidget::on_StartB_clicked()
 {
     isMoveFile = true;
-    MoveController::Inst()->useUserStiff = ui->cBoxUseUserStiff->isChecked();
-    MoveController::Inst()->userStiff = ui->sBoxUserStiffValue->value();
-    MoveController::Inst()->useUserDump = ui->cBoxUseUserDump->isChecked();
-    MoveController::Inst()->userDump = ui->sBoxUserDumpValue->value();
-    mMover->startGoToPos(false);
+    MoveController::Inst()->useUserStiff = ui->UseUserPGateB->isChecked();
+    MoveController::Inst()->userStiff = ui->UserPGateValueT->value();
+    MoveController::Inst()->useUserDump = ui->UseUserIGateB->isChecked();
+    MoveController::Inst()->userDump = ui->UserIGateValueT->value();
+    m_mover->startGoToPos(false);
 }
 
-void MoveControlWidget::on_ButtonStop_clicked()
+void MoveControlWidget::on_StopB_clicked()
 {
     stopMoveAction();
     qDebug() << "Движение остановлено" << endl;
@@ -127,7 +124,7 @@ void MoveControlWidget::on_ButtonStop_clicked()
 void MoveControlWidget::stopMoveAction()
 {
     isMoveFile = false;
-    mMover->stopMove();
+    m_mover->stopMove();
 
     if(IsLog)
     {
@@ -144,23 +141,23 @@ void MoveControlWidget::on_checkBoxLog_clicked(bool checked)
     MoveController::Inst()->setIsLog(checked);
 }
 
-void MoveControlWidget::on_ButtonGoStartPos_clicked()
+void MoveControlWidget::on_GoStartPosB_clicked()
 {
     isMoveFile = false;
-    mMover->startGoToPos(true);
+    m_mover->startGoToPos(true);
 }
 
-void MoveControlWidget::on_ButtonStartFile_clicked()
+void MoveControlWidget::on_StartFileB_clicked()
 {
     isMoveFile = false;
-    mMover->startGoToPos(false);
+    m_mover->startGoToPos(false);
 }
 
 void MoveControlWidget::startMove()
 {
     if(isMoveFile)
     {
-        mMover->startMove();
+        m_mover->startMove();
 
         if(IsLog)
         {
@@ -174,7 +171,7 @@ void MoveControlWidget::startMoveOnline()
 {
     // openFile("sinhron/DRIVEMAR.TXT", true);
 
-    mMover->startMoveOnline();
+    m_mover->startMoveOnline();
     if(IsLog)
     {
         emit StartWriteRecord(2e5);
@@ -186,7 +183,7 @@ void MoveControlWidget::StartPlayFile(bool mode)
     if(!mode)
     {
         isMoveFile = true;
-        mMover->startGoToPos(false);
+        m_mover->startGoToPos(false);
         emit PlayStart();
     }
 }
@@ -195,7 +192,7 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
 {
     if (!fileName.isEmpty())
     {
-        ui->FilePathTextBox->setText(fileName);
+        ui->FilePathT->setText(fileName);
         bool isOk = MoveController::Inst()->openFile(fileName.toStdString());
         if(isOk)
         {
@@ -207,7 +204,8 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
             ui->MessageTextBox->append( "Прочитано " + QString::number(CountRows) + " строк" + "\n");
             ui->MessageTextBox->append( "Время записи " + QString::number((double)Duration/1e6) + " секунд" + "\n");
 
-            ui->ButtonStartFile->setEnabled(true);
+            ui->StartB->setEnabled(true);
+            ui->StartFileB->setEnabled(true);
 
             emit FileLoaded(fileName, CountRows, Duration, mode);
         }
@@ -221,16 +219,16 @@ void MoveControlWidget::openFile(QString fileName, bool mode)
     StartPlayFile(mode);
 }
 
-void MoveControlWidget::on_cBoxUseUserStiff_clicked(bool checked)
+void MoveControlWidget::on_UseUserPGateB_clicked(bool checked)
 {
     MoveController::Inst()->useUserStiff = checked;
-    MoveController::Inst()->userStiff = ui->sBoxUserStiffValue->value();
+    MoveController::Inst()->userStiff = ui->UserPGateValueT->value();
 }
 
-void MoveControlWidget::on_cBoxUseUserDump_clicked(bool checked)
+void MoveControlWidget::on_UseUserIGateB_clicked(bool checked)
 {
     MoveController::Inst()->useUserDump = checked;
-    MoveController::Inst()->userDump = ui->sBoxUserDumpValue->value();
+    MoveController::Inst()->userDump = ui->UserIGateValueT->value();
 }
 
 void MoveControlWidget::startStdMove()

@@ -4,7 +4,7 @@ RecordController * RecordController::mInst = 0;
 
 RecordController::RecordController()
 {
-    mReadBuffer = BufferController::Inst()->getBufferRecv();
+    mReadBuffer = ARPacketManager::Inst()->getPacketRecv();
     mConfigMap = SettingsStorage::Inst()->GetMotors();
     mSensMap = SettingsStorage::Inst()->GetSensors();
 

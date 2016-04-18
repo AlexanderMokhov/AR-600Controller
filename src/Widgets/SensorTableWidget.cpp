@@ -57,7 +57,7 @@ void SensorTableWidget::UpdatePos()
     {
         int Number = (*it).second.getChannel();//в виде исключения
         int Param = (*it).second.getParam();
-        QString cValue = QString::number(BufferController::Inst()->getBufferRecv()->getSensorValue(Number,Param));
+        QString cValue = QString::number(ARPacketManager::Inst()->getPacketRecv()->getSensorValue(Number,Param));
         mModel->setData(mModel->index(i,2),cValue,Qt::EditRole);
         i++;
     }

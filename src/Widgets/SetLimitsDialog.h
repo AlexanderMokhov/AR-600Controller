@@ -4,7 +4,7 @@
 #include <QDialog>
 
 #include "Management/SettingsStorage.h"
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 
 namespace Ui {
 class SetLimitsDialog;

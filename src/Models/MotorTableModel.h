@@ -34,18 +34,11 @@ public:
     bool insertRows( int position, int rows,const QModelIndex & index = QModelIndex());
     bool removeRows( int position, int rows,const QModelIndex & index = QModelIndex());
 
-    void insertRow( const QString & Number,
-                    const QString & Name,
-                    const QString & Status,
-                    const QString & Pos,
-                    const QString & MinPos,
-                    const QString & MaxPos,
-                    const QString & Reverce,
-                    const QString & Stiff,
-                    const QString & Dump,
-                    const QString & Torque,
-                    const QString & Calibration,
-                    const QString & Enable);
+    void insertRow(const QString &Number, const QString &Name,
+                   const QString &Angle, const QString &MinAngle,
+                   const QString &MaxAngle, const QString &PGate,
+                   const QString &IGate, const QString &DGate,
+                   const QString & Status);
 
 signals:
     void editCompleted(const QString &);

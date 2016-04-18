@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QTime>
 
-#include "Buffers/BufferController.h"
+#include "Buffers/ARPacketManager.h"
 #include "Management/SettingsStorage.h"
 
 #include "Libs/QCustomPlot/qcustomplot.h"

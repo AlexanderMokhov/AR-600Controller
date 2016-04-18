@@ -106,7 +106,7 @@ void PlotWidget::drawPlot()
     {
         for(auto it = m_Graphs.begin(); it != m_Graphs.end(); ++it)
         {
-            double value = BufferController::Inst()->getBufferRecv()->getMotorAngle((*it).first);
+            double value = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle((*it).first);
             (*it).second.graphic->addData(key, value);
             (*it).second.graphic->removeDataBefore(key - rangeSize);
             (*it).second.graphic->rescaleValueAxis(true);

@@ -7,8 +7,8 @@ MotorControlWidget::MotorControlWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mReadBuffer = BufferController::Inst()->getBufferRecv();
-    mWriteBuffer = BufferController::Inst()->getBufferSend();
+    mReadBuffer = ARPacketManager::Inst()->getPacketRecv();
+    mWriteBuffer = ARPacketManager::Inst()->getPacketSend();
 
     state = States::STOPBRAKE;
 }
@@ -250,9 +250,10 @@ void MotorControlWidget::on_ButtonDumpWrite_clicked()
 
 void MotorControlWidget::on_ButtonGoToPos_clicked()
 {
-    MoveController::Inst()->startGoToAngle(CurrentNumber,
-                                              ui->spinPosToGo->value(),
-                                              ui->spinTimeToGo->value());
+    m_mover->startGoToAngle(CurrentNumber,
+                            ui->spinPosToGo->value(),
+                            ui->spinTimeToGo->value());
+    //MoveController::Inst()->startGoToAngle();
 }
 
 void MotorControlWidget::on_ButtonStopGoToPos_clicked()

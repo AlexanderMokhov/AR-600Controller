@@ -60,7 +60,7 @@ public:
     bool readValue(std::string *temp, std::locale loc, int *pos, const std::string &str, bool isDouble);
 
     static MovesStorage* Inst(){ return m_inst; }
-    static void initialize(){ delete m_inst; m_inst = new MovesStorage; }
+    static void Initialize(){ delete m_inst; m_inst = new MovesStorage; }
 
     bool openFile(std::string fileName);
     int getRowsNumber(){ return m_rowsNumber; }
