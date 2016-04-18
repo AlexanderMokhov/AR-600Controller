@@ -67,8 +67,8 @@ MotorTableModel *MotorTableWidget::getModel()
 
 void MotorTableWidget::UpdateAngle()
 {
-    ui->MotorTableView->resizeColumnsToContents();
-    ui->MotorTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    //ui->MotorTableView->resizeColumnsToContents();
+    //ui->MotorTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 
     std::map<int,Motor> * mMap = SettingsStorage::Inst()->GetMotors();
     int i=0;

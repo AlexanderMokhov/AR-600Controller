@@ -9,6 +9,8 @@
 #include "Management/RecordController.h"
 #include "Management/Recorder.h"
 
+#include "Management/LogMaster.h"
+
 namespace Ui {
 class RecordWidget;
 }
@@ -29,6 +31,7 @@ private slots:
     void on_ButtonStopRecord_clicked();
     void StartWriteRecord(int TimeRecord);
     void StopWriteRecord();
+    void on_CheckWriteB_clicked(bool checked);
 
 private:
     //private variable
@@ -36,6 +39,7 @@ private:
     int                  mRecordTime;
     int                  mDelay;
     Recorder             *mRecorder;
+    bool isWriteForMove;
 };
 
 #endif // RECORDWIDGET_H

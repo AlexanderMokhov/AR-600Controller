@@ -8,6 +8,8 @@ RecordWidget::RecordWidget(QWidget *parent) :
     ui->setupUi(this);
     mRecorder = new Recorder;
     connect(mRecorder, SIGNAL(UpdateTime(long)), SLOT(OnUpdateTime(long)));
+
+    isWriteForMove = false;
 }
 
 RecordWidget::~RecordWidget()
@@ -30,6 +32,8 @@ void RecordWidget::on_ButtonStopRecord_clicked()
 
 void RecordWidget::StartWriteRecord(int TimeRecord)
 {
+    if(!isWriteForMove) return;
+
     mRecordTime = TimeRecord;
     ui->spinTimeRecord->setValue(TimeRecord);
     mDelay = ui->spinDelayRecord->value();
@@ -39,7 +43,14 @@ void RecordWidget::StartWriteRecord(int TimeRecord)
 
 void RecordWidget::StopWriteRecord()
 {
+    if(!isWriteForMove) return;
+
     mRecorder->StopWriting();
+}
+
+void RecordWidget::on_CheckWriteB_clicked(bool checked)
+{
+    isWriteForMove = checked;
 }
 
 void RecordWidget::OnUpdateTime(long time)

@@ -126,11 +126,7 @@ void MoveControlWidget::stopMoveAction()
     isMoveFile = false;
     m_mover->stopMove();
 
-    if(IsLog)
-    {
-        emit StopWriteRecord();
-    }
-
+    emit StopWriteRecord();
     emit PlayStop();
 }
 
@@ -159,10 +155,7 @@ void MoveControlWidget::startMove()
     {
         m_mover->startMove();
 
-        if(IsLog)
-        {
-            emit StartWriteRecord(MovesStorage::Inst()->getDuration()/1e3);
-        }
+        emit StartWriteRecord(MovesStorage::Inst()->getDuration()/1e3);
         emit PlayStart();
     }
 }

@@ -152,17 +152,17 @@ void PowerControlW::on6V1Changed(bool checked)
 
 void PowerControlW::onAllPowerChanged(bool checked)
 {
-    onRebootPower();
-//    if(checked)
-//    {
-//        isOn = true;
-//        if( !mTimer->isActive() ) mTimer->start();
-//    }
-//    else
-//    {
-//        isOn = false;
-//        if( !mTimer->isActive() ) mTimer->start();
-//    }
+    //onRebootPower();
+    if(checked)
+    {
+        isOn = true;
+        if( !mTimer->isActive() ) mTimer->start();
+    }
+    else
+    {
+        isOn = false;
+        if( !mTimer->isActive() ) mTimer->start();
+    }
 }
 
 void PowerControlW::onRebootPower()
@@ -181,21 +181,17 @@ void PowerControlW::stepRebootPower()
     switch (m_state) {
     case PowerStates::REBOOT_POWER_DOWN:
         OnTimerTick();
-        LogMaster::Inst()->addLine("REBOOT POWER DOWN : " + std::to_string(mTime));
         if(mTime < 0)
         {
             mTimer->start();
-            LogMaster::Inst()->addLine("REBOOT POWER DOWN : " + std::to_string(mTime) + "END");
             m_state = PowerStates::REBOOT_POWER_UP;
             isOn = true;
         }
         break;
     case PowerStates::REBOOT_POWER_UP:
         OnTimerTick();
-        LogMaster::Inst()->addLine("REBOOT POWER UP : " + std::to_string(mTime));
         if(mTime > 4 * mInterval)
         {
-            LogMaster::Inst()->addLine("REBOOT POWER UP : " + std::to_string(mTime) + "END");
             m_state = PowerStates::REBOOT_POWER_START;
             mTimer->stop();
 
@@ -262,7 +258,6 @@ void PowerControlW::OnTimerTick()
         {
         case 0:
         {
-            LogMaster::Inst()->addLine("DOWN 0-500 : " + std::to_string(mTime));
             ARPacketManager::Inst()->getPacketSend()->offPower48();
             QPushButton *pb = (QPushButton*)ui->tableWidget->cellWidget(1,3);
             pb->setChecked(false);
@@ -272,7 +267,6 @@ void PowerControlW::OnTimerTick()
 
         case 500:
         {
-            LogMaster::Inst()->addLine("DOWN 1-500 : " + std::to_string(mTime));
             ARPacketManager::Inst()->getPacketSend()->offPower8_2();
             QPushButton *pb = (QPushButton*)ui->tableWidget->cellWidget(2,3);
             pb->setChecked(false);
@@ -280,7 +274,6 @@ void PowerControlW::OnTimerTick()
             break;
         case 2*500:
         {
-            LogMaster::Inst()->addLine("DOWN 2-500 : " + std::to_string(mTime));
             ARPacketManager::Inst()->getPacketSend()->offPower8_1();
             QPushButton *pb = (QPushButton*)ui->tableWidget->cellWidget(3,3);
             pb->setChecked(false);
@@ -288,7 +281,6 @@ void PowerControlW::OnTimerTick()
             break;
         case 3*500:
         {
-            LogMaster::Inst()->addLine("DOWN 3-500 : " + std::to_string(mTime));
             ARPacketManager::Inst()->getPacketSend()->offPower6_2();
             QPushButton *pb = (QPushButton*)ui->tableWidget->cellWidget(4,3);
             pb->setChecked(false);
@@ -296,7 +288,6 @@ void PowerControlW::OnTimerTick()
             break;
         case 4*500:
         {
-            LogMaster::Inst()->addLine("DOWN 4-500 : " + std::to_string(mTime));
             ARPacketManager::Inst()->getPacketSend()->offPower6_1();
             QPushButton *pb = (QPushButton*)ui->tableWidget->cellWidget(5,3);
             pb->setChecked(false);
