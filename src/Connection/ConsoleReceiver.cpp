@@ -74,15 +74,13 @@ void ConsoleReceiver::processPendingDatagrams()
             writeToFile(datagram);
         }
         else if(datagram == "1")    // запустить решение
-        {
-            // отправить файл
-            //sendFile();
             emit startPlayOnline();
-        }
         else if(datagram == "2")    // остановить решение
-        {
             emit stopPlayOnline();
-        }
+        else if(datagram == "8")    // перейти в стартовое
+            emit goToStartPos();
+        else if(datagram == "3")
+            emit rebootPower();
      }
 }
 

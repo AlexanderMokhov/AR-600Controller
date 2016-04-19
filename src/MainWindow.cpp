@@ -237,6 +237,8 @@ void MainWindow::ConnectionsInit()
 
     connect(mConsoleReceiver, SIGNAL(startPlayOnline()), this, SLOT(StartPlayOnline()));
     connect(mConsoleReceiver, SIGNAL(stopPlayOnline()), this, SLOT(StopPlayOnline()));
+    connect(mConsoleReceiver, SIGNAL(goToStartPos()), mMoveControlWidget, SLOT(on_GoStartPosB_clicked()));
+    connect(mConsoleReceiver, SIGNAL(rebootPower()), mPowerCW, SLOT(onRebootPower()));
 
     LogMaster::Inst()->addLine("Настройка connect(...) завершена");
 }

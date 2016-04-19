@@ -28,6 +28,8 @@ signals:
     void ReadyData();
     void startPlayOnline();
     void stopPlayOnline();
+    void goToStartPos();
+    void rebootPower();
 
 private:
     //private variable
