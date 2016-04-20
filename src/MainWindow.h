@@ -32,7 +32,7 @@
 #include "Widgets/LogWidget.h"
 #include "Widgets/PowerControlW.h"
 #include "Widgets/ConnectionControlW.h"
-
+#include "Widgets/AdditionControlW.h"
 #include "Buffers/ARPacketManager.h"
 
 #include "Connection/Receiver.h"
@@ -98,6 +98,7 @@ private:
     LogWidget               *mLogWidget;
     PowerControlW           *mPowerCW;
     ConnectionControlW      *mConnectionCW;
+    AdditionControlW        *mAdditionCW;
 
     //действия
     QAction *TBactionOpenCF;

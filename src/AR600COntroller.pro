@@ -62,7 +62,8 @@ SOURCES += main.cpp\
     Buffers/ARPacketRecv.cpp \
     Buffers/ARPacketManager.cpp \
     Widgets/PowerControlW.cpp \
-    Widgets/ConnectionControlW.cpp
+    Widgets/ConnectionControlW.cpp \
+    Widgets/AdditionControlW.cpp
 
 HEADERS  += \
     Widgets/ConnectConfigDialog.h \
@@ -109,7 +110,8 @@ HEADERS  += \
     Buffers/FPacketRecv.h \
     Buffers/FPacketSend.h \
     Widgets/PowerControlW.h \
-    Widgets/ConnectionControlW.h
+    Widgets/ConnectionControlW.h \
+    Widgets/AdditionControlW.h
 
 FORMS    += \
     Widgets/ConnectConfigDialog.ui \
@@ -126,7 +128,8 @@ FORMS    += \
     Widgets/PlotWidget.ui \
     Widgets/LogWidget.ui \
     Widgets/PowerControlW.ui \
-    Widgets/ConnectionControlW.ui
+    Widgets/ConnectionControlW.ui \
+    Widgets/AdditionControlW.ui
 
 win32
 {

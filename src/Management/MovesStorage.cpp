@@ -6,6 +6,10 @@ MovesStorage::MovesStorage()
 {
     m_moveID = 0;
     m_motors = SettingsStorage::Inst()->GetMotors();
+
+    for(auto it = SettingsStorage::Inst()->GetMotors()->begin();
+        it != SettingsStorage::Inst()->GetMotors()->end(); ++it)
+        m_startPosition[(*it).second.getNumber()] = 0;
     //loadForwardMoves();
     //loadBackMoves();
 }
@@ -274,64 +278,6 @@ bool MovesStorage::loadFile(std::string filename)
     }
 }
 
-bool MovesStorage::loadFile2(string fileName)
-{
-//    std::ifstream file(fileName.c_str());
-
-//    if( file.is_open() )
-//    {
-//        //очищаем список команд
-//        m_moves.clear();
-//        m_rowsNumber = 0;
-
-//        std::string line;
-//        MoveCommand nextCommand;
-//        PID mPID;
-
-//        //по умолчанию заполняем значениями из файла настроек
-//        mPID.Stiff = SettingsStorage::Inst()->GetDefaultStiff();
-//        mPID.Dump = SettingsStorage::Inst()->GetDefaultDump();
-//        mPID.Torque = SettingsStorage::Inst()->GetDefaultTorque();
-
-//        mPID.StiffFactor = SettingsStorage::Inst()->GetDefaultStiffFactor();
-//        mPID.DumpFactor = SettingsStorage::Inst()->GetDefaultDumpFactor();
-//        mPID.TorqueFactor = SettingsStorage::Inst()->GetDefaultTorqueFactor();
-
-//        while( std::getline(file, line) )
-//        {
-
-
-
-//            //заполняем команду
-//            nextCommand.Time = (int)Time;
-//            nextCommand.NumberChannel = Number;
-//            nextCommand.Angle = (int)Angle;
-//            nextCommand.PIDs = mPID;
-
-//            //добавляем команду в список
-//            m_moves.push_back(nextCommand);
-
-//            m_locker.lock();
-//            m_rowsNumber++;
-//            m_locker.unlock();
-
-//            m_duration = Time;//в микросекундах
-//        }
-
-//        m_moveID = 0;
-//        qDebug() << "считано " << QString::number(m_rowsNumber) << " строк" << endl;
-//        qDebug() << "Время записи " << QString::number((double)m_duration/1e6) << " секунд" << endl;
-
-//        file.close();
-//        return true;
-//    }
-//    else
-//    {
-//        file.close();
-        return false;
-//    }
-}
-
 void MovesStorage::setForwardMoves()
 {
     m_moves = m_forwardMoves;
@@ -454,4 +400,9 @@ int MovesStorage::getCurrentRow()
     m_locker.lock();
     return m_rowsNumber;
     m_locker.unlock();
+}
+
+void MovesStorage::setStartPosition(int number, int angle)
+{
+    m_startPosition[number] = angle;
 }

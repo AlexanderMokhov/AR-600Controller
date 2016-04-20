@@ -99,6 +99,8 @@ public:
 
     void setIsLog(bool value);
 
+    void setCurPosAsDefault();
+
 signals:
     void InitStart();
     void InitEnd();
@@ -115,7 +117,8 @@ private:
     States m_state; //текущее состояние
     std::mutex m_locker; //мьютекс
     QTime m_time;
-    std::map<int,Motor> * m_motors;
+    std::map<int, Motor> * m_motors;
+    std::map<int, int> m_startPosition;
 
     //для перехода в заданный угол
     int mTimeToGo, NewTimeToGo;

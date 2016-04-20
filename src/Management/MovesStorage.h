@@ -68,7 +68,6 @@ public:
     std::vector<MoveCommand> * getMoves(){return &m_moves;}
 
     bool loadFile(string filename);
-    bool loadFile2(string fileName);
     bool loadForwardMoves();
     bool loadBackMoves();
     void setForwardMoves();
@@ -80,10 +79,13 @@ public:
     void loadDataFromArray(char* array, uint size);
     int getCurrentRow();
 
+    void setStartPosition(int number, int angle);
+
 private:
     //private variable
     static MovesStorage* m_inst;
-    std::map<int,Motor> * m_motors;
+    std::map<int, Motor> * m_motors;
+    std::map<int, int> m_startPosition;
     volatile unsigned int countErrors;
     std::mutex m_locker;
 

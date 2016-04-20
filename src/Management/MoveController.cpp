@@ -18,6 +18,7 @@ MoveController::MoveController()
         item.Step = 0;
         item.isEndPos = false;
         mGoToPosData[(*it).first] = item;
+        m_startPosition[(*it).second.getNumber()] = 0;
     }
 
     MovesStorage::Inst()->Initialize();
@@ -273,18 +274,21 @@ void MoveController::startingGoPos()
 {
     emit InitStart();
     int MaxDiff = 0;
-    int i=0;
+    int i = 0;
 
     m_motors = SettingsStorage::Inst()->GetMotors();
     for(auto it = m_motors->begin();it != m_motors->end();++it)
     {
         int Number = (*it).first;
         int StartAngle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle(Number);
-        int DestAngle = mGoPosMode == true ? MovesStorage::Inst()->m_moves[i].Angle : 0;
+        int DestAngle = mGoPosMode == true ?
+                    MovesStorage::Inst()->m_moves[i].Angle :
+                    m_startPosition[Number];
+
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.getEnable()) ? DiffAngle : MaxDiff;
 
-        setPosData(Number,DestAngle,StartAngle);
+        setPosData(Number, DestAngle, StartAngle);
 
         ARPacketManager::Inst()->getPacketSend()->setMotorAngle(Number, StartAngle);
         ARPacketManager::Inst()->getPacketSend()->motorTrace(Number);
@@ -375,6 +379,15 @@ void MoveController::stoppingGoPos()
 void MoveController::setIsLog(bool value)
 {
     this->isLog = value;
+}
+
+void MoveController::setCurPosAsDefault()
+{
+    for(auto it = m_motors->begin();it != m_motors->end();++it)
+    {
+        int Angle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle((*it).first);
+        m_startPosition[(*it).second.getNumber()] = Angle;
+    }
 }
 
 //Конец команд для перехода в исходную позицию
