@@ -1,9 +1,9 @@
-#include "LogWidget.h"
-#include "ui_LogWidget.h"
+#include "LogOutputW.h"
+#include "ui_LogOutputW.h"
 
-LogWidget::LogWidget(QWidget *parent) :
+LogOutputW::LogOutputW(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LogWidget)
+    ui(new Ui::LogOutputW)
 {
     ui->setupUi(this);
 
@@ -13,29 +13,29 @@ LogWidget::LogWidget(QWidget *parent) :
     connect(mTimer,SIGNAL(timeout()),this,SLOT(OnTimerTick()));
 }
 
-LogWidget::~LogWidget()
+LogOutputW::~LogOutputW()
 {
     delete ui;
 }
 
-void LogWidget::addMessage(QString message)
+void LogOutputW::addMessage(QString message)
 {
     QDateTime mCurrentDateTime = QDateTime::currentDateTime();
     QString prefix = "<font color = 'brown'>" + mCurrentDateTime.toString("dd.MM.yyyy HH:mm:ss")+"</font> - ";
     ui->textLog->append(prefix + message);
 }
 
-void LogWidget::startWrite()
+void LogOutputW::startWrite()
 {
     mTimer->start();
 }
 
-void LogWidget::OnTimerTick()
+void LogOutputW::OnTimerTick()
 {
     updateData();
 }
 
-void LogWidget::updateData()
+void LogOutputW::updateData()
 {
     std::vector<std::string> mData = LogMaster::Inst()->getLastStrings();
     for(int i = 0; i < mData.size(); i++)

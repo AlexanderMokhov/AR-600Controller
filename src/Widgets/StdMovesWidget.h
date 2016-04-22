@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include "Management/MovesStorage.h"
-#include "Widgets/MoveControlWidget.h"
+#include "ControlWidgets/MotionControlW.h"
 
 namespace Ui {
 class StdMovesWidget;

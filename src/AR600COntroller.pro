@@ -17,10 +17,6 @@ TEMPLATE = app
 CONFIG += qt c++11 thread
 
 SOURCES += main.cpp\
-    Widgets/ConnectConfigDialog.cpp \
-    Widgets/MotorTableWidget.cpp \
-    Widgets/SensorTableWidget.cpp \
-    Widgets/MotorControlWidget.cpp \
     Models/CommandTableModel.cpp \
     Models/MotorTableModel.cpp \
     Models/SensorTableModel.cpp \
@@ -35,23 +31,16 @@ SOURCES += main.cpp\
     Libs/TinyXML/tinyxmlparser.cpp \
     Management/MoveController.cpp \
     Management/Mover.cpp \
-    MainWindow.cpp \
     Management/MoveCorrector.cpp \
-    Widgets/MoveControlWidget.cpp \
     Management/RecordController.cpp \
     Management/Recorder.cpp \
-    Widgets/RecordWidget.cpp \
-    Widgets/MoveFilesWidget.cpp \
-    Widgets/PowerWidget.cpp \
     Libs/Sockets/Socket.cpp \
-    Widgets/SetLimitsDialog.cpp \
     Widgets/StdMovesWidget.cpp \
     Connection/ConsoleReceiver.cpp \
     Management/SettingsStorage.cpp \
     Management/MovesStorage.cpp \
     Devices/PIDGates.cpp \
     Libs/QCustomPlot/qcustomplot.cpp \
-    Widgets/PlotWidget.cpp \
     Connection/FrundTransiver.cpp \
     Widgets/LogWidget.cpp \
     Management/FileLoader.cpp \
@@ -61,15 +50,21 @@ SOURCES += main.cpp\
     Buffers/ARPacketSend.cpp \
     Buffers/ARPacketRecv.cpp \
     Buffers/ARPacketManager.cpp \
-    Widgets/PowerControlW.cpp \
-    Widgets/ConnectionControlW.cpp \
-    Widgets/AdditionControlW.cpp
+    Widgets/PlotW.cpp \
+    Widgets/ControlWidgets/AdditionalControlW.cpp \
+    Widgets/ControlWidgets/ConnectionControlW.cpp \
+    Widgets/ControlWidgets/MotionControlW.cpp \
+    Widgets/ControlWidgets/MotorsControlW.cpp \
+    Widgets/ControlWidgets/PowerControlW.cpp \
+    Widgets/ControlWidgets/RecordControlW.cpp \
+    Widgets/DialogWidgets/ConnectionSetupDialog.cpp \
+    Widgets/DialogWidgets/SetLimitsDialog.cpp \
+    Widgets/GridWidgets/MotorsGridW.cpp \
+    Widgets/GridWidgets/MovesGridW.cpp \
+    Widgets/GridWidgets/SensorsGridW.cpp \
+    Widgets/MainWindow.cpp
 
 HEADERS  += \
-    Widgets/ConnectConfigDialog.h \
-    Widgets/MotorTableWidget.h \
-    Widgets/SensorTableWidget.h \
-    Widgets/MotorControlWidget.h \
     Models/CommandTableModel.h \
     Models/MotorTableModel.h \
     Models/SensorTableModel.h \
@@ -82,25 +77,17 @@ HEADERS  += \
     Libs/TinyXML/tinyxml.h \
     Management/MoveController.h \
     Management/Mover.h \
-    MainWindow.h \
     Management/MoveCorrector.h \
-    Widgets/MoveControlWidget.h \
     Management/RecordController.h \
     Management/Recorder.h \
-    Widgets/RecordWidget.h \
-    Widgets/MoveFilesWidget.h \
-    Widgets/PowerWidget.h \
     Libs/Sockets/Socket.h \
-    Widgets/SetLimitsDialog.h \
     Widgets/StdMovesWidget.h \
     Connection/ConsoleReceiver.h \
     Management/SettingsStorage.h \
     Management/MovesStorage.h \
     Devices/PIDGates.h \
     Libs/QCustomPlot/qcustomplot.h \
-    Widgets/PlotWidget.h \
     Connection/FrundTransiver.h \
-    Widgets/LogWidget.h \
     Management/FileLoader.h \
     Management/LogMaster.h \
     Buffers/ARPacketDefinition.h \
@@ -109,27 +96,37 @@ HEADERS  += \
     Buffers/ARPacketManager.h \
     Buffers/FPacketRecv.h \
     Buffers/FPacketSend.h \
-    Widgets/PowerControlW.h \
-    Widgets/ConnectionControlW.h \
-    Widgets/AdditionControlW.h
+    Widgets/PlotW.h \
+    Widgets/LogOutputW.h \
+    Widgets/ControlWidgets/AdditionalControlW.h \
+    Widgets/ControlWidgets/ConnectionControlW.h \
+    Widgets/ControlWidgets/MotionControlW.h \
+    Widgets/ControlWidgets/MotorsControlW.h \
+    Widgets/ControlWidgets/PowerControlW.h \
+    Widgets/ControlWidgets/RecordControlW.h \
+    Widgets/DialogWidgets/ConnectionSetupDialog.h \
+    Widgets/DialogWidgets/SetLimitsDialog.h \
+    Widgets/GridWidgets/MotorsGridW.h \
+    Widgets/GridWidgets/MovesGridW.h \
+    Widgets/GridWidgets/SensorsGridW.h \
+    Widgets/MainWindow.h
 
 FORMS    += \
-    Widgets/ConnectConfigDialog.ui \
-    Widgets/SensorTableWidget.ui \
-    Widgets/MotorTableWidget.ui \
-    Widgets/MotorControlWidget.ui \
-    MainWindow.ui \
-    Widgets/MoveControlWidget.ui \
-    Widgets/RecordWidget.ui \
-    Widgets/MoveFilesWidget.ui \
-    Widgets/PowerWidget.ui \
-    Widgets/SetLimitsDialog.ui \
+    Widgets/MainWindow.ui \
     Widgets/StdMovesWidget.ui \
-    Widgets/PlotWidget.ui \
-    Widgets/LogWidget.ui \
-    Widgets/PowerControlW.ui \
-    Widgets/ConnectionControlW.ui \
-    Widgets/AdditionControlW.ui
+    Widgets/LogOutputW.ui \
+    Widgets/PlotW.ui \
+    Widgets/DialogWidgets/SetLimitsDialog.ui \
+    Widgets/DialogWidgets/ConnectionSetupDialog.ui \
+    Widgets/ControlWidgets/PowerControlW.ui \
+    Widgets/ControlWidgets/ConnectionControlW.ui \
+    Widgets/ControlWidgets/AdditionalControlW.ui \
+    Widgets/ControlWidgets/MotorsControlW.ui \
+    Widgets/ControlWidgets/MotionControlW.ui \
+    Widgets/ControlWidgets/RecordControlW.ui \
+    Widgets/GridWidgets/MotorsGridW.ui \
+    Widgets/GridWidgets/MovesGridW.ui \
+    Widgets/GridWidgets/SensorsGridW.ui
 
 win32
 {
