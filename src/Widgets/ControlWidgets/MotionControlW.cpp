@@ -51,11 +51,9 @@ void MotionControlW::Initialize()
 
     isMoveFile = false;
 
-    //connect(ui->ButtonLoadDRIVEMAT, SIGNAL(toggled(bool)), this, SLOT(on_ButtonLoadDRIVEMAT_clicked()));
     connect(m_mover, SIGNAL(PrepEnd()), this, SLOT(startMove()));
     connect(m_mover, SIGNAL(MoveEnd()),this, SLOT(on_StopB_clicked()));
 
-    //connect(mMover, SIGNAL(playOnlineStart()),this, SLOT(on_ButtonStop_clicked()));
     ui->StartFileB->setEnabled(false);
 }
 
@@ -73,36 +71,6 @@ void MotionControlW::on_LoadFileB_clicked()
     openFile(fileName, true);
     progress.setValue(100);
     QCoreApplication::processEvents();
-}
-
-void MotionControlW::on_ButtonLoadDRIVEMAT_clicked()
-{
-    QString fileName = QFileDialog::getOpenFileName(0,"Загрузка DRIVEMAT файла","","*.TXT *.txt");
-
-    if ( !fileName.isEmpty() )
-    {
-        bool isOk = MoveCorrector::Inst()->openDriveMatFile(fileName.toStdString());
-
-        if(isOk)
-        {
-            //ui->DRIVEMATPathTextBox->setText(fileName);
-            ui->MessageTextBox->append( "Прочитан DRIVEMAT.TXT \n");
-
-            ui->MessageTextBox->append( "Прочитано " + QString::number(MoveCorrector::Inst()->m_RowsNumber) +
-                                        " строк" + "\n");
-
-            ui->MessageTextBox->append( "Время записи " +
-                                        QString::number((double)MoveCorrector::Inst()->m_duration/1e6) +
-                                        " секунд" + "\n");
-
-            qDebug() << "Файл DRIVEMAT успешно загружен из " << fileName << endl;
-        }
-        else
-        {
-            qDebug() << "Файл DRIVEMAT не был загружен из " << fileName << endl;
-            qDebug() << "Возможно, имя или формат файла заданы неверно" << endl;
-        }
-    }
 }
 
 void MotionControlW::on_StartB_clicked()
@@ -128,13 +96,6 @@ void MotionControlW::stopMoveAction()
 
     emit StopWriteRecord();
     emit PlayStop();
-}
-
-
-void MotionControlW::on_checkBoxLog_clicked(bool checked)
-{
-    IsLog = checked;
-    MoveController::Inst()->setIsLog(checked);
 }
 
 void MotionControlW::on_GoStartPosB_clicked()

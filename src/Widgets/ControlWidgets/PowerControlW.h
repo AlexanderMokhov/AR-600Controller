@@ -6,7 +6,7 @@
 #include <QIcon>
 #include <QTimer>
 
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "Management/LogMaster.h"
 
 namespace Ui {

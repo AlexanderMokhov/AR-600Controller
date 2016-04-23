@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include "Management/SettingsStorage.h"
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "Models/MotorTableModel.h"
 #include "Management/MoveController.h"
 #include "Management/Mover.h"

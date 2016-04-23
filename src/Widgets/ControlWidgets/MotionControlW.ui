@@ -136,7 +136,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../MyResources.qrc">
+          <iconset resource="../../MyResources.qrc">
            <normaloff>:/MyIcons/Icons/off.png</normaloff>
            <normalon>:/MyIcons/Icons/on.png</normalon>:/MyIcons/Icons/off.png</iconset>
          </property>
@@ -199,7 +199,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../MyResources.qrc">
+          <iconset resource="../../MyResources.qrc">
            <normaloff>:/MyIcons/Icons/off.png</normaloff>
            <normalon>:/MyIcons/Icons/on.png</normalon>:/MyIcons/Icons/off.png</iconset>
          </property>
@@ -242,7 +242,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../MyResources.qrc"/>
+  <include location="../../MyResources.qrc"/>
  </resources>
  <connections/>
 </ui>

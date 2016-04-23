@@ -6,7 +6,7 @@
 
 #include "Management/SettingsStorage.h"
 #include "Models/SensorTableModel.h"
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 
 namespace Ui {
 class SensorsGridW;

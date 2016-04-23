@@ -45,11 +45,11 @@ SOURCES += main.cpp\
     Widgets/LogWidget.cpp \
     Management/FileLoader.cpp \
     Management/LogMaster.cpp \
-    Buffers/FPacketRecv.cpp \
-    Buffers/FPacketSend.cpp \
-    Buffers/ARPacketSend.cpp \
-    Buffers/ARPacketRecv.cpp \
-    Buffers/ARPacketManager.cpp \
+    Packets/FPacketRecv.cpp \
+    Packets/FPacketSend.cpp \
+    Packets/ARPacketSend.cpp \
+    Packets/ARPacketRecv.cpp \
+    Packets/ARPacketManager.cpp \
     Widgets/PlotW.cpp \
     Widgets/ControlWidgets/AdditionalControlW.cpp \
     Widgets/ControlWidgets/ConnectionControlW.cpp \
@@ -62,7 +62,9 @@ SOURCES += main.cpp\
     Widgets/GridWidgets/MotorsGridW.cpp \
     Widgets/GridWidgets/MovesGridW.cpp \
     Widgets/GridWidgets/SensorsGridW.cpp \
-    Widgets/MainWindow.cpp
+    Widgets/MainWindow.cpp \
+    Management/MotorController.cpp \
+    Packets/FPacketManager.cpp
 
 HEADERS  += \
     Models/CommandTableModel.h \
@@ -90,12 +92,12 @@ HEADERS  += \
     Connection/FrundTransiver.h \
     Management/FileLoader.h \
     Management/LogMaster.h \
-    Buffers/ARPacketDefinition.h \
-    Buffers/ARPacketRecv.h \
-    Buffers/ARPacketSend.h \
-    Buffers/ARPacketManager.h \
-    Buffers/FPacketRecv.h \
-    Buffers/FPacketSend.h \
+    Packets/ARPacketDefinition.h \
+    Packets/ARPacketRecv.h \
+    Packets/ARPacketSend.h \
+    Packets/ARPacketManager.h \
+    Packets/FPacketRecv.h \
+    Packets/FPacketSend.h \
     Widgets/PlotW.h \
     Widgets/LogOutputW.h \
     Widgets/ControlWidgets/AdditionalControlW.h \
@@ -109,7 +111,10 @@ HEADERS  += \
     Widgets/GridWidgets/MotorsGridW.h \
     Widgets/GridWidgets/MovesGridW.h \
     Widgets/GridWidgets/SensorsGridW.h \
-    Widgets/MainWindow.h
+    Widgets/MainWindow.h \
+    Management/MotorController.h \
+    Packets/FPacketDefinition.h \
+    Packets/FPacketManager.h
 
 FORMS    += \
     Widgets/MainWindow.ui \

@@ -4,9 +4,9 @@ MoveController * MoveController::m_inst = 0;
 
 MoveController::MoveController()
 {
-    m_state = States::NotWork; //ничего не делаем
+    m_state = States::NOT_WORK; //ничего не делаем
 
-    mGoToPosData.clear();
+    m_positionTransitData.clear();
 
     m_motors = SettingsStorage::Inst()->GetMotors();
     for(auto it = m_motors->begin(); it != m_motors->end(); ++it)
@@ -17,7 +17,7 @@ MoveController::MoveController()
         item.StartPos = 0;
         item.Step = 0;
         item.isEndPos = false;
-        mGoToPosData[(*it).first] = item;
+        m_positionTransitData[(*it).first] = item;
         m_startPosition[(*it).second.getNumber()] = 0;
     }
 
@@ -33,13 +33,18 @@ MoveController::MoveController()
 }
 
 //на вход поступает время в микросекундах (10e-6 c)
-void MoveController::stepPlay()
+void MoveController::stepMove()
 {
-    long time = m_time.elapsed()*1e3;
+    endTime = std::chrono::high_resolution_clock::now();
+
+    long elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>
+            (endTime - startTime).count();
+
+    //long time = m_time.elapsed()*1e3;
 
     if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
-    while(MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time <= time)
+    while(MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time <= elapsedTime)
     {
         if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}
 
@@ -72,22 +77,21 @@ void MoveController::stepPlay()
 
 StopPlay:
     //если время закончилось - останавливаем, переводим индекс команды на начало списка
-    if(time > MovesStorage::Inst()->m_duration)
+    if(elapsedTime > MovesStorage::Inst()->m_duration)
     {
         MovesStorage::Inst()->m_moveID = 0;
 
         LogMaster::Inst()->addLine("Выполнена последняя строка");
-        emit PlayEnd();
-        m_state = States::MoveStopping;
+        m_state = States::END_MOVE;
     }
 }
 
-void MoveController::startPlay()
+void MoveController::startMove()
 {
-    m_state = MoveStarting;
+    m_state = BEGIN_MOVE;
 }
 
-void MoveController::startingPlay()
+void MoveController::startingMove()
 {
     LogMaster::Inst()->addLine("MoveController::StartingPlay()");
     m_motors = SettingsStorage::Inst()->GetMotors();
@@ -108,16 +112,17 @@ void MoveController::startingPlay()
     MovesStorage::Inst()->m_moveID = 0;
     MoveCorrector::Inst()->setCurLine(0);
 
-    m_state = States::MovePlay;
-    m_time.start();
+    m_state = States::STEP_MOVE;
+    startTime = std::chrono::high_resolution_clock::now();
+    //m_time.start();
 }
 
-void MoveController::stopPlay()
+void MoveController::stopMove()
 {
-    m_state = States::MoveStopping;
+    m_state = States::END_MOVE;
 }
 
-void MoveController::stoppingPlay()
+void MoveController::stoppingMove()
 {
     //переход в состояние после отправки последовательности
     m_motors = SettingsStorage::Inst()->GetMotors();
@@ -136,16 +141,16 @@ void MoveController::stoppingPlay()
         ARPacketManager::Inst()->getPacketSend()->motorStopBrake( Number);
     }
     MovesStorage::Inst()->m_moveID = 0;
-    m_state = States::NotWork;
+    m_state = States::NOT_WORK;
 }
 
-void MoveController::stepPlayOnline()
+void MoveController::stepMoveFrund()
 {
     //char* recvPacket = new char(2400);
     //int size = 0;
     QByteArray datagram;
-    while(!FrundTransiver::Inst()->recvData(datagram) && this->m_state == States::MovePlayOnline) ;
-    if (this->m_state != States::MovePlayOnline) return;
+    while(!FrundTransiver::Inst()->recvData(datagram) && this->m_state == States::STEP_MOVE_FRUND) ;
+    if (this->m_state != States::STEP_MOVE_FRUND) return;
 
     MovesStorage::Inst()->loadDataFromArray(datagram.data(), datagram.size());
 
@@ -187,7 +192,7 @@ StopPlay:
         //LogMaster::Inst()->addLine("Выполнен очередной шаг");
 
         if(!this->isLog)
-            RecordController::Inst()->AddRawData();
+            RecordController::Inst()->addRawData();
 
         RecordController::Inst()->getLastData(datagram.data());
 
@@ -202,55 +207,35 @@ bool MoveController::openFile(std::string fileName)
 void MoveController::doStepWork()
 {
     switch (m_state){
-    case MoveStarting: //запуск отработки
-    {
-        startingPlay();
-    }
+    case BEGIN_MOVE: //запуск отработки
+        startingMove();
         break;
-    case MovePlay: //отработка команд
-    {
-        stepPlay();
-    }
+    case STEP_MOVE: //отработка команд
+        stepMove();
         break;
-    case MovePlayOnline: //отработка команд
-    {
-        stepPlayOnline();
-    }
+    case STEP_MOVE_FRUND: //отработка команд
+        stepMoveFrund();
         break;
-    case MoveStopping: //остановка отработки
-    {
-        stoppingPlay();
-    }
+    case END_MOVE: //остановка отработки
+        stoppingMove();
         break;
-    case GoToAngleStarting: //запуск перехода мотора
-    {
-        startingGoToAngle();
-    }
+    case BEGIN_MOTOR_TRANSIT: //запуск перехода мотора
+        startingMotorTransit();
         break;
-    case GoToAngle: //переход мотора в заданный угол
-    {
-        stepGoToAngle();
-    }
+    case STEP_MOTOR_TRANSIT: //переход мотора в заданный угол
+        stepMotorTransit();
         break;
-    case GoToAngleStopping: //остановка перехода мотора
-    {
-        stoppingGoToAngle();
-    }
+    case END_MOTOR_TRANSIT: //остановка перехода мотора
+        stoppingMotorTransit();
         break;
-    case GoPosStarting: //переход в начальную позицию
-    {
-        startingGoPos();
-    }
+    case BEGIN_POSITION_TRANSIT: //переход в начальную позицию
+        startingPositionTransit();
         break;
-    case GoToPos: //переход в начальную позицию
-    {
-        stepGoPos();
-    }
+    case STEP_POSITION_TRANSIT: //переход в начальную позицию
+        stepPositionTransit();
         break;
-    case GoPosStopping: //переход в начальную позицию
-    {
-        stoppingGoPos();
-    }
+    case END_POSITION_TRANSIT: //переход в начальную позицию
+        stoppingPositionTransit();
         break;
     default:
         break;
@@ -258,21 +243,20 @@ void MoveController::doStepWork()
 }
 
 //Команды для перехода в исходную позицию
-void MoveController::setPosData(int Number, int DestPos, int StartPos)
+void MoveController::setPositionData(int Number, int DestPos, int StartPos)
 {
-    mGoToPosData[Number].DestPos = DestPos;
-    mGoToPosData[Number].StartPos = StartPos;
+    m_positionTransitData[Number].DestPos = DestPos;
+    m_positionTransitData[Number].StartPos = StartPos;
 }
 
-void MoveController::startGoPos(bool isCommand)
+void MoveController::startPositionTransit(bool isCommand)
 {
-    m_state = States::GoPosStarting;
-    mGoPosMode = isCommand;
+    m_state = States::BEGIN_POSITION_TRANSIT;
+    m_positionTransitMode = isCommand;
 }
 
-void MoveController::startingGoPos()
+void MoveController::startingPositionTransit()
 {
-    emit InitStart();
     int MaxDiff = 0;
     int i = 0;
 
@@ -281,14 +265,14 @@ void MoveController::startingGoPos()
     {
         int Number = (*it).first;
         int StartAngle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle(Number);
-        int DestAngle = mGoPosMode == true ?
+        int DestAngle = m_positionTransitMode == true ?
                     MovesStorage::Inst()->m_moves[i].Angle :
                     m_startPosition[Number];
 
         int DiffAngle = std::abs(DestAngle - StartAngle);
         MaxDiff = (DiffAngle > MaxDiff && (*it).second.getEnable()) ? DiffAngle : MaxDiff;
 
-        setPosData(Number, DestAngle, StartAngle);
+        setPositionData(Number, DestAngle, StartAngle);
 
         ARPacketManager::Inst()->getPacketSend()->setMotorAngle(Number, StartAngle);
         ARPacketManager::Inst()->getPacketSend()->motorTrace(Number);
@@ -297,16 +281,16 @@ void MoveController::startingGoPos()
 
     long TimeMs = MaxDiff * 1000 / (SettingsStorage::Inst()->GetDefaultSpeed()*100);
     TimeMs = TimeMs < 1000 ? 1000 : TimeMs;
-    setupGoPos(TimeMs);
-    mMotorExistCount = 21;
-    m_state = States::GoToPos;
+    setupPositionTransit(TimeMs);
+    m_motorExistCount = 21;
+    m_state = States::STEP_POSITION_TRANSIT;
 }
 
-void MoveController::setupGoPos(long TimeToGo)
+void MoveController::setupPositionTransit(long TimeToGo)
 {
     int SendDelay = SettingsStorage::Inst()->GetSendDelay();
 
-    for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
+    for(auto it = m_positionTransitData.begin();it != m_positionTransitData.end();++it)
     {
         int diffPos = (*it).second.DestPos - (*it).second.StartPos;
 
@@ -321,9 +305,9 @@ void MoveController::setupGoPos(long TimeToGo)
     }
 }
 
-void MoveController::stepGoPos()
+void MoveController::stepPositionTransit()
 {
-    for(auto it = mGoToPosData.begin();it != mGoToPosData.end();++it)
+    for(auto it = m_positionTransitData.begin();it != m_positionTransitData.end();++it)
     {
         bool IsFirst = (*it).second.DestPos <= (*it).second.CurrentPos
                 && (*it).second.DestPos >= (*it).second.StartPos;
@@ -337,7 +321,7 @@ void MoveController::stepGoPos()
 
             if(!(*it).second.isEndPos)
             {
-                mMotorExistCount--;
+                m_motorExistCount--;
                 (*it).second.isEndPos = true;
             }
             //LogMaster::Inst()->addLine("Отправлено конечное положение " + std::to_string((*it).second.DestPos));
@@ -351,19 +335,19 @@ void MoveController::stepGoPos()
     }
 
     //Если равно 0 то конец
-    if(mMotorExistCount == 0)
+    if(m_motorExistCount == 0)
     {
         LogMaster::Inst()->addLine("Достигнуто стартовое положение ");
-        m_state = States::GoPosStopping;
+        m_state = States::END_POSITION_TRANSIT;
     }
 }
 
-void MoveController::stopGoPos()
+void MoveController::stopPositionTransit()
 {
-    m_state = States::GoPosStopping;
+    m_state = States::END_POSITION_TRANSIT;
 }
 
-void MoveController::stoppingGoPos()
+void MoveController::stoppingPositionTransit()
 {
     for(auto it = m_motors->begin();it != m_motors->end();++it)
     {
@@ -373,7 +357,7 @@ void MoveController::stoppingGoPos()
         ARPacketManager::Inst()->getPacketSend()->motorStopBrake((*it).first);
     }
 
-    m_state = States::NotWork;
+    m_state = States::NOT_WORK;
 }
 
 void MoveController::setIsLog(bool value)
@@ -393,67 +377,67 @@ void MoveController::setCurPosAsDefault()
 //Конец команд для перехода в исходную позицию
 
 //Команды для перехода в заданный угол (один двигатель)
-void MoveController::startGoToAngle(int Number, int DestAngle, int Time)
+void MoveController::startMotorTransit(int Number, int DestAngle, int Time)
 {
     LogMaster::Inst()->addLine("MoveController::startGoToAngle()");
-    NewMotorNumber = Number;
-    NewTimeToGo = Time;
-    NewDestAngle = DestAngle;
-    m_state = States::GoToAngleStarting;
+    newMotorNumber = Number;
+    newTimeToTransit = Time;
+    newDestAngle = DestAngle;
+    m_state = States::BEGIN_MOTOR_TRANSIT;
 }
 
-void MoveController::startingGoToAngle()
+void MoveController::startingMotorTransit()
 {
     LogMaster::Inst()->addLine("MoveController::startingGoToAngle()");
 
-    mMotorNumber = NewMotorNumber;
-    mTimeToGo = NewTimeToGo;
-    mDestAngle = NewDestAngle;
-    mStartAngle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle(mMotorNumber);
+    m_motorNumber = newMotorNumber;
+    m_timeToTransit = newTimeToTransit;
+    m_destAngle = newDestAngle;
+    m_startAngle = ARPacketManager::Inst()->getPacketRecv()->getMotorAngle(m_motorNumber);
 
     int SendDelay = SettingsStorage::Inst()->GetSendDelay();
-    int diffAngle = mDestAngle - mStartAngle;//разница в градус*100
-    mStep = (double)diffAngle / ((double)mTimeToGo/(double)SendDelay);//шаг в градус*100
-    mCurrentAngle = mStartAngle;
+    int diffAngle = m_destAngle - m_startAngle;//разница в градус*100
+    m_stepAngle = (double)diffAngle / ((double)m_timeToTransit/(double)SendDelay);//шаг в градус*100
+    m_currentAngle = m_startAngle;
 
     //включаем мотор
-    ARPacketManager::Inst()->getPacketSend()->setMotorAngle(mMotorNumber, mStartAngle);
-    ARPacketManager::Inst()->getPacketSend()->motorTrace(mMotorNumber);
+    ARPacketManager::Inst()->getPacketSend()->setMotorAngle(m_motorNumber, m_startAngle);
+    ARPacketManager::Inst()->getPacketSend()->motorTrace(m_motorNumber);
 
-    m_state = States::GoToAngle;
+    m_state = States::STEP_MOTOR_TRANSIT;
 }
 
-void MoveController::stepGoToAngle()
+void MoveController::stepMotorTransit()
 {
     LogMaster::Inst()->addLine("MoveController::stepGoToAngle()");
 
-    bool IsFirst = mDestAngle <= mCurrentAngle && mDestAngle >= mStartAngle;
-    bool IsSecond = mDestAngle >= mCurrentAngle && mDestAngle <= mStartAngle;
+    bool IsFirst = m_destAngle <= m_currentAngle && m_destAngle >= m_startAngle;
+    bool IsSecond = m_destAngle >= m_currentAngle && m_destAngle <= m_startAngle;
 
     if(IsFirst || IsSecond)
     {
-        ARPacketManager::Inst()->getPacketSend()->setMotorAngle(mMotorNumber,mDestAngle);
-        ARPacketManager::Inst()->getPacketSend()->motorStopBrake(mMotorNumber);
-        LogMaster::Inst()->addLine("Отправлено конечное положение " + std::to_string(mDestAngle));
-        m_state = States::NotWork;
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle(m_motorNumber,m_destAngle);
+        ARPacketManager::Inst()->getPacketSend()->motorStopBrake(m_motorNumber);
+        LogMaster::Inst()->addLine("Отправлено конечное положение " + std::to_string(m_destAngle));
+        m_state = States::NOT_WORK;
     }
     else
     {
-        ARPacketManager::Inst()->getPacketSend()->setMotorAngle(mMotorNumber,(short)mCurrentAngle);
-        LogMaster::Inst()->addLine("Отправлено положение " + std::to_string(mCurrentAngle));
-        mCurrentAngle += mStep;
+        ARPacketManager::Inst()->getPacketSend()->setMotorAngle(m_motorNumber,(short)m_currentAngle);
+        LogMaster::Inst()->addLine("Отправлено положение " + std::to_string(m_currentAngle));
+        m_currentAngle += m_stepAngle;
     }
 }
 
-void MoveController::stopGoToAngle()
+void MoveController::stopMotorTransit()
 {
     LogMaster::Inst()->addLine("MoveController::stopGoToAngle()");
-    m_state = States::GoToAngleStopping;
+    m_state = States::END_MOTOR_TRANSIT;
 }
 
-void MoveController::stoppingGoToAngle()
+void MoveController::stoppingMotorTransit()
 {
-    ARPacketManager::Inst()->getPacketSend()->motorStop(mMotorNumber);
-    m_state = States::NotWork;
+    ARPacketManager::Inst()->getPacketSend()->motorStop(m_motorNumber);
+    m_state = States::NOT_WORK;
 }
 //Конец команд для перехода в заданный угол (один двигатель)

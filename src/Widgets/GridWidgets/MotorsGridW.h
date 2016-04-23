@@ -7,7 +7,7 @@
 
 #include "Management/SettingsStorage.h"
 #include "Models/MotorTableModel.h"
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "../DialogWidgets/SetLimitsDialog.h"
 
 namespace Ui {

@@ -11,7 +11,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 #include "Management/SettingsStorage.h"
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "Models/MotorTableModel.h"
 
 #include "Management/MoveController.h"
@@ -52,10 +52,8 @@ public slots:
 
 private slots:
     void on_LoadFileB_clicked();
-    void on_ButtonLoadDRIVEMAT_clicked();
     void on_StartB_clicked();
     void on_StopB_clicked();
-    void on_checkBoxLog_clicked(bool checked);
     void on_GoStartPosB_clicked();
     void on_StartFileB_clicked();
     void on_UseUserPGateB_clicked(bool checked);

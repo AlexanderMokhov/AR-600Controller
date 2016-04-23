@@ -1,28 +1,29 @@
 #ifndef RECORDCONTROLLER_H
 #define RECORDCONTROLLER_H
 
-#include <QTime>
-#include <QDebug>
+#include <chrono>
 
 #include <iostream>
 #include <map>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <cmath>
+
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <sstream>
 #include <stdlib.h>
 
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "SettingsStorage.h"
 
 using namespace std;
 
 struct RecordData
 {
-    int Time;
+    long Time;
     std::map<int, int> MotorsData;
     std::map<int, int> SensorsData;
     std::map<int, float> MotorsCurrent;
@@ -42,23 +43,26 @@ public:
     std::vector<RecordData> mRecordVector;
     std::map<int,Motor> * mConfigMap;
     std::map<int,Sensor> * mSensMap;
-    QTime mTime;
     double driverPower;
 
     //public methods
     static RecordController* Inst(){return mInst;}
     static void Initialize(){delete mInst; mInst = new RecordController;}
 
-    void AddRawData();
+    void addRawData();
     bool SaveData(std::string fileName, bool mode);
     bool SaveCurData(std::string fileName);
     void StartWrite();
 
     void getLastData(char* retData);
 
+    long getElapsedTime();
+
 private:
     //private variable
     static RecordController* mInst;
+
+    std::chrono::time_point<std::chrono::system_clock> startTime, endTime;
 
     //private methods
     RecordController();

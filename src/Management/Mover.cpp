@@ -5,7 +5,7 @@ Mover::Mover(QObject *parent) : QThread(parent)
     isRunning = false;
     isRestart = false;
     m_delay = SettingsStorage::Inst()->GetSendDelay();
-    isPrep = false;
+    isTransit = false;
 }
 
 Mover::~Mover()
@@ -36,13 +36,13 @@ pointStart:
 
 void Mover::startMove()
 {
-    MoveController::Inst()->startPlay();
+    MoveController::Inst()->startMove();
     if( !isRunning ) start();
 }
 
 void Mover::startMoveOnline()
 {
-    MoveController::Inst()->startPlayOnline();
+    MoveController::Inst()->startMoveFrund();
     if( !isRunning ) start();
     emit playOnlineStart();
     RecordController::Inst()->StartWrite();
@@ -51,27 +51,27 @@ void Mover::startMoveOnline()
 
 void Mover::stopMove()
 {
-    MoveController::Inst()->stopPlay();
+    MoveController::Inst()->stopMove();
     qDebug() << "Count Errors = " << QString::number(MovesStorage::Inst()->getCountErrors()) << endl;
-    isPrep = false;
+    isTransit = false;
 }
 
 void Mover::startGoToPos(bool isNullPos)
 {
-    MoveController::Inst()->startGoPos(!isNullPos);
-    isPrep = true;
+    MoveController::Inst()->startPositionTransit(!isNullPos);
+    isTransit = true;
     if( !isRunning ) start();
 }
 
 void Mover::stopGoToPos()
 {
-    MoveController::Inst()->stopGoPos();
-    isPrep = false;
+    MoveController::Inst()->stopPositionTransit();
+    isTransit = false;
 }
 
 void Mover::startGoToAngle(int number, int destAngle, int time)
 {
-    MoveController::Inst()->startGoToAngle(number, destAngle, time);
+    MoveController::Inst()->startMotorTransit(number, destAngle, time);
     if( !isRunning ) start();
 }
 
@@ -84,16 +84,34 @@ void Mover::Move()
 {
     MoveController::Inst()->doStepWork();
     //Если закончилось выполнение движения
-    if(MoveController::Inst()->getState() == States::NotWork)
+    if(MoveController::Inst()->getState() == MoveController::NOT_WORK)
     {
         exit();
-        if(isPrep)
+        if(isTransit)
         {
-            isPrep = false; emit PrepEnd();
+            isTransit = false; emit PrepEnd();
         }
         else
         {
             emit MoveEnd();
         }
     }
+}
+
+void Mover::Calibrate()
+{
+//    MoveController::Inst()->doStepWork();
+//    //Если закончилось выполнение движения
+//    if(MoveController::Inst()->getState() == States::NotWork)
+//    {
+//        exit();
+//        if(isTransit)
+//        {
+//            isTransit = false; emit PrepEnd();
+//        }
+//        else
+//        {
+//            emit MoveEnd();
+//        }
+//    }
 }

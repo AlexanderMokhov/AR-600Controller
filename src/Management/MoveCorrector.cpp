@@ -116,14 +116,14 @@ bool MoveCorrector::openFile(string fileName)
             NextAmend.sZeroValue = sZeroValue;
             NextAmend.sNumber = sNumber;
 
-            qDebug() << "Type "  << QString::number(Type) << endl;
+            //qDebug() << "Type "  << QString::number(Type) << endl;
 
             //добавляем команду в список
             m_amends[mNumber].push_back(NextAmend);
             countLines++;
         }
 
-        qDebug() << "Считано " << QString::number(countLines) << " строк" << endl;
+        //qDebug() << "Считано " << QString::number(countLines) << " строк" << endl;
 
         file.close();
         return true;
@@ -216,7 +216,7 @@ bool MoveCorrector::openDriveMatFile(string fileName)
             m_driveMatVector.push_back(NextData);
             countLines++;
         }
-        qDebug() << "считано " << QString::number(countLines) << " строк" << endl;
+        //qDebug() << "считано " << QString::number(countLines) << " строк" << endl;
 
         m_RowsNumber = countLines;
         m_duration = m_driveMatVector[countLines-1].Time;
@@ -250,7 +250,7 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
                     m_sensors->at(sNumber).getChannel(), m_sensors->at(sNumber).getParam() ) ;
 
         int spNumber = m_amends[NumberChannel][i].spNumber;
-        qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
+        //qDebug() << "показания сенсора"  << QString::number(sValue) << endl;
 
         double Amend = 0;
 
@@ -260,8 +260,8 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
 
             double sZValue = m_driveMatVector[m_lineId].SensorsData[spNumber];
 
-            qDebug() << "Time: "  << QString::number(CTime) <<
-                        " SValue: "<< QString::number(sZValue) << endl;
+            //qDebug() << "Time: "  << QString::number(CTime) <<
+            //            " SValue: "<< QString::number(sZValue) << endl;
 
             Amend = (double)(((sValue - sZeroValue)/sScale) - sZValue)*mScale;
         }
@@ -270,7 +270,7 @@ int MoveCorrector::getCorrectValue(int NumberChannel, int CTime)
             Amend = (double)((sValue - sZeroValue)/sScale)*mScale;
         }
 
-        qDebug() << "Amend: "  << QString::number(Amend) << endl;
+        //qDebug() << "Amend: "  << QString::number(Amend) << endl;
         CorrAngle += Amend;
     }
 

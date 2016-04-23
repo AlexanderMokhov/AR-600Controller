@@ -3,22 +3,22 @@
 
 #define _USE_MATH_DEFINES
 
-#include <QTime>
-
+#include <chrono>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <cmath>
+#include <mutex>
+#include <regex>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <cmath>
-#include <mutex>
-#include <regex>
 #include <unistd.h>
 
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "SettingsStorage.h"
 #include "MoveCorrector.h"
 #include "MovesStorage.h"
@@ -26,34 +26,15 @@
 #include "Connection/FrundTransiver.h"
 #include "LogMaster.h"
 
-//!!!
-struct Command
+// управление движением
+class MoveController
 {
-    int Time = 0;
-    int Number = 0;
-    int Angle = 0;
-    PID PIDs;
-};
-//!!!
-struct PosData
-{
-    double CurrentPos;
-    int StartPos;
-    int DestPos;
-    double Step;
-    bool isEndPos;
-};
-//!!!
-enum States {MovePlay, MovePlayOnline, MoveStarting, MoveStopping,
-             GoToAngleStarting, GoToAngle, GoToAngleStopping,
-             GoPosStarting, GoToPos, GoToPosEnding, GoPosStopping,
-             NotWork};
+    struct Command
+    { int Time = 0; int Number = 0; int Angle = 0; PID PIDs; };
 
-// управление конмандами,
-//содержит список команд и по заданному времени обновляет буфер
-class MoveController: public QObject
-{
-    Q_OBJECT
+    struct PosData
+    { double CurrentPos; int StartPos; int DestPos; double Step;  bool isEndPos; };
+
 public:
     //public methods
     static MoveController* Inst(){return m_inst;}
@@ -62,34 +43,29 @@ public:
     void doStepWork();
 
     bool openFile(std::string fileName);
-    States getState(){ return m_state; }
+    int getState(){ return m_state; }
 
     //для воспроизведения последовательности команд
-    void stepPlay();
-    void startPlay();
-    void startingPlay();
-    void stopPlay();
-    void stoppingPlay();
+    void startMove();
+    void stopMove();
 
-    // для вопроизведения онлайн
-    void stepPlayOnline();
-    void startPlayOnline() { m_state = States::MovePlayOnline; }
+    // для вопроизведения с ФРУНД
+    void startMoveFrund() { m_state = States::STEP_MOVE_FRUND; }
 
     //для перехода в заданный угол (один двигатель)
-    void stepGoToAngle();
-    void startGoToAngle(int Number, int DestAngle, int Time);
-    void startingGoToAngle();
-    void stopGoToAngle();
-    void stoppingGoToAngle();
+    void startMotorTransit(int Number, int DestAngle, int Time);
+    void stopMotorTransit();
 
     //для перехода в начальную позицию (все двигатели)
-    void startGoPos(bool isCommand);
-    void startingGoPos();
-    void setPosData(int Number, int DestPos, int StartPos);
-    void setupGoPos(long TimeToGo);
-    void stepGoPos();
-    void stopGoPos();
-    void stoppingGoPos();
+    void startPositionTransit(bool isCommand);
+    void stopPositionTransit();
+
+    //public variable
+
+    enum States {STEP_MOVE, STEP_MOVE_FRUND, BEGIN_MOVE, END_MOVE,
+                 BEGIN_MOTOR_TRANSIT, STEP_MOTOR_TRANSIT, END_MOTOR_TRANSIT,
+                 BEGIN_POSITION_TRANSIT, STEP_POSITION_TRANSIT, END_POSITION_TRANSIT,
+                 NOT_WORK};
 
     int userStiff = 0;//!!!
     int userDump = 0;//!!!
@@ -101,37 +77,53 @@ public:
 
     void setCurPosAsDefault();
 
-signals:
-    void InitStart();
-    void InitEnd();
-    void PlayEnd();
-
 private:
     //private methods
     MoveController();
     ~MoveController(){}
     MoveController(MoveController const&);
 
+    //для воспроизведения последовательности команд
+    void stepMove();
+    void startingMove();
+    void stoppingMove();
+
+    // для вопроизведения онлайн
+    void stepMoveFrund();
+
+    //для перехода в заданный угол (один двигатель)
+    void stepMotorTransit();
+    void startingMotorTransit();
+    void stoppingMotorTransit();
+
+    //для перехода в начальную позицию (все двигатели)
+    void startingPositionTransit();
+    void setPositionData(int Number, int DestPos, int StartPos);
+    void setupPositionTransit(long TimeToGo);
+    void stepPositionTransit();
+    void stoppingPositionTransit();
+
     //private variable
     static MoveController* m_inst;
     States m_state; //текущее состояние
     std::mutex m_locker; //мьютекс
-    QTime m_time;
     std::map<int, Motor> * m_motors;
     std::map<int, int> m_startPosition;
 
+    std::chrono::time_point<std::chrono::system_clock> startTime, endTime;
+
     //для перехода в заданный угол
-    int mTimeToGo, NewTimeToGo;
-    int mDestAngle, NewDestAngle;
-    int mStartAngle, NewStartAngle;
-    double mCurrentAngle;
-    double mStep;
-    int mMotorNumber, NewMotorNumber;
+    int m_timeToTransit, newTimeToTransit;
+    int m_destAngle, newDestAngle;
+    int m_startAngle, newStartAngle;
+    double m_currentAngle;
+    double m_stepAngle;
+    int m_motorNumber, newMotorNumber;
 
     //для перехода в начальную позицию
-    std::map<int,PosData> mGoToPosData;
-    bool mGoPosMode;
-    int mMotorExistCount;
+    std::map<int,PosData> m_positionTransitData;
+    bool m_positionTransitMode;
+    int m_motorExistCount;
 
     bool isLog;
 

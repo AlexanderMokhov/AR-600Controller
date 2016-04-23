@@ -24,7 +24,7 @@ RecordController::RecordController()
 
 }
 
-void RecordController::AddRawData()
+void RecordController::addRawData()
 {
     for(auto it = mDriversMap.begin(); it != mDriversMap.end(); ++it)
     {
@@ -49,7 +49,13 @@ void RecordController::AddRawData()
 
     //создаем элемент вектора с данными моторов
     RecordData Data;
-    Data.Time = mTime.elapsed();
+
+    endTime = std::chrono::high_resolution_clock::now();
+
+    long elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>
+            (endTime - startTime).count();
+
+    Data.Time = elapsedTime;
     Data.MotorsData = mDriversMap;
     Data.SensorsData = mSensorsMap;
     Data.MotorsCurrent = mDrivsCurMap;
@@ -189,7 +195,7 @@ bool RecordController::SaveCurData(string fileName)
 void RecordController::StartWrite()
 {
     mRecordVector.clear();
-    mTime.start();
+    startTime = std::chrono::high_resolution_clock::now();
 }
 
 void RecordController::getLastData(char* retData)
@@ -223,5 +229,12 @@ void RecordController::getLastData(char* retData)
     for(int i = 0; i < sizeOfData*sizeof(double); i += sizeof(double))
         memcpy(retData+i, &Data[i/sizeof(double)], sizeof(double));
 
+}
+
+long RecordController::getElapsedTime()
+{
+    long elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>
+            (endTime - startTime).count();
+    return elapsedTime;
 }
 

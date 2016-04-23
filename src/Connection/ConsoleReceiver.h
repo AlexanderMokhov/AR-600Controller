@@ -8,7 +8,7 @@
 #include <QTime>
 #include <QFile>
 
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "Management/SettingsStorage.h"
 #include "Management/MoveController.h"
 

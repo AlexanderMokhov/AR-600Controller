@@ -9,6 +9,7 @@
 
 #include <stdlib.h>
 #include "MoveController.h"
+#include "MotorController.h"
 
 class Mover : public QThread
 {
@@ -44,10 +45,11 @@ private:
     int m_delay;
     bool isRunning;
     bool isRestart;
-    bool isPrep;
+    bool isTransit;
 
 private slots:
     void Move();
+    void Calibrate();
 };
 
 #endif // MOVER_H

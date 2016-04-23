@@ -63,10 +63,10 @@ void Recorder::SetParam(int delay, long duration)
 
 void Recorder::WriteRecord()
 {
-    RecordController::Inst()->AddRawData();
-    emit UpdateTime(RecordController::Inst()->mTime.elapsed());
+    RecordController::Inst()->addRawData();
+    emit UpdateTime(RecordController::Inst()->getElapsedTime());
 
-    if(RecordController::Inst()->mTime.elapsed()> mDuration)
+    if(RecordController::Inst()->getElapsedTime() > mDuration)
     {
         exit();
     }

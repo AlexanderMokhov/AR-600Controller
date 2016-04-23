@@ -37,7 +37,7 @@
 #include "Widgets/StdMovesWidget.h"
 #include "Widgets/LogOutputW.h"
 
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 
 #include "Connection/Receiver.h"
 #include "Connection/Sender.h"

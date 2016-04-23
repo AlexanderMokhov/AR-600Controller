@@ -1,8 +1,6 @@
 #ifndef MOVECORRECTOR_H
 #define MOVECORRECTOR_H
 
-#include <QDebug>
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -15,7 +13,7 @@
 #include <cmath>
 #include <mutex>
 
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "SettingsStorage.h"
 
 struct Amend //поправка

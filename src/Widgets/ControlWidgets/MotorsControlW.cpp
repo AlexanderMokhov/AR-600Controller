@@ -319,6 +319,6 @@ void MotorsControlW::on_ButtonGoToPos_clicked()
 void MotorsControlW::on_ButtonStopGoToPos_clicked()
 {
 
-    MoveController::Inst()->stopGoToAngle();
+    MoveController::Inst()->stopMotorTransit();
 }
 

@@ -9,7 +9,7 @@
 
 #include "Models/CommandTableModel.h"
 #include "Management/SettingsStorage.h"
-#include "Buffers/ARPacketManager.h"
+#include "Packets/ARPacketManager.h"
 #include "Management/MoveController.h"
 
 namespace Ui {

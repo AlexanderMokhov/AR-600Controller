@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QUdpSocket>
 
+#include "Packets/FPacketManager.h"
 #include "Management/SettingsStorage.h"
 
 #define KDRIVE 21

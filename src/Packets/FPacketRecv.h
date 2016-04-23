@@ -1,8 +1,9 @@
 #ifndef FPACKETRECV_H
 #define FPACKETRECV_H
 
-#include <iostream>
+#include <mutex>
 
+#include "FPacketDefinition.h"
 //
 class FPacketRecv
 {
@@ -11,8 +12,24 @@ public:
     FPacketRecv();
     ~FPacketRecv();
 
+    void initialize( const char RAW_other[] );
+    const char *getRAW();
+
+    double getNumber(int chunnel);
+    double getTime(int chunnel);
+    double getAngle(int chunnel);
+    double getPGate(int chunnel);
+    double getIGate(int chunnel);
+    double getDGate(int chunnel);
+    double getPGateFactor(int chunnel);
+    double getIGateFactor(int chunnel);
+    double getDGateFactor(int chunnel);
+
 private:
     // private variable
+    char m_RAW [FBufferSize];
+    std::mutex m_locker;
+
     const uint16_t NUMBER = 0;
     const uint16_t TIME = 8;
     const uint16_t ANGLE = 16;
