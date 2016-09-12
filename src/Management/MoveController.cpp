@@ -70,6 +70,7 @@ void MoveController::stepMove()
         //LogMaster::Inst()->addLine("Корректирующее " + std::to_string(CorrectionValue));
 
         ARPacketManager::Inst()->getPacketSend()->setMotorAngle( Number, Angle + CorrectionValue);
+        ARPacketManager::Inst()->getPacketSend()->motorTrace(Number);
         MovesStorage::Inst()->m_moveID++;
 
         if(MovesStorage::Inst()->m_moveID >= MovesStorage::Inst()->m_rowsNumber){goto StopPlay;}

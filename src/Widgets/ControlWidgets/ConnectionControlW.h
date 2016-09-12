@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "Management/SettingsStorage.h"
+
 namespace Ui {
 class ConnectionControlW;
 }
@@ -15,8 +17,17 @@ public:
     explicit ConnectionControlW(QWidget *parent = 0);
     ~ConnectionControlW();
 
+public slots:
+    void connectionHandler(bool isConnect);
+
+private slots:
+    void on_ButtonConnect_clicked(bool checked);
+
 private:
     Ui::ConnectionControlW *ui;
+
+signals:
+    connectEvent(bool);
 };
 
 #endif // CONNECTIONCONTROLW_H

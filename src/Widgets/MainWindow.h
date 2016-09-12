@@ -78,6 +78,7 @@ private slots:
 
     void Connect();
     void Disconnect();
+    void ConnectionHandler(bool isConnect);
 
     void OpenConnectConfig();
 

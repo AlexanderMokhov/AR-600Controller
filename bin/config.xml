@@ -193,7 +193,7 @@
             <Stiff>600</Stiff>
             <Dump>2</Dump>
             <Torque>1</Torque>
-            <Calibration>-11759</Calibration>
+            <Calibration>-14115</Calibration>
             <Enable>true</Enable>
         </Motor>
         <Motor>
@@ -206,7 +206,7 @@
             <Stiff>600</Stiff>
             <Dump>2</Dump>
             <Torque>1</Torque>
-            <Calibration>-12199</Calibration>
+            <Calibration>4025</Calibration>
             <Enable>true</Enable>
         </Motor>
         <Motor>
@@ -393,9 +393,8 @@
         <FileForward>STDFORWARD.TXT</FileForward>
         <FileBack>STDBACK.TXT</FileBack>
     </CommandControllerSettings>
-	<FrundModelsSettings>
-		<ModelsPath>Models</ModelsPath>
-		<FrundModel>sinhron</FrundModel>
-		<FrundModel>sinhron2</FrundModel>		
-	</FrundModelsSettings>
+    <FrundModelsSettings>
+        <ModelsPath>Models</ModelsPath>
+        <FrundModel>sinhron</FrundModel>
+    </FrundModelsSettings>
 </AR600ControllerConf>

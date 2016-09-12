@@ -211,32 +211,34 @@ void MainWindow::ConnectionsInit()
     LogMaster::Inst()->addLine("Настройка connect(...) начата");
 
     //настройка кнопок меню
-    connect(ui->actionOpenConfigFile,SIGNAL(triggered()),this,SLOT(OpenXML()));
-    connect(ui->actionSaveConfigFile,SIGNAL(triggered()),this,SLOT(SaveXML()));
+    connect(ui->actionOpenConfigFile, SIGNAL(triggered()), this, SLOT(OpenXML()));
+    connect(ui->actionSaveConfigFile, SIGNAL(triggered()), this, SLOT(SaveXML()));
 
-    connect(ui->actionOpenCorrectionFile,SIGNAL(triggered()),this,SLOT(OpenCorrectionFile()));
-    connect(ui->action_Open_DRIVEMAT,SIGNAL(triggered()),this,SLOT(OpenDRIVEMATFile()));
+    connect(ui->actionOpenCorrectionFile, SIGNAL(triggered()), this, SLOT(OpenCorrectionFile()));
+    connect(ui->action_Open_DRIVEMAT, SIGNAL(triggered()), this, SLOT(OpenDRIVEMATFile()));
 
-    connect(ui->actionConnect,SIGNAL(triggered()),this,SLOT(Connect()));
-    connect(ui->actionDisconnect,SIGNAL(triggered()),this,SLOT(Disconnect()));
+    connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(Connect()));
+    connect(ui->actionDisconnect, SIGNAL(triggered()), this, SLOT(Disconnect()));
     //connect(ui->actionOn,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOnAll_clicked()));
     //connect(ui->actionOff,SIGNAL(triggered()),mPowerWidget,SLOT(on_ButtonOffAll_clicked()));
     //connect(ui->actionReboot,SIGNAL(triggered()),mPowerWidget,SLOT(onReboot()));
-    connect(ui->actionOpenConnectConfig,SIGNAL(triggered()),this,SLOT(OpenConnectConfig()));
+    connect(ui->actionOpenConnectConfig, SIGNAL(triggered()), this, SLOT(OpenConnectConfig()));
     //конец настройки кнопок меню
 
-    connect(mMoveControlWidget,SIGNAL(StartWriteRecord(int)),mRecordWidget,SLOT(StartWriteRecord(int)));
-    connect(mMoveControlWidget,SIGNAL(StopWriteRecord()),mRecordWidget,SLOT(StopWriteRecord()));
-    connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),this,SLOT(ActivateActions()));
+    connect(mMoveControlWidget, SIGNAL(StartWriteRecord(int)), mRecordWidget, SLOT(StartWriteRecord(int)));
+    connect(mMoveControlWidget, SIGNAL(StopWriteRecord()), mRecordWidget, SLOT(StopWriteRecord()));
+    connect(mMoveControlWidget, SIGNAL(FileLoaded(QString,int,int,bool)), this, SLOT(ActivateActions()));
 
-    connect(mMoveControlWidget,SIGNAL(PlayStart()),mMotorTableWidget,SLOT(Disactivate()));
-    connect(mMoveControlWidget,SIGNAL(PlayStop()),mMotorTableWidget,SLOT(Activate()));
-    connect(mMoveControlWidget,SIGNAL(FileLoaded(QString,int,int,bool)),mMoveFilesWidget,SLOT(AddFile(QString,int,int,bool)));
+    connect(mMoveControlWidget, SIGNAL(PlayStart()), mMotorTableWidget,SLOT(Disactivate()));
+    connect(mMoveControlWidget, SIGNAL(PlayStop()), mMotorTableWidget,SLOT(Activate()));
+    connect(mMoveControlWidget, SIGNAL(FileLoaded(QString,int,int,bool)), mMoveFilesWidget, SLOT(AddFile(QString,int,int,bool)));
 
-    connect(mMoveFilesWidget,SIGNAL(fileChosen(QString,bool)),mMoveControlWidget,SLOT(openFile(QString,bool)));
+    connect(mMoveFilesWidget, SIGNAL(fileChosen(QString,bool)), mMoveControlWidget, SLOT(openFile(QString,bool)));
 
-    connect(mStdMovesWidget,SIGNAL(startStdMove()),mMoveControlWidget,SLOT(startStdMove()));
-    connect(mStdMovesWidget,SIGNAL(stopStdMove()),mMoveControlWidget,SLOT(on_StopB_clicked()));
+    connect(mStdMovesWidget, SIGNAL(startStdMove()), mMoveControlWidget, SLOT(startStdMove()));
+    connect(mStdMovesWidget, SIGNAL(stopStdMove()), mMoveControlWidget, SLOT(on_StopB_clicked()));
+
+    connect(mConnectionCW, SIGNAL(connectEvent(bool)), this, SLOT(ConnectionHandler(bool)));
 
     connect(mConsoleReceiver, SIGNAL(startPlayOnline()), this, SLOT(StartPlayOnline()));
     connect(mConsoleReceiver, SIGNAL(stopPlayOnline()), this, SLOT(StopPlayOnline()));
@@ -282,6 +284,7 @@ void MainWindow::Connect()
     mConsoleReceiver->Connect();
     mTimerUpdate->start();
     mConnectStatusLabel->setText("Соединение установлено");
+    mConnectionCW->connectionHandler(true);
 
     LogMaster::Inst()->addLine("Соединение с роботом установлено");
 }
@@ -302,9 +305,19 @@ void MainWindow::Disconnect()
 
     mTimerUpdate->stop();
     mConnectStatusLabel->setText("Соединение не установлено");
+    mConnectionCW->connectionHandler(false);
+
     mLogWidget->addMessage("Соединение было прервано");
 
     LogMaster::Inst()->addLine("Соединение с роботом прервано");
+}
+
+void MainWindow::ConnectionHandler(bool isConnect)
+{
+    if(isConnect)
+        Connect();
+    else
+        Disconnect();
 }
 
 void MainWindow::ActivateActions()

@@ -50,7 +50,6 @@ SOURCES += main.cpp\
     Packets/ARPacketSend.cpp \
     Packets/ARPacketRecv.cpp \
     Packets/ARPacketManager.cpp \
-    Widgets/PlotW.cpp \
     Widgets/ControlWidgets/AdditionalControlW.cpp \
     Widgets/ControlWidgets/ConnectionControlW.cpp \
     Widgets/ControlWidgets/MotionControlW.cpp \
@@ -98,7 +97,6 @@ HEADERS  += \
     Packets/ARPacketManager.h \
     Packets/FPacketRecv.h \
     Packets/FPacketSend.h \
-    Widgets/PlotW.h \
     Widgets/LogOutputW.h \
     Widgets/ControlWidgets/AdditionalControlW.h \
     Widgets/ControlWidgets/ConnectionControlW.h \
@@ -120,7 +118,6 @@ FORMS    += \
     Widgets/MainWindow.ui \
     Widgets/StdMovesWidget.ui \
     Widgets/LogOutputW.ui \
-    Widgets/PlotW.ui \
     Widgets/DialogWidgets/SetLimitsDialog.ui \
     Widgets/DialogWidgets/ConnectionSetupDialog.ui \
     Widgets/ControlWidgets/PowerControlW.ui \

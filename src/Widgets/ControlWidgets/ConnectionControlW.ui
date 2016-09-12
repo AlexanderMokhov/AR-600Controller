@@ -35,9 +35,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QLineEdit" name="HostAddress">
          <property name="text">
-          <string>192.168.0.1</string>
+          <string>192.169.1.10</string>
          </property>
         </widget>
        </item>
@@ -55,7 +55,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox">
+          <widget class="QSpinBox" name="LocalPort">
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
@@ -85,7 +85,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_2">
+          <widget class="QSpinBox" name="RemotePort">
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
@@ -117,7 +117,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="ButtonConnect">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -131,7 +131,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../MyResources.qrc">
+          <iconset resource="../../MyResources.qrc">
            <normaloff>:/MyIcons/Icons/off.png</normaloff>
            <normalon>:/MyIcons/Icons/on.png</normalon>:/MyIcons/Icons/off.png</iconset>
          </property>
@@ -145,7 +145,7 @@
           <bool>true</bool>
          </property>
          <property name="checked">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="flat">
           <bool>true</bool>
@@ -159,7 +159,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../MyResources.qrc"/>
+  <include location="../../MyResources.qrc"/>
  </resources>
  <connections/>
 </ui>
