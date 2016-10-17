@@ -38,7 +38,9 @@ void MoveController::stepMove()
     endTime = std::chrono::high_resolution_clock::now();
 
     long elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>
-            (endTime - startTime).count();
+            (endTime - startTime).count()*1e3;
+
+    LogMaster::Inst()->addLine("MoveController::stepMove() elapsedTime = " + QString::number(elapsedTime).toStdString());
 
     //long time = m_time.elapsed()*1e3;
 
@@ -67,7 +69,8 @@ void MoveController::stepMove()
         ARPacketManager::Inst()->getPacketSend()->setMotorDGate( Number, Torque );
 
         int CorrectionValue = MoveCorrector::Inst()->getCorrectValue(Number, MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time);
-        //LogMaster::Inst()->addLine("Корректирующее " + std::to_string(CorrectionValue));
+
+        LogMaster::Inst()->addLine("time " + std::to_string(MovesStorage::Inst()->m_moves[MovesStorage::Inst()->m_moveID].Time));
 
         ARPacketManager::Inst()->getPacketSend()->setMotorAngle( Number, Angle + CorrectionValue);
         ARPacketManager::Inst()->getPacketSend()->motorTrace(Number);

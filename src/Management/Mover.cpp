@@ -86,6 +86,7 @@ void Mover::Move()
     //Если закончилось выполнение движения
     if(MoveController::Inst()->getState() == MoveController::NOT_WORK)
     {
+        LogMaster::Inst()->addLine("Mover stop");
         exit();
         if(isTransit)
         {
